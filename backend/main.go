@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"math"
 
 	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
@@ -23,6 +24,8 @@ func main() {
 	kills := make(map[string]int)
 	deaths := make(map[string]int)
 	assists := make(map[string]int)
+	headshots := make(map[string]int)
+
 	pastRoundTimes := [4]int{0, 0, 0, 0}
 
 	// Register handler on kill events
@@ -47,6 +50,10 @@ func main() {
 
 		if e.Killer != nil {
 			kills[e.Killer.Name] += 1
+
+			if e.IsHeadshot {
+				headshots[e.Killer.Name] += 1
+			}
 		}
 
 		if e.Victim != nil {
@@ -72,10 +79,11 @@ func main() {
 			pastRoundTimes[3] = e.TimeLimit
 
 			if pastRoundTimes[0] == 999 {
-				fmt.Println("RESETTING")
+				fmt.Println("----------------------------- Match is starting -----------------------------")
 				kills = make(map[string]int)
 				deaths = make(map[string]int)
 				assists = make(map[string]int)
+				headshots = make(map[string]int)
 			}
 		})
 	}
@@ -85,7 +93,48 @@ func main() {
 		panic(err)
 	}
 
+	// Initialze headshot & kd maps with all players from kills + deaths
+	// in case anyone got 0 kills or 0 deaths (lol)
+	kd := make(map[string]float64)
+	kdiff := make(map[string]int)
+	headshotPct := make(map[string]float64)
+	for p := range kills {
+		kd[p] = 0
+		kdiff[p] = 0
+		headshotPct[p] = 0
+	}
+	for p := range deaths {
+		kd[p] = 0
+		kdiff[p] = 0
+		headshotPct[p] = 0
+	}
+
+	// Compute headshot percentages & K/D
+	for player, numKills := range kills {
+		numHeadshots := headshots[player]
+		numDeaths := deaths[player]
+		fmt.Println(player, numKills, numHeadshots)
+
+		if numHeadshots == 0 || numKills == 0 {
+			headshotPct[player] = 0
+		} else {
+			headshotPct[player] = math.Round((float64(numHeadshots) / float64(numKills)) * 100)
+		}
+
+		if numDeaths == 0 {
+			kd[player] = math.Inf(1)
+		} else {
+			kd[player] = math.Round((float64(numKills) / float64(numDeaths)) * 100) / 100
+		}
+
+		kdiff[player] = numKills - numDeaths
+	}
+
+	fmt.Println()
 	fmt.Println("Kills", kills)
 	fmt.Println("Assists", assists)
 	fmt.Println("Deaths", deaths)
+	fmt.Println("Headshot PCT", headshots)
+	fmt.Println("K/D", kd)
+	fmt.Println("K-D", kdiff)
 }
