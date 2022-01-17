@@ -43,11 +43,18 @@ type Output struct {
 	Kast        map[string]float64 `json:"kast"`
 	Impact      map[string]float64 `json:"impact"`
 	Hltv        map[string]float64 `json:"hltv"`
+
+	// Can't name these 2k, 3k etc because identifiers can't start with
+	// numbers in Go
+	K2 map[string]int `json:"2k"`
+	K3 map[string]int `json:"3k"`
+	K4 map[string]int `json:"4k"`
+	K5 map[string]int `json:"5k"`
 }
 
 func main() {
-	f, err := os.Open("/home/jayden/Downloads/1-349fcf3c-681b-47e6-a134-47c8e27a25d9-1-1.dem")
-	// f, err := os.Open("/home/jayden/Downloads/pug_de_nuke_2022-01-16_05.dem")
+	// f, err := os.Open("/home/jayden/Downloads/1-349fcf3c-681b-47e6-a134-47c8e27a25d9-1-1.dem")
+	f, err := os.Open("/home/jayden/Downloads/pug_de_nuke_2022-01-16_05.dem")
 	if err != nil {
 		panic(err)
 	}
@@ -73,12 +80,7 @@ func main() {
 			return
 		}
 
-		var assister string
-		if e.Assister != nil {
-			assister = fmt.Sprintf(" (+%s)", e.Assister.Name)
-		}
-
-		if e.Assister != nil {
+		if e.Assister != nil && !e.AssistedFlash {
 			assists[len(assists)-1][e.Assister.Name] += 1
 		}
 
@@ -95,13 +97,9 @@ func main() {
 		}
 
 		if e.Killer != nil && e.Killer.Name == "" {
-			fmt.Printf("%s <%v%s> %s\n", e.Killer, e.Weapon, assister, e.Victim)
+			fmt.Printf("%s <%v> %s\n", e.Killer, e.Weapon, e.Victim)
 		}
 	})
-
-	// p.RegisterEventHandler(func(e events.RoundEnd) {
-	// 	fmt.Printf("%d %d - %d %d\n", e.WinnerState.ID(), e.WinnerState.Score() + 1, e.LoserState.Score(), e.LoserState.ID())
-	// })
 
 	p.RegisterEventHandler(func(e events.PlayerHurt) {
 		// In faceit these events can sometimes trigger before we
@@ -143,7 +141,7 @@ func main() {
 		damage = append(damage, make(map[string]int))
 	})
 
-	fmt.Println("Parsing demo...")
+	fmt.Fprintln(os.Stderr, "Parsing demo...")
 	err = p.ParseToEnd()
 	if err != nil {
 		panic(err)
@@ -156,7 +154,7 @@ func main() {
 		killsCurr := mapValTotal(&kills[i])
 		killsPrev := mapValTotal(&kills[i-1])
 
-		// Three consecutive rounds with no kills will be
+		// Three consecutive rounds with 0 kills will be
 		// considered the start of the game (faceit + pugsetup
 		// have the triple-restart and then MATCH IS LIVE thing)
 		if killsPrev+killsCurr+killsNext == 0 {
@@ -200,6 +198,11 @@ func main() {
 	headshotPct := make(map[string]float64)
 	adr := make(map[string]float64)
 
+	k2 := make(map[string]int)
+	k3 := make(map[string]int)
+	k4 := make(map[string]int)
+	k5 := make(map[string]int)
+
 	for p := range totalKills {
 		kd[p] = 0
 		kdiff[p] = 0
@@ -212,6 +215,11 @@ func main() {
 		kdiff[p] = 0
 		kpr[p] = 0
 		headshotPct[p] = 0
+
+		k2[p] = 0
+		k3[p] = 0
+		k4[p] = 0
+		k5[p] = 0
 	}
 
 	// Compute headshot percentages, K/D & K-D etc
@@ -252,7 +260,22 @@ func main() {
 		dpr := float64(totalDeaths[p]) / float64(totalRounds)
 
 		// https://flashed.gg/posts/reverse-engineering-hltv-rating/
-		hltv[p] = math.Round((0.0073*kast[p]+0.3591*kpr[p]+-0.5329*dpr+0.2372*impact[p]+0.0032*adr[p]+0.1587)*100) / 100
+		hltv[p] = math.Round((0.0073*kast[p]+0.3591*kpr[p]-0.5329*dpr+0.2372*impact[p]+0.0032*adr[p]+0.1587)*100) / 100
+	}
+
+	for _, pKills := range kills {
+		for p, numKills := range pKills {
+			switch numKills {
+			case 2:
+				k2[p] += 1
+			case 3:
+				k3[p] += 1
+			case 4:
+				k4[p] += 1
+			case 5:
+				k5[p] += 1
+			}
+		}
 	}
 
 	jsonstring, _ := json.MarshalIndent(&Output{
@@ -269,6 +292,10 @@ func main() {
 		Kast:        kast,
 		Impact:      impact,
 		Hltv:        hltv,
+		K2:          k2,
+		K3:          k3,
+		K4:          k4,
+		K5:          k5,
 	}, "", "  ")
 
 	fmt.Println(string(jsonstring))
