@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"os"
 
 	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
+	demcommon "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
 func mapValTotal(m *map[string]int) int {
@@ -27,6 +29,19 @@ func arrayMapTotal(a *[]map[string]int) map[string]int {
 	return ret
 }
 
+type Output struct {
+	TotalRounds int            `json:"totalRounds"`
+	Teams       map[string]string `json:"teams"`
+	Kills       map[string]int `json:"kills"`
+	Assists     map[string]int `json:"assists"`
+	Deaths      map[string]int `json:"deaths"`
+	HeadshotPct map[string]float64 `json:"headshotPct"`
+	Kd          map[string]float64 `json:"kd"`
+	Kdiff       map[string]int `json:"kdiff"`
+	Kpr         map[string]float64 `json:"kpr"`
+	Adr         map[string]float64 `json:"adr"`
+}
+
 func main() {
 	f, err := os.Open("/home/jayden/Downloads/1-349fcf3c-681b-47e6-a134-47c8e27a25d9-1-1.dem")
 	// f, err := os.Open("/home/jayden/Downloads/pug_de_nuke_2022-01-16_05.dem")
@@ -43,6 +58,7 @@ func main() {
 	var assists []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
+	var teams map[string]string
 
 	// Register handler on kill events
 	p.RegisterEventHandler(func(e events.Kill) {
@@ -104,6 +120,36 @@ func main() {
 		if e.Attacker != nil && e.Player != nil {
 			damage[len(damage)-1][e.Attacker.Name] += e.HealthDamageTaken
 		}
+	})
+
+	p.RegisterEventHandler(func(e events.PlayerTeamChange) {
+		if teams == nil {
+			fmt.Println("teams is nil")
+			return
+		}
+
+		if e.IsBot {
+			return
+		}
+
+		bot := ""
+		if e.IsBot {
+			bot = "BOT "
+		}
+
+		switch (e.NewTeam) {
+		case demcommon.TeamCounterTerrorists:
+			fmt.Printf("%s%s joined CT\n", bot, e.Player.Name)
+			teams[e.Player.Name] = "CT"
+		case demcommon.TeamTerrorists:
+			fmt.Printf("%s%s joined T\n", bot, e.Player.Name)
+			teams[e.Player.Name] = "T"
+		}
+
+	})
+
+	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
+		teams = make(map[string]string)
 	})
 
 	// Create a new 'round' map in each of the stats arrays
@@ -208,4 +254,20 @@ func main() {
 	fmt.Println("KPR", kpr)
 	fmt.Println("Damage", totalDamage)
 	fmt.Println("ADR", adr)
+	fmt.Println()
+
+	jsonstring, _ := json.MarshalIndent(&Output {
+		TotalRounds: totalRounds,
+		Teams: teams,
+		Kills: totalKills,
+		Assists: totalAssists,
+		Deaths: totalDeaths,
+		HeadshotPct: headshotPct,
+		Kd: kd,
+		Kdiff: kdiff,
+		Kpr: kpr,
+		Adr: adr,
+	}, "", "  ")
+
+	fmt.Println(string(jsonstring))
 }
