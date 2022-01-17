@@ -43,6 +43,7 @@ type Output struct {
 	Kast             map[string]float64 `json:"kast"`
 	Impact           map[string]float64 `json:"impact"`
 	Hltv             map[string]float64 `json:"hltv"`
+	FlashesThrown    map[string]int     `json:"flashesThrown"`
 	FlashAssists     map[string]int     `json:"flashAssists"`
 	EnemiesFlashed   map[string]int     `json:"enemiesFlashed"`
 	TeammatesFlashed map[string]int     `json:"teammatesFlashed"`
@@ -71,6 +72,7 @@ func main() {
 	var assists []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
+	var flashesThrown []map[string]int
 	var flashAssists []map[string]int
 	var enemiesFlashed []map[string]int
 	var teammatesFlashed []map[string]int
@@ -119,6 +121,16 @@ func main() {
 		}
 	})
 
+	p.RegisterEventHandler(func(e events.WeaponFire) {
+		if e.Shooter == nil {
+			return
+		}
+
+		if e.Weapon.Type == demcommon.EqFlash {
+			flashesThrown[len(flashesThrown)-1][e.Shooter.Name] += 1
+		}
+	})
+
 	p.RegisterEventHandler(func(e events.PlayerHurt) {
 		// In faceit these events can sometimes trigger before we
 		// even have a RoundStart event so the damage array will be
@@ -157,6 +169,7 @@ func main() {
 		assists = append(assists, make(map[string]int))
 		headshots = append(headshots, make(map[string]int))
 		damage = append(damage, make(map[string]int))
+		flashesThrown = append(flashesThrown, make(map[string]int))
 		flashAssists = append(flashAssists, make(map[string]int))
 		enemiesFlashed = append(enemiesFlashed, make(map[string]int))
 		teammatesFlashed = append(teammatesFlashed, make(map[string]int))
@@ -188,6 +201,7 @@ func main() {
 	assists = assists[startRound+1:]
 	headshots = headshots[startRound+1:]
 	damage = damage[startRound+1:]
+	flashesThrown = flashesThrown[startRound+1:]
 	flashAssists = flashAssists[startRound+1:]
 	enemiesFlashed = enemiesFlashed[startRound+1:]
 	teammatesFlashed = teammatesFlashed[startRound+1:]
@@ -199,6 +213,7 @@ func main() {
 	totalAssists := arrayMapTotal(&assists)
 	totalHeadshots := arrayMapTotal(&headshots)
 	totalDamage := arrayMapTotal(&damage)
+	totalFlashesThrown := arrayMapTotal(&flashesThrown)
 	totalFlashAssists := arrayMapTotal(&flashAssists)
 	totalEnemiesFlashed := arrayMapTotal(&enemiesFlashed)
 	totalTeammatesFlashed := arrayMapTotal(&teammatesFlashed)
@@ -304,6 +319,7 @@ func main() {
 		K3:               k3,
 		K4:               k4,
 		K5:               k5,
+		FlashesThrown:    totalFlashesThrown,
 		FlashAssists:     totalFlashAssists,
 		EnemiesFlashed:   totalEnemiesFlashed,
 		TeammatesFlashed: totalTeammatesFlashed,

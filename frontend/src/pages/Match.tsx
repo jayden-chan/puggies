@@ -16,6 +16,7 @@ type Data = {
   kast: { [key: string]: number };
   impact: { [key: string]: number };
   hltv: { [key: string]: number };
+  flashesThrown: { [key: string]: number };
   flashAssists: { [key: string]: number };
   enemiesFlashed: { [key: string]: number };
   teammatesFlashed: { [key: string]: number };
@@ -30,9 +31,10 @@ const UtilTable = (props: { players: string[]; title: string }) => (
     <Thead>
       <Tr>
         <Th>{props.title}</Th>
-        <Th>Enemies Flashed</Th>
-        <Th>Teammates Flashed</Th>
-        <Th>Flash Ratio</Th>
+        <Th>Flashes Thrown</Th>
+        <Th>Enemies Blinded</Th>
+        <Th>Teammates Blinded</Th>
+        <Th>Enemies Blind per Flash</Th>
         <Th>Flash Assists</Th>
       </Tr>
     </Thead>
@@ -40,12 +42,16 @@ const UtilTable = (props: { players: string[]; title: string }) => (
       {props.players.map((player) => {
         const ef = data.enemiesFlashed[player] ?? 0;
         const tf = data.teammatesFlashed[player] ?? 0;
+        const numFlashes = data.flashesThrown[player] ?? 0;
         return (
           <Tr>
             <Td>{player}</Td>
+            <Td>{numFlashes}</Td>
             <Td>{ef}</Td>
             <Td>{tf}</Td>
-            <Td>{ef + tf === 0 ? 0 : Math.round((ef / (ef + tf)) * 100)}%</Td>
+            <Td>
+              {numFlashes === 0 ? 0 : Math.round((ef / numFlashes) * 100) / 100}
+            </Td>
             <Td>{data.flashAssists[player] ?? 0}</Td>
           </Tr>
         );
@@ -109,7 +115,7 @@ export const Match = () => (
     justifyContent="center"
     flexDirection="column"
   >
-    <Tabs maxW="80%">
+    <Tabs w="70%">
       <TabList>
         <Tab>Scoreboard</Tab>
         <Tab>Utility</Tab>
@@ -300,6 +306,17 @@ const data: Data = {
     honestpretzels: 1.49,
     jiaedin: 1.27,
     nosidE: 1.39,
+  },
+  flashesThrown: {
+    MrGenericUser: 1,
+    Nana4321: 1,
+    Spacebro: 2,
+    Wild_West: 4,
+    atomic: 7,
+    awesomaave: 1,
+    honestpretzels: 17,
+    jiaedin: 6,
+    nosidE: 12,
   },
   flashAssists: {
     atomic: 1,
