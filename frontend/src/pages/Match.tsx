@@ -16,11 +16,43 @@ type Data = {
   kast: { [key: string]: number };
   impact: { [key: string]: number };
   hltv: { [key: string]: number };
+  flashAssists: { [key: string]: number };
+  enemiesFlashed: { [key: string]: number };
+  teammatesFlashed: { [key: string]: number };
   "2k": { [key: string]: number };
   "3k": { [key: string]: number };
   "4k": { [key: string]: number };
   "5k": { [key: string]: number };
 };
+
+const UtilTable = (props: { players: string[]; title: string }) => (
+  <Table variant="simple">
+    <Thead>
+      <Tr>
+        <Th>{props.title}</Th>
+        <Th>Enemies Flashed</Th>
+        <Th>Teammates Flashed</Th>
+        <Th>Flash Ratio</Th>
+        <Th>Flash Assists</Th>
+      </Tr>
+    </Thead>
+    <Tbody>
+      {props.players.map((player) => {
+        const ef = data.enemiesFlashed[player] ?? 0;
+        const tf = data.teammatesFlashed[player] ?? 0;
+        return (
+          <Tr>
+            <Td>{player}</Td>
+            <Td>{ef}</Td>
+            <Td>{tf}</Td>
+            <Td>{ef + tf === 0 ? 0 : Math.round((ef / (ef + tf)) * 100)}%</Td>
+            <Td>{data.flashAssists[player] ?? 0}</Td>
+          </Tr>
+        );
+      })}
+    </Tbody>
+  </Table>
+);
 
 const ScoreTable = (props: { players: string[]; title: string }) => (
   <Table variant="simple">
@@ -48,20 +80,20 @@ const ScoreTable = (props: { players: string[]; title: string }) => (
         return (
           <Tr>
             <Td>{player}</Td>
-            <Td>{data.kills[player]}</Td>
-            <Td>{data.assists[player]}</Td>
-            <Td>{data.deaths[player]}</Td>
-            <Td>{data.kd[player]}</Td>
-            <Td>{data.kdiff[player]}</Td>
-            <Td>{data.adr[player]}</Td>
-            <Td>{data.headshotPct[player]}%</Td>
-            <Td>{data["2k"][player]}</Td>
-            <Td>{data["3k"][player]}</Td>
-            <Td>{data["4k"][player]}</Td>
-            <Td>{data["5k"][player]}</Td>
-            <Td>{data.hltv[player]}</Td>
-            <Td>{data.impact[player]}</Td>
-            <Td>{data.kast[player]}%</Td>
+            <Td>{data.kills[player] ?? 0}</Td>
+            <Td>{data.assists[player] ?? 0}</Td>
+            <Td>{data.deaths[player] ?? 0}</Td>
+            <Td>{data.kd[player] ?? 0}</Td>
+            <Td>{data.kdiff[player] ?? 0}</Td>
+            <Td>{data.adr[player] ?? 0}</Td>
+            <Td>{data.headshotPct[player] ?? 0}%</Td>
+            <Td>{data["2k"][player] ?? 0}</Td>
+            <Td>{data["3k"][player] ?? 0}</Td>
+            <Td>{data["4k"][player] ?? 0}</Td>
+            <Td>{data["5k"][player] ?? 0}</Td>
+            <Td>{data.hltv[player] ?? 0}</Td>
+            <Td>{data.impact[player] ?? 0}</Td>
+            <Td>{data.kast[player] ?? 0}%</Td>
           </Tr>
         );
       })}
@@ -80,8 +112,7 @@ export const Match = () => (
     <Tabs maxW="80%">
       <TabList>
         <Tab>Scoreboard</Tab>
-        <Tab>Two</Tab>
-        <Tab>Three</Tab>
+        <Tab>Utility</Tab>
       </TabList>
 
       <TabPanels>
@@ -103,10 +134,21 @@ export const Match = () => (
           />
         </TabPanel>
         <TabPanel>
-          <p>two!</p>
-        </TabPanel>
-        <TabPanel>
-          <p>three!</p>
+          <UtilTable
+            title="Team A"
+            players={Object.keys(data.teams)
+              .filter((player) => data.teams[player] === "CT")
+              .sort((a, b) => data.hltv[b] - data.hltv[a])}
+          />
+
+          <Box my={5} />
+
+          <UtilTable
+            title="Team B"
+            players={Object.keys(data.teams)
+              .filter((player) => data.teams[player] === "T")
+              .sort((a, b) => data.hltv[b] - data.hltv[a])}
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -259,6 +301,31 @@ const data: Data = {
     jiaedin: 1.27,
     nosidE: 1.39,
   },
+  flashAssists: {
+    atomic: 1,
+    jiaedin: 1,
+    nosidE: 2,
+  },
+  enemiesFlashed: {
+    MrGenericUser: 3,
+    Spacebro: 3,
+    Wild_West: 4,
+    atomic: 10,
+    honestpretzels: 39,
+    jiaedin: 8,
+    nosidE: 19,
+  },
+  teammatesFlashed: {
+    MrGenericUser: 1,
+    Nana4321: 2,
+    Spacebro: 2,
+    Wild_West: 7,
+    atomic: 7,
+    awesomaave: 2,
+    honestpretzels: 10,
+    jiaedin: 3,
+    nosidE: 17,
+  },
   "2k": {
     BrianD: 1,
     MrGenericUser: 1,
@@ -273,38 +340,13 @@ const data: Data = {
   },
   "3k": {
     BrianD: 2,
-    MrGenericUser: 0,
-    Nana4321: 0,
-    Spacebro: 0,
-    Wild_West: 0,
     atomic: 5,
-    awesomaave: 0,
-    honestpretzels: 0,
     jiaedin: 1,
     nosidE: 1,
   },
   "4k": {
-    BrianD: 0,
-    MrGenericUser: 0,
-    Nana4321: 0,
-    Spacebro: 0,
-    Wild_West: 0,
     atomic: 1,
-    awesomaave: 0,
     honestpretzels: 2,
-    jiaedin: 0,
-    nosidE: 0,
   },
-  "5k": {
-    BrianD: 0,
-    MrGenericUser: 0,
-    Nana4321: 0,
-    Spacebro: 0,
-    Wild_West: 0,
-    atomic: 0,
-    awesomaave: 0,
-    honestpretzels: 0,
-    jiaedin: 0,
-    nosidE: 0,
-  },
+  "5k": {},
 };

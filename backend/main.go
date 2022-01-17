@@ -30,19 +30,22 @@ func arrayMapTotal(a *[]map[string]int) map[string]int {
 }
 
 type Output struct {
-	TotalRounds int                `json:"totalRounds"`
-	Teams       map[string]string  `json:"teams"`
-	Kills       map[string]int     `json:"kills"`
-	Assists     map[string]int     `json:"assists"`
-	Deaths      map[string]int     `json:"deaths"`
-	HeadshotPct map[string]float64 `json:"headshotPct"`
-	Kd          map[string]float64 `json:"kd"`
-	Kdiff       map[string]int     `json:"kdiff"`
-	Kpr         map[string]float64 `json:"kpr"`
-	Adr         map[string]float64 `json:"adr"`
-	Kast        map[string]float64 `json:"kast"`
-	Impact      map[string]float64 `json:"impact"`
-	Hltv        map[string]float64 `json:"hltv"`
+	TotalRounds      int                `json:"totalRounds"`
+	Teams            map[string]string  `json:"teams"`
+	Kills            map[string]int     `json:"kills"`
+	Assists          map[string]int     `json:"assists"`
+	Deaths           map[string]int     `json:"deaths"`
+	HeadshotPct      map[string]float64 `json:"headshotPct"`
+	Kd               map[string]float64 `json:"kd"`
+	Kdiff            map[string]int     `json:"kdiff"`
+	Kpr              map[string]float64 `json:"kpr"`
+	Adr              map[string]float64 `json:"adr"`
+	Kast             map[string]float64 `json:"kast"`
+	Impact           map[string]float64 `json:"impact"`
+	Hltv             map[string]float64 `json:"hltv"`
+	FlashAssists     map[string]int     `json:"flashAssists"`
+	EnemiesFlashed   map[string]int     `json:"enemiesFlashed"`
+	TeammatesFlashed map[string]int     `json:"teammatesFlashed"`
 
 	// Can't name these 2k, 3k etc because identifiers can't start with
 	// numbers in Go
@@ -68,6 +71,9 @@ func main() {
 	var assists []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
+	var flashAssists []map[string]int
+	var enemiesFlashed []map[string]int
+	var teammatesFlashed []map[string]int
 
 	var teams map[string]string
 
@@ -80,8 +86,12 @@ func main() {
 			return
 		}
 
-		if e.Assister != nil && !e.AssistedFlash {
-			assists[len(assists)-1][e.Assister.Name] += 1
+		if e.Assister != nil {
+			if e.AssistedFlash {
+				flashAssists[len(flashAssists)-1][e.Assister.Name] += 1
+			} else {
+				assists[len(assists)-1][e.Assister.Name] += 1
+			}
 		}
 
 		if e.Killer != nil {
@@ -98,6 +108,14 @@ func main() {
 
 		if e.Killer != nil && e.Killer.Name == "" {
 			fmt.Printf("%s <%v> %s\n", e.Killer, e.Weapon, e.Victim)
+		}
+	})
+
+	p.RegisterEventHandler(func(e events.PlayerFlashed) {
+		if e.Attacker.Team == e.Player.Team {
+			teammatesFlashed[len(teammatesFlashed)-1][e.Attacker.Name] += 1
+		} else {
+			enemiesFlashed[len(enemiesFlashed)-1][e.Attacker.Name] += 1
 		}
 	})
 
@@ -139,6 +157,9 @@ func main() {
 		assists = append(assists, make(map[string]int))
 		headshots = append(headshots, make(map[string]int))
 		damage = append(damage, make(map[string]int))
+		flashAssists = append(flashAssists, make(map[string]int))
+		enemiesFlashed = append(enemiesFlashed, make(map[string]int))
+		teammatesFlashed = append(teammatesFlashed, make(map[string]int))
 	})
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
@@ -167,6 +188,9 @@ func main() {
 	assists = assists[startRound+1:]
 	headshots = headshots[startRound+1:]
 	damage = damage[startRound+1:]
+	flashAssists = flashAssists[startRound+1:]
+	enemiesFlashed = enemiesFlashed[startRound+1:]
+	teammatesFlashed = teammatesFlashed[startRound+1:]
 
 	totalRounds := len(kills)
 
@@ -175,6 +199,9 @@ func main() {
 	totalAssists := arrayMapTotal(&assists)
 	totalHeadshots := arrayMapTotal(&headshots)
 	totalDamage := arrayMapTotal(&damage)
+	totalFlashAssists := arrayMapTotal(&flashAssists)
+	totalEnemiesFlashed := arrayMapTotal(&enemiesFlashed)
+	totalTeammatesFlashed := arrayMapTotal(&teammatesFlashed)
 
 	kast := make(map[string]float64)
 	for i := 0; i < totalRounds; i++ {
@@ -202,25 +229,6 @@ func main() {
 	k3 := make(map[string]int)
 	k4 := make(map[string]int)
 	k5 := make(map[string]int)
-
-	for p := range totalKills {
-		kd[p] = 0
-		kdiff[p] = 0
-		kpr[p] = 0
-		headshotPct[p] = 0
-	}
-
-	for p := range totalDeaths {
-		kd[p] = 0
-		kdiff[p] = 0
-		kpr[p] = 0
-		headshotPct[p] = 0
-
-		k2[p] = 0
-		k3[p] = 0
-		k4[p] = 0
-		k5[p] = 0
-	}
 
 	// Compute headshot percentages, K/D & K-D etc
 	for player, numKills := range totalKills {
@@ -279,23 +287,26 @@ func main() {
 	}
 
 	jsonstring, _ := json.MarshalIndent(&Output{
-		TotalRounds: totalRounds,
-		Teams:       teams,
-		Kills:       totalKills,
-		Assists:     totalAssists,
-		Deaths:      totalDeaths,
-		HeadshotPct: headshotPct,
-		Kd:          kd,
-		Kdiff:       kdiff,
-		Kpr:         kpr,
-		Adr:         adr,
-		Kast:        kast,
-		Impact:      impact,
-		Hltv:        hltv,
-		K2:          k2,
-		K3:          k3,
-		K4:          k4,
-		K5:          k5,
+		TotalRounds:      totalRounds,
+		Teams:            teams,
+		Kills:            totalKills,
+		Assists:          totalAssists,
+		Deaths:           totalDeaths,
+		HeadshotPct:      headshotPct,
+		Kd:               kd,
+		Kdiff:            kdiff,
+		Kpr:              kpr,
+		Adr:              adr,
+		Kast:             kast,
+		Impact:           impact,
+		Hltv:             hltv,
+		K2:               k2,
+		K3:               k3,
+		K4:               k4,
+		K5:               k5,
+		FlashAssists:     totalFlashAssists,
+		EnemiesFlashed:   totalEnemiesFlashed,
+		TeammatesFlashed: totalTeammatesFlashed,
 	}, "", "  ")
 
 	fmt.Println(string(jsonstring))
