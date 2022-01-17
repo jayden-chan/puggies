@@ -1,10 +1,30 @@
+import {
+  Box,
+  Flex,
+  Tab,
+  Table,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import React from "react";
-import { Box, Flex, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+
+type Team = "T" | "CT";
+
+type Round = {
+  winner: Team;
+  winReason: number;
+};
 
 type Data = {
   totalRounds: number;
-  teams: { [key: string]: "CT" | "T" };
+  teams: { [key: string]: Team };
   kills: { [key: string]: number };
   assists: { [key: string]: number };
   deaths: { [key: string]: number };
@@ -16,10 +36,16 @@ type Data = {
   kast: { [key: string]: number };
   impact: { [key: string]: number };
   hltv: { [key: string]: number };
-  flashesThrown: { [key: string]: number };
   flashAssists: { [key: string]: number };
   enemiesFlashed: { [key: string]: number };
   teammatesFlashed: { [key: string]: number };
+  rounds: Round[];
+
+  flashesThrown: { [key: string]: number };
+  HEsThrown: { [key: string]: number };
+  molliesThrown: { [key: string]: number };
+  smokesThrown: { [key: string]: number };
+  utilDamage: { [key: string]: number };
   "2k": { [key: string]: number };
   "3k": { [key: string]: number };
   "4k": { [key: string]: number };
@@ -31,11 +57,15 @@ const UtilTable = (props: { players: string[]; title: string }) => (
     <Thead>
       <Tr>
         <Th>{props.title}</Th>
+        <Th>Smokes Thrown</Th>
+        <Th>Molotovs Thrown</Th>
+        <Th>HE Grenades</Th>
         <Th>Flashes Thrown</Th>
         <Th>Enemies Blinded</Th>
         <Th>Teammates Blinded</Th>
         <Th>Enemies Blind per Flash</Th>
         <Th>Flash Assists</Th>
+        <Th>Utility Damage</Th>
       </Tr>
     </Thead>
     <Tbody>
@@ -46,6 +76,9 @@ const UtilTable = (props: { players: string[]; title: string }) => (
         return (
           <Tr>
             <Td>{player}</Td>
+            <Td>{data.smokesThrown[player] ?? 0}</Td>
+            <Td>{data.molliesThrown[player] ?? 0}</Td>
+            <Td>{data.HEsThrown[player] ?? 0}</Td>
             <Td>{numFlashes}</Td>
             <Td>{ef}</Td>
             <Td>{tf}</Td>
@@ -53,6 +86,7 @@ const UtilTable = (props: { players: string[]; title: string }) => (
               {numFlashes === 0 ? 0 : Math.round((ef / numFlashes) * 100) / 100}
             </Td>
             <Td>{data.flashAssists[player] ?? 0}</Td>
+            <Td>{data.utilDamage[player] ?? 0}</Td>
           </Tr>
         );
       })}
@@ -70,6 +104,7 @@ const ScoreTable = (props: { players: string[]; title: string }) => (
         <Th>D</Th>
         <Th>K/D</Th>
         <Th>K-D</Th>
+        <Th>K/R</Th>
         <Th>ADR</Th>
         <Th>HS %</Th>
         <Th>2K</Th>
@@ -91,6 +126,7 @@ const ScoreTable = (props: { players: string[]; title: string }) => (
             <Td>{data.deaths[player] ?? 0}</Td>
             <Td>{data.kd[player] ?? 0}</Td>
             <Td>{data.kdiff[player] ?? 0}</Td>
+            <Td>{data.kpr[player] ?? 0}</Td>
             <Td>{data.adr[player] ?? 0}</Td>
             <Td>{data.headshotPct[player] ?? 0}%</Td>
             <Td>{data["2k"][player] ?? 0}</Td>
@@ -207,8 +243,8 @@ const data: Data = {
     Wild_West: 13,
     atomic: 10,
     awesomaave: 13,
-    honestpretzels: 12,
-    jiaedin: 13,
+    honestpretzels: 11,
+    jiaedin: 12,
     nosidE: 15,
   },
   headshotPct: {
@@ -231,8 +267,8 @@ const data: Data = {
     Wild_West: 0.77,
     atomic: 3.5,
     awesomaave: 0.69,
-    honestpretzels: 1.5,
-    jiaedin: 1.38,
+    honestpretzels: 1.64,
+    jiaedin: 1.5,
     nosidE: 1.27,
   },
   kdiff: {
@@ -243,8 +279,8 @@ const data: Data = {
     Wild_West: -3,
     atomic: 25,
     awesomaave: -4,
-    honestpretzels: 6,
-    jiaedin: 5,
+    honestpretzels: 7,
+    jiaedin: 6,
     nosidE: 4,
   },
   kpr: {
@@ -265,9 +301,9 @@ const data: Data = {
     Nana4321: 73,
     Spacebro: 66,
     Wild_West: 45,
-    atomic: 164,
+    atomic: 162,
     awesomaave: 51,
-    honestpretzels: 124,
+    honestpretzels: 123,
     jiaedin: 91,
     nosidE: 94,
   },
@@ -303,20 +339,17 @@ const data: Data = {
     Wild_West: 0.74,
     atomic: 2.59,
     awesomaave: 0.83,
-    honestpretzels: 1.49,
-    jiaedin: 1.27,
+    honestpretzels: 1.52,
+    jiaedin: 1.3,
     nosidE: 1.39,
   },
-  flashesThrown: {
-    MrGenericUser: 1,
-    Nana4321: 1,
-    Spacebro: 2,
-    Wild_West: 4,
-    atomic: 7,
-    awesomaave: 1,
-    honestpretzels: 17,
-    jiaedin: 6,
-    nosidE: 12,
+  utilDamage: {
+    MrGenericUser: 8,
+    Nana4321: 54,
+    Wild_West: 24,
+    atomic: 45,
+    honestpretzels: 47,
+    nosidE: 32,
   },
   flashAssists: {
     atomic: 1,
@@ -342,6 +375,124 @@ const data: Data = {
     honestpretzels: 10,
     jiaedin: 3,
     nosidE: 17,
+  },
+  rounds: [
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "T",
+      winReason: 1,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "CT",
+      winReason: 7,
+    },
+    {
+      winner: "T",
+      winReason: 1,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "CT",
+      winReason: 7,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "CT",
+      winReason: 7,
+    },
+  ],
+  flashesThrown: {
+    MrGenericUser: 1,
+    Nana4321: 1,
+    Spacebro: 2,
+    Wild_West: 4,
+    atomic: 7,
+    awesomaave: 1,
+    honestpretzels: 17,
+    jiaedin: 6,
+    nosidE: 12,
+  },
+  smokesThrown: {
+    BrianD: 1,
+    Nana4321: 4,
+    Wild_West: 4,
+    atomic: 17,
+    honestpretzels: 12,
+    jiaedin: 4,
+    nosidE: 5,
+  },
+  molliesThrown: {
+    MrGenericUser: 4,
+    Nana4321: 1,
+    Wild_West: 7,
+    atomic: 11,
+    awesomaave: 3,
+    honestpretzels: 12,
+    jiaedin: 3,
+    nosidE: 8,
+  },
+  HEsThrown: {
+    BrianD: 1,
+    MrGenericUser: 2,
+    atomic: 9,
+    honestpretzels: 7,
   },
   "2k": {
     BrianD: 1,

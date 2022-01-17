@@ -43,10 +43,16 @@ type Output struct {
 	Kast             map[string]float64 `json:"kast"`
 	Impact           map[string]float64 `json:"impact"`
 	Hltv             map[string]float64 `json:"hltv"`
-	FlashesThrown    map[string]int     `json:"flashesThrown"`
+	UtilDamage       map[string]int     `json:"utilDamage"`
 	FlashAssists     map[string]int     `json:"flashAssists"`
 	EnemiesFlashed   map[string]int     `json:"enemiesFlashed"`
 	TeammatesFlashed map[string]int     `json:"teammatesFlashed"`
+	Rounds           []Round            `json:"rounds"`
+
+	FlashesThrown map[string]int `json:"flashesThrown"`
+	SmokesThrown  map[string]int `json:"smokesThrown"`
+	MolliesThrown map[string]int `json:"molliesThrown"`
+	HEsThrown     map[string]int `json:"HEsThrown"`
 
 	// Can't name these 2k, 3k etc because identifiers can't start with
 	// numbers in Go
@@ -54,6 +60,11 @@ type Output struct {
 	K3 map[string]int `json:"3k"`
 	K4 map[string]int `json:"4k"`
 	K5 map[string]int `json:"5k"`
+}
+
+type Round struct {
+	Winner string `json:"winner"`
+	Reason int    `json:"winReason"`
 }
 
 func main() {
@@ -72,10 +83,17 @@ func main() {
 	var assists []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
-	var flashesThrown []map[string]int
 	var flashAssists []map[string]int
 	var enemiesFlashed []map[string]int
 	var teammatesFlashed []map[string]int
+	var utilDamage []map[string]int
+
+	var flashesThrown []map[string]int
+	var HEsThrown []map[string]int
+	var molliesThrown []map[string]int
+	var smokesThrown []map[string]int
+
+	var rounds []Round
 
 	var teams map[string]string
 
@@ -102,15 +120,31 @@ func main() {
 			if e.IsHeadshot {
 				headshots[len(headshots)-1][e.Killer.Name] += 1
 			}
-		}
 
-		if e.Victim != nil {
-			deaths[len(deaths)-1][e.Victim.Name] += 1
+			if e.Victim != nil {
+				deaths[len(deaths)-1][e.Victim.Name] += 1
+			}
 		}
 
 		if e.Killer != nil && e.Killer.Name == "" {
 			fmt.Printf("%s <%v> %s\n", e.Killer, e.Weapon, e.Victim)
 		}
+	})
+
+	p.RegisterEventHandler(func(e events.RoundEnd) {
+		winner := ""
+
+		switch e.Winner {
+		case demcommon.TeamCounterTerrorists:
+			winner = "CT"
+		case demcommon.TeamTerrorists:
+			winner = "T"
+		}
+
+		rounds = append(rounds, Round{
+			Winner: winner,
+			Reason: int(e.Reason),
+		})
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerFlashed) {
@@ -129,6 +163,18 @@ func main() {
 		if e.Weapon.Type == demcommon.EqFlash {
 			flashesThrown[len(flashesThrown)-1][e.Shooter.Name] += 1
 		}
+
+		if e.Weapon.Type == demcommon.EqHE {
+			HEsThrown[len(HEsThrown)-1][e.Shooter.Name] += 1
+		}
+
+		if e.Weapon.Type == demcommon.EqMolotov || e.Weapon.Type == demcommon.EqIncendiary {
+			molliesThrown[len(molliesThrown)-1][e.Shooter.Name] += 1
+		}
+
+		if e.Weapon.Type == demcommon.EqSmoke {
+			smokesThrown[len(smokesThrown)-1][e.Shooter.Name] += 1
+		}
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerHurt) {
@@ -139,8 +185,12 @@ func main() {
 			return
 		}
 
-		if e.Attacker != nil && e.Player != nil {
+		if e.Attacker != nil && e.Player != nil && e.Attacker.Team != e.Player.Team {
 			damage[len(damage)-1][e.Attacker.Name] += e.HealthDamageTaken
+
+			if e.Weapon.Type == demcommon.EqHE || e.Weapon.Type == demcommon.EqMolotov || e.Weapon.Type == demcommon.EqIncendiary {
+				utilDamage[len(utilDamage)-1][e.Attacker.Name] += e.HealthDamageTaken
+			}
 		}
 	})
 
@@ -169,10 +219,15 @@ func main() {
 		assists = append(assists, make(map[string]int))
 		headshots = append(headshots, make(map[string]int))
 		damage = append(damage, make(map[string]int))
-		flashesThrown = append(flashesThrown, make(map[string]int))
 		flashAssists = append(flashAssists, make(map[string]int))
 		enemiesFlashed = append(enemiesFlashed, make(map[string]int))
 		teammatesFlashed = append(teammatesFlashed, make(map[string]int))
+		utilDamage = append(utilDamage, make(map[string]int))
+
+		flashesThrown = append(flashesThrown, make(map[string]int))
+		HEsThrown = append(HEsThrown, make(map[string]int))
+		molliesThrown = append(molliesThrown, make(map[string]int))
+		smokesThrown = append(smokesThrown, make(map[string]int))
 	})
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
@@ -197,26 +252,37 @@ func main() {
 	}
 
 	kills = kills[startRound+1:]
-	deaths = deaths[startRound+1:]
-	assists = assists[startRound+1:]
-	headshots = headshots[startRound+1:]
-	damage = damage[startRound+1:]
-	flashesThrown = flashesThrown[startRound+1:]
-	flashAssists = flashAssists[startRound+1:]
-	enemiesFlashed = enemiesFlashed[startRound+1:]
-	teammatesFlashed = teammatesFlashed[startRound+1:]
-
 	totalRounds := len(kills)
+
+	rounds = rounds[len(rounds)-totalRounds:]
+	deaths = deaths[len(deaths)-totalRounds:]
+	assists = assists[len(assists)-totalRounds:]
+	headshots = headshots[len(headshots)-totalRounds:]
+	damage = damage[len(damage)-totalRounds:]
+	flashAssists = flashAssists[len(flashAssists)-totalRounds:]
+	enemiesFlashed = enemiesFlashed[len(enemiesFlashed)-totalRounds:]
+	teammatesFlashed = teammatesFlashed[len(teammatesFlashed)-totalRounds:]
+	utilDamage = utilDamage[len(utilDamage)-totalRounds:]
+
+	flashesThrown = flashesThrown[len(flashesThrown)-totalRounds:]
+	HEsThrown = HEsThrown[len(HEsThrown)-totalRounds:]
+	molliesThrown = molliesThrown[len(molliesThrown)-totalRounds:]
+	smokesThrown = smokesThrown[len(smokesThrown)-totalRounds:]
 
 	totalKills := arrayMapTotal(&kills)
 	totalDeaths := arrayMapTotal(&deaths)
 	totalAssists := arrayMapTotal(&assists)
 	totalHeadshots := arrayMapTotal(&headshots)
 	totalDamage := arrayMapTotal(&damage)
-	totalFlashesThrown := arrayMapTotal(&flashesThrown)
 	totalFlashAssists := arrayMapTotal(&flashAssists)
 	totalEnemiesFlashed := arrayMapTotal(&enemiesFlashed)
 	totalTeammatesFlashed := arrayMapTotal(&teammatesFlashed)
+	totalUtilDamage := arrayMapTotal(&utilDamage)
+
+	totalFlashesThrown := arrayMapTotal(&flashesThrown)
+	totalHEsThrown := arrayMapTotal(&HEsThrown)
+	totalMolliesThrown := arrayMapTotal(&molliesThrown)
+	totalSmokesThrown := arrayMapTotal(&smokesThrown)
 
 	kast := make(map[string]float64)
 	for i := 0; i < totalRounds; i++ {
@@ -301,6 +367,7 @@ func main() {
 		}
 	}
 
+	fmt.Fprintln(os.Stderr, len(rounds))
 	jsonstring, _ := json.MarshalIndent(&Output{
 		TotalRounds:      totalRounds,
 		Teams:            teams,
@@ -319,10 +386,16 @@ func main() {
 		K3:               k3,
 		K4:               k4,
 		K5:               k5,
-		FlashesThrown:    totalFlashesThrown,
+		UtilDamage:       totalUtilDamage,
 		FlashAssists:     totalFlashAssists,
 		EnemiesFlashed:   totalEnemiesFlashed,
 		TeammatesFlashed: totalTeammatesFlashed,
+		Rounds:           rounds,
+
+		FlashesThrown: totalFlashesThrown,
+		SmokesThrown:  totalSmokesThrown,
+		MolliesThrown: totalMolliesThrown,
+		HEsThrown:     totalHEsThrown,
 	}, "", "  ")
 
 	fmt.Println(string(jsonstring))
