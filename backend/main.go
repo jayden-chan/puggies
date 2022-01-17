@@ -7,8 +7,8 @@ import (
 	"os"
 
 	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
-	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 	demcommon "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
+	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
 
 func mapValTotal(m *map[string]int) int {
@@ -30,16 +30,19 @@ func arrayMapTotal(a *[]map[string]int) map[string]int {
 }
 
 type Output struct {
-	TotalRounds int            `json:"totalRounds"`
-	Teams       map[string]string `json:"teams"`
-	Kills       map[string]int `json:"kills"`
-	Assists     map[string]int `json:"assists"`
-	Deaths      map[string]int `json:"deaths"`
+	TotalRounds int                `json:"totalRounds"`
+	Teams       map[string]string  `json:"teams"`
+	Kills       map[string]int     `json:"kills"`
+	Assists     map[string]int     `json:"assists"`
+	Deaths      map[string]int     `json:"deaths"`
 	HeadshotPct map[string]float64 `json:"headshotPct"`
 	Kd          map[string]float64 `json:"kd"`
-	Kdiff       map[string]int `json:"kdiff"`
+	Kdiff       map[string]int     `json:"kdiff"`
 	Kpr         map[string]float64 `json:"kpr"`
 	Adr         map[string]float64 `json:"adr"`
+	Kast        map[string]float64 `json:"kast"`
+	Impact      map[string]float64 `json:"impact"`
+	Hltv        map[string]float64 `json:"hltv"`
 }
 
 func main() {
@@ -58,6 +61,7 @@ func main() {
 	var assists []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
+
 	var teams map[string]string
 
 	// Register handler on kill events
@@ -67,15 +71,6 @@ func main() {
 		// empty
 		if len(kills) == 0 {
 			return
-		}
-
-		var hs string
-		if e.IsHeadshot {
-			hs = " (HS)"
-		}
-		var wallBang string
-		if e.PenetratedObjects > 0 {
-			wallBang = " (WB)"
 		}
 
 		var assister string
@@ -99,9 +94,8 @@ func main() {
 			deaths[len(deaths)-1][e.Victim.Name] += 1
 		}
 
-		// fmt.Printf("%s <%v%s%s%s> %s\n", e.Killer, e.Weapon, assister, hs, wallBang, e.Victim)
 		if e.Killer != nil && e.Killer.Name == "" {
-			fmt.Printf("%s <%v%s%s%s> %s\n", e.Killer, e.Weapon, assister, hs, wallBang, e.Victim)
+			fmt.Printf("%s <%v%s> %s\n", e.Killer, e.Weapon, assister, e.Victim)
 		}
 	})
 
@@ -123,26 +117,14 @@ func main() {
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerTeamChange) {
-		if teams == nil {
-			fmt.Println("teams is nil")
+		if teams == nil || e.IsBot {
 			return
 		}
 
-		if e.IsBot {
-			return
-		}
-
-		bot := ""
-		if e.IsBot {
-			bot = "BOT "
-		}
-
-		switch (e.NewTeam) {
+		switch e.NewTeam {
 		case demcommon.TeamCounterTerrorists:
-			fmt.Printf("%s%s joined CT\n", bot, e.Player.Name)
 			teams[e.Player.Name] = "CT"
 		case demcommon.TeamTerrorists:
-			fmt.Printf("%s%s joined T\n", bot, e.Player.Name)
 			teams[e.Player.Name] = "T"
 		}
 
@@ -196,6 +178,20 @@ func main() {
 	totalHeadshots := arrayMapTotal(&headshots)
 	totalDamage := arrayMapTotal(&damage)
 
+	kast := make(map[string]float64)
+	for i := 0; i < totalRounds; i++ {
+		for p := range teams {
+			// KAS -- we won't do T (trades) for now because that's too complicated
+			if kills[i][p] != 0 || assists[i][p] != 0 || deaths[i][p] == 0 {
+				kast[p] += 1 / float64(totalRounds)
+			}
+		}
+	}
+
+	for k, v := range kast {
+		kast[k] = math.Round(v * 100)
+	}
+
 	// Initialze these maps with all players from kills + deaths
 	// in case anyone got 0 kills or 0 deaths (lol)
 	kd := make(map[string]float64)
@@ -243,30 +239,36 @@ func main() {
 		adr[player] = math.Round((float64(damage) / float64(totalRounds)))
 	}
 
-	fmt.Println()
-	fmt.Println("Total Rounds", totalRounds)
-	fmt.Println("Kills", totalKills)
-	fmt.Println("Assists", totalAssists)
-	fmt.Println("Deaths", totalDeaths)
-	fmt.Println("Headshot PCT", headshotPct)
-	fmt.Println("K/D", kd)
-	fmt.Println("K-D", kdiff)
-	fmt.Println("KPR", kpr)
-	fmt.Println("Damage", totalDamage)
-	fmt.Println("ADR", adr)
-	fmt.Println()
+	impact := make(map[string]float64)
+	for p := range teams {
+		assistsPerRound := (float64(totalAssists[p]) / float64(totalRounds))
 
-	jsonstring, _ := json.MarshalIndent(&Output {
+		// https://flashed.gg/posts/reverse-engineering-hltv-rating/
+		impact[p] = math.Round((2.13*kpr[p]+0.42*assistsPerRound-0.41)*100) / 100
+	}
+
+	hltv := make(map[string]float64)
+	for p := range teams {
+		dpr := float64(totalDeaths[p]) / float64(totalRounds)
+
+		// https://flashed.gg/posts/reverse-engineering-hltv-rating/
+		hltv[p] = math.Round((0.0073*kast[p]+0.3591*kpr[p]+-0.5329*dpr+0.2372*impact[p]+0.0032*adr[p]+0.1587)*100) / 100
+	}
+
+	jsonstring, _ := json.MarshalIndent(&Output{
 		TotalRounds: totalRounds,
-		Teams: teams,
-		Kills: totalKills,
-		Assists: totalAssists,
-		Deaths: totalDeaths,
+		Teams:       teams,
+		Kills:       totalKills,
+		Assists:     totalAssists,
+		Deaths:      totalDeaths,
 		HeadshotPct: headshotPct,
-		Kd: kd,
-		Kdiff: kdiff,
-		Kpr: kpr,
-		Adr: adr,
+		Kd:          kd,
+		Kdiff:       kdiff,
+		Kpr:         kpr,
+		Adr:         adr,
+		Kast:        kast,
+		Impact:      impact,
+		Hltv:        hltv,
 	}, "", "  ")
 
 	fmt.Println(string(jsonstring))
