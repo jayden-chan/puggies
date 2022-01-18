@@ -173,16 +173,16 @@ export const Match = (props: { data: Data }) => {
     data.rounds.slice(0, 15).filter((r) => r.winner === "CT").length +
     data.rounds.slice(15).filter((r) => r.winner === "T").length;
 
-  const teamA = Object.keys(data.teams)
+  const teamAPlayers = Object.keys(data.teams)
     .filter((player) => data.teams[player] === "CT")
     .sort((a, b) => data.hltv[b] - data.hltv[a]);
 
-  const teamB = Object.keys(data.teams)
+  const teamBPlayers = Object.keys(data.teams)
     .filter((player) => data.teams[player] === "T")
     .sort((a, b) => data.hltv[b] - data.hltv[a]);
 
-  const teamATitle = `team_${teamA[0]}`;
-  const teamBTitle = `team_${teamB[0]}`;
+  const teamATitle = `team_${teamAPlayers[0]}`;
+  const teamBTitle = `team_${teamBPlayers[0]}`;
 
   return (
     <Flex
@@ -223,14 +223,14 @@ export const Match = (props: { data: Data }) => {
 
         <TabPanels>
           <TabPanel>
-            <ScoreTable title={teamATitle} data={data} players={teamA} />
+            <ScoreTable title={teamATitle} data={data} players={teamAPlayers} />
             <Box my={5} />
-            <ScoreTable title={teamBTitle} data={data} players={teamB} />
+            <ScoreTable title={teamBTitle} data={data} players={teamBPlayers} />
           </TabPanel>
           <TabPanel>
-            <UtilTable title={teamATitle} data={data} players={teamA} />
+            <UtilTable title={teamATitle} data={data} players={teamAPlayers} />
             <Box my={5} />
-            <UtilTable title={teamBTitle} data={data} players={teamB} />
+            <UtilTable title={teamBTitle} data={data} players={teamBPlayers} />
           </TabPanel>
         </TabPanels>
       </Tabs>
