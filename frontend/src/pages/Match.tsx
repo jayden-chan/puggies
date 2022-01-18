@@ -33,6 +33,7 @@ export type Data = {
   kills: { [key: string]: number };
   assists: { [key: string]: number };
   deaths: { [key: string]: number };
+  trades: { [key: string]: number };
   headshotPct: { [key: string]: number };
   kd: { [key: string]: number };
   kdiff: { [key: string]: number };
@@ -113,6 +114,7 @@ const ScoreTable = (props: {
         <Th>K</Th>
         <Th>A</Th>
         <Th>D</Th>
+        <Th>T</Th>
         <Th>K/D</Th>
         <Th>K-D</Th>
         <Th>K/R</Th>
@@ -134,6 +136,7 @@ const ScoreTable = (props: {
           <Td>{props.data.kills[player] ?? 0}</Td>
           <Td>{props.data.assists[player] ?? 0}</Td>
           <Td>{props.data.deaths[player] ?? 0}</Td>
+          <Td>{props.data.trades[player] ?? 0}</Td>
           <Td>{props.data.kd[player] ?? 0}</Td>
           <Td>{props.data.kdiff[player] ?? 0}</Td>
           <Td>{props.data.kpr[player] ?? 0}</Td>
