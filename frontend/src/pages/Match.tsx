@@ -15,10 +15,14 @@ import {
   Th,
   Thead,
   Tr,
+  Divider,
 } from "@chakra-ui/react";
 import { parse, format } from "date-fns";
 import React from "react";
 import { useParams } from "react-router-dom";
+
+const T_YELLOW = "#ead18a";
+const CT_BLUE = "#b5d4ee";
 
 export type Team = "T" | "CT";
 
@@ -59,7 +63,7 @@ export type Data = {
 };
 
 const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
-  <Table variant="simple">
+  <Table variant="simple" size="sm">
     <Thead>
       <Tr>
         <Th>{props.title}</Th>
@@ -106,7 +110,7 @@ const ScoreTable = (props: {
   players: string[];
   title: string;
 }) => (
-  <Table variant="simple">
+  <Table variant="simple" size="sm">
     <Thead>
       <Tr>
         <Th>{props.title}</Th>
@@ -151,6 +155,96 @@ const ScoreTable = (props: {
     </Tbody>
   </Table>
 );
+
+const RoundsVisualization = (props: { data: Data }) => {
+  const { data } = props;
+  const ScoreNumber = (props: { rounds: number[]; side: Team }) => (
+    <Heading textColor={props.side === "T" ? T_YELLOW : CT_BLUE} fontSize="3xl">
+      {
+        data.rounds
+          .slice(...props.rounds)
+          .filter((r) => r.winner === props.side).length
+      }
+    </Heading>
+  );
+
+  return (
+    <Flex my={5}>
+      <Flex mr={5}>
+        <Flex
+          flexDirection="column"
+          mr={5}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <ScoreNumber side="T" rounds={[0, 15]} />
+          <Text>1st</Text>
+          <ScoreNumber side="CT" rounds={[0, 15]} />
+        </Flex>
+
+        <Flex
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Heading textColor={CT_BLUE} fontSize="3xl">
+            {data.rounds.slice(15).filter((r) => r.winner === "CT").length}
+          </Heading>
+          <Text>2nd</Text>
+          <Heading textColor={T_YELLOW} fontSize="3xl">
+            {data.rounds.slice(15).filter((r) => r.winner === "T").length}
+          </Heading>
+        </Flex>
+      </Flex>
+
+      <Flex alignItems="center">
+        {data.rounds.slice(0, 15).map((r) => {
+          return (
+            <Flex flexDirection="column" h="70%" mx={0.5}>
+              <Box
+                visibility={r.winner === "T" ? "initial" : "hidden"}
+                h="50%"
+                backgroundColor={T_YELLOW}
+              >
+                AAA
+              </Box>
+              <Box
+                visibility={r.winner === "CT" ? "initial" : "hidden"}
+                h="50%"
+                backgroundColor={CT_BLUE}
+              >
+                AAA
+              </Box>
+            </Flex>
+          );
+        })}
+
+        <Divider orientation="vertical" mx={5} />
+
+        {data.rounds.slice(15).map((r) => {
+          return (
+            <Flex flexDirection="column" h="70%" mx={0.5}>
+              <Box
+                visibility={r.winner === "CT" ? "initial" : "hidden"}
+                h="50%"
+                backgroundColor={CT_BLUE}
+              >
+                AAA
+              </Box>
+              <Box
+                visibility={r.winner === "T" ? "initial" : "hidden"}
+                h="50%"
+                backgroundColor={T_YELLOW}
+              >
+                AAA
+              </Box>
+            </Flex>
+          );
+        })}
+      </Flex>
+    </Flex>
+  );
+};
 
 export const Match = (props: { data: Data }) => {
   const { data } = props;
@@ -224,7 +318,7 @@ export const Match = (props: { data: Data }) => {
         <TabPanels>
           <TabPanel>
             <ScoreTable title={teamATitle} data={data} players={teamAPlayers} />
-            <Box my={5} />
+            <RoundsVisualization data={data} />
             <ScoreTable title={teamBTitle} data={data} players={teamBPlayers} />
           </TabPanel>
           <TabPanel>
