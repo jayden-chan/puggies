@@ -35,6 +35,7 @@ type Output struct {
 	Kills            map[string]int     `json:"kills"`
 	Assists          map[string]int     `json:"assists"`
 	Deaths           map[string]int     `json:"deaths"`
+	Trades           map[string]int     `json:"trades"`
 	HeadshotPct      map[string]float64 `json:"headshotPct"`
 	Kd               map[string]float64 `json:"kd"`
 	Kdiff            map[string]int     `json:"kdiff"`
@@ -67,9 +68,14 @@ type Round struct {
 	Reason int    `json:"winReason"`
 }
 
+type Death struct {
+	KilledBy    string  `json:"killedBy"`
+	TimeOfDeath float64 `json:timeOfDeath`
+}
+
 func main() {
 	// f, err := os.Open("/home/jayden/Downloads/1-349fcf3c-681b-47e6-a134-47c8e27a25d9-1-1.dem")
-	f, err := os.Open("/home/jayden/Downloads/pug_de_nuke_2022-01-16_05.dem")
+	f, err := os.Open("C:/Users/Tom/Downloads/pug_de_nuke_2022-01-16_05.dem")
 	if err != nil {
 		panic(err)
 	}
@@ -81,6 +87,7 @@ func main() {
 	var kills []map[string]int
 	var deaths []map[string]int
 	var assists []map[string]int
+	var trades []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
 	var flashAssists []map[string]int
@@ -96,6 +103,7 @@ func main() {
 	var rounds []Round
 
 	var teams map[string]string
+	deathTimes := make(map[string]Death)
 
 	// Register handler on kill events
 	p.RegisterEventHandler(func(e events.Kill) {
@@ -123,11 +131,25 @@ func main() {
 
 			if e.Victim != nil {
 				deaths[len(deaths)-1][e.Victim.Name] += 1
+				deathTimes[e.Victim.Name] = Death{
+					KilledBy:    e.Killer.Name,
+					TimeOfDeath: p.CurrentTime().Seconds(),
+				}
+				for player := range deaths[len(deaths)-1] {
+					if deathTimes[player].KilledBy == e.Victim.Name {
+						// Using 5 seconds as the trade window for now
+						if p.CurrentTime().Seconds()-deathTimes[player].TimeOfDeath <= 5 {
+							trades[len(trades)-1][player] += 1
+						}
+
+					}
+				}
 			}
+
 		}
 
 		if e.Killer != nil && e.Killer.Name == "" {
-			fmt.Printf("%s <%v> %s\n", e.Killer, e.Weapon, e.Victim)
+			fmt.Printf("%s <%v> %s %d\n", e.Killer, e.Weapon, e.Victim, p.CurrentTime().Seconds())
 		}
 	})
 
@@ -217,6 +239,7 @@ func main() {
 		kills = append(kills, make(map[string]int))
 		deaths = append(deaths, make(map[string]int))
 		assists = append(assists, make(map[string]int))
+		trades = append(trades, make(map[string]int))
 		headshots = append(headshots, make(map[string]int))
 		damage = append(damage, make(map[string]int))
 		flashAssists = append(flashAssists, make(map[string]int))
@@ -256,6 +279,7 @@ func main() {
 
 	rounds = rounds[len(rounds)-totalRounds:]
 	deaths = deaths[len(deaths)-totalRounds:]
+	trades = trades[len(trades)-totalRounds:]
 	assists = assists[len(assists)-totalRounds:]
 	headshots = headshots[len(headshots)-totalRounds:]
 	damage = damage[len(damage)-totalRounds:]
@@ -272,6 +296,7 @@ func main() {
 	totalKills := arrayMapTotal(&kills)
 	totalDeaths := arrayMapTotal(&deaths)
 	totalAssists := arrayMapTotal(&assists)
+	totalTrades := arrayMapTotal(&trades)
 	totalHeadshots := arrayMapTotal(&headshots)
 	totalDamage := arrayMapTotal(&damage)
 	totalFlashAssists := arrayMapTotal(&flashAssists)
@@ -287,8 +312,8 @@ func main() {
 	kast := make(map[string]float64)
 	for i := 0; i < totalRounds; i++ {
 		for p := range teams {
-			// KAS -- we won't do T (trades) for now because that's too complicated
-			if kills[i][p] != 0 || assists[i][p] != 0 || deaths[i][p] == 0 {
+			// KAST
+			if kills[i][p] != 0 || assists[i][p] != 0 || deaths[i][p] == 0 || trades[i][p] != 0 {
 				kast[p] += 1 / float64(totalRounds)
 			}
 		}
@@ -374,6 +399,7 @@ func main() {
 		Kills:            totalKills,
 		Assists:          totalAssists,
 		Deaths:           totalDeaths,
+		Trades:           totalTrades,
 		HeadshotPct:      headshotPct,
 		Kd:               kd,
 		Kdiff:            kdiff,
