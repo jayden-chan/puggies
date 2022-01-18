@@ -95,7 +95,7 @@ const headToHeadColor = (diff: number): string => {
   }
 };
 
-const HeadToHead = (props: {
+const HeadToHeadTable = (props: {
   headToHead: HeadToHead;
   teams: [string[], string[]];
 }) => {
@@ -135,21 +135,23 @@ const HeadToHead = (props: {
                       position="absolute"
                       justifyContent="center"
                       alignItems="center"
-                      bottom="15px"
-                      left="18px"
+                      bottom="12px"
+                      left="16px"
                       borderRadius="30px"
                       w="40px"
                       h="40px"
                       backgroundColor={headToHeadColor(-diff)}
+                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
                     >
                       {rowKills}
                     </Flex>
                     <Flex
+                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
                       position="absolute"
                       justifyContent="center"
                       alignItems="center"
-                      top="15px"
-                      right="18px"
+                      top="12px"
+                      right="16px"
                       borderRadius="30px"
                       w="40px"
                       h="40px"
@@ -168,7 +170,7 @@ const HeadToHead = (props: {
   );
 };
 
-const RoundIcon = (props: { round: Round; topTeam: Team }) => {
+const RoundResultIcon = (props: { round: Round; topTeam: Team }) => {
   let icon;
   switch (props.round.winReason) {
     case 1:
@@ -183,10 +185,11 @@ const RoundIcon = (props: { round: Round; topTeam: Team }) => {
   }
 
   return (
-    <Flex flexDirection="column" h="70%" mx={0.5}>
+    <Flex flexDirection="column" h="67%" mx="2px">
       <Flex
         visibility={props.round.winner === props.topTeam ? "initial" : "hidden"}
         h="50%"
+        w="min"
         alignItems="center"
         justifyContent="center"
         backgroundColor={props.topTeam === "T" ? T_YELLOW : CT_BLUE}
@@ -198,6 +201,7 @@ const RoundIcon = (props: { round: Round; topTeam: Team }) => {
       <Flex
         visibility={props.round.winner !== props.topTeam ? "initial" : "hidden"}
         h="50%"
+        w="min"
         alignItems="center"
         justifyContent="center"
         backgroundColor={props.topTeam !== "T" ? T_YELLOW : CT_BLUE}
@@ -349,13 +353,13 @@ const RoundsVisualization = (props: { data: Data }) => {
 
       <Flex alignItems="center">
         {data.rounds.slice(0, 15).map((r) => (
-          <RoundIcon round={r} topTeam="T" />
+          <RoundResultIcon round={r} topTeam="T" />
         ))}
 
         <Divider orientation="vertical" mx={5} />
 
         {data.rounds.slice(15).map((r) => (
-          <RoundIcon round={r} topTeam="CT" />
+          <RoundResultIcon round={r} topTeam="CT" />
         ))}
       </Flex>
     </Flex>
@@ -439,7 +443,7 @@ export const Match = (props: { data: Data }) => {
           </TabPanel>
           <TabPanel>
             <Flex alignItems="center" justifyContent="center">
-              <HeadToHead
+              <HeadToHeadTable
                 teams={[teamAPlayers, teamBPlayers]}
                 headToHead={data.headToHead}
               />
