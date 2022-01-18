@@ -16,10 +16,13 @@ import {
   Thead,
   Tr,
   Divider,
+  Spacer,
 } from "@chakra-ui/react";
 import { parse, format } from "date-fns";
 import React from "react";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 
 const T_YELLOW = "#ead18a";
 const CT_BLUE = "#b5d4ee";
@@ -61,6 +64,48 @@ export type Data = {
   "3k": { [key: string]: number };
   "4k": { [key: string]: number };
   "5k": { [key: string]: number };
+};
+
+const RoundIcon = (props: { round: Round; topTeam: Team }) => {
+  let icon;
+  switch (props.round.winReason) {
+    case 1:
+      icon = faBomb;
+      break;
+    case 7:
+      icon = faCut;
+      break;
+    default:
+      icon = faSkull;
+      break;
+  }
+
+  return (
+    <Flex flexDirection="column" h="70%" mx={0.5}>
+      <Flex
+        visibility={props.round.winner === props.topTeam ? "initial" : "hidden"}
+        h="50%"
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor={props.topTeam === "T" ? T_YELLOW : CT_BLUE}
+        borderRadius={5}
+        px={2}
+      >
+        <FontAwesomeIcon icon={icon} color="black" />
+      </Flex>
+      <Flex
+        visibility={props.round.winner !== props.topTeam ? "initial" : "hidden"}
+        h="50%"
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor={props.topTeam !== "T" ? T_YELLOW : CT_BLUE}
+        borderRadius={5}
+        px={2}
+      >
+        <FontAwesomeIcon icon={icon} color="black" />
+      </Flex>
+    </Flex>
+  );
 };
 
 const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
@@ -173,7 +218,7 @@ const RoundsVisualization = (props: { data: Data }) => {
 
   return (
     <Flex my={5}>
-      <Flex mr={5}>
+      <Flex mr={10}>
         <Flex
           flexDirection="column"
           mr={5}
@@ -201,49 +246,15 @@ const RoundsVisualization = (props: { data: Data }) => {
       </Flex>
 
       <Flex alignItems="center">
-        {data.rounds.slice(0, 15).map((r) => {
-          return (
-            <Flex flexDirection="column" h="70%" mx={0.5}>
-              <Box
-                visibility={r.winner === "T" ? "initial" : "hidden"}
-                h="50%"
-                backgroundColor={T_YELLOW}
-              >
-                AAA
-              </Box>
-              <Box
-                visibility={r.winner === "CT" ? "initial" : "hidden"}
-                h="50%"
-                backgroundColor={CT_BLUE}
-              >
-                AAA
-              </Box>
-            </Flex>
-          );
-        })}
+        {data.rounds.slice(0, 15).map((r) => (
+          <RoundIcon round={r} topTeam="T" />
+        ))}
 
         <Divider orientation="vertical" mx={5} />
 
-        {data.rounds.slice(15).map((r) => {
-          return (
-            <Flex flexDirection="column" h="70%" mx={0.5}>
-              <Box
-                visibility={r.winner === "CT" ? "initial" : "hidden"}
-                h="50%"
-                backgroundColor={CT_BLUE}
-              >
-                AAA
-              </Box>
-              <Box
-                visibility={r.winner === "T" ? "initial" : "hidden"}
-                h="50%"
-                backgroundColor={T_YELLOW}
-              >
-                AAA
-              </Box>
-            </Flex>
-          );
-        })}
+        {data.rounds.slice(15).map((r) => (
+          <RoundIcon round={r} topTeam="CT" />
+        ))}
       </Flex>
     </Flex>
   );
