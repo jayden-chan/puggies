@@ -8,7 +8,7 @@ export const App = () => (
   <ChakraProvider theme={theme}>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="match" element={<Match data={data} />} />
+      <Route path="/match/:id" element={<Match data={data} />} />
     </Routes>
   </ChakraProvider>
 );

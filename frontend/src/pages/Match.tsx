@@ -16,7 +16,9 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { parse, format } from "date-fns";
 import React from "react";
+import { useParams } from "react-router-dom";
 
 export type Team = "T" | "CT";
 
@@ -61,10 +63,10 @@ const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
     <Thead>
       <Tr>
         <Th>{props.title}</Th>
-        <Th>Smokes Thrown</Th>
-        <Th>Molotovs Thrown</Th>
-        <Th>HE Grenades</Th>
-        <Th>Flashes Thrown</Th>
+        <Th>Smokes</Th>
+        <Th>Molotovs</Th>
+        <Th>HE</Th>
+        <Th>Flashes</Th>
         <Th>Enemies Blinded</Th>
         <Th>Teammates Blinded</Th>
         <Th>Enemies Blind per Flash</Th>
@@ -152,6 +154,17 @@ const ScoreTable = (props: {
 
 export const Match = (props: { data: Data }) => {
   const { data } = props;
+  const { id } = useParams();
+
+  if (id === undefined) {
+    return <></>;
+  }
+
+  const [, map, date] = id.match(/^pug_(.*?)_(\d\d\d\d-\d\d-\d\d)/) ?? [];
+  const dateString = format(
+    parse(date, "yyyy-MM-dd", new Date()),
+    "EEE MMM dd yyyy"
+  );
 
   const teamARounds =
     data.rounds.slice(0, 15).filter((r) => r.winner === "T").length +
@@ -180,9 +193,9 @@ export const Match = (props: { data: Data }) => {
       flexDirection="column"
     >
       <Box w="80%" mb={3}>
-        <Heading>pug on de_nuke </Heading>
+        <Heading>pug on {map} </Heading>
         <Heading fontSize="lg" as="h2">
-          Sat Jan 15 2021{" "}
+          {dateString}{" "}
           <Link href="https://drive.google.com/file/d/1nwOuFzF42yhw4FXLNxpa2V3_hNFsZvrP/view">
             {/* FIXME */}
             (demo link)
@@ -195,7 +208,7 @@ export const Match = (props: { data: Data }) => {
           {teamATitle}
         </Text>
         <Heading mx={2}>{teamARounds}</Heading>
-        <Heading mx={2}>:</Heading>
+        <Heading mx={1}>:</Heading>
         <Heading mx={2}>{teamBRounds}</Heading>
         <Text mx={5} as="h2" fontSize="xl">
           {teamBTitle}
