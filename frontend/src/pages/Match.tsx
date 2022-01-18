@@ -1,22 +1,23 @@
 import {
   Box,
-  Link,
+  Divider,
   Flex,
+  Grid,
+  GridItem,
   Heading,
-  Text,
+  Link,
   Tab,
-  Table,
   TabList,
   TabPanel,
   TabPanels,
+  Table,
   Tabs,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
-  Divider,
-  Spacer,
 } from "@chakra-ui/react";
 import { parse, format } from "date-fns";
 import React from "react";
@@ -33,6 +34,8 @@ export type Round = {
   winner: Team;
   winReason: number;
 };
+
+export type HeadToHead = { [key: string]: { [key: string]: number } };
 
 export type Data = {
   totalRounds: number;
@@ -60,10 +63,109 @@ export type Data = {
   smokesThrown: { [key: string]: number };
   utilDamage: { [key: string]: number };
 
+  headToHead: HeadToHead;
+
   "2k": { [key: string]: number };
   "3k": { [key: string]: number };
   "4k": { [key: string]: number };
   "5k": { [key: string]: number };
+};
+
+const headToHeadColor = (diff: number): string => {
+  if (diff === 0) {
+    return "#8aa660";
+  }
+
+  if (diff > 0) {
+    if (diff < 3) {
+      return "#8cb34d";
+    } else if (diff < 5) {
+      return "#75b34d";
+    } else {
+      return "#5eb34d";
+    }
+  } else {
+    if (diff > -3) {
+      return "#b3644d";
+    } else if (diff > -5) {
+      return "#b3564d";
+    } else {
+      return "#b34d4d";
+    }
+  }
+};
+
+const HeadToHead = (props: {
+  headToHead: HeadToHead;
+  teams: [string[], string[]];
+}) => {
+  return (
+    <Grid
+      templateRows="repeat(6, auto)"
+      templateColumns="repeat(6, min-content)"
+      gap={1}
+    >
+      <GridItem colSpan={1}> </GridItem>
+      {props.teams[0].map((p) => (
+        <Flex alignItems="center" justifyContent="center" id={p} mb={3}>
+          {p}
+        </Flex>
+      ))}
+
+      {props.teams[1]
+        .map((rowPlayer) => {
+          return [
+            <Flex alignItems="center" justifyContent="flex-end" h="100%" mr={3}>
+              {rowPlayer}
+            </Flex>,
+            props.teams[0].map((columnPlayer) => {
+              const colKills = props.headToHead[columnPlayer][rowPlayer] ?? 0;
+              const rowKills = props.headToHead[rowPlayer][columnPlayer] ?? 0;
+              const diff = colKills - rowKills;
+              return (
+                <Flex
+                  h="90px"
+                  w="150px"
+                  justifyContent="center"
+                  alignItems="center"
+                  backgroundColor="#1f2736"
+                >
+                  <Box w="100px" h="90px" position="relative">
+                    <Flex
+                      position="absolute"
+                      justifyContent="center"
+                      alignItems="center"
+                      bottom="15px"
+                      left="18px"
+                      borderRadius="30px"
+                      w="40px"
+                      h="40px"
+                      backgroundColor={headToHeadColor(-diff)}
+                    >
+                      {rowKills}
+                    </Flex>
+                    <Flex
+                      position="absolute"
+                      justifyContent="center"
+                      alignItems="center"
+                      top="15px"
+                      right="18px"
+                      borderRadius="30px"
+                      w="40px"
+                      h="40px"
+                      backgroundColor={headToHeadColor(diff)}
+                    >
+                      {colKills}
+                    </Flex>
+                  </Box>
+                </Flex>
+              );
+            }),
+          ];
+        })
+        .flat()}
+    </Grid>
+  );
 };
 
 const RoundIcon = (props: { round: Round; topTeam: Team }) => {
@@ -293,13 +395,7 @@ export const Match = (props: { data: Data }) => {
   const teamBTitle = `team_${teamBPlayers[0]}`;
 
   return (
-    <Flex
-      w="100%"
-      h="100vh"
-      alignItems="center"
-      justifyContent="center"
-      flexDirection="column"
-    >
+    <Flex w="100%" h="100vh" pt={30} alignItems="center" flexDirection="column">
       <Box w="80%" mb={3}>
         <Heading>pug on {map} </Heading>
         <Heading fontSize="lg" as="h2">
@@ -327,6 +423,7 @@ export const Match = (props: { data: Data }) => {
         <TabList>
           <Tab>Scoreboard</Tab>
           <Tab>Utility</Tab>
+          <Tab>Head to Head</Tab>
         </TabList>
 
         <TabPanels>
@@ -339,6 +436,14 @@ export const Match = (props: { data: Data }) => {
             <UtilTable title={teamATitle} data={data} players={teamAPlayers} />
             <Box my={5} />
             <UtilTable title={teamBTitle} data={data} players={teamBPlayers} />
+          </TabPanel>
+          <TabPanel>
+            <Flex alignItems="center" justifyContent="center">
+              <HeadToHead
+                teams={[teamAPlayers, teamBPlayers]}
+                headToHead={data.headToHead}
+              />
+            </Flex>
           </TabPanel>
         </TabPanels>
       </Tabs>

@@ -93,7 +93,7 @@ type Death struct {
 
 func main() {
 	// f, err := os.Open("/home/jayden/Downloads/1-349fcf3c-681b-47e6-a134-47c8e27a25d9-1-1.dem")
-	f, err := os.Open("/home/jayden/Downloads/pug_de_nuke_2022-01-16_05.dem")
+	f, err := os.Open("/home/jayden/Downloads/pug_de_mirage_2022-01-16_06.dem")
 	// f, err := os.Open("C:/Users/Tom/Downloads/pug_de_nuke_2022-01-16_05.dem")
 	if err != nil {
 		panic(err)
