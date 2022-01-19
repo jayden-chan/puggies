@@ -2,7 +2,8 @@ import * as React from "react";
 import { ChakraProvider, theme } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Match, Data } from "./pages/Match";
+import { Match } from "./pages/Match";
+import { Data } from "./types";
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -14,330 +15,455 @@ export const App = () => (
 );
 
 const data: Data = {
-  "totalRounds": 20,
-  "teams": {
-    "BrianD": "T",
-    "MrGenericUser": "T",
-    "Nana4321": "T",
-    "Spacebro": "T",
-    "Wild_West": "CT",
-    "atomic": "CT",
-    "awesomaave": "CT",
-    "honestpretzels": "CT",
-    "jiaedin": "CT",
-    "nosidE": "T"
+  totalRounds: 30,
+  teams: {
+    MrGenericUser: "CT",
+    Nana4321: "CT",
+    Spacebro: "CT",
+    Wild_West: "T",
+    atomic: "T",
+    awesomaave: "T",
+    honestpretzels: "T",
+    jiaedin: "T",
+    kevin: "CT",
+    nosidE: "CT",
   },
-  "kills": {
-    "BrianD": 11,
-    "MrGenericUser": 6,
-    "Nana4321": 9,
-    "Spacebro": 14,
-    "Wild_West": 10,
-    "atomic": 35,
-    "awesomaave": 9,
-    "honestpretzels": 18,
-    "jiaedin": 18,
-    "nosidE": 19
+  kills: {
+    MrGenericUser: 11,
+    Nana4321: 16,
+    Spacebro: 14,
+    Wild_West: 15,
+    atomic: 34,
+    awesomaave: 9,
+    honestpretzels: 22,
+    jiaedin: 21,
+    kevin: 48,
+    nosidE: 31,
   },
-  "assists": {
-    "BrianD": 2,
-    "MrGenericUser": 3,
-    "Nana4321": 2,
-    "Spacebro": 2,
-    "Wild_West": 1,
-    "atomic": 6,
-    "awesomaave": 3,
-    "honestpretzels": 6,
-    "jiaedin": 3,
-    "nosidE": 4
+  assists: {
+    MrGenericUser: 7,
+    Nana4321: 6,
+    Spacebro: 5,
+    Wild_West: 4,
+    atomic: 3,
+    awesomaave: 8,
+    honestpretzels: 6,
+    jiaedin: 7,
+    kevin: 3,
+    nosidE: 1,
   },
-  "deaths": {
-    "BrianD": 18,
-    "MrGenericUser": 19,
-    "Nana4321": 19,
-    "Spacebro": 19,
-    "Wild_West": 13,
-    "atomic": 10,
-    "awesomaave": 13,
-    "honestpretzels": 11,
-    "jiaedin": 12,
-    "nosidE": 15
+  deaths: {
+    MrGenericUser: 22,
+    Nana4321: 23,
+    Spacebro: 22,
+    Wild_West: 23,
+    atomic: 21,
+    awesomaave: 23,
+    honestpretzels: 26,
+    jiaedin: 27,
+    kevin: 18,
+    nosidE: 16,
   },
-  "trades": {
-    "BrianD": 4,
-    "MrGenericUser": 3,
-    "Wild_West": 4,
-    "atomic": 5,
-    "awesomaave": 1,
-    "honestpretzels": 4,
-    "jiaedin": 4,
-    "nosidE": 2
+  trades: {
+    MrGenericUser: 6,
+    Nana4321: 5,
+    Spacebro: 3,
+    Wild_West: 5,
+    atomic: 2,
+    awesomaave: 3,
+    honestpretzels: 5,
+    jiaedin: 5,
+    kevin: 2,
+    nosidE: 5,
   },
-  "headshotPct": {
-    "BrianD": 18,
-    "MrGenericUser": 50,
-    "Nana4321": 33,
-    "Spacebro": 43,
-    "Wild_West": 20,
-    "atomic": 43,
-    "awesomaave": 44,
-    "honestpretzels": 33,
-    "jiaedin": 72,
-    "nosidE": 53
+  headshotPct: {
+    MrGenericUser: 36,
+    Nana4321: 38,
+    Spacebro: 57,
+    Wild_West: 20,
+    atomic: 35,
+    awesomaave: 33,
+    honestpretzels: 27,
+    jiaedin: 52,
+    kevin: 42,
+    nosidE: 52,
   },
-  "kd": {
-    "BrianD": 0.61,
-    "MrGenericUser": 0.32,
-    "Nana4321": 0.47,
-    "Spacebro": 0.74,
-    "Wild_West": 0.77,
-    "atomic": 3.5,
-    "awesomaave": 0.69,
-    "honestpretzels": 1.64,
-    "jiaedin": 1.5,
-    "nosidE": 1.27
+  kd: {
+    MrGenericUser: 0.5,
+    Nana4321: 0.7,
+    Spacebro: 0.64,
+    Wild_West: 0.65,
+    atomic: 1.62,
+    awesomaave: 0.39,
+    honestpretzels: 0.85,
+    jiaedin: 0.78,
+    kevin: 2.67,
+    nosidE: 1.94,
   },
-  "kdiff": {
-    "BrianD": -7,
-    "MrGenericUser": -13,
-    "Nana4321": -10,
-    "Spacebro": -5,
-    "Wild_West": -3,
-    "atomic": 25,
-    "awesomaave": -4,
-    "honestpretzels": 7,
-    "jiaedin": 6,
-    "nosidE": 4
+  kdiff: {
+    MrGenericUser: -11,
+    Nana4321: -7,
+    Spacebro: -8,
+    Wild_West: -8,
+    atomic: 13,
+    awesomaave: -14,
+    honestpretzels: -4,
+    jiaedin: -6,
+    kevin: 30,
+    nosidE: 15,
   },
-  "kpr": {
-    "BrianD": 0.55,
-    "MrGenericUser": 0.3,
-    "Nana4321": 0.45,
-    "Spacebro": 0.7,
-    "Wild_West": 0.5,
-    "atomic": 1.75,
-    "awesomaave": 0.45,
-    "honestpretzels": 0.9,
-    "jiaedin": 0.9,
-    "nosidE": 0.95
+  kpr: {
+    MrGenericUser: 0.37,
+    Nana4321: 0.53,
+    Spacebro: 0.47,
+    Wild_West: 0.5,
+    atomic: 1.13,
+    awesomaave: 0.3,
+    honestpretzels: 0.73,
+    jiaedin: 0.7,
+    kevin: 1.6,
+    nosidE: 1.03,
   },
-  "adr": {
-    "BrianD": 64,
-    "MrGenericUser": 51,
-    "Nana4321": 73,
-    "Spacebro": 66,
-    "Wild_West": 45,
-    "atomic": 162,
-    "awesomaave": 51,
-    "honestpretzels": 123,
-    "jiaedin": 91,
-    "nosidE": 94
+  adr: {
+    MrGenericUser: 50,
+    Nana4321: 68,
+    Spacebro: 56,
+    Wild_West: 47,
+    atomic: 115,
+    awesomaave: 51,
+    honestpretzels: 78,
+    jiaedin: 87,
+    kevin: 148,
+    nosidE: 100,
   },
-  "kast": {
-    "BrianD": 50,
-    "MrGenericUser": 45,
-    "Nana4321": 45,
-    "Spacebro": 60,
-    "Wild_West": 75,
-    "atomic": 100,
-    "awesomaave": 80,
-    "honestpretzels": 85,
-    "jiaedin": 65,
-    "nosidE": 85
+  kast: {
+    MrGenericUser: 70,
+    Nana4321: 77,
+    Spacebro: 57,
+    Wild_West: 60,
+    atomic: 67,
+    awesomaave: 53,
+    honestpretzels: 67,
+    jiaedin: 70,
+    kevin: 87,
+    nosidE: 77,
   },
-  "impact": {
-    "BrianD": 0.8,
-    "MrGenericUser": 0.29,
-    "Nana4321": 0.59,
-    "Spacebro": 1.12,
-    "Wild_West": 0.68,
-    "atomic": 3.44,
-    "awesomaave": 0.61,
-    "honestpretzels": 1.63,
-    "jiaedin": 1.57,
-    "nosidE": 1.7
+  impact: {
+    MrGenericUser: 0.48,
+    Nana4321: 0.8,
+    Spacebro: 0.66,
+    Wild_West: 0.71,
+    atomic: 2.04,
+    awesomaave: 0.34,
+    honestpretzels: 1.23,
+    jiaedin: 1.18,
+    kevin: 3.04,
+    nosidE: 1.8,
   },
-  "hltv": {
-    "BrianD": 0.64,
-    "MrGenericUser": 0.32,
-    "Nana4321": 0.52,
-    "Spacebro": 0.82,
-    "Wild_West": 0.84,
-    "atomic": 2.59,
-    "awesomaave": 0.87,
-    "honestpretzels": 1.59,
-    "jiaedin": 1.3,
-    "nosidE": 1.42
+  hltv: {
+    MrGenericUser: 0.69,
+    Nana4321: 0.91,
+    Spacebro: 0.69,
+    Wild_West: 0.69,
+    atomic: 1.53,
+    awesomaave: 0.49,
+    honestpretzels: 0.99,
+    jiaedin: 1,
+    kevin: 2.24,
+    nosidE: 1.55,
   },
-  "utilDamage": {
-    "MrGenericUser": 8,
-    "Nana4321": 54,
-    "Wild_West": 24,
-    "atomic": 45,
-    "honestpretzels": 47,
-    "nosidE": 32
+  utilDamage: {
+    MrGenericUser: 60,
+    Spacebro: 111,
+    Wild_West: 8,
+    atomic: 155,
+    honestpretzels: 81,
+    jiaedin: 83,
+    kevin: 100,
+    nosidE: 81,
   },
-  "flashAssists": {
-    "atomic": 1,
-    "jiaedin": 1,
-    "nosidE": 2
+  flashAssists: {
+    Wild_West: 1,
+    atomic: 3,
+    honestpretzels: 1,
+    nosidE: 2,
   },
-  "enemiesFlashed": {
-    "MrGenericUser": 3,
-    "Spacebro": 3,
-    "Wild_West": 4,
-    "atomic": 10,
-    "honestpretzels": 39,
-    "jiaedin": 8,
-    "nosidE": 19
+  enemiesFlashed: {
+    Nana4321: 6,
+    Wild_West: 4,
+    atomic: 27,
+    honestpretzels: 31,
+    jiaedin: 12,
+    kevin: 25,
+    nosidE: 36,
   },
-  "teammatesFlashed": {
-    "MrGenericUser": 1,
-    "Nana4321": 2,
-    "Spacebro": 2,
-    "Wild_West": 7,
-    "atomic": 7,
-    "awesomaave": 2,
-    "honestpretzels": 10,
-    "jiaedin": 3,
-    "nosidE": 17
+  teammatesFlashed: {
+    MrGenericUser: 1,
+    Nana4321: 5,
+    Wild_West: 14,
+    atomic: 29,
+    honestpretzels: 19,
+    jiaedin: 10,
+    kevin: 31,
+    nosidE: 28,
   },
-  "rounds": [
+  rounds: [
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 7,
     },
     {
-      "winner": "T",
-      "winReason": 1
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "CT",
-      "winReason": 7
+      winner: "CT",
+      winReason: 7,
     },
     {
-      "winner": "T",
-      "winReason": 1
+      winner: "CT",
+      winReason: 7,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 7,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "T",
+      winReason: 9,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "T",
+      winReason: 9,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "T",
+      winReason: 9,
     },
     {
-      "winner": "CT",
-      "winReason": 8
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "CT",
-      "winReason": 8
+      winner: "T",
+      winReason: 1,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "T",
+      winReason: 9,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 12,
     },
     {
-      "winner": "CT",
-      "winReason": 7
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "CT",
-      "winReason": 8
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "CT",
-      "winReason": 8
+      winner: "CT",
+      winReason: 7,
     },
     {
-      "winner": "T",
-      "winReason": 9
+      winner: "CT",
+      winReason: 8,
     },
     {
-      "winner": "CT",
-      "winReason": 7
-    }
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "CT",
+      winReason: 7,
+    },
+    {
+      winner: "T",
+      winReason: 1,
+    },
+    {
+      winner: "T",
+      winReason: 1,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "T",
+      winReason: 1,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
+    {
+      winner: "T",
+      winReason: 9,
+    },
+    {
+      winner: "CT",
+      winReason: 8,
+    },
   ],
-  "flashesThrown": {
-    "MrGenericUser": 1,
-    "Nana4321": 1,
-    "Spacebro": 2,
-    "Wild_West": 4,
-    "atomic": 7,
-    "awesomaave": 1,
-    "honestpretzels": 17,
-    "jiaedin": 6,
-    "nosidE": 12
+  headToHead: {
+    MrGenericUser: {
+      Wild_West: 4,
+      atomic: 3,
+      awesomaave: 2,
+      jiaedin: 2,
+    },
+    Nana4321: {
+      Wild_West: 2,
+      atomic: 4,
+      awesomaave: 2,
+      honestpretzels: 5,
+      jiaedin: 3,
+    },
+    Spacebro: {
+      Wild_West: 5,
+      atomic: 1,
+      awesomaave: 2,
+      honestpretzels: 4,
+      jiaedin: 2,
+    },
+    Wild_West: {
+      MrGenericUser: 2,
+      Nana4321: 1,
+      Spacebro: 6,
+      kevin: 1,
+      nosidE: 5,
+    },
+    atomic: {
+      MrGenericUser: 3,
+      Nana4321: 10,
+      Spacebro: 8,
+      kevin: 9,
+      nosidE: 4,
+    },
+    awesomaave: {
+      MrGenericUser: 3,
+      Nana4321: 4,
+      Spacebro: 1,
+      kevin: 1,
+    },
+    honestpretzels: {
+      MrGenericUser: 8,
+      Nana4321: 2,
+      Spacebro: 4,
+      kevin: 3,
+      nosidE: 5,
+    },
+    jiaedin: {
+      MrGenericUser: 6,
+      Nana4321: 6,
+      Spacebro: 3,
+      kevin: 4,
+      nosidE: 2,
+    },
+    kevin: {
+      Wild_West: 9,
+      atomic: 9,
+      awesomaave: 11,
+      honestpretzels: 9,
+      jiaedin: 10,
+    },
+    nosidE: {
+      Wild_West: 3,
+      atomic: 4,
+      awesomaave: 6,
+      honestpretzels: 8,
+      jiaedin: 10,
+    },
   },
-  "smokesThrown": {
-    "BrianD": 1,
-    "Nana4321": 4,
-    "Wild_West": 4,
-    "atomic": 17,
-    "honestpretzels": 12,
-    "jiaedin": 4,
-    "nosidE": 5
+  flashesThrown: {
+    MrGenericUser: 1,
+    Nana4321: 8,
+    Wild_West: 7,
+    atomic: 31,
+    honestpretzels: 19,
+    jiaedin: 16,
+    kevin: 33,
+    nosidE: 24,
   },
-  "molliesThrown": {
-    "MrGenericUser": 4,
-    "Nana4321": 1,
-    "Wild_West": 7,
-    "atomic": 11,
-    "awesomaave": 3,
-    "honestpretzels": 12,
-    "jiaedin": 3,
-    "nosidE": 8
+  smokesThrown: {
+    MrGenericUser: 2,
+    Nana4321: 10,
+    Wild_West: 6,
+    atomic: 20,
+    awesomaave: 7,
+    honestpretzels: 14,
+    jiaedin: 14,
+    kevin: 23,
+    nosidE: 8,
   },
-  "HEsThrown": {
-    "BrianD": 1,
-    "MrGenericUser": 2,
-    "atomic": 9,
-    "honestpretzels": 7
+  molliesThrown: {
+    MrGenericUser: 9,
+    Nana4321: 13,
+    Spacebro: 10,
+    Wild_West: 9,
+    atomic: 8,
+    awesomaave: 11,
+    honestpretzels: 15,
+    jiaedin: 18,
+    kevin: 14,
+    nosidE: 20,
+  },
+  HEsThrown: {
+    MrGenericUser: 2,
+    Spacebro: 10,
+    atomic: 1,
+    honestpretzels: 2,
+    kevin: 2,
+    nosidE: 1,
   },
   "2k": {
-    "BrianD": 1,
-    "MrGenericUser": 1,
-    "Nana4321": 2,
-    "atomic": 4,
-    "awesomaave": 2,
-    "jiaedin": 5,
-    "nosidE": 3
+    MrGenericUser: 1,
+    Nana4321: 3,
+    Spacebro: 2,
+    Wild_West: 4,
+    atomic: 8,
+    awesomaave: 3,
+    honestpretzels: 5,
+    jiaedin: 4,
+    kevin: 9,
+    nosidE: 7,
   },
   "3k": {
-    "BrianD": 2,
-    "atomic": 5,
-    "jiaedin": 1,
-    "nosidE": 1
+    Nana4321: 1,
+    atomic: 2,
+    honestpretzels: 2,
+    jiaedin: 2,
+    kevin: 4,
+    nosidE: 4,
   },
   "4k": {
-    "atomic": 1,
-    "honestpretzels": 2
+    kevin: 2,
   },
-  "5k": {}
+  "5k": {
+    atomic: 1,
+  },
 };
