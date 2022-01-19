@@ -24,103 +24,91 @@ import { Data } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { RoundsVisualization } from "./RoundsVisualization";
 
-const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
-  <Table variant="simple" size="sm">
-    <Thead>
-      {/* prettier-ignore */}
-      <Tr>
-        <Th>{props.title}</Th>
-        <Th><Tooltip label="# of smokes thrown">S</Tooltip></Th>
-        <Th><Tooltip label="# of molotovs thrown">M</Tooltip></Th>
-        <Th><Tooltip label="# of HE grenades thrown">HE</Tooltip></Th>
-        <Th><Tooltip label="# of flashes thrown">F</Tooltip></Th>
-        <Th><Tooltip label="Flash Assists">FA</Tooltip></Th>
-        <Th><Tooltip label="Utility Damage">UD</Tooltip></Th>
-        <Th>Enemies Blinded</Th>
-        <Th>Teammates Blinded</Th>
-        <Th>Enemies Blind per Flash</Th>
-      </Tr>
-    </Thead>
-    <Tbody>
-      {props.players.map((player) => {
-        const ef = props.data.enemiesFlashed[player] ?? 0;
-        const tf = props.data.teammatesFlashed[player] ?? 0;
-        const numFlashes = props.data.flashesThrown[player] ?? 0;
+type TableSchema = {
+  key: keyof Data;
+  title: string;
+  label?: string;
+  minW?: string;
+  pct?: boolean;
+}[];
 
-        return (
-          <Tr>
-            <Td>{player}</Td>
-            <Td>{props.data.smokesThrown[player] ?? 0}</Td>
-            <Td>{props.data.molliesThrown[player] ?? 0}</Td>
-            <Td>{props.data.HEsThrown[player] ?? 0}</Td>
-            <Td>{numFlashes}</Td>
-            <Td>{props.data.flashAssists[player] ?? 0}</Td>
-            <Td>{props.data.utilDamage[player] ?? 0}</Td>
-            <Td>{ef}</Td>
-            <Td>{tf}</Td>
-            <Td>
-              {numFlashes === 0 ? 0 : Math.round((ef / numFlashes) * 100) / 100}
-            </Td>
-          </Tr>
-        );
-      })}
-    </Tbody>
-  </Table>
-);
+const utilTableSchema: TableSchema = [
+  { key: "name", title: "Player", minW: "150px" },
+  { key: "smokesThrown", title: "Smokes", label: "# of smokes thrown" },
+  { key: "molliesThrown", title: "Molotovs", label: "# of molotovs thrown" },
+  { key: "HEsThrown", title: "HE", label: "# of HE grenades thrown" },
+  { key: "flashesThrown", title: "Flashes", label: "# of flashes thrown" },
+  { key: "flashAssists", title: "FA", label: "Flash Assists" },
+  { key: "utilDamage", title: "UD", label: "Utility Damage" },
+  { key: "enemiesFlashed", title: "Enemies Blinded" },
+  { key: "teammatesFlashed", title: "Teammates Blinded" },
+  { key: "efPerFlash", title: "Enemies Blind per Flash" },
+];
 
-const ScoreTable = (props: {
+const scoreTableSchema: TableSchema = [
+  { key: "name", title: "Player", minW: "150px" },
+  { key: "kills", title: "K", label: "Kills" },
+  { key: "assists", title: "A", label: "Assists" },
+  { key: "deaths", title: "D", label: "Deaths" },
+  { key: "timesTraded", title: "T", label: "# of times traded" },
+  { key: "kd", title: "K/D", label: "Kill/death ratio" },
+  { key: "kdiff", title: "K-D", label: "Kill-death difference" },
+  { key: "kpr", title: "K/R", label: "Kills per round" },
+  { key: "adr", title: "ADR", label: "Average damage per round" },
+  {
+    key: "headshotPct",
+    title: "HS %",
+    label: "Headshot kill percentage",
+    pct: true,
+  },
+  { key: "2k", title: "2K" },
+  { key: "3k", title: "3K" },
+  { key: "4k", title: "4K" },
+  { key: "5k", title: "5K" },
+  { key: "hltv", title: "HLTV 2.0", label: "Approximate HLTV 2.0 rating" },
+  { key: "impact", title: "Impact", label: "Approximate HLTV Impact rating" },
+  {
+    key: "kast",
+    title: "KAST",
+    pct: true,
+    label: "% of rounds with kill/assist/survived/traded",
+  },
+];
+
+const StatTable = (props: {
   data: Data;
   players: string[];
-  title: string;
-}) => (
-  <Table variant="simple" size="sm">
-    <Thead>
-      {/* prettier-ignore */}
-      <Tr>
-        <Th>{props.title}</Th>
-        <Th><Tooltip label="Kills">K</Tooltip></Th>
-        <Th><Tooltip label="Assists">A</Tooltip></Th>
-        <Th><Tooltip label="Deaths">D</Tooltip></Th>
-        <Th><Tooltip label="# of times traded">T</Tooltip></Th>
-        <Th><Tooltip label="Kill/Death ratio">K/D</Tooltip></Th>
-        <Th><Tooltip label="Kill-Death difference">K-D</Tooltip></Th>
-        <Th><Tooltip label="Kills per round">K/R</Tooltip></Th>
-        <Th><Tooltip label="Average damage per round">ADR</Tooltip></Th>
-        <Th><Tooltip label="Headshot kill percentage">HS %</Tooltip></Th>
-        <Th>2K</Th>
-        <Th>3K</Th>
-        <Th>4K</Th>
-        <Th>5K</Th>
-        <Th><Tooltip label="Approximate HLTV 2.0 rating">HLTV 2.0</Tooltip></Th>
-        <Th><Tooltip label="Approximate HLTV Impact rating">Impact</Tooltip></Th>
-        <Th><Tooltip label="% of rounds with kill/assist/survived/traded">KAST</Tooltip></Th>
-      </Tr>
-    </Thead>
-    <Tbody>
-      {props.players.map((player) => (
+  schema: TableSchema;
+}) => {
+  return (
+    <Table variant="simple" size="sm">
+      <Thead>
         <Tr>
-          <Td>{player}</Td>
-          <Td>{props.data.kills[player] ?? 0}</Td>
-          <Td>{props.data.assists[player] ?? 0}</Td>
-          <Td>{props.data.deaths[player] ?? 0}</Td>
-          <Td>{props.data.trades[player] ?? 0}</Td>
-          <Td>{props.data.kd[player] ?? 0}</Td>
-          <Td>{props.data.kdiff[player] ?? 0}</Td>
-          <Td>{props.data.kpr[player] ?? 0}</Td>
-          <Td>{props.data.adr[player] ?? 0}</Td>
-          <Td>{props.data.headshotPct[player] ?? 0}%</Td>
-          <Td>{props.data["2k"][player] ?? 0}</Td>
-          <Td>{props.data["3k"][player] ?? 0}</Td>
-          <Td>{props.data["4k"][player] ?? 0}</Td>
-          <Td>{props.data["5k"][player] ?? 0}</Td>
-          <Td>{props.data.hltv[player] ?? 0}</Td>
-          <Td>{props.data.impact[player] ?? 0}</Td>
-          <Td>{props.data.kast[player] ?? 0}%</Td>
+          {props.schema.map((r) => (
+            <Th key={r.title}>
+              {r.label ? <Tooltip label={r.label}>{r.title}</Tooltip> : r.title}
+            </Th>
+          ))}
         </Tr>
-      ))}
-    </Tbody>
-  </Table>
-);
+      </Thead>
+      <Tbody>
+        {props.players.map((player) => (
+          <Tr key={player}>
+            {props.schema.map((col) => {
+              return (
+                <Td minW={col.minW ?? "unset"}>
+                  {/* @ts-ignore */}
+                  {props.data[col.key][player] ?? 0}
+                  {col.pct === true ? "%" : ""}
+                </Td>
+              );
+            })}
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  );
+};
 
 export const Match = (props: { data: Data }) => {
   const { data } = props;
@@ -188,14 +176,30 @@ export const Match = (props: { data: Data }) => {
 
         <TabPanels>
           <TabPanel>
-            <ScoreTable title={teamATitle} data={data} players={teamAPlayers} />
+            <StatTable
+              schema={scoreTableSchema}
+              data={data}
+              players={teamAPlayers}
+            />
             <RoundsVisualization data={data} />
-            <ScoreTable title={teamBTitle} data={data} players={teamBPlayers} />
+            <StatTable
+              schema={scoreTableSchema}
+              data={data}
+              players={teamBPlayers}
+            />
           </TabPanel>
           <TabPanel>
-            <UtilTable title={teamATitle} data={data} players={teamAPlayers} />
+            <StatTable
+              schema={utilTableSchema}
+              data={data}
+              players={teamAPlayers}
+            />
             <Box my={5} />
-            <UtilTable title={teamBTitle} data={data} players={teamBPlayers} />
+            <StatTable
+              schema={utilTableSchema}
+              data={data}
+              players={teamBPlayers}
+            />
           </TabPanel>
           <TabPanel>
             <Flex alignItems="center" justifyContent="center">

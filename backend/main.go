@@ -52,7 +52,7 @@ type Output struct {
 	Kills            map[string]int            `json:"kills"`
 	Assists          map[string]int            `json:"assists"`
 	Deaths           map[string]int            `json:"deaths"`
-	Trades           map[string]int            `json:"trades"`
+	Trades           map[string]int            `json:"timesTraded"`
 	HeadshotPct      map[string]float64        `json:"headshotPct"`
 	Kd               map[string]float64        `json:"kd"`
 	Kdiff            map[string]int            `json:"kdiff"`
@@ -92,9 +92,7 @@ type Death struct {
 }
 
 func main() {
-	// f, err := os.Open("/home/jayden/Downloads/1-349fcf3c-681b-47e6-a134-47c8e27a25d9-1-1.dem")
-	f, err := os.Open("/home/jayden/Downloads/pug_de_mirage_2022-01-16_06.dem")
-	// f, err := os.Open("C:/Users/Tom/Downloads/pug_de_nuke_2022-01-16_05.dem")
+	f, err := os.Open(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +104,7 @@ func main() {
 	var kills []map[string]int
 	var deaths []map[string]int
 	var assists []map[string]int
-	var trades []map[string]int
+	var timesTraded []map[string]int
 	var headshots []map[string]int
 	var damage []map[string]int
 	var flashAssists []map[string]int
@@ -134,6 +132,10 @@ func main() {
 			return
 		}
 
+		if e.Victim != nil {
+			deaths[len(deaths)-1][e.Victim.Name] += 1
+		}
+
 		if e.Assister != nil {
 			if e.AssistedFlash {
 				flashAssists[len(flashAssists)-1][e.Assister.Name] += 1
@@ -142,40 +144,36 @@ func main() {
 			}
 		}
 
-		if e.Killer != nil {
+		if e.Killer != nil && e.Victim != nil && e.Killer.Team != e.Victim.Team {
 			kills[len(kills)-1][e.Killer.Name] += 1
 
 			if e.IsHeadshot {
 				headshots[len(headshots)-1][e.Killer.Name] += 1
 			}
 
-			if e.Victim != nil {
-				deaths[len(deaths)-1][e.Victim.Name] += 1
-				deathTimes[e.Victim.Name] = Death{
-					KilledBy:    e.Killer.Name,
-					TimeOfDeath: p.CurrentTime().Seconds(),
-				}
-
-				if headToHead != nil {
-					if headToHead[len(headToHead)-1][e.Killer.Name] == nil {
-						headToHead[len(headToHead)-1][e.Killer.Name] = make(map[string]int)
-					}
-
-					headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] += 1
-				}
-
-				// check for trade kills
-				for player := range deaths[len(deaths)-1] {
-					if deathTimes[player].KilledBy == e.Victim.Name {
-						// Using 5 seconds as the trade window for now
-						if p.CurrentTime().Seconds()-deathTimes[player].TimeOfDeath <= 5 {
-							trades[len(trades)-1][player] += 1
-						}
-
-					}
-				}
+			deathTimes[e.Victim.Name] = Death{
+				KilledBy:    e.Killer.Name,
+				TimeOfDeath: p.CurrentTime().Seconds(),
 			}
 
+			if headToHead != nil {
+				if headToHead[len(headToHead)-1][e.Killer.Name] == nil {
+					headToHead[len(headToHead)-1][e.Killer.Name] = make(map[string]int)
+				}
+
+				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] += 1
+			}
+
+			// check for trade kills
+			for player := range deaths[len(deaths)-1] {
+				if deathTimes[player].KilledBy == e.Victim.Name {
+					// Using 5 seconds as the trade window for now
+					if p.CurrentTime().Seconds()-deathTimes[player].TimeOfDeath <= 5 {
+						timesTraded[len(timesTraded)-1][player] += 1
+					}
+
+				}
+			}
 		}
 
 		if e.Killer != nil && e.Killer.Name == "" {
@@ -183,27 +181,16 @@ func main() {
 		}
 	})
 
-	p.RegisterEventHandler(func(e events.RoundEnd) {
-		winner := ""
-
-		switch e.Winner {
-		case demcommon.TeamCounterTerrorists:
-			winner = "CT"
-		case demcommon.TeamTerrorists:
-			winner = "T"
-		}
-
-		rounds = append(rounds, Round{
-			Winner: winner,
-			Reason: int(e.Reason),
-		})
-	})
-
 	p.RegisterEventHandler(func(e events.PlayerFlashed) {
-		if e.Attacker.Team == e.Player.Team {
-			teammatesFlashed[len(teammatesFlashed)-1][e.Attacker.Name] += 1
-		} else {
-			enemiesFlashed[len(enemiesFlashed)-1][e.Attacker.Name] += 1
+		blindMs := e.FlashDuration().Milliseconds()
+
+		// https://counterstrike.fandom.com/wiki/Flashbang
+		if blindMs > 1950 {
+			if e.Attacker.Team == e.Player.Team {
+				teammatesFlashed[len(teammatesFlashed)-1][e.Attacker.Name] += 1
+			} else {
+				enemiesFlashed[len(enemiesFlashed)-1][e.Attacker.Name] += 1
+			}
 		}
 	})
 
@@ -240,6 +227,8 @@ func main() {
 		if e.Attacker != nil && e.Player != nil && e.Attacker.Team != e.Player.Team {
 			damage[len(damage)-1][e.Attacker.Name] += e.HealthDamageTaken
 
+			// fmt.Fprintf(os.Stderr, "%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
+
 			if e.Weapon.Type == demcommon.EqHE || e.Weapon.Type == demcommon.EqMolotov || e.Weapon.Type == demcommon.EqIncendiary {
 				utilDamage[len(utilDamage)-1][e.Attacker.Name] += e.HealthDamageTaken
 			}
@@ -269,7 +258,7 @@ func main() {
 		kills = append(kills, make(map[string]int))
 		deaths = append(deaths, make(map[string]int))
 		assists = append(assists, make(map[string]int))
-		trades = append(trades, make(map[string]int))
+		timesTraded = append(timesTraded, make(map[string]int))
 		headshots = append(headshots, make(map[string]int))
 		damage = append(damage, make(map[string]int))
 		flashAssists = append(flashAssists, make(map[string]int))
@@ -283,6 +272,22 @@ func main() {
 		smokesThrown = append(smokesThrown, make(map[string]int))
 
 		headToHead = append(headToHead, make(map[string]map[string]int))
+	})
+
+	p.RegisterEventHandler(func(e events.RoundEnd) {
+		winner := ""
+
+		switch e.Winner {
+		case demcommon.TeamCounterTerrorists:
+			winner = "CT"
+		case demcommon.TeamTerrorists:
+			winner = "T"
+		}
+
+		rounds = append(rounds, Round{
+			Winner: winner,
+			Reason: int(e.Reason),
+		})
 	})
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
@@ -309,29 +314,32 @@ func main() {
 	kills = kills[startRound+1:]
 	totalRounds := len(kills)
 
+	deaths = deaths[startRound+1:]
+	assists = assists[startRound+1:]
+	timesTraded = timesTraded[startRound+1:]
+	headshots = headshots[startRound+1:]
+	damage = damage[startRound+1:]
+	flashAssists = flashAssists[startRound+1:]
+	enemiesFlashed = enemiesFlashed[startRound+1:]
+	teammatesFlashed = teammatesFlashed[startRound+1:]
+	utilDamage = utilDamage[startRound+1:]
+
+	flashesThrown = flashesThrown[startRound+1:]
+	HEsThrown = HEsThrown[startRound+1:]
+	molliesThrown = molliesThrown[startRound+1:]
+	smokesThrown = smokesThrown[startRound+1:]
+
+	headToHead = headToHead[startRound+1:]
+
+	// Need to slice the rounds array differently because it's not
+	// being appended-to on the RoundStart event
 	rounds = rounds[len(rounds)-totalRounds:]
-	deaths = deaths[len(deaths)-totalRounds:]
-	trades = trades[len(trades)-totalRounds:]
-	assists = assists[len(assists)-totalRounds:]
-	headshots = headshots[len(headshots)-totalRounds:]
-	damage = damage[len(damage)-totalRounds:]
-	flashAssists = flashAssists[len(flashAssists)-totalRounds:]
-	enemiesFlashed = enemiesFlashed[len(enemiesFlashed)-totalRounds:]
-	teammatesFlashed = teammatesFlashed[len(teammatesFlashed)-totalRounds:]
-	utilDamage = utilDamage[len(utilDamage)-totalRounds:]
 
-	flashesThrown = flashesThrown[len(flashesThrown)-totalRounds:]
-	HEsThrown = HEsThrown[len(HEsThrown)-totalRounds:]
-	molliesThrown = molliesThrown[len(molliesThrown)-totalRounds:]
-	smokesThrown = smokesThrown[len(smokesThrown)-totalRounds:]
-
-	headToHead = headToHead[len(headToHead)-totalRounds:]
 	h2hTotal := headToHeadTotal(&headToHead)
-
 	totalKills := arrayMapTotal(&kills)
 	totalDeaths := arrayMapTotal(&deaths)
 	totalAssists := arrayMapTotal(&assists)
-	totalTrades := arrayMapTotal(&trades)
+	totalTimesTraded := arrayMapTotal(&timesTraded)
 	totalHeadshots := arrayMapTotal(&headshots)
 	totalDamage := arrayMapTotal(&damage)
 	totalFlashAssists := arrayMapTotal(&flashAssists)
@@ -348,7 +356,7 @@ func main() {
 	for i := 0; i < totalRounds; i++ {
 		for p := range teams {
 			// KAST
-			if kills[i][p] != 0 || assists[i][p] != 0 || deaths[i][p] == 0 || trades[i][p] != 0 {
+			if kills[i][p] != 0 || assists[i][p] != 0 || deaths[i][p] == 0 || timesTraded[i][p] != 0 {
 				kast[p] += 1 / float64(totalRounds)
 			}
 		}
@@ -392,8 +400,8 @@ func main() {
 		kpr[player] = math.Round((float64(numKills)/float64(totalRounds))*100) / 100
 	}
 
-	for player, damage := range totalDamage {
-		adr[player] = math.Round((float64(damage) / float64(totalRounds)))
+	for player, playerDamage := range totalDamage {
+		adr[player] = math.Round((float64(playerDamage) / float64(totalRounds)))
 	}
 
 	impact := make(map[string]float64)
@@ -434,7 +442,7 @@ func main() {
 		Kills:            totalKills,
 		Assists:          totalAssists,
 		Deaths:           totalDeaths,
-		Trades:           totalTrades,
+		Trades:           totalTimesTraded,
 		HeadshotPct:      headshotPct,
 		Kd:               kd,
 		Kdiff:            kdiff,

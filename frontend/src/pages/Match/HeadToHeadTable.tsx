@@ -36,9 +36,11 @@ export const HeadToHeadTable = (props: {
       templateColumns="repeat(6, min-content)"
       gap={1}
     >
-      <GridItem colSpan={1}> </GridItem>
+      <GridItem colSpan={1} key="asd">
+        {" "}
+      </GridItem>
       {props.teams[0].map((p) => (
-        <Flex alignItems="center" justifyContent="center" id={p} mb={3}>
+        <Flex alignItems="center" justifyContent="center" key={p} mb={3}>
           {p}
         </Flex>
       ))}
@@ -46,7 +48,13 @@ export const HeadToHeadTable = (props: {
       {props.teams[1]
         .map((rowPlayer) => {
           return [
-            <Flex alignItems="center" justifyContent="flex-end" h="100%" mr={3}>
+            <Flex
+              alignItems="center"
+              justifyContent="flex-end"
+              h="100%"
+              mr={3}
+              key={rowPlayer}
+            >
               {rowPlayer}
             </Flex>,
             props.teams[0].map((columnPlayer) => {
@@ -57,6 +65,7 @@ export const HeadToHeadTable = (props: {
                 <Flex
                   h="90px"
                   w="150px"
+                  key={`${rowPlayer}${columnPlayer}`}
                   justifyContent="center"
                   alignItems="center"
                   backgroundColor="#1f2736"
