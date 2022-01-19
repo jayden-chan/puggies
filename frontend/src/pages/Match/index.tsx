@@ -15,6 +15,7 @@ import {
   Th,
   Thead,
   Tr,
+  Tooltip,
 } from "@chakra-ui/react";
 import { format, parse } from "date-fns";
 import React from "react";
@@ -26,17 +27,18 @@ import { RoundsVisualization } from "./RoundsVisualization";
 const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
   <Table variant="simple" size="sm">
     <Thead>
+      {/* prettier-ignore */}
       <Tr>
         <Th>{props.title}</Th>
-        <Th>Smokes</Th>
-        <Th>Molotovs</Th>
-        <Th>HE</Th>
-        <Th>Flashes</Th>
+        <Th><Tooltip label="# of smokes thrown">S</Tooltip></Th>
+        <Th><Tooltip label="# of molotovs thrown">M</Tooltip></Th>
+        <Th><Tooltip label="# of HE grenades thrown">HE</Tooltip></Th>
+        <Th><Tooltip label="# of flashes thrown">F</Tooltip></Th>
+        <Th><Tooltip label="Flash Assists">FA</Tooltip></Th>
+        <Th><Tooltip label="Utility Damage">UD</Tooltip></Th>
         <Th>Enemies Blinded</Th>
         <Th>Teammates Blinded</Th>
         <Th>Enemies Blind per Flash</Th>
-        <Th>Flash Assists</Th>
-        <Th>Utility Damage</Th>
       </Tr>
     </Thead>
     <Tbody>
@@ -52,13 +54,13 @@ const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
             <Td>{props.data.molliesThrown[player] ?? 0}</Td>
             <Td>{props.data.HEsThrown[player] ?? 0}</Td>
             <Td>{numFlashes}</Td>
+            <Td>{props.data.flashAssists[player] ?? 0}</Td>
+            <Td>{props.data.utilDamage[player] ?? 0}</Td>
             <Td>{ef}</Td>
             <Td>{tf}</Td>
             <Td>
               {numFlashes === 0 ? 0 : Math.round((ef / numFlashes) * 100) / 100}
             </Td>
-            <Td>{props.data.flashAssists[player] ?? 0}</Td>
-            <Td>{props.data.utilDamage[player] ?? 0}</Td>
           </Tr>
         );
       })}
@@ -73,24 +75,25 @@ const ScoreTable = (props: {
 }) => (
   <Table variant="simple" size="sm">
     <Thead>
+      {/* prettier-ignore */}
       <Tr>
         <Th>{props.title}</Th>
-        <Th>K</Th>
-        <Th>A</Th>
-        <Th>D</Th>
-        <Th>T</Th>
-        <Th>K/D</Th>
-        <Th>K-D</Th>
-        <Th>K/R</Th>
-        <Th>ADR</Th>
-        <Th>HS %</Th>
+        <Th><Tooltip label="Kills">K</Tooltip></Th>
+        <Th><Tooltip label="Assists">A</Tooltip></Th>
+        <Th><Tooltip label="Deaths">D</Tooltip></Th>
+        <Th><Tooltip label="# of times traded">T</Tooltip></Th>
+        <Th><Tooltip label="Kill/Death ratio">K/D</Tooltip></Th>
+        <Th><Tooltip label="Kill-Death difference">K-D</Tooltip></Th>
+        <Th><Tooltip label="Kills per round">K/R</Tooltip></Th>
+        <Th><Tooltip label="Average damage per round">ADR</Tooltip></Th>
+        <Th><Tooltip label="Headshot kill percentage">HS %</Tooltip></Th>
         <Th>2K</Th>
         <Th>3K</Th>
         <Th>4K</Th>
         <Th>5K</Th>
-        <Th>HLTV 2.0</Th>
-        <Th>Impact</Th>
-        <Th>KAST</Th>
+        <Th><Tooltip label="Approximate HLTV 2.0 rating">HLTV 2.0</Tooltip></Th>
+        <Th><Tooltip label="Approximate HLTV Impact rating">Impact</Tooltip></Th>
+        <Th><Tooltip label="% of rounds with kill/assist/survived/traded">KAST</Tooltip></Th>
       </Tr>
     </Thead>
     <Tbody>
