@@ -4,115 +4,42 @@ import {
   Heading,
   Link,
   Tab,
-  Table,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
-  Tooltip,
 } from "@chakra-ui/react";
 import { format, parse } from "date-fns";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Data } from "../../types";
+import { Data, Team } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { RoundsVisualization } from "./RoundsVisualization";
+import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
 
-type TableSchema = {
-  key: keyof Data;
-  title: string;
-  label?: string;
-  minW?: string;
-  pct?: boolean;
-}[];
-
-const utilTableSchema: TableSchema = [
-  { key: "name", title: "Player", minW: "150px" },
-  { key: "smokesThrown", title: "Smokes", label: "# of smokes thrown" },
-  { key: "molliesThrown", title: "Molotovs", label: "# of molotovs thrown" },
-  { key: "HEsThrown", title: "HE", label: "# of HE grenades thrown" },
-  { key: "flashesThrown", title: "Flashes", label: "# of flashes thrown" },
-  { key: "flashAssists", title: "FA", label: "Flash Assists" },
-  { key: "utilDamage", title: "UD", label: "Utility Damage" },
-  { key: "enemiesFlashed", title: "Enemies Blinded" },
-  { key: "teammatesFlashed", title: "Teammates Blinded" },
-  { key: "efPerFlash", title: "Enemies Blind per Flash" },
-];
-
-const scoreTableSchema: TableSchema = [
-  { key: "name", title: "Player", minW: "150px" },
-  { key: "kills", title: "K", label: "Kills" },
-  { key: "assists", title: "A", label: "Assists" },
-  { key: "deaths", title: "D", label: "Deaths" },
-  { key: "timesTraded", title: "T", label: "# of times traded" },
-  { key: "kd", title: "K/D", label: "Kill/death ratio" },
-  { key: "kdiff", title: "K-D", label: "Kill-death difference" },
-  { key: "kpr", title: "K/R", label: "Kills per round" },
-  { key: "adr", title: "ADR", label: "Average damage per round" },
-  {
-    key: "headshotPct",
-    title: "HS %",
-    label: "Headshot kill percentage",
-    pct: true,
-  },
-  { key: "2k", title: "2K" },
-  { key: "3k", title: "3K" },
-  { key: "4k", title: "4K" },
-  { key: "5k", title: "5K" },
-  { key: "hltv", title: "HLTV 2.0", label: "Approximate HLTV 2.0 rating" },
-  { key: "impact", title: "Impact", label: "Approximate HLTV Impact rating" },
-  {
-    key: "kast",
-    title: "KAST",
-    pct: true,
-    label: "% of rounds with kill/assist/survived/traded",
-  },
-];
-
-const StatTable = (props: {
-  data: Data;
-  players: string[];
-  schema: TableSchema;
-}) => {
-  return (
-    <Table variant="simple" size="sm">
-      <Thead>
-        <Tr>
-          {props.schema.map((r) => (
-            <Th key={r.title}>
-              {r.label ? <Tooltip label={r.label}>{r.title}</Tooltip> : r.title}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {props.players.map((player) => (
-          <Tr key={player}>
-            {props.schema.map((col) => {
-              return (
-                <Td minW={col.minW ?? "unset"}>
-                  {/* @ts-ignore */}
-                  {props.data[col.key][player] ?? 0}
-                  {col.pct === true ? "%" : ""}
-                </Td>
-              );
-            })}
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  );
-};
+const getPlayers = (
+  data: Data,
+  side: Team,
+  sortCol: keyof Data,
+  reverse: boolean
+) =>
+  Object.keys(data.teams)
+    .filter((player) => data.teams[player] === side)
+    .sort((a, b) => {
+      // @ts-ignore
+      const aa = data[sortCol][reverse ? a : b] ?? 0;
+      // @ts-ignore
+      const bb = data[sortCol][reverse ? b : a] ?? 0;
+      return aa - bb;
+    });
 
 export const Match = (props: { data: Data }) => {
   const { data } = props;
   const { id = "" } = useParams();
+
+  const [sortCol, setSortCol] = useState<keyof Data>("hltv");
+  const [reversed, setReversed] = useState(false);
 
   const [match, map, date] = id.match(/^pug_(.*?)_(\d\d\d\d-\d\d-\d\d)/) ?? [];
   if (!match) {
@@ -131,16 +58,20 @@ export const Match = (props: { data: Data }) => {
     data.rounds.slice(0, 15).filter((r) => r.winner === "CT").length +
     data.rounds.slice(15).filter((r) => r.winner === "T").length;
 
-  const teamAPlayers = Object.keys(data.teams)
-    .filter((player) => data.teams[player] === "CT")
-    .sort((a, b) => data.hltv[b] - data.hltv[a]);
+  const teamAPlayers = getPlayers(data, "CT", sortCol, reversed);
+  const teamBPlayers = getPlayers(data, "T", sortCol, reversed);
 
-  const teamBPlayers = Object.keys(data.teams)
-    .filter((player) => data.teams[player] === "T")
-    .sort((a, b) => data.hltv[b] - data.hltv[a]);
+  const teamATitle = `team_${getPlayers(data, "CT", "hltv", false)[0]}`;
+  const teamBTitle = `team_${getPlayers(data, "T", "hltv", false)[0]}`;
 
-  const teamATitle = `team_${teamAPlayers[0]}`;
-  const teamBTitle = `team_${teamBPlayers[0]}`;
+  const colHeaderClicked = (key: string) => {
+    if (key === sortCol) {
+      setReversed((prev) => !prev);
+    } else {
+      setSortCol(key as keyof Data);
+      setReversed(false);
+    }
+  };
 
   return (
     <Flex w="100%" h="100vh" pt={30} alignItems="center" flexDirection="column">
@@ -179,12 +110,16 @@ export const Match = (props: { data: Data }) => {
             <StatTable
               schema={scoreTableSchema}
               data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
               players={teamAPlayers}
             />
             <RoundsVisualization data={data} />
             <StatTable
               schema={scoreTableSchema}
               data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
               players={teamBPlayers}
             />
           </TabPanel>
@@ -192,12 +127,16 @@ export const Match = (props: { data: Data }) => {
             <StatTable
               schema={utilTableSchema}
               data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
               players={teamAPlayers}
             />
             <Box my={5} />
             <StatTable
               schema={utilTableSchema}
               data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
               players={teamBPlayers}
             />
           </TabPanel>
