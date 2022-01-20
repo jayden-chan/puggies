@@ -4,127 +4,42 @@ import {
   Heading,
   Link,
   Tab,
-  Table,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
-  Tooltip,
 } from "@chakra-ui/react";
 import { format, parse } from "date-fns";
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Data } from "../../types";
+import { Data, Team } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { RoundsVisualization } from "./RoundsVisualization";
+import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
 
-const UtilTable = (props: { data: Data; players: string[]; title: string }) => (
-  <Table variant="simple" size="sm">
-    <Thead>
-      {/* prettier-ignore */}
-      <Tr>
-        <Th>{props.title}</Th>
-        <Th><Tooltip label="# of smokes thrown">S</Tooltip></Th>
-        <Th><Tooltip label="# of molotovs thrown">M</Tooltip></Th>
-        <Th><Tooltip label="# of HE grenades thrown">HE</Tooltip></Th>
-        <Th><Tooltip label="# of flashes thrown">F</Tooltip></Th>
-        <Th><Tooltip label="Flash Assists">FA</Tooltip></Th>
-        <Th><Tooltip label="Utility Damage">UD</Tooltip></Th>
-        <Th>Enemies Blinded</Th>
-        <Th>Teammates Blinded</Th>
-        <Th>Enemies Blind per Flash</Th>
-      </Tr>
-    </Thead>
-    <Tbody>
-      {props.players.map((player) => {
-        const ef = props.data.enemiesFlashed[player] ?? 0;
-        const tf = props.data.teammatesFlashed[player] ?? 0;
-        const numFlashes = props.data.flashesThrown[player] ?? 0;
-
-        return (
-          <Tr>
-            <Td>{player}</Td>
-            <Td>{props.data.smokesThrown[player] ?? 0}</Td>
-            <Td>{props.data.molliesThrown[player] ?? 0}</Td>
-            <Td>{props.data.HEsThrown[player] ?? 0}</Td>
-            <Td>{numFlashes}</Td>
-            <Td>{props.data.flashAssists[player] ?? 0}</Td>
-            <Td>{props.data.utilDamage[player] ?? 0}</Td>
-            <Td>{ef}</Td>
-            <Td>{tf}</Td>
-            <Td>
-              {numFlashes === 0 ? 0 : Math.round((ef / numFlashes) * 100) / 100}
-            </Td>
-          </Tr>
-        );
-      })}
-    </Tbody>
-  </Table>
-);
-
-const ScoreTable = (props: {
-  data: Data;
-  players: string[];
-  title: string;
-}) => (
-  <Table variant="simple" size="sm">
-    <Thead>
-      {/* prettier-ignore */}
-      <Tr>
-        <Th>{props.title}</Th>
-        <Th><Tooltip label="Kills">K</Tooltip></Th>
-        <Th><Tooltip label="Assists">A</Tooltip></Th>
-        <Th><Tooltip label="Deaths">D</Tooltip></Th>
-        <Th><Tooltip label="# of times traded">T</Tooltip></Th>
-        <Th><Tooltip label="Kill/Death ratio">K/D</Tooltip></Th>
-        <Th><Tooltip label="Kill-Death difference">K-D</Tooltip></Th>
-        <Th><Tooltip label="Kills per round">K/R</Tooltip></Th>
-        <Th><Tooltip label="Average damage per round">ADR</Tooltip></Th>
-        <Th><Tooltip label="Headshot kill percentage">HS %</Tooltip></Th>
-        <Th>2K</Th>
-        <Th>3K</Th>
-        <Th>4K</Th>
-        <Th>5K</Th>
-        <Th><Tooltip label="Approximate HLTV 2.0 rating">HLTV 2.0</Tooltip></Th>
-        <Th><Tooltip label="Approximate HLTV Impact rating">Impact</Tooltip></Th>
-        <Th><Tooltip label="% of rounds with kill/assist/survived/traded">KAST</Tooltip></Th>
-      </Tr>
-    </Thead>
-    <Tbody>
-      {props.players.map((player) => (
-        <Tr>
-          <Td>{player}</Td>
-          <Td>{props.data.kills[player] ?? 0}</Td>
-          <Td>{props.data.assists[player] ?? 0}</Td>
-          <Td>{props.data.deaths[player] ?? 0}</Td>
-          <Td>{props.data.trades[player] ?? 0}</Td>
-          <Td>{props.data.kd[player] ?? 0}</Td>
-          <Td>{props.data.kdiff[player] ?? 0}</Td>
-          <Td>{props.data.kpr[player] ?? 0}</Td>
-          <Td>{props.data.adr[player] ?? 0}</Td>
-          <Td>{props.data.headshotPct[player] ?? 0}%</Td>
-          <Td>{props.data["2k"][player] ?? 0}</Td>
-          <Td>{props.data["3k"][player] ?? 0}</Td>
-          <Td>{props.data["4k"][player] ?? 0}</Td>
-          <Td>{props.data["5k"][player] ?? 0}</Td>
-          <Td>{props.data.hltv[player] ?? 0}</Td>
-          <Td>{props.data.impact[player] ?? 0}</Td>
-          <Td>{props.data.kast[player] ?? 0}%</Td>
-        </Tr>
-      ))}
-    </Tbody>
-  </Table>
-);
+const getPlayers = (
+  data: Data,
+  side: Team,
+  sortCol: keyof Data,
+  reverse: boolean
+) =>
+  Object.keys(data.teams)
+    .filter((player) => data.teams[player] === side)
+    .sort((a, b) => {
+      // @ts-ignore
+      const aa = data[sortCol][reverse ? a : b] ?? 0;
+      // @ts-ignore
+      const bb = data[sortCol][reverse ? b : a] ?? 0;
+      return aa - bb;
+    });
 
 export const Match = (props: { data: Data }) => {
   const { data } = props;
   const { id = "" } = useParams();
+
+  const [sortCol, setSortCol] = useState<keyof Data>("hltv");
+  const [reversed, setReversed] = useState(false);
 
   const [match, map, date] = id.match(/^pug_(.*?)_(\d\d\d\d-\d\d-\d\d)/) ?? [];
   if (!match) {
@@ -143,16 +58,20 @@ export const Match = (props: { data: Data }) => {
     data.rounds.slice(0, 15).filter((r) => r.winner === "CT").length +
     data.rounds.slice(15).filter((r) => r.winner === "T").length;
 
-  const teamAPlayers = Object.keys(data.teams)
-    .filter((player) => data.teams[player] === "CT")
-    .sort((a, b) => data.hltv[b] - data.hltv[a]);
+  const teamAPlayers = getPlayers(data, "CT", sortCol, reversed);
+  const teamBPlayers = getPlayers(data, "T", sortCol, reversed);
 
-  const teamBPlayers = Object.keys(data.teams)
-    .filter((player) => data.teams[player] === "T")
-    .sort((a, b) => data.hltv[b] - data.hltv[a]);
+  const teamATitle = `team_${getPlayers(data, "CT", "hltv", false)[0]}`;
+  const teamBTitle = `team_${getPlayers(data, "T", "hltv", false)[0]}`;
 
-  const teamATitle = `team_${teamAPlayers[0]}`;
-  const teamBTitle = `team_${teamBPlayers[0]}`;
+  const colHeaderClicked = (key: string) => {
+    if (key === sortCol) {
+      setReversed((prev) => !prev);
+    } else {
+      setSortCol(key as keyof Data);
+      setReversed(false);
+    }
+  };
 
   return (
     <Flex w="100%" h="100vh" pt={30} alignItems="center" flexDirection="column">
@@ -188,14 +107,38 @@ export const Match = (props: { data: Data }) => {
 
         <TabPanels>
           <TabPanel>
-            <ScoreTable title={teamATitle} data={data} players={teamAPlayers} />
+            <StatTable
+              schema={scoreTableSchema}
+              data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
+              players={teamAPlayers}
+            />
             <RoundsVisualization data={data} />
-            <ScoreTable title={teamBTitle} data={data} players={teamBPlayers} />
+            <StatTable
+              schema={scoreTableSchema}
+              data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
+              players={teamBPlayers}
+            />
           </TabPanel>
           <TabPanel>
-            <UtilTable title={teamATitle} data={data} players={teamAPlayers} />
+            <StatTable
+              schema={utilTableSchema}
+              data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
+              players={teamAPlayers}
+            />
             <Box my={5} />
-            <UtilTable title={teamBTitle} data={data} players={teamBPlayers} />
+            <StatTable
+              schema={utilTableSchema}
+              data={data}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
+              players={teamBPlayers}
+            />
           </TabPanel>
           <TabPanel>
             <Flex alignItems="center" justifyContent="center">
