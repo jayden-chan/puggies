@@ -277,7 +277,6 @@ func main() {
 		smokesThrown = append(smokesThrown, make(map[string]int))
 
 		headToHead = append(headToHead, make(map[string]map[string]Kill))
-		winners = append(winners, make([]string, 5))
 		teams = make(map[string]string)
 		players := p.GameState().Participants().Playing()
 		for idx := range players {
@@ -306,11 +305,14 @@ func main() {
 			Reason: int(e.Reason),
 		})
 
+		var roundWinners []string
 		for player := range teams {
 			if teams[player] == winner {
-				winners[len(rounds)-1] = append(winners[len(rounds)-1], player)
+				roundWinners = append(roundWinners, player)
 			}
 		}
+		fmt.Println(roundWinners)
+		winners = append(winners, roundWinners)
 	})
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
@@ -354,10 +356,11 @@ func main() {
 
 	headToHead = headToHead[startRound+1:]
 
-	winners = winners[startRound+1:]
 	// Need to slice the rounds array differently because it's not
 	// being appended-to on the RoundStart event
 	rounds = rounds[len(rounds)-totalRounds:]
+	winners = winners[len(winners)-totalRounds:]
+	fmt.Println(len(winners), len(rounds), totalRounds)
 
 	h2hTotal := headToHeadTotal(&headToHead)
 	totalKills := arrayMapTotal(&kills)
@@ -389,6 +392,26 @@ func main() {
 	for k, v := range kast {
 		kast[k] = math.Round(v * 100)
 	}
+	rws := make(map[string]float64)
+	for i := 0; i < totalRounds; i++ {
+		winTeamTotalDamage := 0
+		for p := range winners[i] {
+			player := winners[i][p]
+			winTeamTotalDamage += damage[i][player]
+		}
+
+		for p := range winners[i] {
+			switch rounds[i].Reason {
+			// case int(events.RoundEndReasonBombDefused):
+			// case int(events.RoundEndReasonTargetBombed):
+
+			default:
+				player := winners[i][p]
+				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 100.00) / float64(totalRounds)
+			}
+		}
+	}
+	fmt.Println(rws)
 
 	// Initialze these maps with all players from kills + deaths
 	// in case anyone got 0 kills or 0 deaths (lol)
