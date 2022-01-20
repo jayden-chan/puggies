@@ -40,9 +40,8 @@ const KillGridHalf = (props: {
 }) => {
   return (
     <Grid
-      h="100%"
-      templateRows="repeat(6, 30px)"
-      templateColumns="repeat(15, 30px)"
+      templateRows="repeat(6, 1.9rem)"
+      templateColumns="repeat(15, 1.9rem)"
       gridAutoFlow="column"
       gap={1}
     >

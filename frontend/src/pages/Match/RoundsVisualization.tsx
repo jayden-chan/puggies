@@ -49,8 +49,8 @@ const RoundResultGridHalf = (props: {
   topTeam: Team;
 }) => (
   <Grid
-    templateRows="repeat(2, 30px)"
-    templateColumns="repeat(15, 30px)"
+    templateRows="repeat(2, 1.9rem)"
+    templateColumns="repeat(15, 1.9rem)"
     gridAutoFlow="column"
     gap={1}
   >
