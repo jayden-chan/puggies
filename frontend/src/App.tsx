@@ -1,10 +1,9 @@
+import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import * as React from "react";
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { Route, Routes } from "react-router-dom";
+import { data } from "./data";
 import { Home } from "./pages/Home";
 import { MatchPage } from "./pages/Match";
-import { data } from "./data";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",

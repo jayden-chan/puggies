@@ -1,5 +1,5 @@
-import { Team, RawData, Match } from "./types";
 import { format, parse } from "date-fns";
+import { Match, RawData, Team } from "./types";
 
 export const getPlayers = (
   data: RawData,

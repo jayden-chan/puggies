@@ -8,8 +8,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
 import * as React from "react";
+import { Link as ReactRouterLink } from "react-router-dom";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 import { data } from "../data";
 import { Match } from "../types";
