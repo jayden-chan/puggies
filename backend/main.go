@@ -47,26 +47,28 @@ func headToHeadTotal(h *[]map[string]map[string]int) map[string]map[string]int {
 }
 
 type Output struct {
-	TotalRounds      int                       `json:"totalRounds"`
-	Teams            map[string]string         `json:"teams"`
-	Kills            map[string]int            `json:"kills"`
-	Assists          map[string]int            `json:"assists"`
-	Deaths           map[string]int            `json:"deaths"`
-	Trades           map[string]int            `json:"timesTraded"`
-	HeadshotPct      map[string]float64        `json:"headshotPct"`
-	Kd               map[string]float64        `json:"kd"`
-	Kdiff            map[string]int            `json:"kdiff"`
-	Kpr              map[string]float64        `json:"kpr"`
-	Adr              map[string]float64        `json:"adr"`
-	Kast             map[string]float64        `json:"kast"`
-	Impact           map[string]float64        `json:"impact"`
-	Hltv             map[string]float64        `json:"hltv"`
-	UtilDamage       map[string]int            `json:"utilDamage"`
-	FlashAssists     map[string]int            `json:"flashAssists"`
-	EnemiesFlashed   map[string]int            `json:"enemiesFlashed"`
-	TeammatesFlashed map[string]int            `json:"teammatesFlashed"`
-	Rounds           []Round                   `json:"rounds"`
-	HeadToHead       map[string]map[string]int `json:"headToHead"`
+	TotalRounds      int                `json:"totalRounds"`
+	Teams            map[string]string  `json:"teams"`
+	Kills            map[string]int     `json:"kills"`
+	Assists          map[string]int     `json:"assists"`
+	Deaths           map[string]int     `json:"deaths"`
+	Trades           map[string]int     `json:"timesTraded"`
+	HeadshotPct      map[string]float64 `json:"headshotPct"`
+	Kd               map[string]float64 `json:"kd"`
+	Kdiff            map[string]int     `json:"kdiff"`
+	Kpr              map[string]float64 `json:"kpr"`
+	Adr              map[string]float64 `json:"adr"`
+	Kast             map[string]float64 `json:"kast"`
+	Impact           map[string]float64 `json:"impact"`
+	Hltv             map[string]float64 `json:"hltv"`
+	UtilDamage       map[string]int     `json:"utilDamage"`
+	FlashAssists     map[string]int     `json:"flashAssists"`
+	EnemiesFlashed   map[string]int     `json:"enemiesFlashed"`
+	TeammatesFlashed map[string]int     `json:"teammatesFlashed"`
+	Rounds           []Round            `json:"rounds"`
+
+	HeadToHead    map[string]map[string]int   `json:"headToHead"`
+	HeadToHeadRaw []map[string]map[string]int `json:"headToHeadRaw"`
 
 	FlashesThrown map[string]int `json:"flashesThrown"`
 	SmokesThrown  map[string]int `json:"smokesThrown"`
@@ -461,6 +463,7 @@ func main() {
 		TeammatesFlashed: totalTeammatesFlashed,
 		Rounds:           rounds,
 		HeadToHead:       h2hTotal,
+		HeadToHeadRaw:    headToHead,
 
 		FlashesThrown: totalFlashesThrown,
 		SmokesThrown:  totalSmokesThrown,
