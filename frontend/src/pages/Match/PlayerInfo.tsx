@@ -14,7 +14,7 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { HeadToHead, Match, Team } from "../../types";
+import { KillFeed, Match, Team } from "../../types";
 import { CT_BLUE, T_YELLOW } from "./RoundsVisualization";
 
 export const GridIcon = (props: {
@@ -33,7 +33,7 @@ export const GridIcon = (props: {
 );
 
 const KillGridHalf = (props: {
-  headToHeadRaw: HeadToHead[];
+  killFeed: KillFeed;
   player: string;
   endSide: string;
   rounds: number[];
@@ -45,14 +45,11 @@ const KillGridHalf = (props: {
       gridAutoFlow="column"
       gap={1}
     >
-      {props.headToHeadRaw
+      {props.killFeed
         .slice(...props.rounds)
         .map((round, roundNum) => {
           const roundH2H = round[props.player] ?? {};
-          const numKills = Object.values(roundH2H).reduce(
-            (acc, curr) => acc + curr,
-            0
-          );
+          const numKills = Object.values(roundH2H).length;
           return [5, 4, 3, 2, 1, 0].map((i) => {
             return i !== 0 ? (
               <GridIcon
@@ -75,7 +72,7 @@ const KillGridHalf = (props: {
 };
 
 const KillsVisualization = (props: {
-  headToHeadRaw: HeadToHead[];
+  killFeed: KillFeed;
   player: string;
   endSide: Team;
 }) => {
@@ -120,7 +117,7 @@ export const PlayerInfo = (props: { match: Match }) => {
             Kills
           </Heading>
           <KillsVisualization
-            headToHeadRaw={props.match.headToHeadRaw}
+            killFeed={props.match.killFeed}
             player={selectedPlayer}
             endSide={props.match.teams[selectedPlayer]}
           />
