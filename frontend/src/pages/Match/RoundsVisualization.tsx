@@ -2,7 +2,7 @@ import { Divider, Flex, Heading, Text, Tooltip } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Data, Round, Team } from "../../types";
+import { Match, Round, Team } from "../../types";
 
 const T_YELLOW = "#ead18a";
 const CT_BLUE = "#b5d4ee";
@@ -63,7 +63,7 @@ const RoundResultIcon = (props: {
   );
 };
 
-export const RoundsVisualization = (props: { data: Data }) => {
+export const RoundsVisualization = (props: { data: Match }) => {
   const { data } = props;
   const ScoreNumber = (props: { rounds: number[]; side: Team }) => (
     <Heading textColor={props.side === "T" ? T_YELLOW : CT_BLUE} fontSize="3xl">
