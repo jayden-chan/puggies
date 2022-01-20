@@ -62,6 +62,7 @@ type Output struct {
 	Kast             map[string]float64 `json:"kast"`
 	Impact           map[string]float64 `json:"impact"`
 	Hltv             map[string]float64 `json:"hltv"`
+	Rws              map[string]float64 `json:"rws"`
 	UtilDamage       map[string]int     `json:"utilDamage"`
 	FlashAssists     map[string]int     `json:"flashAssists"`
 	EnemiesFlashed   map[string]int     `json:"enemiesFlashed"`
@@ -134,6 +135,7 @@ func main() {
 	var rounds []Round
 
 	var teams map[string]string
+	var winners [][]string
 	deathTimes := make(map[string]Death)
 
 	// Register handler on kill events
@@ -256,24 +258,6 @@ func main() {
 		}
 	})
 
-	// p.RegisterEventHandler(func(e events.PlayerTeamChange) {
-	// 	if teams == nil || e.IsBot {
-	// 		return
-	// 	}
-
-	// 	switch e.NewTeam {
-	// 	case demcommon.TeamCounterTerrorists:
-	// 		teams[e.Player.Name] = "CT"
-	// 	case demcommon.TeamTerrorists:
-	// 		teams[e.Player.Name] = "T"
-	// 	}
-
-	// })
-
-	// p.RegisterEventHandler(func(e events.TeamSideSwitch) {
-	// 	teams = make(map[string]string)
-	// })
-
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
 		kills = append(kills, make(map[string]int))
@@ -293,6 +277,7 @@ func main() {
 		smokesThrown = append(smokesThrown, make(map[string]int))
 
 		headToHead = append(headToHead, make(map[string]map[string]Kill))
+		winners = append(winners, make([]string, 5))
 		teams = make(map[string]string)
 		players := p.GameState().Participants().Playing()
 		for idx := range players {
@@ -323,7 +308,7 @@ func main() {
 
 		for player := range teams {
 			if teams[player] == winner {
-				fmt.Printf("%s %s %d\n", teams[player], player, len(rounds)-1)
+				winners[len(rounds)-1] = append(winners[len(rounds)-1], player)
 			}
 		}
 	})
@@ -369,6 +354,7 @@ func main() {
 
 	headToHead = headToHead[startRound+1:]
 
+	winners = winners[startRound+1:]
 	// Need to slice the rounds array differently because it's not
 	// being appended-to on the RoundStart event
 	rounds = rounds[len(rounds)-totalRounds:]
