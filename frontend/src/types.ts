@@ -34,6 +34,7 @@ export type RawData = {
   utilDamage: { [key: string]: number };
 
   headToHead: HeadToHead;
+  headToHeadRaw: HeadToHead[];
 
   "2k": { [key: string]: number };
   "3k": { [key: string]: number };

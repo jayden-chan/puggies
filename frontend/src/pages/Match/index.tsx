@@ -16,6 +16,7 @@ import { getPlayers } from "../../data";
 import { Match, RawData } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { RoundsVisualization } from "./RoundsVisualization";
+import { PlayerInfo } from "./PlayerInfo";
 import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
 
 export const MatchPage = (props: { data: Match[] }) => {
@@ -80,6 +81,7 @@ export const MatchPage = (props: { data: Match[] }) => {
           <Tab>Scoreboard</Tab>
           <Tab>Utility</Tab>
           <Tab>Head to Head</Tab>
+          <Tab>Performances</Tab>
         </TabList>
 
         <TabPanels>
@@ -124,6 +126,10 @@ export const MatchPage = (props: { data: Match[] }) => {
                 headToHead={match.headToHead}
               />
             </Flex>
+          </TabPanel>
+
+          <TabPanel>
+            <PlayerInfo match={match} />
           </TabPanel>
         </TabPanels>
       </Tabs>

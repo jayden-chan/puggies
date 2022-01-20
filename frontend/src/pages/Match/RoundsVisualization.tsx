@@ -1,11 +1,11 @@
-import { Divider, Flex, Heading, Text, Tooltip } from "@chakra-ui/react";
+import { Divider, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Match, Round, Team } from "../../types";
+import { GridIcon } from "./PlayerInfo";
 
-const T_YELLOW = "#ead18a";
-const CT_BLUE = "#b5d4ee";
+export const T_YELLOW = "#ead18a";
+export const CT_BLUE = "#b5d4ee";
 
 const RoundResultIcon = (props: {
   round: Round;
@@ -26,42 +26,42 @@ const RoundResultIcon = (props: {
   }
 
   return (
-    <Flex flexDirection="column" h="67%" mx="2px">
-      <Tooltip label={`Round ${props.roundNum}`}>
-        <Flex
-          visibility={
-            props.round.winner === props.topTeam ? "initial" : "hidden"
-          }
-          h="50%"
-          w="min"
-          alignItems="center"
-          justifyContent="center"
-          backgroundColor={props.topTeam === "T" ? T_YELLOW : CT_BLUE}
-          borderRadius={5}
-          px={2}
-        >
-          <FontAwesomeIcon icon={icon} color="black" />
-        </Flex>
-      </Tooltip>
-      <Tooltip label={`Round ${props.roundNum}`}>
-        <Flex
-          visibility={
-            props.round.winner !== props.topTeam ? "initial" : "hidden"
-          }
-          h="50%"
-          w="min"
-          alignItems="center"
-          justifyContent="center"
-          backgroundColor={props.topTeam !== "T" ? T_YELLOW : CT_BLUE}
-          borderRadius={5}
-          px={2}
-        >
-          <FontAwesomeIcon icon={icon} color="black" />
-        </Flex>
-      </Tooltip>
-    </Flex>
+    <>
+      <GridIcon
+        bg={props.topTeam === "T" ? T_YELLOW : CT_BLUE}
+        visibility={props.round.winner === props.topTeam ? "initial" : "hidden"}
+        icon={icon}
+      />
+      <GridIcon
+        bg={props.topTeam !== "T" ? T_YELLOW : CT_BLUE}
+        visibility={props.round.winner !== props.topTeam ? "initial" : "hidden"}
+        icon={icon}
+      />
+    </>
   );
 };
+
+const RoundResultGridHalf = (props: {
+  rounds: Round[];
+  range: number[];
+  topTeam: Team;
+}) => (
+  <Grid
+    templateRows="repeat(2, 30px)"
+    templateColumns="repeat(15, 30px)"
+    gridAutoFlow="column"
+    gap={1}
+  >
+    {props.rounds.slice(...props.range).map((r, i) => (
+      <RoundResultIcon
+        key={`round${i + props.range[0] + 1}`}
+        round={r}
+        topTeam={props.topTeam}
+        roundNum={i + props.range[0] + 1}
+      />
+    ))}
+  </Grid>
+);
 
 export const RoundsVisualization = (props: { data: Match }) => {
   const { data } = props;
@@ -76,7 +76,7 @@ export const RoundsVisualization = (props: { data: Match }) => {
   );
 
   return (
-    <Flex my={5}>
+    <Flex my={5} h="110px" alignItems="center" justifyContent="flex-start">
       <Flex mr={10}>
         <Flex
           flexDirection="column"
@@ -100,27 +100,9 @@ export const RoundsVisualization = (props: { data: Match }) => {
         </Flex>
       </Flex>
 
-      <Flex alignItems="center">
-        {data.rounds.slice(0, 15).map((r, i) => (
-          <RoundResultIcon
-            key={`round${i + 1}`}
-            round={r}
-            topTeam="T"
-            roundNum={i + 1}
-          />
-        ))}
-
-        <Divider orientation="vertical" mx={5} />
-
-        {data.rounds.slice(15).map((r, i) => (
-          <RoundResultIcon
-            key={`round${i + 16}`}
-            round={r}
-            topTeam="CT"
-            roundNum={i + 16}
-          />
-        ))}
-      </Flex>
+      <RoundResultGridHalf rounds={data.rounds} range={[0, 15]} topTeam="T" />
+      <Divider orientation="vertical" mx={5} />
+      <RoundResultGridHalf rounds={data.rounds} range={[15]} topTeam="CT" />
     </Flex>
   );
 };
