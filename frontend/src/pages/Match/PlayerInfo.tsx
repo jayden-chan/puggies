@@ -6,6 +6,7 @@ import {
   GridItem,
   Heading,
   Select,
+  Tooltip,
 } from "@chakra-ui/react";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -20,11 +21,14 @@ export const GridIcon = (props: {
   bg: string;
   visibility: "visible" | "hidden" | "initial";
   icon: FontAwesomeIconProps["icon"];
+  label?: string;
 }) => (
   <GridItem bg={props.bg} borderRadius={5} visibility={props.visibility}>
-    <Flex alignItems="center" justifyContent="center" h="100%">
-      <FontAwesomeIcon icon={props.icon} color="black" />
-    </Flex>
+    <Tooltip label={props.label}>
+      <Flex alignItems="center" justifyContent="center" h="100%">
+        <FontAwesomeIcon icon={props.icon} color="black" />
+      </Flex>
+    </Tooltip>
   </GridItem>
 );
 

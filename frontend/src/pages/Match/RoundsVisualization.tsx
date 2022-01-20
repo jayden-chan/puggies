@@ -30,11 +30,13 @@ const RoundResultIcon = (props: {
       <GridIcon
         bg={props.topTeam === "T" ? T_YELLOW : CT_BLUE}
         visibility={props.round.winner === props.topTeam ? "initial" : "hidden"}
+        label={`Round ${props.roundNum}`}
         icon={icon}
       />
       <GridIcon
-        bg={props.topTeam !== "T" ? T_YELLOW : CT_BLUE}
+        bg={props.topTeam === "CT" ? T_YELLOW : CT_BLUE}
         visibility={props.round.winner !== props.topTeam ? "initial" : "hidden"}
+        label={`Round ${props.roundNum}`}
         icon={icon}
       />
     </>
