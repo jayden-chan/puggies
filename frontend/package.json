@@ -31,7 +31,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "echo no tests && exit 1",
-    "eject": "react-scripts eject"
+    "deploy": "react-scripts build && cd build && cp index.html 200.html && surge --domain=pugs.jayden.codes"
   },
   "eslintConfig": {
     "extends": "react-app"

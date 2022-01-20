@@ -41,7 +41,17 @@ export type RawData = {
   "5k": { [key: string]: number };
 };
 
-export type Data = RawData & {
+export type Match = RawData & {
   efPerFlash: { [key: string]: number };
   name: { [key: string]: string };
+  meta: {
+    demoLink: string;
+    id: string;
+    dateString: string;
+    map: string;
+    teamARounds: number;
+    teamBRounds: number;
+    teamATitle: string;
+    teamBTitle: string;
+  };
 };

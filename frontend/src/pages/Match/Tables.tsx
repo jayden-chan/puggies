@@ -1,10 +1,10 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { Table, Tbody, Td, Th, Thead, Tooltip, Tr } from "@chakra-ui/react";
 import React from "react";
-import { Data } from "../../types";
+import { Match } from "../../types";
 
 export type TableSchema = {
-  key: keyof Data;
+  key: keyof Match;
   title: string;
   label?: string;
   minW?: string;
@@ -48,10 +48,10 @@ export const scoreTableSchema: TableSchema = [
 ];
 
 export const StatTable = (props: {
-  data: Data;
+  data: Match;
   players: string[];
   schema: TableSchema;
-  sort: { key: keyof Data; reversed: boolean };
+  sort: { key: keyof Match; reversed: boolean };
   colClicked?: (key: string) => void;
 }) => {
   return (

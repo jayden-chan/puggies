@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, useColorMode } from "@chakra-ui/react";
 import React from "react";
 import { HeadToHead } from "../../types";
 
@@ -30,6 +30,7 @@ export const HeadToHeadTable = (props: {
   headToHead: HeadToHead;
   teams: [string[], string[]];
 }) => {
+  const { colorMode } = useColorMode();
   return (
     <Grid
       templateRows="repeat(6, auto)"
@@ -68,7 +69,9 @@ export const HeadToHeadTable = (props: {
                   key={`${rowPlayer}${columnPlayer}`}
                   justifyContent="center"
                   alignItems="center"
-                  backgroundColor="#1f2736"
+                  backgroundColor={
+                    colorMode === "dark" ? "#1f2736" : "lightgray"
+                  }
                 >
                   <Box w="100px" h="90px" position="relative">
                     <Flex
