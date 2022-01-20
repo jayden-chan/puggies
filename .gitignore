@@ -1,4 +1,6 @@
 *.vim
 *.swp
 *.bin
+*.dem
 node_modules
+demos

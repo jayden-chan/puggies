@@ -7,6 +7,7 @@ import (
 	"os"
 
 	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
+	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	demcommon "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
@@ -255,23 +256,23 @@ func main() {
 		}
 	})
 
-	p.RegisterEventHandler(func(e events.PlayerTeamChange) {
-		if teams == nil || e.IsBot {
-			return
-		}
+	// p.RegisterEventHandler(func(e events.PlayerTeamChange) {
+	// 	if teams == nil || e.IsBot {
+	// 		return
+	// 	}
 
-		switch e.NewTeam {
-		case demcommon.TeamCounterTerrorists:
-			teams[e.Player.Name] = "CT"
-		case demcommon.TeamTerrorists:
-			teams[e.Player.Name] = "T"
-		}
+	// 	switch e.NewTeam {
+	// 	case demcommon.TeamCounterTerrorists:
+	// 		teams[e.Player.Name] = "CT"
+	// 	case demcommon.TeamTerrorists:
+	// 		teams[e.Player.Name] = "T"
+	// 	}
 
-	})
+	// })
 
-	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
-		teams = make(map[string]string)
-	})
+	// p.RegisterEventHandler(func(e events.TeamSideSwitch) {
+	// 	teams = make(map[string]string)
+	// })
 
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
@@ -292,6 +293,17 @@ func main() {
 		smokesThrown = append(smokesThrown, make(map[string]int))
 
 		headToHead = append(headToHead, make(map[string]map[string]Kill))
+		teams = make(map[string]string)
+		players := p.GameState().Participants().Playing()
+		for idx := range players {
+			player := players[idx]
+			switch player.Team {
+			case common.TeamCounterTerrorists:
+				teams[player.Name] = "CT"
+			case common.TeamTerrorists:
+				teams[player.Name] = "T"
+			}
+		}
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
@@ -308,6 +320,12 @@ func main() {
 			Winner: winner,
 			Reason: int(e.Reason),
 		})
+
+		for player := range teams {
+			if teams[player] == winner {
+				fmt.Printf("%s %s %d\n", teams[player], player, len(rounds)-1)
+			}
+		}
 	})
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
@@ -489,5 +507,8 @@ func main() {
 		HEsThrown:     totalHEsThrown,
 	}, "", "  ")
 
-	fmt.Println(string(jsonstring))
+	if false {
+
+		fmt.Println(string(jsonstring))
+	}
 }
