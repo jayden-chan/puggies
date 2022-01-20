@@ -29,7 +29,7 @@ func arrayMapTotal(a *[]map[string]int) map[string]int {
 	return ret
 }
 
-func headToHeadTotal(h *[]map[string]map[string]int) map[string]map[string]int {
+func headToHeadTotal(h *[]map[string]map[string]Kill) map[string]map[string]int {
 	ret := make(map[string]map[string]int)
 	for _, m := range *h {
 		for killer, victims := range m {
@@ -37,8 +37,8 @@ func headToHeadTotal(h *[]map[string]map[string]int) map[string]map[string]int {
 				ret[killer] = make(map[string]int)
 			}
 
-			for victim, deaths := range victims {
-				ret[killer][victim] += deaths
+			for victim := range victims {
+				ret[killer][victim] += 1
 			}
 		}
 	}
@@ -67,8 +67,8 @@ type Output struct {
 	TeammatesFlashed map[string]int     `json:"teammatesFlashed"`
 	Rounds           []Round            `json:"rounds"`
 
-	HeadToHead    map[string]map[string]int   `json:"headToHead"`
-	HeadToHeadRaw []map[string]map[string]int `json:"headToHeadRaw"`
+	HeadToHead map[string]map[string]int    `json:"headToHead"`
+	KillFeed   []map[string]map[string]Kill `json:"killFeed"`
 
 	FlashesThrown map[string]int `json:"flashesThrown"`
 	SmokesThrown  map[string]int `json:"smokesThrown"`
@@ -86,6 +86,16 @@ type Output struct {
 type Round struct {
 	Winner string `json:"winner"`
 	Reason int    `json:"winReason"`
+}
+
+type Kill struct {
+	Weapon            demcommon.EquipmentType `json:"weapon"`
+	IsHeadshot        bool                    `json:"isHeadshot"`
+	AttackerBlind     bool                    `json:"attackerBlind"`
+	AssistedFlash     bool                    `json:"assistedFlash"`
+	NoScope           bool                    `json:"noScope"`
+	ThroughSmoke      bool                    `json:"throughSmoke"`
+	PenetratedObjects int                     `json:"penetratedObjects"`
 }
 
 type Death struct {
@@ -118,7 +128,7 @@ func main() {
 	var HEsThrown []map[string]int
 	var molliesThrown []map[string]int
 	var smokesThrown []map[string]int
-	var headToHead []map[string]map[string]int
+	var headToHead []map[string]map[string]Kill
 
 	var rounds []Round
 
@@ -160,10 +170,18 @@ func main() {
 
 			if headToHead != nil {
 				if headToHead[len(headToHead)-1][e.Killer.Name] == nil {
-					headToHead[len(headToHead)-1][e.Killer.Name] = make(map[string]int)
+					headToHead[len(headToHead)-1][e.Killer.Name] = make(map[string]Kill)
 				}
 
-				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] += 1
+				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] = Kill{
+					Weapon:            e.Weapon.Type,
+					IsHeadshot:        e.IsHeadshot,
+					AttackerBlind:     e.AttackerBlind,
+					AssistedFlash:     e.AssistedFlash,
+					NoScope:           e.NoScope,
+					ThroughSmoke:      e.ThroughSmoke,
+					PenetratedObjects: e.PenetratedObjects,
+				}
 			}
 
 			// check for trade kills
@@ -273,7 +291,7 @@ func main() {
 		molliesThrown = append(molliesThrown, make(map[string]int))
 		smokesThrown = append(smokesThrown, make(map[string]int))
 
-		headToHead = append(headToHead, make(map[string]map[string]int))
+		headToHead = append(headToHead, make(map[string]map[string]Kill))
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
@@ -463,7 +481,7 @@ func main() {
 		TeammatesFlashed: totalTeammatesFlashed,
 		Rounds:           rounds,
 		HeadToHead:       h2hTotal,
-		HeadToHeadRaw:    headToHead,
+		KillFeed:         headToHead,
 
 		FlashesThrown: totalFlashesThrown,
 		SmokesThrown:  totalSmokesThrown,
