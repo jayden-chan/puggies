@@ -382,556 +382,2324 @@
       "jiaedin": 10
     }
   },
-  "headToHeadRaw": [
+  "killFeed": [
     {
       "Spacebro": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 2,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 9,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "MrGenericUser": 1,
-        "Spacebro": 1,
-        "nosidE": 1
+        "MrGenericUser": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 2,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 104,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Spacebro": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
       },
       "Wild_West": {
-        "Spacebro": 1,
-        "kevin": 1
+        "Spacebro": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "awesomaave": {
-        "MrGenericUser": 1,
-        "Nana4321": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": 9,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "nosidE": 1
+        "nosidE": {
+          "weapon": 302,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "atomic": 1
+        "atomic": {
+          "weapon": 301,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Wild_West": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Spacebro": 1,
-        "nosidE": 1
+        "Spacebro": {
+          "weapon": 102,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 102,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1,
-        "kevin": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1,
-        "jiaedin": 1
+        "awesomaave": {
+          "weapon": 4,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 4,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Wild_West": {
-        "Spacebro": 1,
-        "nosidE": 1
+        "Spacebro": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        },
+        "kevin": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 302,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "awesomaave": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Nana4321": {
-        "awesomaave": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Spacebro": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 307,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 4,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1,
-        "Spacebro": 1,
-        "nosidE": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Wild_West": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "kevin": 1
+        "kevin": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1,
-        "nosidE": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1,
-        "honestpretzels": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
       },
       "nosidE": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "awesomaave": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1,
-        "nosidE": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "atomic": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Spacebro": {
-        "Wild_West": 1,
-        "honestpretzels": 1
+        "Wild_West": {
+          "weapon": 307,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 307,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1,
-        "jiaedin": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Spacebro": {
-        "atomic": 1
+        "atomic": {
+          "weapon": 307,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "nosidE": 1
+        "nosidE": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 5,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 309,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "awesomaave": 1,
-        "honestpretzels": 1
+        "awesomaave": {
+          "weapon": 304,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 304,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 4,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "atomic": 1,
-        "awesomaave": 1,
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "atomic": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 503,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 309,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 309,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Wild_West": {
-        "nosidE": 1
+        "nosidE": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        },
+        "kevin": {
+          "weapon": 309,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1,
-        "Spacebro": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "atomic": {
-        "MrGenericUser": 1,
-        "Nana4321": 1,
-        "Spacebro": 1,
-        "kevin": 1,
-        "nosidE": 1
+        "MrGenericUser": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "Nana4321": 1,
-        "nosidE": 1
+        "Nana4321": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "atomic": 1,
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "atomic": {
-        "Nana4321": 1,
-        "Spacebro": 1
+        "Nana4321": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "atomic": 1,
-        "honestpretzels": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "awesomaave": 1,
-        "jiaedin": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "atomic": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Spacebro": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 307,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Wild_West": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 306,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "awesomaave": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 309,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "Wild_West": 1,
-        "atomic": 1
+        "Wild_West": {
+          "weapon": 1,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": 1,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Wild_West": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 2,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "awesomaave": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 2,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 7,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "kevin": 1
+        "kevin": {
+          "weapon": 2,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "awesomaave": 1,
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "awesomaave": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 9,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 302,
+          "isHeadshot": true,
+          "attackerBlind": true,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Nana4321": {
-        "atomic": 1,
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "atomic": {
+          "weapon": 1,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 102,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 102,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1
+        "awesomaave": {
+          "weapon": 302,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "awesomaave": 1,
-        "honestpretzels": 1
+        "awesomaave": {
+          "weapon": 102,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 102,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "nosidE": 1
+        "nosidE": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "MrGenericUser": 1,
-        "Nana4321": 1,
-        "Spacebro": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "atomic": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 302,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": 302,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 302,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "atomic": 1
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Nana4321": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 106,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Spacebro": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1,
-        "honestpretzels": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Spacebro": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 301,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "atomic": 1,
-        "awesomaave": 1
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "Wild_West": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "atomic": 1,
-        "awesomaave": 1
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Wild_West": {
-        "Spacebro": 1,
-        "nosidE": 1
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": true,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Nana4321": 1,
-        "Spacebro": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "atomic": 1,
-        "awesomaave": 1,
-        "honestpretzels": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "atomic": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "MrGenericUser": 1,
-        "Spacebro": 1,
-        "kevin": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "atomic": 1
+        "Wild_West": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "awesomaave": 1,
-        "honestpretzels": 1,
-        "jiaedin": 1
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Spacebro": {
-        "Wild_West": 1,
-        "awesomaave": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Wild_West": {
-        "nosidE": 1
+        "nosidE": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "MrGenericUser": 1,
-        "Nana4321": 1,
-        "kevin": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 4,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "atomic": 1,
-        "honestpretzels": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Spacebro": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "atomic": 1,
-        "honestpretzels": 1
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
       },
       "nosidE": {
-        "awesomaave": 1,
-        "jiaedin": 1
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Nana4321": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "Spacebro": 1,
-        "kevin": 1
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "awesomaave": {
-        "MrGenericUser": 1,
-        "Nana4321": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "atomic": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Nana4321": {
-        "atomic": 1,
-        "honestpretzels": 1
+        "atomic": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": 102,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Wild_West": {
-        "MrGenericUser": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "Nana4321": 1,
-        "kevin": 1
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "awesomaave": 1
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "Wild_West": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "awesomaave": 1
+        "awesomaave": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "jiaedin": {
-        "Spacebro": 1
+        "Spacebro": {
+          "weapon": 4,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "Wild_West": 1,
-        "atomic": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "MrGenericUser": {
-        "jiaedin": 1
+        "jiaedin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Spacebro": {
-        "awesomaave": 1
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "atomic": {
-        "MrGenericUser": 1,
-        "nosidE": 1
+        "MrGenericUser": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "awesomaave": {
-        "Nana4321": 1
+        "Nana4321": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "honestpretzels": {
-        "Spacebro": 1,
-        "kevin": 1
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": true,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "kevin": {
-        "Wild_West": 1
+        "Wild_West": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "nosidE": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 4,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     },
     {
       "Spacebro": {
-        "honestpretzels": 1
+        "honestpretzels": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       },
       "Wild_West": {
-        "Spacebro": 1,
-        "nosidE": 1
+        "Spacebro": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "nosidE": {
+          "weapon": 303,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
       },
       "kevin": {
-        "Wild_West": 1,
-        "atomic": 1,
-        "awesomaave": 1,
-        "jiaedin": 1
+        "Wild_West": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "awesomaave": {
+          "weapon": 305,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": 305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
       }
     }
   ],
