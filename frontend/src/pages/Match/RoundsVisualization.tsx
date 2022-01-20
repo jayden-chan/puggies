@@ -94,13 +94,9 @@ export const RoundsVisualization = (props: { data: Data }) => {
           alignItems="center"
           justifyContent="center"
         >
-          <Heading textColor={CT_BLUE} fontSize="3xl">
-            {data.rounds.slice(15).filter((r) => r.winner === "CT").length}
-          </Heading>
+          <ScoreNumber side="CT" rounds={[15]} />
           <Text>2nd</Text>
-          <Heading textColor={T_YELLOW} fontSize="3xl">
-            {data.rounds.slice(15).filter((r) => r.winner === "T").length}
-          </Heading>
+          <ScoreNumber side="T" rounds={[15]} />
         </Flex>
       </Flex>
 

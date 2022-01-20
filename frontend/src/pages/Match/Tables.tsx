@@ -35,24 +35,16 @@ export const scoreTableSchema: TableSchema = [
   { key: "kdiff", title: "K-D", label: "Kill-death difference" },
   { key: "kpr", title: "K/R", label: "Kills per round" },
   { key: "adr", title: "ADR", label: "Average damage per round" },
-  {
-    key: "headshotPct",
-    title: "HS %",
-    label: "Headshot kill percentage",
-    pct: true,
-  },
-  { key: "2k", title: "2K" },
-  { key: "3k", title: "3K" },
-  { key: "4k", title: "4K" },
-  { key: "5k", title: "5K" },
+  // prettier-ignore
+  { key: "headshotPct", title: "HS %", label: "Headshot kill percentage", pct: true },
+  { key: "2k", title: "2K", label: "# of rounds with 2 kills" },
+  { key: "3k", title: "3K", label: "# of rounds with 3 kills" },
+  { key: "4k", title: "4K", label: "# of rounds with 4 kills" },
+  { key: "5k", title: "5K", label: "# of rounds with 5 kills" },
   { key: "hltv", title: "HLTV 2.0", label: "Approximate HLTV 2.0 rating" },
   { key: "impact", title: "Impact", label: "Approximate HLTV Impact rating" },
-  {
-    key: "kast",
-    title: "KAST",
-    pct: true,
-    label: "% of rounds with kill/assist/survived/traded",
-  },
+  // prettier-ignore
+  { key: "kast", title: "KAST", pct: true, label: "% of rounds with kill/assist/survived/traded" },
 ];
 
 export const StatTable = (props: {
@@ -82,12 +74,19 @@ export const StatTable = (props: {
               ) : (
                 col.title
               )}
-              {col.key === props.sort.key &&
-                (props.sort.reversed ? (
-                  <ChevronUpIcon w={4} h={4} />
-                ) : (
-                  <ChevronDownIcon w={4} h={4} />
-                ))}
+              {props.sort.reversed ? (
+                <ChevronUpIcon
+                  w={4}
+                  h={4}
+                  visibility={col.key === props.sort.key ? "visible" : "hidden"}
+                />
+              ) : (
+                <ChevronDownIcon
+                  w={4}
+                  h={4}
+                  visibility={col.key === props.sort.key ? "visible" : "hidden"}
+                />
+              )}
             </Th>
           ))}
         </Tr>
