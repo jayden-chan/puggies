@@ -101,7 +101,10 @@ const KillsVisualization = (props: {
   );
 };
 
-export const PlayerInfo = (props: { match: Match }) => {
+export const PlayerInfo = (props: {
+  match: Match;
+  teams: { title: string; players: string[] }[];
+}) => {
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
   return (
     <Box>
@@ -110,32 +113,28 @@ export const PlayerInfo = (props: { match: Match }) => {
           Select player
         </MenuButton>
         <MenuList>
-          <MenuGroup title="CT">
-            {Object.entries(props.match.teams)
-              .filter(([, team]) => team === "CT")
-              .map(([player]) => (
-                <MenuItem
-                  key={player}
-                  value={player}
-                  onClick={() => setSelectedPlayer(player)}
-                >
-                  {player}
-                </MenuItem>
-              ))}
+          <MenuGroup title={props.teams[0].title}>
+            {props.teams[0].players.map((player) => (
+              <MenuItem
+                key={player}
+                value={player}
+                onClick={() => setSelectedPlayer(player)}
+              >
+                {player}
+              </MenuItem>
+            ))}
           </MenuGroup>
 
-          <MenuGroup title="T">
-            {Object.entries(props.match.teams)
-              .filter(([, team]) => team === "T")
-              .map(([player]) => (
-                <MenuItem
-                  key={player}
-                  value={player}
-                  onClick={() => setSelectedPlayer(player)}
-                >
-                  {player}
-                </MenuItem>
-              ))}
+          <MenuGroup title={props.teams[1].title}>
+            {props.teams[1].players.map((player) => (
+              <MenuItem
+                key={player}
+                value={player}
+                onClick={() => setSelectedPlayer(player)}
+              >
+                {player}
+              </MenuItem>
+            ))}
           </MenuGroup>
         </MenuList>
       </Menu>

@@ -8,7 +8,7 @@ export const getPlayers = (
   side: Team,
   sortCol: keyof RawData,
   reverse: boolean
-) =>
+): string[] =>
   Object.keys(data.teams)
     .filter((player) => data.teams[player] === side)
     .sort((a, b) => {

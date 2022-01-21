@@ -141,7 +141,13 @@ export const MatchPage = (props: { data: Match[] }) => {
           </TabPanel>
 
           <TabPanel>
-            <PlayerInfo match={match} />
+            <PlayerInfo
+              match={match}
+              teams={[
+                { title: teamATitle, players: teamAPlayers },
+                { title: teamBTitle, players: teamBPlayers },
+              ]}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
