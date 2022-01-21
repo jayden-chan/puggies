@@ -95,6 +95,8 @@ type Round struct {
 
 type Kill struct {
 	Weapon            demcommon.EquipmentType `json:"weapon"`
+	Assister          string                  `json:"assister"`
+	Time              int64                   `json:"timeMs"`
 	IsHeadshot        bool                    `json:"isHeadshot"`
 	AttackerBlind     bool                    `json:"attackerBlind"`
 	AssistedFlash     bool                    `json:"assistedFlash"`
@@ -183,8 +185,15 @@ func main() {
 					headToHead[len(headToHead)-1][e.Killer.Name] = make(map[string]Kill)
 				}
 
+				assister := ""
+				if e.Assister != nil {
+					assister = e.Assister.Name
+				}
+
 				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] = Kill{
 					Weapon:            e.Weapon.Type,
+					Assister:          assister,
+					Time:              p.CurrentTime().Milliseconds(),
 					IsHeadshot:        e.IsHeadshot,
 					AttackerBlind:     e.AttackerBlind,
 					AssistedFlash:     e.AssistedFlash,
