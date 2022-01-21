@@ -32,7 +32,7 @@ const MatchCard = (props: { match: Match }) => {
         borderRadius={10}
         style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
       >
-        <Image src={`/${map}.jpg`} maxW="150px" mr={5} />
+        <Image src={`/maps/${map}.jpg`} maxW="150px" mr={5} />
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
             {map} - {dateString}
