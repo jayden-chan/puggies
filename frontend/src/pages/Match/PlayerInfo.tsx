@@ -1,11 +1,17 @@
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
   Divider,
   Flex,
   Grid,
   GridItem,
   Heading,
-  Select,
+  Menu,
+  MenuButton,
+  MenuGroup,
+  MenuItem,
+  MenuList,
   Tooltip,
 } from "@chakra-ui/react";
 import { faSkull } from "@fortawesome/free-solid-svg-icons";
@@ -99,17 +105,40 @@ export const PlayerInfo = (props: { match: Match }) => {
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
   return (
     <Box>
-      <Select
-        placeholder="Select player"
-        maxW="20%"
-        onChange={(e) => setSelectedPlayer(e.target.value)}
-      >
-        {Object.keys(props.match.teams).map((player) => (
-          <option key={player} value={player}>
-            {player}
-          </option>
-        ))}
-      </Select>
+      <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+          Select player
+        </MenuButton>
+        <MenuList>
+          <MenuGroup title="CT">
+            {Object.entries(props.match.teams)
+              .filter(([, team]) => team === "CT")
+              .map(([player]) => (
+                <MenuItem
+                  key={player}
+                  value={player}
+                  onClick={() => setSelectedPlayer(player)}
+                >
+                  {player}
+                </MenuItem>
+              ))}
+          </MenuGroup>
+
+          <MenuGroup title="T">
+            {Object.entries(props.match.teams)
+              .filter(([, team]) => team === "T")
+              .map(([player]) => (
+                <MenuItem
+                  key={player}
+                  value={player}
+                  onClick={() => setSelectedPlayer(player)}
+                >
+                  {player}
+                </MenuItem>
+              ))}
+          </MenuGroup>
+        </MenuList>
+      </Menu>
 
       {selectedPlayer && (
         <>

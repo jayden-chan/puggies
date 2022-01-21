@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Flex,
   Heading,
@@ -120,7 +122,17 @@ export const MatchPage = (props: { data: Match[] }) => {
             />
           </TabPanel>
           <TabPanel>
-            <Flex alignItems="center" justifyContent="center">
+            <Flex
+              alignItems="start"
+              justifyContent="flex-start"
+              flexDirection="column"
+            >
+              <Alert status="info" mb={5}>
+                <AlertIcon />
+                Reading this chart: the number in the lower left is the amount
+                of times the user on the left killed the user on the top, and
+                vice-versa.
+              </Alert>
               <HeadToHeadTable
                 teams={[teamAPlayers, teamBPlayers]}
                 headToHead={match.headToHead}
