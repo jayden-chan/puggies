@@ -79,6 +79,7 @@ type Output struct {
 
 	// Can't name these 2k, 3k etc because identifiers can't start with
 	// numbers in Go
+	// "lul" - Tom
 	K2 map[string]int `json:"2k"`
 	K3 map[string]int `json:"3k"`
 	K4 map[string]int `json:"4k"`
@@ -86,8 +87,10 @@ type Output struct {
 }
 
 type Round struct {
-	Winner string `json:"winner"`
-	Reason int    `json:"winReason"`
+	Winner  string `json:"winner"`
+	Reason  int    `json:"winReason"`
+	Planter string `json:"planter"`
+	Defuser string `json:"Defuser"`
 }
 
 type Kill struct {
@@ -136,6 +139,10 @@ func main() {
 
 	var teams map[string]string
 	var winners [][]string
+
+	// Only tracked for one round for use in KAST and RWS
+	var bombPlanter string
+	var bombDefuser string
 	deathTimes := make(map[string]Death)
 
 	// Register handler on kill events
@@ -217,6 +224,14 @@ func main() {
 		}
 	})
 
+	p.RegisterEventHandler(func(e events.BombDefused) {
+		bombDefuser = e.Player.Name
+	})
+
+	p.RegisterEventHandler(func(e events.BombPlanted) {
+		bombPlanter = e.Player.Name
+	})
+
 	p.RegisterEventHandler(func(e events.WeaponFire) {
 		if e.Shooter == nil {
 			return
@@ -275,6 +290,8 @@ func main() {
 		HEsThrown = append(HEsThrown, make(map[string]int))
 		molliesThrown = append(molliesThrown, make(map[string]int))
 		smokesThrown = append(smokesThrown, make(map[string]int))
+		bombDefuser = ""
+		bombPlanter = ""
 
 		headToHead = append(headToHead, make(map[string]map[string]Kill))
 		teams = make(map[string]string)
@@ -301,8 +318,10 @@ func main() {
 		}
 
 		rounds = append(rounds, Round{
-			Winner: winner,
-			Reason: int(e.Reason),
+			Winner:  winner,
+			Reason:  int(e.Reason),
+			Planter: bombPlanter,
+			Defuser: bombDefuser,
 		})
 
 		var roundWinners []string
@@ -311,7 +330,6 @@ func main() {
 				roundWinners = append(roundWinners, player)
 			}
 		}
-		fmt.Println(roundWinners)
 		winners = append(winners, roundWinners)
 	})
 
@@ -360,7 +378,6 @@ func main() {
 	// being appended-to on the RoundStart event
 	rounds = rounds[len(rounds)-totalRounds:]
 	winners = winners[len(winners)-totalRounds:]
-	fmt.Println(len(winners), len(rounds), totalRounds)
 
 	h2hTotal := headToHeadTotal(&headToHead)
 	totalKills := arrayMapTotal(&kills)
@@ -402,8 +419,19 @@ func main() {
 
 		for p := range winners[i] {
 			switch rounds[i].Reason {
-			// case int(events.RoundEndReasonBombDefused):
-			// case int(events.RoundEndReasonTargetBombed):
+			case int(events.RoundEndReasonBombDefused):
+				player := winners[i][p]
+				if player == rounds[i].Defuser {
+					rws[player] += 30.00 / float64(totalRounds)
+				}
+				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 70.00) / float64(totalRounds)
+
+			case int(events.RoundEndReasonTargetBombed):
+				player := winners[i][p]
+				if player == rounds[i].Planter {
+					rws[player] += 30.00 / float64(totalRounds)
+				}
+				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 70.00) / float64(totalRounds)
 
 			default:
 				player := winners[i][p]
@@ -411,7 +439,6 @@ func main() {
 			}
 		}
 	}
-	fmt.Println(rws)
 
 	// Initialze these maps with all players from kills + deaths
 	// in case anyone got 0 kills or 0 deaths (lol)
@@ -498,6 +525,7 @@ func main() {
 		Kast:             kast,
 		Impact:           impact,
 		Hltv:             hltv,
+		Rws:              rws,
 		K2:               k2,
 		K3:               k3,
 		K4:               k4,
@@ -516,8 +544,5 @@ func main() {
 		HEsThrown:     totalHEsThrown,
 	}, "", "  ")
 
-	if false {
-
-		fmt.Println(string(jsonstring))
-	}
+	fmt.Println(string(jsonstring))
 }
