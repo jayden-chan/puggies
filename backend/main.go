@@ -409,6 +409,7 @@ func main() {
 	for k, v := range kast {
 		kast[k] = math.Round(v * 100)
 	}
+
 	rws := make(map[string]float64)
 	for i := 0; i < totalRounds; i++ {
 		winTeamTotalDamage := 0
@@ -438,6 +439,10 @@ func main() {
 				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 100.00) / float64(totalRounds)
 			}
 		}
+	}
+
+	for player := range rws {
+		rws[player] = math.Round(rws[player]*100) / 100
 	}
 
 	// Initialze these maps with all players from kills + deaths

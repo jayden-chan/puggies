@@ -154,6 +154,18 @@
     "jiaedin": 1.27,
     "nosidE": 1.42
   },
+  "rws": {
+    "BrianD": 4.61,
+    "MrGenericUser": 1.6,
+    "Nana4321": 5.32,
+    "Spacebro": 5.38,
+    "Wild_West": 6.7,
+    "atomic": 23.51,
+    "awesomaave": 9.52,
+    "honestpretzels": 20.22,
+    "jiaedin": 15.04,
+    "nosidE": 6.59
+  },
   "utilDamage": {
     "MrGenericUser": 8,
     "Nana4321": 54,
@@ -188,83 +200,123 @@
   "rounds": [
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "atomic",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 1
+      "winReason": 1,
+      "planter": "awesomaave",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "CT",
-      "winReason": 7
+      "winReason": 7,
+      "planter": "Wild_West",
+      "Defuser": "nosidE"
     },
     {
       "winner": "T",
-      "winReason": 1
+      "winReason": 1,
+      "planter": "awesomaave",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "Wild_West",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "Wild_West",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "atomic",
+      "Defuser": ""
     },
     {
       "winner": "CT",
-      "winReason": 8
+      "winReason": 8,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "CT",
-      "winReason": 8
+      "winReason": 8,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "atomic",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "atomic",
+      "Defuser": ""
     },
     {
       "winner": "CT",
-      "winReason": 7
+      "winReason": 7,
+      "planter": "MrGenericUser",
+      "Defuser": "jiaedin"
     },
     {
       "winner": "CT",
-      "winReason": 8
+      "winReason": 8,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "CT",
-      "winReason": 8
+      "winReason": 8,
+      "planter": "",
+      "Defuser": ""
     },
     {
       "winner": "T",
-      "winReason": 9
+      "winReason": 9,
+      "planter": "Spacebro",
+      "Defuser": ""
     },
     {
       "winner": "CT",
-      "winReason": 7
+      "winReason": 7,
+      "planter": "Spacebro",
+      "Defuser": "awesomaave"
     }
   ],
   "headToHead": {

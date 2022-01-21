@@ -33,6 +33,7 @@ export type RawData = {
   kast: { [key: string]: number };
   impact: { [key: string]: number };
   hltv: { [key: string]: number };
+  rws: { [key: string]: number};
   flashAssists: { [key: string]: number };
   enemiesFlashed: { [key: string]: number };
   teammatesFlashed: { [key: string]: number };

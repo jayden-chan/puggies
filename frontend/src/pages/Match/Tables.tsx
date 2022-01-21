@@ -45,6 +45,7 @@ export const scoreTableSchema: TableSchema = [
   { key: "impact", title: "Impact", label: "Approximate HLTV Impact rating" },
   // prettier-ignore
   { key: "kast", title: "KAST", pct: true, label: "% of rounds with kill/assist/survived/traded" },
+  { key: "rws", title: "RWS", pct: true, label: "Approximate ESEA round win share percentage" },
 ];
 
 export const StatTable = (props: {
