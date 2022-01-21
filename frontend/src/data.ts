@@ -1,7 +1,7 @@
 import { format, parse } from "date-fns";
 import { Match, RawData, Team } from "./types";
-import pug_de_mirage_2022_01_16 from "./matchData/pug_de_mirage_2022-01-16_06.json";
-import pug_de_nuke_2022_01_16 from "./matchData/pug_de_nuke_2022-01-16_05.json";
+import pug_de_mirage_2022_01_15 from "./matchData/pug_de_mirage_2022-01-15_06.json";
+import pug_de_nuke_2022_01_15 from "./matchData/pug_de_nuke_2022-01-15_05.json";
 
 export const getPlayers = (
   data: RawData,
@@ -76,7 +76,7 @@ export const data = [
       id: "pug_de_mirage_2022-01-15_05",
     },
     // @ts-ignore
-    rawData: pug_de_mirage_2022_01_16 as RawData,
+    rawData: pug_de_mirage_2022_01_15 as RawData,
   },
   {
     info: {
@@ -85,6 +85,6 @@ export const data = [
       id: "pug_de_nuke_2022-01-15_05",
     },
     // @ts-ignore
-    rawData: pug_de_nuke_2022_01_16 as RawData,
+    rawData: pug_de_nuke_2022_01_15 as RawData,
   },
 ].map((m) => processData(m.info, m.rawData));
