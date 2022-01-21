@@ -54,23 +54,22 @@ const KillGridHalf = (props: {
       {props.killFeed
         .slice(...props.rounds)
         .map((round, roundNum) => {
-          const roundH2H = round[props.player] ?? {};
-          const numKills = Object.values(roundH2H).length;
-          return [5, 4, 3, 2, 1, 0].map((i) => {
-            return i !== 0 ? (
+          const numKills = Object.keys(round[props.player] ?? {}).length;
+          return [
+            ...[5, 4, 3, 2, 1].map((i) => (
               <GridIcon
                 bg={props.endSide === "CT" ? T_YELLOW : CT_BLUE}
                 visibility={numKills >= i ? "visible" : "hidden"}
                 icon={faSkull}
               />
-            ) : (
-              <GridItem bg="transparent" borderRadius={5}>
-                <Flex alignItems="center" justifyContent="center" h="100%">
-                  {roundNum + 1}
-                </Flex>
-              </GridItem>
-            );
-          });
+            )),
+
+            <GridItem bg="transparent" borderRadius={5}>
+              <Flex alignItems="center" justifyContent="center" h="100%">
+                {roundNum + 1}
+              </Flex>
+            </GridItem>,
+          ];
         })
         .flat()}
     </Grid>
