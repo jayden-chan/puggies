@@ -20,8 +20,7 @@ import {
   FontAwesomeIconProps,
 } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { KillFeed, Match, Team } from "../../types";
-import { CT_BLUE, T_YELLOW } from "./RoundsVisualization";
+import { CT_BLUE, KillFeed, Match, Team, T_YELLOW } from "../../types";
 
 export const GridIcon = (props: {
   bg: string;
@@ -102,14 +101,17 @@ const KillsVisualization = (props: {
 
 export const PlayerInfo = (props: {
   match: Match;
-  teams: { title: string; players: string[] }[];
+  teams: [
+    { title: string; players: string[] },
+    { title: string; players: string[] }
+  ];
 }) => {
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
   return (
     <Box>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          Select player
+          {selectedPlayer !== undefined ? selectedPlayer : "Select player"}
         </MenuButton>
         <MenuList>
           <MenuGroup title={props.teams[0].title}>

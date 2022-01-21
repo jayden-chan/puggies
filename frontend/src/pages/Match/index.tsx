@@ -20,6 +20,7 @@ import { HeadToHeadTable } from "./HeadToHeadTable";
 import { RoundsVisualization } from "./RoundsVisualization";
 import { PlayerInfo } from "./PlayerInfo";
 import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
+import { RoundByRound } from "./RoundByRound";
 
 export const MatchPage = (props: { data: Match[] }) => {
   const { id = "" } = useParams();
@@ -84,9 +85,11 @@ export const MatchPage = (props: { data: Match[] }) => {
           <Tab>Utility</Tab>
           <Tab>Head to Head</Tab>
           <Tab>Performances</Tab>
+          <Tab>Rounds</Tab>
         </TabList>
 
         <TabPanels>
+          {/* Stats page */}
           <TabPanel>
             <StatTable
               schema={scoreTableSchema}
@@ -104,6 +107,8 @@ export const MatchPage = (props: { data: Match[] }) => {
               players={teamBPlayers}
             />
           </TabPanel>
+
+          {/* Utility page */}
           <TabPanel>
             <StatTable
               schema={utilTableSchema}
@@ -121,9 +126,11 @@ export const MatchPage = (props: { data: Match[] }) => {
               players={teamBPlayers}
             />
           </TabPanel>
+
+          {/* Head to Head page */}
           <TabPanel>
             <Flex
-              alignItems="start"
+              alignItems="center"
               justifyContent="flex-start"
               flexDirection="column"
             >
@@ -140,6 +147,7 @@ export const MatchPage = (props: { data: Match[] }) => {
             </Flex>
           </TabPanel>
 
+          {/* Performances page */}
           <TabPanel>
             <PlayerInfo
               match={match}
@@ -148,6 +156,11 @@ export const MatchPage = (props: { data: Match[] }) => {
                 { title: teamBTitle, players: teamBPlayers },
               ]}
             />
+          </TabPanel>
+
+          {/* Rounds page */}
+          <TabPanel>
+            <RoundByRound killFeed={match.killFeed} teams={match.teams} />
           </TabPanel>
         </TabPanels>
       </Tabs>

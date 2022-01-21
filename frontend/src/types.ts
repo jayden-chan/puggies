@@ -1,3 +1,9 @@
+export const T_YELLOW = "#ead18a";
+export const CT_BLUE = "#b5d4ee";
+
+export const T_KILLFEED = "#C7A247";
+export const CT_KILLFEED = "#4F9EDE";
+
 export type Team = "T" | "CT";
 
 export type Round = {
@@ -10,6 +16,8 @@ export type KillFeed = { [key: string]: { [key: string]: Kill } }[];
 
 export type Kill = {
   weapon: WeaponType;
+  assister: string;
+  timeMs: number;
   isHeadshot: boolean;
   attackerBlind: boolean;
   assistedFlash: boolean;
@@ -33,7 +41,7 @@ export type RawData = {
   kast: { [key: string]: number };
   impact: { [key: string]: number };
   hltv: { [key: string]: number };
-  rws: { [key: string]: number};
+  rws: { [key: string]: number };
   flashAssists: { [key: string]: number };
   enemiesFlashed: { [key: string]: number };
   teammatesFlashed: { [key: string]: number };
@@ -69,7 +77,7 @@ export type Match = RawData & {
   };
 };
 
-enum WeaponType {
+export enum WeaponType {
   Unknown = 0,
   P2000 = 1,
   Glock = 2,

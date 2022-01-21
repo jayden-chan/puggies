@@ -21,7 +21,7 @@ const headToHeadColor = (diff: number): string => {
     } else if (diff > -5) {
       return "#b3564d";
     } else {
-      return "#b34d4d";
+      return "#b54545";
     }
   }
 };
@@ -75,30 +75,30 @@ export const HeadToHeadTable = (props: {
                 >
                   <Box w="100px" h="90px" position="relative">
                     <Flex
-                      position="absolute"
-                      justifyContent="center"
                       alignItems="center"
+                      backgroundColor={headToHeadColor(-diff)}
+                      borderRadius="30px"
+                      justifyContent="center"
+                      position="absolute"
+                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
                       bottom="12px"
                       left="16px"
-                      borderRadius="30px"
-                      w="40px"
                       h="40px"
-                      backgroundColor={headToHeadColor(-diff)}
-                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
+                      w="40px"
                     >
                       {rowKills}
                     </Flex>
                     <Flex
-                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
-                      position="absolute"
-                      justifyContent="center"
                       alignItems="center"
+                      backgroundColor={headToHeadColor(diff)}
+                      borderRadius="30px"
+                      justifyContent="center"
+                      position="absolute"
+                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
                       top="12px"
                       right="16px"
-                      borderRadius="30px"
-                      w="40px"
                       h="40px"
-                      backgroundColor={headToHeadColor(diff)}
+                      w="40px"
                     >
                       {colKills}
                     </Flex>
