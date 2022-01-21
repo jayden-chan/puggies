@@ -13,7 +13,8 @@ import {
   CT_KILLFEED,
   Kill,
   KillFeed,
-  Team,
+  RED_KILLFEED,
+  TeamsMap,
   T_KILLFEED,
   WeaponType,
 } from "../../types";
@@ -24,11 +25,7 @@ type KillFeedThing = {
   kill: Kill;
 };
 
-const playerColor = (
-  player: string,
-  teams: { [key: string]: Team },
-  round: number
-) => {
+const playerColor = (player: string, teams: TeamsMap, round: number) => {
   if (teams[player] === undefined) return "white";
 
   if (round <= 15) {
@@ -50,7 +47,7 @@ const KillFeedIcon = (props: { show: boolean; src: string }) => (
 const KillFeedPlayer = (props: {
   player: string;
   round: number;
-  teams: { [key: string]: Team };
+  teams: TeamsMap;
   mx?: number;
 }) => (
   <Text
@@ -65,12 +62,12 @@ const KillFeedPlayer = (props: {
 );
 
 const KillFeedItem = (
-  props: KillFeedThing & { round: number; teams: { [key: string]: Team } }
+  props: KillFeedThing & { round: number; teams: TeamsMap }
 ) => {
   return (
     <Flex
       bg="black"
-      borderColor="#800000"
+      borderColor={RED_KILLFEED}
       alignItems="center"
       borderRadius={8}
       borderWidth={3}
@@ -127,7 +124,7 @@ const KillFeedItem = (
 
 export const RoundByRound = (props: {
   killFeed: KillFeed;
-  teams: { [key: string]: Team };
+  teams: TeamsMap;
 }) => {
   return (
     <Accordion allowMultiple>

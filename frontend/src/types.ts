@@ -3,6 +3,7 @@ export const CT_BLUE = "#b5d4ee";
 
 export const T_KILLFEED = "#C7A247";
 export const CT_KILLFEED = "#4F9EDE";
+export const RED_KILLFEED = "#800000";
 
 export type Team = "T" | "CT";
 
@@ -13,6 +14,8 @@ export type Round = {
 
 export type HeadToHead = { [key: string]: { [key: string]: number } };
 export type KillFeed = { [key: string]: { [key: string]: Kill } }[];
+export type TeamsMap = { [key: string]: Team };
+export type NumericMap = { [key: string]: number };
 
 export type Kill = {
   weapon: WeaponType;
@@ -28,42 +31,42 @@ export type Kill = {
 
 export type RawData = {
   totalRounds: number;
-  teams: { [key: string]: Team };
-  kills: { [key: string]: number };
-  assists: { [key: string]: number };
-  deaths: { [key: string]: number };
-  timesTraded: { [key: string]: number };
-  headshotPct: { [key: string]: number };
-  kd: { [key: string]: number };
-  kdiff: { [key: string]: number };
-  kpr: { [key: string]: number };
-  adr: { [key: string]: number };
-  kast: { [key: string]: number };
-  impact: { [key: string]: number };
-  hltv: { [key: string]: number };
-  rws: { [key: string]: number };
-  flashAssists: { [key: string]: number };
-  enemiesFlashed: { [key: string]: number };
-  teammatesFlashed: { [key: string]: number };
+  teams: TeamsMap;
+  kills: NumericMap;
+  assists: NumericMap;
+  deaths: NumericMap;
+  timesTraded: NumericMap;
+  headshotPct: NumericMap;
+  kd: NumericMap;
+  kdiff: NumericMap;
+  kpr: NumericMap;
+  adr: NumericMap;
+  kast: NumericMap;
+  impact: NumericMap;
+  hltv: NumericMap;
+  rws: NumericMap;
+  flashAssists: NumericMap;
+  enemiesFlashed: NumericMap;
+  teammatesFlashed: NumericMap;
   rounds: Round[];
 
-  flashesThrown: { [key: string]: number };
-  HEsThrown: { [key: string]: number };
-  molliesThrown: { [key: string]: number };
-  smokesThrown: { [key: string]: number };
-  utilDamage: { [key: string]: number };
+  flashesThrown: NumericMap;
+  HEsThrown: NumericMap;
+  molliesThrown: NumericMap;
+  smokesThrown: NumericMap;
+  utilDamage: NumericMap;
 
   headToHead: HeadToHead;
   killFeed: KillFeed;
 
-  "2k": { [key: string]: number };
-  "3k": { [key: string]: number };
-  "4k": { [key: string]: number };
-  "5k": { [key: string]: number };
+  "2k": NumericMap;
+  "3k": NumericMap;
+  "4k": NumericMap;
+  "5k": NumericMap;
 };
 
 export type Match = RawData & {
-  efPerFlash: { [key: string]: number };
+  efPerFlash: NumericMap;
   name: { [key: string]: string };
   meta: {
     demoLink: string;
