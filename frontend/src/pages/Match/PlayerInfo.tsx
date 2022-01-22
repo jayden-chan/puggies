@@ -65,7 +65,7 @@ const KillGridHalf = (props: {
 
             <GridItem bg="transparent" borderRadius={5}>
               <Flex alignItems="center" justifyContent="center" h="100%">
-                {roundNum + 1}
+                {roundNum + 1 + props.rounds[0]}
               </Flex>
             </GridItem>,
           ];
