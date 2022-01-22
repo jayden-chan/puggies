@@ -1,5 +1,5 @@
 import { format, parse } from "date-fns";
-import { Match, RawData, Team } from "./types";
+import { Match, RawData, Round, Team } from "./types";
 import pug_de_mirage_2022_01_15 from "./matchData/pug_de_mirage_2022-01-15_06.json";
 import pug_de_nuke_2022_01_15 from "./matchData/pug_de_nuke_2022-01-15_05.json";
 
@@ -19,6 +19,21 @@ export const getPlayers = (
       return aa - bb;
     });
 
+export const getScore = (
+  rounds: Round[],
+  team: Team,
+  toRound: number
+): number => {
+  return (
+    rounds
+      .slice(0, toRound > 15 ? 15 : toRound)
+      .filter((r) => r.winner !== team).length +
+    rounds
+      .slice(15, toRound <= 15 ? 15 : toRound)
+      .filter((r) => r.winner === team).length
+  );
+};
+
 const processData = (
   info: { demoLink: string; id: string },
   rawData: RawData
@@ -34,12 +49,8 @@ const processData = (
     "EEE MMM dd yyyy"
   );
 
-  const teamARounds =
-    rawData.rounds.slice(0, 15).filter((r) => r.winner === "T").length +
-    rawData.rounds.slice(15).filter((r) => r.winner === "CT").length;
-  const teamBRounds =
-    rawData.rounds.slice(0, 15).filter((r) => r.winner === "CT").length +
-    rawData.rounds.slice(15).filter((r) => r.winner === "T").length;
+  const teamARounds = getScore(rawData.rounds, "CT", 30);
+  const teamBRounds = getScore(rawData.rounds, "T", 30);
 
   const teamATitle = `team_${getPlayers(rawData, "CT", "hltv", false)[0]}`;
   const teamBTitle = `team_${getPlayers(rawData, "T", "hltv", false)[0]}`;

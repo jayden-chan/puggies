@@ -10,6 +10,8 @@ export type Team = "T" | "CT";
 export type Round = {
   winner: Team;
   winReason: number;
+  planter: string;
+  defuser: string;
 };
 
 export type HeadToHead = { [key: string]: { [key: string]: number } };

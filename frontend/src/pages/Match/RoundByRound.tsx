@@ -4,18 +4,27 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Box,
   Flex,
   Heading,
   Image,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
+import { getScore } from "../../data";
+import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  CT_BLUE,
   CT_KILLFEED,
   Kill,
   KillFeed,
   RED_KILLFEED,
+  Round,
+  Team,
   TeamsMap,
   T_KILLFEED,
+  T_YELLOW,
   WeaponType,
 } from "../../types";
 
@@ -122,13 +131,51 @@ const KillFeedItem = (
   );
 };
 
+const RoundResultIcon = (props: { round: Round }) => {
+  let icon;
+  let label;
+  switch (props.round.winReason) {
+    case 1:
+      icon = faBomb;
+      label = "Ts win by bomb explosion";
+      break;
+    case 7:
+      icon = faCut;
+      label = "CTs win by defusing bomb";
+      break;
+    default:
+      icon = faSkull;
+      label = `${props.round.winner}s win by killing opponents`;
+      break;
+  }
+
+  return (
+    <Box
+      bg={props.round.winner === "CT" ? CT_BLUE : T_YELLOW}
+      borderRadius={5}
+      w="1.9rem"
+      h="1.9rem"
+      mr="auto"
+    >
+      <Tooltip label={label}>
+        <Flex alignItems="center" justifyContent="center" h="100%">
+          <FontAwesomeIcon icon={icon} color="black" />
+        </Flex>
+      </Tooltip>
+    </Box>
+  );
+};
+
 export const RoundByRound = (props: {
   killFeed: KillFeed;
   teams: TeamsMap;
+  rounds: Round[];
 }) => {
   return (
     <Accordion allowMultiple>
       {props.killFeed.map((k, i) => {
+        const teamAScore = getScore(props.rounds, "CT", i + 1);
+        const teamBScore = getScore(props.rounds, "T", i + 1);
         const kills: KillFeedThing[] = Object.entries(k)
           .map(([killer, kills]) =>
             Object.entries(kills).map(([victim, kill]) => ({
@@ -143,10 +190,44 @@ export const RoundByRound = (props: {
         return (
           <AccordionItem>
             <AccordionButton>
-              <Heading flex="1" as="h3" fontSize="xl" textAlign="left">
-                Round {i + 1}
-              </Heading>
-              <AccordionIcon />
+              <Flex w="100%" alignItems="center">
+                <Flex flex={1} justifyContent="center" alignItems="center">
+                  <Heading
+                    as="h3"
+                    fontSize="1.25rem"
+                    textAlign="left"
+                    mr={3}
+                    lineHeight="1.25rem"
+                    height="1.25rem"
+                  >
+                    Round {i + 1}
+                  </Heading>
+                  <RoundResultIcon round={props.rounds[i]} />
+                </Flex>
+
+                <Flex flex={1} justifyContent="center">
+                  <Heading
+                    as="h3"
+                    fontSize="xl"
+                    textColor={i < 15 ? T_YELLOW : CT_BLUE}
+                  >
+                    {teamAScore}
+                  </Heading>
+                  <Heading as="h3" fontSize="xl" mx={2}>
+                    :
+                  </Heading>
+                  <Heading
+                    as="h3"
+                    fontSize="xl"
+                    textColor={i < 15 ? CT_BLUE : T_YELLOW}
+                  >
+                    {teamBScore}
+                  </Heading>
+                </Flex>
+                <Flex flex={1} justifyContent="center">
+                  <AccordionIcon ml="auto" />
+                </Flex>
+              </Flex>
             </AccordionButton>
 
             <AccordionPanel>

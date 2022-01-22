@@ -160,7 +160,11 @@ export const MatchPage = (props: { data: Match[] }) => {
 
           {/* Rounds page */}
           <TabPanel>
-            <RoundByRound killFeed={match.killFeed} teams={match.teams} />
+            <RoundByRound
+              killFeed={match.killFeed}
+              teams={match.teams}
+              rounds={match.rounds}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
