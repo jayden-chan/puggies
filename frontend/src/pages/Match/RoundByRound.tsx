@@ -229,9 +229,9 @@ export const RoundByRoundList = (props: {
 
             <AccordionPanel>
               <Flex flexDirection="column" alignItems="start" mt={2}>
-                {kills.map((k, i) => (
+                {kills.map((k, j) => (
                   <KillFeedItem
-                    key={i}
+                    key={j}
                     {...k}
                     teams={props.teams}
                     round={i + 1}
