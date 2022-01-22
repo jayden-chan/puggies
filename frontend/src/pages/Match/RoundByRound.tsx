@@ -127,19 +127,15 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
   }
 
   let icon;
-  let label;
   switch (props.round.winReason) {
     case 1:
       icon = faBomb;
-      label = "Ts win by bomb explosion";
       break;
     case 7:
       icon = faCut;
-      label = "CTs win by defusing bomb";
       break;
     default:
       icon = faSkull;
-      label = `${props.round.winner}s win by killing opponents`;
       break;
   }
 
@@ -150,11 +146,9 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
       w="1.9rem"
       h="1.9rem"
     >
-      <Tooltip label={label}>
-        <Flex alignItems="center" justifyContent="center" h="100%">
-          <FontAwesomeIcon icon={icon} color="black" />
-        </Flex>
-      </Tooltip>
+      <Flex alignItems="center" justifyContent="center" h="100%">
+        <FontAwesomeIcon icon={icon} color="black" />
+      </Flex>
     </Box>
   );
 };
