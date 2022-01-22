@@ -160,7 +160,7 @@ func main() {
 			deaths[len(deaths)-1][e.Victim.Name] += 1
 		}
 
-		if e.Assister != nil {
+		if e.Assister != nil && e.Victim != nil && e.Assister.Team != e.Victim.Team {
 			if e.AssistedFlash {
 				flashAssists[len(flashAssists)-1][e.Assister.Name] += 1
 			} else {
