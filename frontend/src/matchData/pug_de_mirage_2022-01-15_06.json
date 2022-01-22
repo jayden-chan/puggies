@@ -547,7 +547,7 @@
     {
       "Spacebro": {
         "Wild_West": {
-          "weapon": 2,
+          "weapon": "pist_glock18",
           "assister": "",
           "timeMs": 39493,
           "isHeadshot": true,
@@ -560,7 +560,7 @@
       },
       "atomic": {
         "Nana4321": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 62157,
           "isHeadshot": false,
@@ -571,7 +571,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 32071,
           "isHeadshot": true,
@@ -584,7 +584,7 @@
       },
       "jiaedin": {
         "MrGenericUser": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 47547,
           "isHeadshot": true,
@@ -595,7 +595,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 46532,
           "isHeadshot": true,
@@ -606,7 +606,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "honestpretzels",
           "timeMs": 48594,
           "isHeadshot": true,
@@ -619,7 +619,7 @@
       },
       "nosidE": {
         "honestpretzels": {
-          "weapon": 2,
+          "weapon": "pist_glock18",
           "assister": "",
           "timeMs": 42118,
           "isHeadshot": true,
@@ -634,7 +634,7 @@
     {
       "Nana4321": {
         "jiaedin": {
-          "weapon": 104,
+          "weapon": "smg_mac10",
           "assister": "",
           "timeMs": 43594,
           "isHeadshot": true,
@@ -647,7 +647,7 @@
       },
       "Spacebro": {
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "MrGenericUser",
           "timeMs": 65079,
           "isHeadshot": true,
@@ -660,7 +660,7 @@
       },
       "Wild_West": {
         "Spacebro": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 75821,
           "isHeadshot": false,
@@ -671,7 +671,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "atomic",
           "timeMs": 83251,
           "isHeadshot": false,
@@ -684,7 +684,7 @@
       },
       "awesomaave": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 63633,
           "isHeadshot": false,
@@ -695,7 +695,7 @@
           "penetratedObjects": 0
         },
         "Nana4321": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "jiaedin",
           "timeMs": 47000,
           "isHeadshot": false,
@@ -708,7 +708,7 @@
       },
       "honestpretzels": {
         "nosidE": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 42711,
           "isHeadshot": false,
@@ -721,7 +721,7 @@
       },
       "kevin": {
         "atomic": {
-          "weapon": 301,
+          "weapon": "rif_galilar",
           "assister": "",
           "timeMs": 38211,
           "isHeadshot": false,
@@ -736,7 +736,7 @@
     {
       "Wild_West": {
         "Nana4321": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "awesomaave",
           "timeMs": 49461,
           "isHeadshot": false,
@@ -749,7 +749,7 @@
       },
       "atomic": {
         "Spacebro": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 28672,
           "isHeadshot": true,
@@ -760,7 +760,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 56461,
           "isHeadshot": false,
@@ -773,7 +773,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 56094,
           "isHeadshot": true,
@@ -784,7 +784,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "jiaedin",
           "timeMs": 48656,
           "isHeadshot": false,
@@ -797,7 +797,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "Nana4321",
           "timeMs": 44024,
           "isHeadshot": false,
@@ -808,7 +808,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "",
           "timeMs": 39156,
           "isHeadshot": true,
@@ -823,7 +823,7 @@
     {
       "Wild_West": {
         "Spacebro": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 41055,
           "isHeadshot": true,
@@ -834,7 +834,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 87719,
           "isHeadshot": true,
@@ -847,7 +847,7 @@
       },
       "atomic": {
         "Nana4321": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "awesomaave",
           "timeMs": 53164,
           "isHeadshot": false,
@@ -858,7 +858,7 @@
           "penetratedObjects": 1
         },
         "kevin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "Wild_West",
           "timeMs": 120539,
           "isHeadshot": false,
@@ -871,7 +871,7 @@
       },
       "jiaedin": {
         "MrGenericUser": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 37024,
           "isHeadshot": false,
@@ -884,7 +884,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "Spacebro",
           "timeMs": 120172,
           "isHeadshot": true,
@@ -895,7 +895,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 93406,
           "isHeadshot": true,
@@ -908,7 +908,7 @@
       },
       "nosidE": {
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 49485,
           "isHeadshot": true,
@@ -919,7 +919,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 57828,
           "isHeadshot": true,
@@ -934,7 +934,7 @@
     {
       "MrGenericUser": {
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "kevin",
           "timeMs": 74930,
           "isHeadshot": false,
@@ -947,7 +947,7 @@
       },
       "Nana4321": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 79524,
           "isHeadshot": false,
@@ -960,7 +960,7 @@
       },
       "Spacebro": {
         "Wild_West": {
-          "weapon": 307,
+          "weapon": "rif_sg556",
           "assister": "",
           "timeMs": 71797,
           "isHeadshot": false,
@@ -973,7 +973,7 @@
       },
       "atomic": {
         "Nana4321": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "awesomaave",
           "timeMs": 121204,
           "isHeadshot": false,
@@ -984,7 +984,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 73493,
           "isHeadshot": false,
@@ -997,7 +997,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "jiaedin",
           "timeMs": 127821,
           "isHeadshot": false,
@@ -1008,7 +1008,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Wild_West",
           "timeMs": 78508,
           "isHeadshot": true,
@@ -1019,7 +1019,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 67875,
           "isHeadshot": false,
@@ -1034,7 +1034,7 @@
     {
       "Wild_West": {
         "Spacebro": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 46844,
           "isHeadshot": false,
@@ -1047,7 +1047,7 @@
       },
       "atomic": {
         "kevin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "Wild_West",
           "timeMs": 58250,
           "isHeadshot": false,
@@ -1060,7 +1060,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "jiaedin",
           "timeMs": 40039,
           "isHeadshot": true,
@@ -1071,7 +1071,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "atomic",
           "timeMs": 51305,
           "isHeadshot": false,
@@ -1084,7 +1084,7 @@
       },
       "jiaedin": {
         "Nana4321": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "atomic",
           "timeMs": 45890,
           "isHeadshot": false,
@@ -1097,7 +1097,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 24672,
           "isHeadshot": false,
@@ -1108,7 +1108,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 52062,
           "isHeadshot": false,
@@ -1121,7 +1121,7 @@
       },
       "nosidE": {
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "atomic",
           "timeMs": 49992,
           "isHeadshot": true,
@@ -1136,7 +1136,7 @@
     {
       "Nana4321": {
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "MrGenericUser",
           "timeMs": 83461,
           "isHeadshot": false,
@@ -1149,7 +1149,7 @@
       },
       "atomic": {
         "Spacebro": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 42453,
           "isHeadshot": false,
@@ -1162,7 +1162,7 @@
       },
       "awesomaave": {
         "Nana4321": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 110468,
           "isHeadshot": false,
@@ -1173,7 +1173,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 60656,
           "isHeadshot": true,
@@ -1186,7 +1186,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 43429,
           "isHeadshot": false,
@@ -1197,7 +1197,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "jiaedin",
           "timeMs": 80132,
           "isHeadshot": false,
@@ -1210,7 +1210,7 @@
       },
       "nosidE": {
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 54203,
           "isHeadshot": true,
@@ -1225,7 +1225,7 @@
     {
       "Nana4321": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 42867,
           "isHeadshot": true,
@@ -1238,7 +1238,7 @@
       },
       "Spacebro": {
         "Wild_West": {
-          "weapon": 307,
+          "weapon": "rif_sg556",
           "assister": "",
           "timeMs": 48484,
           "isHeadshot": false,
@@ -1249,7 +1249,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 307,
+          "weapon": "rif_sg556",
           "assister": "",
           "timeMs": 62859,
           "isHeadshot": true,
@@ -1262,7 +1262,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 41094,
           "isHeadshot": true,
@@ -1273,7 +1273,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 48179,
           "isHeadshot": false,
@@ -1288,7 +1288,7 @@
     {
       "Spacebro": {
         "atomic": {
-          "weapon": 307,
+          "weapon": "rif_sg556",
           "assister": "",
           "timeMs": 103547,
           "isHeadshot": false,
@@ -1301,7 +1301,7 @@
       },
       "atomic": {
         "nosidE": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 99493,
           "isHeadshot": true,
@@ -1314,7 +1314,7 @@
       },
       "honestpretzels": {
         "Nana4321": {
-          "weapon": 5,
+          "weapon": "pist_fiveseven",
           "assister": "",
           "timeMs": 96133,
           "isHeadshot": false,
@@ -1327,7 +1327,7 @@
       },
       "jiaedin": {
         "MrGenericUser": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 88407,
           "isHeadshot": true,
@@ -1340,7 +1340,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 92133,
           "isHeadshot": true,
@@ -1351,7 +1351,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 90102,
           "isHeadshot": false,
@@ -1364,7 +1364,7 @@
       },
       "nosidE": {
         "awesomaave": {
-          "weapon": 304,
+          "weapon": "rif_m4a1",
           "assister": "",
           "timeMs": 79391,
           "isHeadshot": false,
@@ -1375,7 +1375,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 304,
+          "weapon": "rif_m4a1",
           "assister": "",
           "timeMs": 96508,
           "isHeadshot": false,
@@ -1390,7 +1390,7 @@
     {
       "MrGenericUser": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 56453,
           "isHeadshot": false,
@@ -1403,7 +1403,7 @@
       },
       "atomic": {
         "Spacebro": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "",
           "timeMs": 53906,
           "isHeadshot": true,
@@ -1416,7 +1416,7 @@
       },
       "kevin": {
         "atomic": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 93281,
           "isHeadshot": false,
@@ -1427,7 +1427,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 503,
+          "weapon": "fire",
           "assister": "",
           "timeMs": 46625,
           "isHeadshot": false,
@@ -1438,7 +1438,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 55695,
           "isHeadshot": true,
@@ -1449,7 +1449,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 50820,
           "isHeadshot": true,
@@ -1464,7 +1464,7 @@
     {
       "Wild_West": {
         "nosidE": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 86493,
           "isHeadshot": false,
@@ -1477,7 +1477,7 @@
       },
       "atomic": {
         "Nana4321": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 39415,
           "isHeadshot": false,
@@ -1488,7 +1488,7 @@
           "penetratedObjects": 1
         },
         "kevin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 107305,
           "isHeadshot": true,
@@ -1501,7 +1501,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "awesomaave",
           "timeMs": 106641,
           "isHeadshot": false,
@@ -1512,7 +1512,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 38290,
           "isHeadshot": false,
@@ -1527,7 +1527,7 @@
     {
       "atomic": {
         "MrGenericUser": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 88407,
           "isHeadshot": false,
@@ -1538,7 +1538,7 @@
           "penetratedObjects": 0
         },
         "Nana4321": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 98938,
           "isHeadshot": false,
@@ -1549,7 +1549,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 25086,
           "isHeadshot": false,
@@ -1560,7 +1560,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 84266,
           "isHeadshot": false,
@@ -1571,7 +1571,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 67243,
           "isHeadshot": false,
@@ -1584,7 +1584,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 71149,
           "isHeadshot": false,
@@ -1599,7 +1599,7 @@
     {
       "MrGenericUser": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 93922,
           "isHeadshot": true,
@@ -1612,7 +1612,7 @@
       },
       "jiaedin": {
         "Nana4321": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 65500,
           "isHeadshot": false,
@@ -1623,7 +1623,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 26899,
           "isHeadshot": false,
@@ -1636,7 +1636,7 @@
       },
       "kevin": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 109321,
           "isHeadshot": true,
@@ -1647,7 +1647,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 39594,
           "isHeadshot": true,
@@ -1658,7 +1658,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 67071,
           "isHeadshot": true,
@@ -1673,7 +1673,7 @@
     {
       "atomic": {
         "Nana4321": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 30961,
           "isHeadshot": false,
@@ -1684,7 +1684,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 71625,
           "isHeadshot": false,
@@ -1697,7 +1697,7 @@
       },
       "jiaedin": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 97906,
           "isHeadshot": true,
@@ -1710,7 +1710,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 112250,
           "isHeadshot": true,
@@ -1721,7 +1721,7 @@
           "penetratedObjects": 0
         },
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 109062,
           "isHeadshot": false,
@@ -1732,7 +1732,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 52297,
           "isHeadshot": false,
@@ -1745,7 +1745,7 @@
       },
       "nosidE": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 61492,
           "isHeadshot": true,
@@ -1756,7 +1756,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 111695,
           "isHeadshot": true,
@@ -1771,7 +1771,7 @@
     {
       "MrGenericUser": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 76203,
           "isHeadshot": false,
@@ -1784,7 +1784,7 @@
       },
       "Spacebro": {
         "jiaedin": {
-          "weapon": 307,
+          "weapon": "rif_sg556",
           "assister": "Nana4321",
           "timeMs": 117141,
           "isHeadshot": true,
@@ -1797,7 +1797,7 @@
       },
       "Wild_West": {
         "Spacebro": {
-          "weapon": 306,
+          "weapon": "snip_ssg08",
           "assister": "jiaedin",
           "timeMs": 120742,
           "isHeadshot": false,
@@ -1810,7 +1810,7 @@
       },
       "awesomaave": {
         "MrGenericUser": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 82532,
           "isHeadshot": true,
@@ -1823,7 +1823,7 @@
       },
       "jiaedin": {
         "Nana4321": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 95563,
           "isHeadshot": false,
@@ -1834,7 +1834,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "honestpretzels",
           "timeMs": 114414,
           "isHeadshot": true,
@@ -1847,7 +1847,7 @@
       },
       "kevin": {
         "honestpretzels": {
-          "weapon": 309,
+          "weapon": "snip_awp",
           "assister": "",
           "timeMs": 104313,
           "isHeadshot": false,
@@ -1862,7 +1862,7 @@
     {
       "Nana4321": {
         "Wild_West": {
-          "weapon": 1,
+          "weapon": "pist_hkp2000",
           "assister": "",
           "timeMs": 37781,
           "isHeadshot": true,
@@ -1873,7 +1873,7 @@
           "penetratedObjects": 0
         },
         "atomic": {
-          "weapon": 1,
+          "weapon": "pist_hkp2000",
           "assister": "",
           "timeMs": 36555,
           "isHeadshot": true,
@@ -1886,7 +1886,7 @@
       },
       "Wild_West": {
         "MrGenericUser": {
-          "weapon": 2,
+          "weapon": "pist_glock18",
           "assister": "",
           "timeMs": 37305,
           "isHeadshot": true,
@@ -1899,7 +1899,7 @@
       },
       "awesomaave": {
         "Spacebro": {
-          "weapon": 2,
+          "weapon": "pist_glock18",
           "assister": "",
           "timeMs": 45750,
           "isHeadshot": false,
@@ -1912,7 +1912,7 @@
       },
       "honestpretzels": {
         "Nana4321": {
-          "weapon": 7,
+          "weapon": "pist_tec9",
           "assister": "",
           "timeMs": 41813,
           "isHeadshot": true,
@@ -1925,7 +1925,7 @@
       },
       "jiaedin": {
         "kevin": {
-          "weapon": 2,
+          "weapon": "pist_glock18",
           "assister": "",
           "timeMs": 34977,
           "isHeadshot": true,
@@ -1938,7 +1938,7 @@
       },
       "nosidE": {
         "awesomaave": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 55609,
           "isHeadshot": true,
@@ -1949,7 +1949,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "",
           "timeMs": 66563,
           "isHeadshot": true,
@@ -1960,7 +1960,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 9,
+          "weapon": "pist_223",
           "assister": "MrGenericUser",
           "timeMs": 46172,
           "isHeadshot": true,
@@ -1975,7 +1975,7 @@
     {
       "MrGenericUser": {
         "Wild_West": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 37586,
           "isHeadshot": true,
@@ -1988,7 +1988,7 @@
       },
       "Nana4321": {
         "atomic": {
-          "weapon": 1,
+          "weapon": "pist_hkp2000",
           "assister": "",
           "timeMs": 45492,
           "isHeadshot": true,
@@ -1999,7 +1999,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 41953,
           "isHeadshot": false,
@@ -2010,7 +2010,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 40586,
           "isHeadshot": false,
@@ -2023,7 +2023,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 48469,
           "isHeadshot": true,
@@ -2038,7 +2038,7 @@
     {
       "Nana4321": {
         "awesomaave": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 64867,
           "isHeadshot": true,
@@ -2049,7 +2049,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 59688,
           "isHeadshot": false,
@@ -2062,7 +2062,7 @@
       },
       "honestpretzels": {
         "nosidE": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 58196,
           "isHeadshot": false,
@@ -2075,7 +2075,7 @@
       },
       "jiaedin": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 70813,
           "isHeadshot": false,
@@ -2086,7 +2086,7 @@
           "penetratedObjects": 0
         },
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "awesomaave",
           "timeMs": 69977,
           "isHeadshot": false,
@@ -2097,7 +2097,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 51719,
           "isHeadshot": true,
@@ -2110,7 +2110,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 59938,
           "isHeadshot": false,
@@ -2121,7 +2121,7 @@
           "penetratedObjects": 0
         },
         "atomic": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 28781,
           "isHeadshot": true,
@@ -2132,7 +2132,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 302,
+          "weapon": "rif_famas",
           "assister": "",
           "timeMs": 74617,
           "isHeadshot": false,
@@ -2147,7 +2147,7 @@
     {
       "MrGenericUser": {
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 42742,
           "isHeadshot": true,
@@ -2160,7 +2160,7 @@
       },
       "Nana4321": {
         "Wild_West": {
-          "weapon": 106,
+          "weapon": "smg_p90",
           "assister": "",
           "timeMs": 42492,
           "isHeadshot": false,
@@ -2173,7 +2173,7 @@
       },
       "Spacebro": {
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Nana4321",
           "timeMs": 64710,
           "isHeadshot": false,
@@ -2186,7 +2186,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 42789,
           "isHeadshot": false,
@@ -2199,7 +2199,7 @@
       },
       "jiaedin": {
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "Wild_West",
           "timeMs": 47953,
           "isHeadshot": false,
@@ -2210,7 +2210,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "nosidE",
           "timeMs": 44882,
           "isHeadshot": true,
@@ -2223,7 +2223,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 44734,
           "isHeadshot": true,
@@ -2234,7 +2234,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "MrGenericUser",
           "timeMs": 44328,
           "isHeadshot": false,
@@ -2249,7 +2249,7 @@
     {
       "Spacebro": {
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 32836,
           "isHeadshot": true,
@@ -2262,7 +2262,7 @@
       },
       "atomic": {
         "Spacebro": {
-          "weapon": 301,
+          "weapon": "rif_galilar",
           "assister": "honestpretzels",
           "timeMs": 32875,
           "isHeadshot": false,
@@ -2275,7 +2275,7 @@
       },
       "kevin": {
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 35203,
           "isHeadshot": false,
@@ -2286,7 +2286,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 38086,
           "isHeadshot": false,
@@ -2299,7 +2299,7 @@
       },
       "nosidE": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "kevin",
           "timeMs": 36125,
           "isHeadshot": false,
@@ -2310,7 +2310,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 40360,
           "isHeadshot": false,
@@ -2325,7 +2325,7 @@
     {
       "MrGenericUser": {
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Nana4321",
           "timeMs": 43476,
           "isHeadshot": false,
@@ -2336,7 +2336,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 36242,
           "isHeadshot": true,
@@ -2349,7 +2349,7 @@
       },
       "Wild_West": {
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 54476,
           "isHeadshot": false,
@@ -2360,7 +2360,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "honestpretzels",
           "timeMs": 70961,
           "isHeadshot": false,
@@ -2373,7 +2373,7 @@
       },
       "atomic": {
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 35406,
           "isHeadshot": true,
@@ -2386,7 +2386,7 @@
       },
       "jiaedin": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "nosidE",
           "timeMs": 44055,
           "isHeadshot": true,
@@ -2399,7 +2399,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 75680,
           "isHeadshot": false,
@@ -2410,7 +2410,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 68734,
           "isHeadshot": false,
@@ -2421,7 +2421,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 57992,
           "isHeadshot": false,
@@ -2436,7 +2436,7 @@
     {
       "Nana4321": {
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 106562,
           "isHeadshot": false,
@@ -2449,7 +2449,7 @@
       },
       "atomic": {
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 107781,
           "isHeadshot": true,
@@ -2460,7 +2460,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 46867,
           "isHeadshot": true,
@@ -2471,7 +2471,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 29437,
           "isHeadshot": true,
@@ -2484,7 +2484,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 46703,
           "isHeadshot": false,
@@ -2497,7 +2497,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 29125,
           "isHeadshot": false,
@@ -2510,7 +2510,7 @@
       },
       "nosidE": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 149953,
           "isHeadshot": true,
@@ -2521,7 +2521,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 151609,
           "isHeadshot": false,
@@ -2532,7 +2532,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "MrGenericUser",
           "timeMs": 49742,
           "isHeadshot": false,
@@ -2547,7 +2547,7 @@
     {
       "atomic": {
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "Wild_West",
           "timeMs": 29110,
           "isHeadshot": false,
@@ -2560,7 +2560,7 @@
       },
       "honestpretzels": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 28180,
           "isHeadshot": false,
@@ -2571,7 +2571,7 @@
           "penetratedObjects": 0
         },
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 42618,
           "isHeadshot": true,
@@ -2582,7 +2582,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 61555,
           "isHeadshot": true,
@@ -2595,7 +2595,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 30657,
           "isHeadshot": true,
@@ -2606,7 +2606,7 @@
           "penetratedObjects": 0
         },
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 30063,
           "isHeadshot": false,
@@ -2619,7 +2619,7 @@
       },
       "nosidE": {
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 117469,
           "isHeadshot": true,
@@ -2630,7 +2630,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Nana4321",
           "timeMs": 91969,
           "isHeadshot": false,
@@ -2641,7 +2641,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 105289,
           "isHeadshot": false,
@@ -2656,7 +2656,7 @@
     {
       "Spacebro": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 113969,
           "isHeadshot": false,
@@ -2667,7 +2667,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 118313,
           "isHeadshot": true,
@@ -2680,7 +2680,7 @@
       },
       "Wild_West": {
         "nosidE": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "awesomaave",
           "timeMs": 97719,
           "isHeadshot": false,
@@ -2693,7 +2693,7 @@
       },
       "atomic": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "honestpretzels",
           "timeMs": 32032,
           "isHeadshot": false,
@@ -2704,7 +2704,7 @@
           "penetratedObjects": 0
         },
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 40086,
           "isHeadshot": true,
@@ -2715,7 +2715,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 89610,
           "isHeadshot": false,
@@ -2728,7 +2728,7 @@
       },
       "kevin": {
         "jiaedin": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "",
           "timeMs": 78328,
           "isHeadshot": true,
@@ -2741,7 +2741,7 @@
       },
       "nosidE": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 91993,
           "isHeadshot": true,
@@ -2752,7 +2752,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 46188,
           "isHeadshot": true,
@@ -2767,7 +2767,7 @@
     {
       "Spacebro": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 66688,
           "isHeadshot": true,
@@ -2780,7 +2780,7 @@
       },
       "kevin": {
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 28578,
           "isHeadshot": false,
@@ -2791,7 +2791,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 90320,
           "isHeadshot": false,
@@ -2804,7 +2804,7 @@
       },
       "nosidE": {
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Spacebro",
           "timeMs": 65438,
           "isHeadshot": true,
@@ -2815,7 +2815,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 70008,
           "isHeadshot": true,
@@ -2830,7 +2830,7 @@
     {
       "MrGenericUser": {
         "Wild_West": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "nosidE",
           "timeMs": 131203,
           "isHeadshot": false,
@@ -2843,7 +2843,7 @@
       },
       "Nana4321": {
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "kevin",
           "timeMs": 72149,
           "isHeadshot": false,
@@ -2856,7 +2856,7 @@
       },
       "atomic": {
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 52313,
           "isHeadshot": true,
@@ -2867,7 +2867,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 106774,
           "isHeadshot": true,
@@ -2880,7 +2880,7 @@
       },
       "awesomaave": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "atomic",
           "timeMs": 134868,
           "isHeadshot": true,
@@ -2891,7 +2891,7 @@
           "penetratedObjects": 0
         },
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "honestpretzels",
           "timeMs": 137750,
           "isHeadshot": false,
@@ -2904,7 +2904,7 @@
       },
       "kevin": {
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 56821,
           "isHeadshot": true,
@@ -2917,7 +2917,7 @@
       },
       "nosidE": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "MrGenericUser",
           "timeMs": 138430,
           "isHeadshot": false,
@@ -2932,7 +2932,7 @@
     {
       "Nana4321": {
         "atomic": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 78070,
           "isHeadshot": false,
@@ -2943,7 +2943,7 @@
           "penetratedObjects": 0
         },
         "honestpretzels": {
-          "weapon": 102,
+          "weapon": "smg_mp9",
           "assister": "",
           "timeMs": 45938,
           "isHeadshot": false,
@@ -2956,7 +2956,7 @@
       },
       "Wild_West": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 82578,
           "isHeadshot": false,
@@ -2969,7 +2969,7 @@
       },
       "jiaedin": {
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 83211,
           "isHeadshot": false,
@@ -2980,7 +2980,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 87430,
           "isHeadshot": false,
@@ -2993,7 +2993,7 @@
       },
       "kevin": {
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 86102,
           "isHeadshot": true,
@@ -3006,7 +3006,7 @@
       },
       "nosidE": {
         "Wild_West": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "MrGenericUser",
           "timeMs": 83164,
           "isHeadshot": false,
@@ -3017,7 +3017,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "Nana4321",
           "timeMs": 106492,
           "isHeadshot": false,
@@ -3032,7 +3032,7 @@
     {
       "MrGenericUser": {
         "awesomaave": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 54594,
           "isHeadshot": false,
@@ -3045,7 +3045,7 @@
       },
       "jiaedin": {
         "Spacebro": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "atomic",
           "timeMs": 47562,
           "isHeadshot": true,
@@ -3058,7 +3058,7 @@
       },
       "kevin": {
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 55117,
           "isHeadshot": false,
@@ -3071,7 +3071,7 @@
       },
       "nosidE": {
         "Wild_West": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 51219,
           "isHeadshot": false,
@@ -3082,7 +3082,7 @@
           "penetratedObjects": 0
         },
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 52109,
           "isHeadshot": false,
@@ -3093,7 +3093,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Spacebro",
           "timeMs": 50601,
           "isHeadshot": false,
@@ -3108,7 +3108,7 @@
     {
       "MrGenericUser": {
         "jiaedin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 52157,
           "isHeadshot": false,
@@ -3121,7 +3121,7 @@
       },
       "Spacebro": {
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 67172,
           "isHeadshot": false,
@@ -3134,7 +3134,7 @@
       },
       "atomic": {
         "MrGenericUser": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "jiaedin",
           "timeMs": 53118,
           "isHeadshot": false,
@@ -3145,7 +3145,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "honestpretzels",
           "timeMs": 95180,
           "isHeadshot": false,
@@ -3158,7 +3158,7 @@
       },
       "awesomaave": {
         "Nana4321": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 48985,
           "isHeadshot": false,
@@ -3171,7 +3171,7 @@
       },
       "honestpretzels": {
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "awesomaave",
           "timeMs": 85742,
           "isHeadshot": false,
@@ -3182,7 +3182,7 @@
           "penetratedObjects": 0
         },
         "kevin": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "awesomaave",
           "timeMs": 45125,
           "isHeadshot": false,
@@ -3195,7 +3195,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 44524,
           "isHeadshot": true,
@@ -3208,7 +3208,7 @@
       },
       "nosidE": {
         "honestpretzels": {
-          "weapon": 4,
+          "weapon": "pist_deagle",
           "assister": "",
           "timeMs": 91493,
           "isHeadshot": false,
@@ -3223,7 +3223,7 @@
     {
       "Spacebro": {
         "honestpretzels": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 33687,
           "isHeadshot": true,
@@ -3236,7 +3236,7 @@
       },
       "Wild_West": {
         "Spacebro": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "",
           "timeMs": 37125,
           "isHeadshot": false,
@@ -3247,7 +3247,7 @@
           "penetratedObjects": 0
         },
         "nosidE": {
-          "weapon": 303,
+          "weapon": "rif_ak47",
           "assister": "Spacebro",
           "timeMs": 33297,
           "isHeadshot": false,
@@ -3260,7 +3260,7 @@
       },
       "kevin": {
         "Wild_West": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "Spacebro",
           "timeMs": 39257,
           "isHeadshot": false,
@@ -3271,7 +3271,7 @@
           "penetratedObjects": 0
         },
         "atomic": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 45672,
           "isHeadshot": false,
@@ -3282,7 +3282,7 @@
           "penetratedObjects": 0
         },
         "awesomaave": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 37187,
           "isHeadshot": true,
@@ -3293,7 +3293,7 @@
           "penetratedObjects": 0
         },
         "jiaedin": {
-          "weapon": 305,
+          "weapon": "rif_m4a1_s",
           "assister": "",
           "timeMs": 35570,
           "isHeadshot": false,

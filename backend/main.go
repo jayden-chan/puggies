@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"strings"
 
 	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
@@ -44,6 +45,25 @@ func headToHeadTotal(h *[]map[string]map[string]Kill) map[string]map[string]int 
 		}
 	}
 
+	return ret
+}
+
+func processWeaponName(name string) string {
+	toReplace := [][]string{
+		[]string{"models/weapons/", ""},
+		[]string{"v_", ""},
+		[]string{"w_", ""},
+		[]string{"_dropped", ""},
+		[]string{".mdl", ""},
+		[]string{"eq_incendiarygrenade", "fire"},
+		[]string{"eq_molotov", "fire"},
+		[]string{"eq_molotovgrenade", "fire"},
+	}
+
+	ret := name
+	for _, s := range toReplace {
+		ret = strings.Replace(ret, s[0], s[1], 1)
+	}
 	return ret
 }
 
@@ -97,15 +117,15 @@ type Round struct {
 }
 
 type Kill struct {
-	Weapon            demcommon.EquipmentType `json:"weapon"`
-	Assister          string                  `json:"assister"`
-	Time              int64                   `json:"timeMs"`
-	IsHeadshot        bool                    `json:"isHeadshot"`
-	AttackerBlind     bool                    `json:"attackerBlind"`
-	AssistedFlash     bool                    `json:"assistedFlash"`
-	NoScope           bool                    `json:"noScope"`
-	ThroughSmoke      bool                    `json:"throughSmoke"`
-	PenetratedObjects int                     `json:"penetratedObjects"`
+	Weapon            string `json:"weapon"`
+	Assister          string `json:"assister"`
+	Time              int64  `json:"timeMs"`
+	IsHeadshot        bool   `json:"isHeadshot"`
+	AttackerBlind     bool   `json:"attackerBlind"`
+	AssistedFlash     bool   `json:"assistedFlash"`
+	NoScope           bool   `json:"noScope"`
+	ThroughSmoke      bool   `json:"throughSmoke"`
+	PenetratedObjects int    `json:"penetratedObjects"`
 }
 
 type Death struct {
@@ -199,7 +219,7 @@ func main() {
 				}
 
 				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] = Kill{
-					Weapon:            e.Weapon.Type,
+					Weapon:            processWeaponName(e.Weapon.OriginalString),
 					Assister:          assister,
 					Time:              p.CurrentTime().Milliseconds() - roundStartTime,
 					IsHeadshot:        e.IsHeadshot,
