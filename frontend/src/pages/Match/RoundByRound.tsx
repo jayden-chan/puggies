@@ -21,6 +21,7 @@ import {
   KillFeed,
   RED_KILLFEED,
   Round,
+  Team,
   TeamsMap,
   T_KILLFEED,
   T_YELLOW,
@@ -130,7 +131,7 @@ const KillFeedItem = (
   );
 };
 
-const RoundResultIcon = (props: { round: Round }) => {
+const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
   let icon;
   let label;
   switch (props.round.winReason) {
@@ -154,7 +155,7 @@ const RoundResultIcon = (props: { round: Round }) => {
       borderRadius={5}
       w="1.9rem"
       h="1.9rem"
-      mr="auto"
+      visibility={props.visibility ? "unset" : "hidden"}
     >
       <Tooltip label={label}>
         <Flex alignItems="center" justifyContent="center" h="100%">
@@ -190,24 +191,30 @@ export const RoundByRound = (props: {
           <AccordionItem>
             <AccordionButton>
               <Flex w="100%" alignItems="center">
-                <Flex flex={1} justifyContent="center" alignItems="center">
-                  <Heading
-                    as="h3"
-                    fontSize="1.25rem"
-                    textAlign="left"
-                    mr={3}
-                    lineHeight="1.25rem"
-                    height="1.25rem"
-                  >
-                    Round {i + 1}
-                  </Heading>
-                  <RoundResultIcon round={props.rounds[i]} />
-                </Flex>
+                <Heading
+                  as="h3"
+                  flex={1}
+                  fontSize="1.25rem"
+                  textAlign="left"
+                  lineHeight="1.25rem"
+                  height="1.25rem"
+                >
+                  Round {i + 1}
+                </Heading>
 
-                <Flex flex={1} justifyContent="center">
+                <Flex flex={1} justifyContent="center" alignItems="center">
+                  <RoundResultIcon
+                    round={props.rounds[i]}
+                    visibility={
+                      i < 15
+                        ? props.rounds[i].winner === "T"
+                        : props.rounds[i].winner === "CT"
+                    }
+                  />
                   <Heading
                     as="h3"
                     fontSize="xl"
+                    ml={3}
                     textColor={i < 15 ? T_YELLOW : CT_BLUE}
                   >
                     {teamAScore}
@@ -218,10 +225,19 @@ export const RoundByRound = (props: {
                   <Heading
                     as="h3"
                     fontSize="xl"
+                    mr={3}
                     textColor={i < 15 ? CT_BLUE : T_YELLOW}
                   >
                     {teamBScore}
                   </Heading>
+                  <RoundResultIcon
+                    round={props.rounds[i]}
+                    visibility={
+                      i < 15
+                        ? props.rounds[i].winner === "CT"
+                        : props.rounds[i].winner === "T"
+                    }
+                  />
                 </Flex>
                 <Flex flex={1} justifyContent="center">
                   <AccordionIcon ml="auto" />

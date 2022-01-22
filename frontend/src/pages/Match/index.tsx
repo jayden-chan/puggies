@@ -79,7 +79,7 @@ export const MatchPage = (props: { data: Match[] }) => {
         </Text>
       </Flex>
 
-      <Tabs w="80%">
+      <Tabs w="80%" isLazy>
         <TabList>
           <Tab>Scoreboard</Tab>
           <Tab>Utility</Tab>
