@@ -11,9 +11,9 @@ import {
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import { getScore } from "../../data";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getScore } from "../../data";
 import {
   CT_BLUE,
   CT_KILLFEED,
@@ -21,7 +21,6 @@ import {
   KillFeed,
   RED_KILLFEED,
   Round,
-  Team,
   TeamsMap,
   T_KILLFEED,
   T_YELLOW,
