@@ -1,5 +1,15 @@
 import { format, parse } from "date-fns";
-import { Match, RawData, Round, Team } from "./types";
+import {
+  BombExplodeEvent,
+  DefuseEvent,
+  Kill,
+  KillEvent,
+  Match,
+  PlantEvent,
+  RawData,
+  Round,
+  Team,
+} from "./types";
 import pug_de_mirage_2022_01_15 from "./matchData/pug_de_mirage_2022-01-15_06.json";
 import pug_de_nuke_2022_01_15 from "./matchData/pug_de_nuke_2022-01-15_05.json";
 
@@ -68,20 +78,60 @@ const processData = (
     },
     name: Object.fromEntries(Object.keys(rawData.teams).map((p) => [p, p])),
     roundByRound: rawData.killFeed.map((k, i) => {
+      const roundInfo = rawData.rounds[i];
       const teamAScore = getScore(rawData.rounds, "CT", i + 1);
       const teamBScore = getScore(rawData.rounds, "T", i + 1);
-      const kills = Object.entries(k)
+      const kills: KillEvent[] = Object.entries(k)
         .map(([killer, kills]) =>
           Object.entries(kills).map(([victim, kill]) => ({
+            kind: <"kill">"kill",
             killer,
             victim,
+            time: kill.timeMs,
             kill,
           }))
         )
-        .flat()
-        .sort((a, b) => a.kill.timeMs - b.kill.timeMs);
+        .flat();
 
-      return { teamAScore, teamBScore, kills };
+      const plant: PlantEvent[] =
+        roundInfo.planter === ""
+          ? []
+          : [
+              {
+                kind: <"plant">"plant",
+                planter: roundInfo.planter,
+                time: roundInfo.planterTime,
+              },
+            ];
+
+      const defuse: DefuseEvent[] =
+        roundInfo.defuser === ""
+          ? []
+          : [
+              {
+                kind: <"defuse">"defuse",
+                defuser: roundInfo.defuser,
+                time: roundInfo.defuserTime,
+              },
+            ];
+
+      const explode: BombExplodeEvent[] =
+        roundInfo.bombExplodeTime === 0
+          ? []
+          : [
+              {
+                kind: <"bomb_explode">"bomb_explode",
+                time: roundInfo.bombExplodeTime,
+              },
+            ];
+
+      return {
+        teamAScore,
+        teamBScore,
+        events: [kills, plant, defuse, explode]
+          .flat()
+          .sort((a, b) => a.time - b.time),
+      };
     }),
     efPerFlash: Object.fromEntries(
       Object.entries(rawData.flashesThrown).map(([player, flashes]) => {

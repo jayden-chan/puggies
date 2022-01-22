@@ -48,8 +48,7 @@ const KillFeedIcon = (props: { src: string }) => (
 
 const KillFeedPlayer = (props: {
   player: string;
-  round: number;
-  teams: TeamsMap;
+  color: string;
   mx?: number;
 }) => (
   <Text
@@ -57,46 +56,49 @@ const KillFeedPlayer = (props: {
     mt="2px"
     mx={props.mx ?? undefined}
     fontWeight="bold"
-    color={playerColor(props.player, props.teams, props.round)}
+    color={props.color}
   >
     {props.player}
   </Text>
+);
+
+const EventBox = (props: {
+  borderColor: string;
+  children: React.ReactNode;
+}) => (
+  <Flex
+    bg="black"
+    borderColor={props.borderColor}
+    alignItems="center"
+    borderRadius={8}
+    borderWidth={3}
+    h="2.4rem"
+    px={2}
+    py={1}
+    mt={1}
+  >
+    {props.children}
+  </Flex>
 );
 
 const KillFeedItem = (
   props: KillFeedThing & { round: number; teams: TeamsMap }
 ) => {
   return (
-    <Flex
-      bg="black"
-      borderColor={RED_KILLFEED}
-      alignItems="center"
-      borderRadius={8}
-      borderWidth={3}
-      px={2}
-      py={1}
-      mt={1}
-    >
+    <EventBox borderColor={RED_KILLFEED}>
       {props.kill.attackerBlind && <KillFeedIcon src="/blind.png" />}
       <KillFeedPlayer
         player={props.killer}
-        teams={props.teams}
-        round={props.round}
+        color={playerColor(props.killer, props.teams, props.round)}
       />
 
       {props.kill.assistedFlash === true && (
         <>
-          <KillFeedPlayer
-            mx={2}
-            player={"+"}
-            teams={props.teams}
-            round={props.round}
-          />
+          <KillFeedPlayer mx={2} player={"+"} color="white" />
           <KillFeedIcon src="/flashassist.png" />
           <KillFeedPlayer
             player={props.kill.assister}
-            teams={props.teams}
-            round={props.round}
+            color={playerColor(props.kill.assister, props.teams, props.round)}
           />
         </>
       )}
@@ -104,8 +106,7 @@ const KillFeedItem = (
       <KillFeedPlayer
         mx={2}
         player={WeaponType[props.kill.weapon]}
-        teams={props.teams}
-        round={props.round}
+        color="white"
       />
 
       {props.kill.noScope && <KillFeedIcon src="/noscope.png" />}
@@ -114,10 +115,9 @@ const KillFeedItem = (
       {props.kill.isHeadshot && <KillFeedIcon src="/headshot.png" />}
       <KillFeedPlayer
         player={props.victim}
-        teams={props.teams}
-        round={props.round}
+        color={playerColor(props.victim, props.teams, props.round)}
       />
-    </Flex>
+    </EventBox>
   );
 };
 
@@ -167,7 +167,7 @@ export const RoundByRoundList = (props: {
   return (
     <Accordion allowMultiple>
       {props.roundByRound.map((r, i) => {
-        const { teamAScore, teamBScore, kills } = r;
+        const { teamAScore, teamBScore, events } = r;
 
         return (
           <AccordionItem key={i}>
@@ -229,14 +229,51 @@ export const RoundByRoundList = (props: {
 
             <AccordionPanel>
               <Flex flexDirection="column" alignItems="start" mt={2}>
-                {kills.map((k, j) => (
-                  <KillFeedItem
-                    key={j}
-                    {...k}
-                    teams={props.teams}
-                    round={i + 1}
-                  />
-                ))}
+                {events.map((event, j) => {
+                  const ms = event.time;
+                  const seconds = Math.round(ms / 1000) % 60;
+                  const minutes = Math.floor(Math.round(ms / 1000) / 60);
+
+                  return (
+                    <Flex>
+                      <Flex
+                        h="2.4rem"
+                        px={2}
+                        py={1}
+                        mt={1}
+                        mr={1}
+                        alignItems="center"
+                      >
+                        {`${minutes}`.padStart(2, "0")}:
+                        {`${seconds}`.padStart(2, "0")}
+                      </Flex>
+                      {event.kind === "kill" && (
+                        <KillFeedItem
+                          key={j}
+                          {...event}
+                          teams={props.teams}
+                          round={i + 1}
+                        />
+                      )}
+
+                      {event.kind === "plant" && (
+                        <EventBox borderColor="gray">
+                          {event.planter} planted the bomb
+                        </EventBox>
+                      )}
+
+                      {event.kind === "defuse" && (
+                        <EventBox borderColor="gray">
+                          {event.defuser} defused the bomb
+                        </EventBox>
+                      )}
+
+                      {event.kind === "bomb_explode" && (
+                        <EventBox borderColor="gray">Bomb exploded</EventBox>
+                      )}
+                    </Flex>
+                  );
+                })}
               </Flex>
             </AccordionPanel>
           </AccordionItem>

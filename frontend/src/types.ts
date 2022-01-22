@@ -12,20 +12,45 @@ export type Round = {
   winReason: number;
   planter: string;
   defuser: string;
+  planterTime: number;
+  defuserTime: number;
+  bombExplodeTime: number;
 };
 
 export type HeadToHead = { [key: string]: { [key: string]: number } };
 export type KillFeed = { [key: string]: { [key: string]: Kill } }[];
 export type TeamsMap = { [key: string]: Team };
 export type NumericMap = { [key: string]: number };
+
+export type KillEvent = {
+  kind: "kill";
+  killer: string;
+  victim: string;
+  time: number;
+  kill: Kill;
+};
+
+export type PlantEvent = {
+  kind: "plant";
+  planter: string;
+  time: number;
+};
+
+export type DefuseEvent = {
+  kind: "defuse";
+  defuser: string;
+  time: number;
+};
+
+export type BombExplodeEvent = {
+  kind: "bomb_explode";
+  time: number;
+};
+
 export type RoundByRound = {
   teamAScore: number;
   teamBScore: number;
-  kills: {
-    killer: string;
-    victim: string;
-    kill: Kill;
-  }[];
+  events: (KillEvent | PlantEvent | DefuseEvent | BombExplodeEvent)[];
 }[];
 
 export type Kill = {
