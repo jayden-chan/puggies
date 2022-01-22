@@ -67,6 +67,22 @@ const processData = (
       teamBTitle,
     },
     name: Object.fromEntries(Object.keys(rawData.teams).map((p) => [p, p])),
+    roundByRound: rawData.killFeed.map((k, i) => {
+      const teamAScore = getScore(rawData.rounds, "CT", i + 1);
+      const teamBScore = getScore(rawData.rounds, "T", i + 1);
+      const kills = Object.entries(k)
+        .map(([killer, kills]) =>
+          Object.entries(kills).map(([victim, kill]) => ({
+            killer,
+            victim,
+            kill,
+          }))
+        )
+        .flat()
+        .sort((a, b) => a.kill.timeMs - b.kill.timeMs);
+
+      return { teamAScore, teamBScore, kills };
+    }),
     efPerFlash: Object.fromEntries(
       Object.entries(rawData.flashesThrown).map(([player, flashes]) => {
         return [

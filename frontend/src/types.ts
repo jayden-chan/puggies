@@ -18,6 +18,15 @@ export type HeadToHead = { [key: string]: { [key: string]: number } };
 export type KillFeed = { [key: string]: { [key: string]: Kill } }[];
 export type TeamsMap = { [key: string]: Team };
 export type NumericMap = { [key: string]: number };
+export type RoundByRound = {
+  teamAScore: number;
+  teamBScore: number;
+  kills: {
+    killer: string;
+    victim: string;
+    kill: Kill;
+  }[];
+}[];
 
 export type Kill = {
   weapon: WeaponType;
@@ -69,6 +78,7 @@ export type RawData = {
 
 export type Match = RawData & {
   efPerFlash: NumericMap;
+  roundByRound: RoundByRound;
   name: { [key: string]: string };
   meta: {
     demoLink: string;

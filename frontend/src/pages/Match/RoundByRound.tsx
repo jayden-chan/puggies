@@ -13,15 +13,13 @@ import {
 } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getScore } from "../../data";
 import {
   CT_BLUE,
   CT_KILLFEED,
   Kill,
-  KillFeed,
   RED_KILLFEED,
   Round,
-  Team,
+  RoundByRound,
   TeamsMap,
   T_KILLFEED,
   T_YELLOW,
@@ -44,13 +42,8 @@ const playerColor = (player: string, teams: TeamsMap, round: number) => {
   }
 };
 
-const KillFeedIcon = (props: { show: boolean; src: string }) => (
-  <Image
-    src={`/killfeed${props.src}`}
-    h="20px"
-    mr={2}
-    display={props.show ? "unset" : "none"}
-  />
+const KillFeedIcon = (props: { src: string }) => (
+  <Image src={`/killfeed${props.src}`} h="20px" mr={2} />
 );
 
 const KillFeedPlayer = (props: {
@@ -84,7 +77,7 @@ const KillFeedItem = (
       py={1}
       mt={1}
     >
-      <KillFeedIcon src="/blind.png" show={props.kill.attackerBlind} />
+      {props.kill.attackerBlind && <KillFeedIcon src="/blind.png" />}
       <KillFeedPlayer
         player={props.killer}
         teams={props.teams}
@@ -99,7 +92,7 @@ const KillFeedItem = (
             teams={props.teams}
             round={props.round}
           />
-          <KillFeedIcon src="/flashassist.png" show />
+          <KillFeedIcon src="/flashassist.png" />
           <KillFeedPlayer
             player={props.kill.assister}
             teams={props.teams}
@@ -115,13 +108,10 @@ const KillFeedItem = (
         round={props.round}
       />
 
-      <KillFeedIcon src="/noscope.png" show={props.kill.noScope} />
-      <KillFeedIcon src="/smoke.png" show={props.kill.throughSmoke} />
-      <KillFeedIcon
-        src="/wallbang.png"
-        show={props.kill.penetratedObjects > 0}
-      />
-      <KillFeedIcon src="/headshot.png" show={props.kill.isHeadshot} />
+      {props.kill.noScope && <KillFeedIcon src="/noscope.png" />}
+      {props.kill.throughSmoke && <KillFeedIcon src="/smoke.png" />}
+      {props.kill.penetratedObjects > 0 && <KillFeedIcon src="/wallbang.png" />}
+      {props.kill.isHeadshot && <KillFeedIcon src="/headshot.png" />}
       <KillFeedPlayer
         player={props.victim}
         teams={props.teams}
@@ -132,6 +122,10 @@ const KillFeedItem = (
 };
 
 const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
+  if (props.visibility === false) {
+    return <Box w="1.9rem" h="1.9rem" visibility="hidden" />;
+  }
+
   let icon;
   let label;
   switch (props.round.winReason) {
@@ -155,7 +149,6 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
       borderRadius={5}
       w="1.9rem"
       h="1.9rem"
-      visibility={props.visibility ? "unset" : "hidden"}
     >
       <Tooltip label={label}>
         <Flex alignItems="center" justifyContent="center" h="100%">
@@ -166,29 +159,18 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
   );
 };
 
-export const RoundByRound = (props: {
-  killFeed: KillFeed;
+export const RoundByRoundList = (props: {
+  roundByRound: RoundByRound;
   teams: TeamsMap;
   rounds: Round[];
 }) => {
   return (
     <Accordion allowMultiple>
-      {props.killFeed.map((k, i) => {
-        const teamAScore = getScore(props.rounds, "CT", i + 1);
-        const teamBScore = getScore(props.rounds, "T", i + 1);
-        const kills: KillFeedThing[] = Object.entries(k)
-          .map(([killer, kills]) =>
-            Object.entries(kills).map(([victim, kill]) => ({
-              killer,
-              victim,
-              kill,
-            }))
-          )
-          .flat()
-          .sort((a, b) => a.kill.timeMs - b.kill.timeMs);
+      {props.roundByRound.map((r, i) => {
+        const { teamAScore, teamBScore, kills } = r;
 
         return (
-          <AccordionItem>
+          <AccordionItem key={i}>
             <AccordionButton>
               <Flex w="100%" alignItems="center">
                 <Heading
@@ -247,8 +229,13 @@ export const RoundByRound = (props: {
 
             <AccordionPanel>
               <Flex flexDirection="column" alignItems="start" mt={2}>
-                {kills.map((k) => (
-                  <KillFeedItem {...k} teams={props.teams} round={i + 1} />
+                {kills.map((k, i) => (
+                  <KillFeedItem
+                    key={i}
+                    {...k}
+                    teams={props.teams}
+                    round={i + 1}
+                  />
                 ))}
               </Flex>
             </AccordionPanel>

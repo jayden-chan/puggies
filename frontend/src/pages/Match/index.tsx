@@ -20,7 +20,7 @@ import { HeadToHeadTable } from "./HeadToHeadTable";
 import { RoundsVisualization } from "./RoundsVisualization";
 import { PlayerInfo } from "./PlayerInfo";
 import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
-import { RoundByRound } from "./RoundByRound";
+import { RoundByRoundList } from "./RoundByRound";
 
 export const MatchPage = (props: { data: Match[] }) => {
   const { id = "" } = useParams();
@@ -79,7 +79,7 @@ export const MatchPage = (props: { data: Match[] }) => {
         </Text>
       </Flex>
 
-      <Tabs w="80%" isLazy>
+      <Tabs w="80%">
         <TabList>
           <Tab>Scoreboard</Tab>
           <Tab>Utility</Tab>
@@ -160,8 +160,8 @@ export const MatchPage = (props: { data: Match[] }) => {
 
           {/* Rounds page */}
           <TabPanel>
-            <RoundByRound
-              killFeed={match.killFeed}
+            <RoundByRoundList
+              roundByRound={match.roundByRound}
               teams={match.teams}
               rounds={match.rounds}
             />
