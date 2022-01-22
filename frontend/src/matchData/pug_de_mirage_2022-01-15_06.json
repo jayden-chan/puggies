@@ -27,7 +27,7 @@
   "assists": {
     "MrGenericUser": 7,
     "Nana4321": 6,
-    "Spacebro": 5,
+    "Spacebro": 4,
     "Wild_West": 4,
     "atomic": 3,
     "awesomaave": 8,
@@ -135,7 +135,7 @@
   "impact": {
     "MrGenericUser": 0.48,
     "Nana4321": 0.8,
-    "Spacebro": 0.66,
+    "Spacebro": 0.65,
     "Wild_West": 0.71,
     "atomic": 2.04,
     "awesomaave": 0.34,
@@ -180,9 +180,8 @@
   },
   "flashAssists": {
     "Wild_West": 1,
-    "atomic": 3,
-    "honestpretzels": 1,
-    "nosidE": 2
+    "atomic": 2,
+    "honestpretzels": 1
   },
   "enemiesFlashed": {
     "Nana4321": 5,
