@@ -17,10 +17,10 @@ import { useParams } from "react-router-dom";
 import { getPlayers } from "../../data";
 import { Match, RawData } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
-import { RoundsVisualization } from "./RoundsVisualization";
 import { PlayerInfo } from "./PlayerInfo";
-import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
 import { RoundByRoundList } from "./RoundByRound";
+import { RoundsVisualization } from "./RoundsVisualization";
+import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
 
 export const MatchPage = (props: { data: Match[] }) => {
   const { id = "" } = useParams();

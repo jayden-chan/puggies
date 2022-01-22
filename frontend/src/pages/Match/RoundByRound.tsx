@@ -9,7 +9,6 @@ import {
   Heading,
   Image,
   Text,
-  Tooltip,
 } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

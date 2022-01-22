@@ -1,7 +1,7 @@
 import { Divider, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { Match, Round, Team, T_YELLOW, CT_BLUE } from "../../types";
+import { CT_BLUE, Match, Round, Team, T_YELLOW } from "../../types";
 import { GridIcon } from "./PlayerInfo";
 
 const RoundResultIcon = (props: {

@@ -1,8 +1,9 @@
 import { format, parse } from "date-fns";
+import pug_de_mirage_2022_01_15 from "./matchData/pug_de_mirage_2022-01-15_06.json";
+import pug_de_nuke_2022_01_15 from "./matchData/pug_de_nuke_2022-01-15_05.json";
 import {
   BombExplodeEvent,
   DefuseEvent,
-  Kill,
   KillEvent,
   Match,
   PlantEvent,
@@ -10,8 +11,6 @@ import {
   Round,
   Team,
 } from "./types";
-import pug_de_mirage_2022_01_15 from "./matchData/pug_de_mirage_2022-01-15_06.json";
-import pug_de_nuke_2022_01_15 from "./matchData/pug_de_nuke_2022-01-15_05.json";
 
 export const getPlayers = (
   data: RawData,
@@ -84,7 +83,7 @@ const processData = (
       const kills: KillEvent[] = Object.entries(k)
         .map(([killer, kills]) =>
           Object.entries(kills).map(([victim, kill]) => ({
-            kind: <"kill">"kill",
+            kind: "kill" as "kill",
             killer,
             victim,
             time: kill.timeMs,
@@ -98,7 +97,7 @@ const processData = (
           ? []
           : [
               {
-                kind: <"plant">"plant",
+                kind: "plant",
                 planter: roundInfo.planter,
                 time: roundInfo.planterTime,
               },
@@ -109,7 +108,7 @@ const processData = (
           ? []
           : [
               {
-                kind: <"defuse">"defuse",
+                kind: "defuse",
                 defuser: roundInfo.defuser,
                 time: roundInfo.defuserTime,
               },
@@ -120,7 +119,7 @@ const processData = (
           ? []
           : [
               {
-                kind: <"bomb_explode">"bomb_explode",
+                kind: "bomb_explode",
                 time: roundInfo.bombExplodeTime,
               },
             ];
