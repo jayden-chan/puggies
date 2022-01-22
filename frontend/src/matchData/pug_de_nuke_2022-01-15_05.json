@@ -202,121 +202,181 @@
       "winner": "T",
       "winReason": 9,
       "planter": "atomic",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 65039,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 1,
       "planter": "awesomaave",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 58125,
+      "defuserTime": 0,
+      "bombExplodeTime": 99149
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 7,
       "planter": "Wild_West",
-      "Defuser": "nosidE"
+      "defuser": "nosidE",
+      "planterTime": 52445,
+      "defuserTime": 73844,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 1,
       "planter": "awesomaave",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 81773,
+      "defuserTime": 0,
+      "bombExplodeTime": 122828
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "Wild_West",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 38571,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "Wild_West",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 77523,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "atomic",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 72391,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 8,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 8,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "atomic",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 39765,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "atomic",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 121727,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 7,
       "planter": "MrGenericUser",
-      "Defuser": "jiaedin"
+      "defuser": "jiaedin",
+      "planterTime": 48282,
+      "defuserTime": 71453,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 8,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 8,
       "planter": "",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "T",
       "winReason": 9,
       "planter": "Spacebro",
-      "Defuser": ""
+      "defuser": "",
+      "planterTime": 62351,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
     },
     {
       "winner": "CT",
       "winReason": 7,
       "planter": "Spacebro",
-      "Defuser": "awesomaave"
+      "defuser": "awesomaave",
+      "planterTime": 107406,
+      "defuserTime": 126742,
+      "bombExplodeTime": 0
     }
   ],
   "headToHead": {
@@ -394,7 +454,7 @@
         "awesomaave": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 274601,
+          "timeMs": 81914,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -405,7 +465,7 @@
         "honestpretzels": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 271078,
+          "timeMs": 78391,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -416,7 +476,7 @@
         "jiaedin": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 287640,
+          "timeMs": 94953,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -429,7 +489,7 @@
         "BrianD": {
           "weapon": 2,
           "assister": "",
-          "timeMs": 288796,
+          "timeMs": 96109,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -442,7 +502,7 @@
         "MrGenericUser": {
           "weapon": 2,
           "assister": "",
-          "timeMs": 260601,
+          "timeMs": 67914,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -455,7 +515,7 @@
         "Spacebro": {
           "weapon": 2,
           "assister": "",
-          "timeMs": 241703,
+          "timeMs": 49016,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -468,7 +528,7 @@
         "Nana4321": {
           "weapon": 2,
           "assister": "",
-          "timeMs": 237984,
+          "timeMs": 45297,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -479,7 +539,7 @@
         "nosidE": {
           "weapon": 2,
           "assister": "atomic",
-          "timeMs": 235148,
+          "timeMs": 42461,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -492,7 +552,7 @@
         "Wild_West": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 233570,
+          "timeMs": 40883,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -507,7 +567,7 @@
         "Wild_West": {
           "weapon": 202,
           "assister": "",
-          "timeMs": 325937,
+          "timeMs": 32016,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -520,7 +580,7 @@
         "honestpretzels": {
           "weapon": 102,
           "assister": "",
-          "timeMs": 330328,
+          "timeMs": 36407,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -533,7 +593,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 322296,
+          "timeMs": 28375,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -544,7 +604,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 335398,
+          "timeMs": 41477,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -555,7 +615,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "honestpretzels",
-          "timeMs": 354726,
+          "timeMs": 60805,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -568,7 +628,7 @@
         "MrGenericUser": {
           "weapon": 104,
           "assister": "Wild_West",
-          "timeMs": 327179,
+          "timeMs": 33258,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -581,7 +641,7 @@
         "awesomaave": {
           "weapon": 102,
           "assister": "",
-          "timeMs": 380109,
+          "timeMs": 86188,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -592,7 +652,7 @@
         "jiaedin": {
           "weapon": 102,
           "assister": "",
-          "timeMs": 323398,
+          "timeMs": 29477,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -607,7 +667,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 436210,
+          "timeMs": 38046,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -618,7 +678,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 453671,
+          "timeMs": 55507,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -629,7 +689,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 473953,
+          "timeMs": 75789,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -640,7 +700,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 443359,
+          "timeMs": 45195,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -653,7 +713,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "atomic",
-          "timeMs": 476234,
+          "timeMs": 78070,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -666,7 +726,7 @@
         "atomic": {
           "weapon": 4,
           "assister": "",
-          "timeMs": 471945,
+          "timeMs": 73781,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -681,7 +741,7 @@
         "atomic": {
           "weapon": 305,
           "assister": "MrGenericUser",
-          "timeMs": 522765,
+          "timeMs": 41414,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -692,7 +752,7 @@
         "honestpretzels": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 525007,
+          "timeMs": 43656,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -705,7 +765,7 @@
         "MrGenericUser": {
           "weapon": 104,
           "assister": "",
-          "timeMs": 521374,
+          "timeMs": 40023,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -718,7 +778,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "awesomaave",
-          "timeMs": 538078,
+          "timeMs": 56727,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -729,7 +789,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "honestpretzels",
-          "timeMs": 525257,
+          "timeMs": 43906,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -742,7 +802,7 @@
         "Wild_West": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 540500,
+          "timeMs": 59149,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -753,7 +813,7 @@
         "awesomaave": {
           "weapon": 305,
           "assister": "BrianD",
-          "timeMs": 536062,
+          "timeMs": 54711,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -764,7 +824,7 @@
         "jiaedin": {
           "weapon": 305,
           "assister": "BrianD",
-          "timeMs": 538820,
+          "timeMs": 57469,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -779,7 +839,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "honestpretzels",
-          "timeMs": 618054,
+          "timeMs": 57867,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -790,7 +850,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 645945,
+          "timeMs": 85758,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -801,7 +861,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 628343,
+          "timeMs": 68156,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -814,7 +874,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 597890,
+          "timeMs": 37703,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -827,7 +887,7 @@
         "Wild_West": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 587546,
+          "timeMs": 27359,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -838,7 +898,7 @@
         "atomic": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 669117,
+          "timeMs": 108930,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -853,7 +913,7 @@
         "Wild_West": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 739460,
+          "timeMs": 51367,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -866,7 +926,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 739039,
+          "timeMs": 50946,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -877,7 +937,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "jiaedin",
-          "timeMs": 717953,
+          "timeMs": 29860,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -888,7 +948,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 715312,
+          "timeMs": 27219,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -901,7 +961,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 740265,
+          "timeMs": 52172,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -914,7 +974,7 @@
         "Nana4321": {
           "weapon": 104,
           "assister": "",
-          "timeMs": 740468,
+          "timeMs": 52375,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -929,7 +989,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 794812,
+          "timeMs": 49211,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -940,7 +1000,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 797499,
+          "timeMs": 51898,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -953,7 +1013,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 792507,
+          "timeMs": 46906,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -964,7 +1024,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 803843,
+          "timeMs": 58242,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -977,7 +1037,7 @@
         "Spacebro": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 790765,
+          "timeMs": 45164,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -990,7 +1050,7 @@
         "Wild_West": {
           "weapon": 5,
           "assister": "",
-          "timeMs": 802257,
+          "timeMs": 56656,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1005,7 +1065,7 @@
         "awesomaave": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 838109,
+          "timeMs": 29242,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1018,7 +1078,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 847195,
+          "timeMs": 38328,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1031,7 +1091,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 908234,
+          "timeMs": 99367,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1042,7 +1102,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 910445,
+          "timeMs": 101578,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1053,7 +1113,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "jiaedin",
-          "timeMs": 841703,
+          "timeMs": 32836,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1066,7 +1126,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 847039,
+          "timeMs": 38172,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1079,7 +1139,7 @@
         "jiaedin": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 837804,
+          "timeMs": 28937,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1094,7 +1154,7 @@
         "awesomaave": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 948781,
+          "timeMs": 33313,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1105,7 +1165,7 @@
         "jiaedin": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 944499,
+          "timeMs": 29031,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1118,7 +1178,7 @@
         "honestpretzels": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 951171,
+          "timeMs": 35703,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1131,7 +1191,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "atomic",
-          "timeMs": 992054,
+          "timeMs": 76586,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1144,7 +1204,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "awesomaave",
-          "timeMs": 977375,
+          "timeMs": 61907,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1155,7 +1215,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "honestpretzels",
-          "timeMs": 958960,
+          "timeMs": 43492,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1166,7 +1226,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 949585,
+          "timeMs": 34117,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1179,7 +1239,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 948843,
+          "timeMs": 33375,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1192,7 +1252,7 @@
         "atomic": {
           "weapon": 4,
           "assister": "",
-          "timeMs": 987382,
+          "timeMs": 71914,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1207,7 +1267,7 @@
         "honestpretzels": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1040414,
+          "timeMs": 43266,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1220,7 +1280,7 @@
         "Wild_West": {
           "weapon": 305,
           "assister": "Spacebro",
-          "timeMs": 1056804,
+          "timeMs": 59656,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1231,7 +1291,7 @@
         "atomic": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1075796,
+          "timeMs": 78648,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1244,7 +1304,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1046367,
+          "timeMs": 49219,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1257,7 +1317,7 @@
         "Spacebro": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1063148,
+          "timeMs": 66000,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1270,7 +1330,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1052031,
+          "timeMs": 54883,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1281,7 +1341,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1084749,
+          "timeMs": 87601,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1292,7 +1352,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1077703,
+          "timeMs": 80555,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1305,7 +1365,7 @@
         "awesomaave": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1052148,
+          "timeMs": 55000,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1320,7 +1380,7 @@
         "Wild_West": {
           "weapon": 203,
           "assister": "",
-          "timeMs": 1130289,
+          "timeMs": 40516,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1331,7 +1391,7 @@
         "awesomaave": {
           "weapon": 202,
           "assister": "nosidE",
-          "timeMs": 1175328,
+          "timeMs": 85555,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1342,7 +1402,7 @@
         "jiaedin": {
           "weapon": 203,
           "assister": "",
-          "timeMs": 1119156,
+          "timeMs": 29383,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1355,7 +1415,7 @@
         "MrGenericUser": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1118195,
+          "timeMs": 28422,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1368,7 +1428,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1154820,
+          "timeMs": 65047,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1379,7 +1439,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "honestpretzels",
-          "timeMs": 1135093,
+          "timeMs": 45320,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1392,7 +1452,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "atomic",
-          "timeMs": 1120757,
+          "timeMs": 30984,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1405,7 +1465,7 @@
         "atomic": {
           "weapon": 4,
           "assister": "",
-          "timeMs": 1125601,
+          "timeMs": 35828,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1416,7 +1476,7 @@
         "honestpretzels": {
           "weapon": 4,
           "assister": "Spacebro",
-          "timeMs": 1130101,
+          "timeMs": 40328,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1431,7 +1491,7 @@
         "Wild_West": {
           "weapon": 305,
           "assister": "nosidE",
-          "timeMs": 1260132,
+          "timeMs": 79679,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1444,7 +1504,7 @@
         "awesomaave": {
           "weapon": 101,
           "assister": "",
-          "timeMs": 1230281,
+          "timeMs": 49828,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1457,7 +1517,7 @@
         "nosidE": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1250898,
+          "timeMs": 70445,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1470,7 +1530,7 @@
         "Nana4321": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1274523,
+          "timeMs": 94070,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1483,7 +1543,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "jiaedin",
-          "timeMs": 1256367,
+          "timeMs": 75914,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": true,
@@ -1494,7 +1554,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1263374,
+          "timeMs": 82921,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1507,7 +1567,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1233750,
+          "timeMs": 53297,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1522,7 +1582,7 @@
         "atomic": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1374429,
+          "timeMs": 94781,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1533,7 +1593,7 @@
         "honestpretzels": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1321742,
+          "timeMs": 42094,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1546,7 +1606,7 @@
         "awesomaave": {
           "weapon": 101,
           "assister": "",
-          "timeMs": 1336312,
+          "timeMs": 56664,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1557,7 +1617,7 @@
         "jiaedin": {
           "weapon": 101,
           "assister": "Nana4321",
-          "timeMs": 1331320,
+          "timeMs": 51672,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1570,7 +1630,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "atomic",
-          "timeMs": 1375140,
+          "timeMs": 95492,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1581,7 +1641,7 @@
         "Spacebro": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1392445,
+          "timeMs": 112797,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1594,7 +1654,7 @@
         "BrianD": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1351398,
+          "timeMs": 71750,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1607,7 +1667,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1326906,
+          "timeMs": 47258,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1620,7 +1680,7 @@
         "Wild_West": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1402007,
+          "timeMs": 122359,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1635,7 +1695,7 @@
         "Nana4321": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1470117,
+          "timeMs": 62992,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1648,7 +1708,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1467812,
+          "timeMs": 60687,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1659,7 +1719,7 @@
         "MrGenericUser": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1434531,
+          "timeMs": 27406,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1670,7 +1730,7 @@
         "Spacebro": {
           "weapon": 303,
           "assister": "atomic",
-          "timeMs": 1436281,
+          "timeMs": 29156,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": true,
@@ -1681,7 +1741,7 @@
         "nosidE": {
           "weapon": 405,
           "assister": "",
-          "timeMs": 1485718,
+          "timeMs": 78593,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1694,7 +1754,7 @@
         "jiaedin": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1464578,
+          "timeMs": 57453,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1709,7 +1769,7 @@
         "honestpretzels": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1537156,
+          "timeMs": 46313,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1722,7 +1782,7 @@
         "awesomaave": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1530304,
+          "timeMs": 39461,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1735,7 +1795,7 @@
         "Wild_West": {
           "weapon": 305,
           "assister": "Nana4321",
-          "timeMs": 1568312,
+          "timeMs": 77469,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1746,7 +1806,7 @@
         "jiaedin": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1533836,
+          "timeMs": 42993,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1759,7 +1819,7 @@
         "BrianD": {
           "weapon": 303,
           "assister": "honestpretzels",
-          "timeMs": 1544289,
+          "timeMs": 53446,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1772,7 +1832,7 @@
         "MrGenericUser": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1608007,
+          "timeMs": 117164,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1783,7 +1843,7 @@
         "Nana4321": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1625984,
+          "timeMs": 135141,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1794,7 +1854,7 @@
         "Spacebro": {
           "weapon": 4,
           "assister": "",
-          "timeMs": 1623460,
+          "timeMs": 132617,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1805,7 +1865,7 @@
         "nosidE": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1614671,
+          "timeMs": 123828,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1820,7 +1880,7 @@
         "Wild_West": {
           "weapon": 4,
           "assister": "",
-          "timeMs": 1679437,
+          "timeMs": 38477,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1833,7 +1893,7 @@
         "awesomaave": {
           "weapon": 6,
           "assister": "",
-          "timeMs": 1679906,
+          "timeMs": 38946,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1846,7 +1906,7 @@
         "Spacebro": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 1689226,
+          "timeMs": 48266,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1857,7 +1917,7 @@
         "nosidE": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 1687796,
+          "timeMs": 46836,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1870,7 +1930,7 @@
         "BrianD": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 1678460,
+          "timeMs": 37500,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1883,7 +1943,7 @@
         "MrGenericUser": {
           "weapon": 9,
           "assister": "",
-          "timeMs": 1694351,
+          "timeMs": 53391,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1894,7 +1954,7 @@
         "Nana4321": {
           "weapon": 9,
           "assister": "atomic",
-          "timeMs": 1693234,
+          "timeMs": 52274,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1909,7 +1969,7 @@
         "awesomaave": {
           "weapon": 104,
           "assister": "",
-          "timeMs": 1760398,
+          "timeMs": 42992,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1922,7 +1982,7 @@
         "atomic": {
           "weapon": 104,
           "assister": "nosidE",
-          "timeMs": 1748250,
+          "timeMs": 30844,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1935,7 +1995,7 @@
         "MrGenericUser": {
           "weapon": 304,
           "assister": "",
-          "timeMs": 1748109,
+          "timeMs": 30703,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1946,7 +2006,7 @@
         "nosidE": {
           "weapon": 304,
           "assister": "",
-          "timeMs": 1746851,
+          "timeMs": 29445,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1959,7 +2019,7 @@
         "Spacebro": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1751437,
+          "timeMs": 34031,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1972,7 +2032,7 @@
         "BrianD": {
           "weapon": 203,
           "assister": "",
-          "timeMs": 1750187,
+          "timeMs": 32781,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1983,7 +2043,7 @@
         "Nana4321": {
           "weapon": 203,
           "assister": "awesomaave",
-          "timeMs": 1765632,
+          "timeMs": 48226,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -1998,7 +2058,7 @@
         "honestpretzels": {
           "weapon": 104,
           "assister": "",
-          "timeMs": 1804132,
+          "timeMs": 33468,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2011,7 +2071,7 @@
         "Spacebro": {
           "weapon": 102,
           "assister": "",
-          "timeMs": 1807351,
+          "timeMs": 36687,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2024,7 +2084,7 @@
         "Nana4321": {
           "weapon": 302,
           "assister": "",
-          "timeMs": 1833710,
+          "timeMs": 63046,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2035,7 +2095,7 @@
         "nosidE": {
           "weapon": 302,
           "assister": "",
-          "timeMs": 1806000,
+          "timeMs": 35336,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2048,7 +2108,7 @@
         "BrianD": {
           "weapon": 203,
           "assister": "",
-          "timeMs": 1802539,
+          "timeMs": 31875,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2059,7 +2119,7 @@
         "MrGenericUser": {
           "weapon": 203,
           "assister": "",
-          "timeMs": 1803789,
+          "timeMs": 33125,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2072,7 +2132,7 @@
         "jiaedin": {
           "weapon": 2,
           "assister": "MrGenericUser",
-          "timeMs": 1805101,
+          "timeMs": 34437,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2087,7 +2147,7 @@
         "atomic": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1915937,
+          "timeMs": 77117,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2098,7 +2158,7 @@
         "honestpretzels": {
           "weapon": 303,
           "assister": "nosidE",
-          "timeMs": 1910054,
+          "timeMs": 71234,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2111,7 +2171,7 @@
         "Wild_West": {
           "weapon": 311,
           "assister": "MrGenericUser",
-          "timeMs": 1867187,
+          "timeMs": 28367,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2122,7 +2182,7 @@
         "awesomaave": {
           "weapon": 311,
           "assister": "",
-          "timeMs": 1919093,
+          "timeMs": 80273,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2135,7 +2195,7 @@
         "Nana4321": {
           "weapon": 102,
           "assister": "",
-          "timeMs": 1879507,
+          "timeMs": 40687,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2148,7 +2208,7 @@
         "jiaedin": {
           "weapon": 303,
           "assister": "",
-          "timeMs": 1911281,
+          "timeMs": 72461,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2163,7 +2223,7 @@
         "jiaedin": {
           "weapon": 303,
           "assister": "nosidE",
-          "timeMs": 1957507,
+          "timeMs": 33304,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": true,
@@ -2176,7 +2236,7 @@
         "honestpretzels": {
           "weapon": 309,
           "assister": "",
-          "timeMs": 1954984,
+          "timeMs": 30781,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2189,7 +2249,7 @@
         "atomic": {
           "weapon": 311,
           "assister": "",
-          "timeMs": 1971460,
+          "timeMs": 47257,
           "isHeadshot": true,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2202,7 +2262,7 @@
         "BrianD": {
           "weapon": 305,
           "assister": "jiaedin",
-          "timeMs": 1959945,
+          "timeMs": 35742,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2213,7 +2273,7 @@
         "Nana4321": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 1967265,
+          "timeMs": 43062,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2226,7 +2286,7 @@
         "MrGenericUser": {
           "weapon": 304,
           "assister": "nosidE",
-          "timeMs": 1957312,
+          "timeMs": 33109,
           "isHeadshot": true,
           "attackerBlind": true,
           "assistedFlash": true,
@@ -2237,7 +2297,7 @@
         "nosidE": {
           "weapon": 304,
           "assister": "",
-          "timeMs": 1971312,
+          "timeMs": 47109,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,
@@ -2250,7 +2310,7 @@
         "Spacebro": {
           "weapon": 305,
           "assister": "",
-          "timeMs": 2040820,
+          "timeMs": 116617,
           "isHeadshot": false,
           "attackerBlind": false,
           "assistedFlash": false,

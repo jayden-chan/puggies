@@ -87,10 +87,13 @@ type Output struct {
 }
 
 type Round struct {
-	Winner  string `json:"winner"`
-	Reason  int    `json:"winReason"`
-	Planter string `json:"planter"`
-	Defuser string `json:"Defuser"`
+	Winner          string `json:"winner"`
+	Reason          int    `json:"winReason"`
+	Planter         string `json:"planter"`
+	Defuser         string `json:"defuser"`
+	PlanterTime     int64  `json:"planterTime"`
+	DefuserTime     int64  `json:"defuserTime"`
+	BombExplodeTime int64  `json:"bombExplodeTime"`
 }
 
 type Kill struct {
@@ -145,6 +148,11 @@ func main() {
 	// Only tracked for one round for use in KAST and RWS
 	var bombPlanter string
 	var bombDefuser string
+	var bombPlanterTime int64 = 0
+	var bombDefuserTime int64 = 0
+	var roundStartTime int64 = 0
+	var bombExplodeTime int64 = 0
+
 	deathTimes := make(map[string]Death)
 
 	// Register handler on kill events
@@ -193,7 +201,7 @@ func main() {
 				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] = Kill{
 					Weapon:            e.Weapon.Type,
 					Assister:          assister,
-					Time:              p.CurrentTime().Milliseconds(),
+					Time:              p.CurrentTime().Milliseconds() - roundStartTime,
 					IsHeadshot:        e.IsHeadshot,
 					AttackerBlind:     e.AttackerBlind,
 					AssistedFlash:     e.AssistedFlash,
@@ -235,10 +243,16 @@ func main() {
 
 	p.RegisterEventHandler(func(e events.BombDefused) {
 		bombDefuser = e.Player.Name
+		bombDefuserTime = p.CurrentTime().Milliseconds() - roundStartTime
 	})
 
 	p.RegisterEventHandler(func(e events.BombPlanted) {
 		bombPlanter = e.Player.Name
+		bombPlanterTime = p.CurrentTime().Milliseconds() - roundStartTime
+	})
+
+	p.RegisterEventHandler(func(e events.BombExplode) {
+		bombExplodeTime = p.CurrentTime().Milliseconds() - roundStartTime
 	})
 
 	p.RegisterEventHandler(func(e events.WeaponFire) {
@@ -299,8 +313,13 @@ func main() {
 		HEsThrown = append(HEsThrown, make(map[string]int))
 		molliesThrown = append(molliesThrown, make(map[string]int))
 		smokesThrown = append(smokesThrown, make(map[string]int))
+
 		bombDefuser = ""
 		bombPlanter = ""
+		roundStartTime = p.CurrentTime().Milliseconds()
+		bombExplodeTime = 0
+		bombPlanterTime = 0
+		bombDefuserTime = 0
 
 		headToHead = append(headToHead, make(map[string]map[string]Kill))
 		teams = make(map[string]string)
@@ -327,10 +346,13 @@ func main() {
 		}
 
 		rounds = append(rounds, Round{
-			Winner:  winner,
-			Reason:  int(e.Reason),
-			Planter: bombPlanter,
-			Defuser: bombDefuser,
+			Winner:          winner,
+			Reason:          int(e.Reason),
+			Planter:         bombPlanter,
+			Defuser:         bombDefuser,
+			PlanterTime:     bombPlanterTime,
+			DefuserTime:     bombDefuserTime,
+			BombExplodeTime: bombExplodeTime,
 		})
 
 		var roundWinners []string
