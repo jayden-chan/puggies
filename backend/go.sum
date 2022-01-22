@@ -1,5 +1,6 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/dustin/go-heatmap v0.0.0-20180603032536-b89dbd73785a h1:o0oeorr6BKW/lHrT2NWX1CQn6LDhr5lvAPIIjTDC1bg=
 github.com/dustin/go-heatmap v0.0.0-20180603032536-b89dbd73785a/go.mod h1:VBmwC4U3p2SMEKr+/m5j0eby7rmUtSoA5TGLwe6P+3A=
 github.com/go-gl/gl v0.0.0-20180407155706-68e253793080/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
 github.com/go-gl/glfw v0.0.0-20180426074136-46a8d530c326/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
