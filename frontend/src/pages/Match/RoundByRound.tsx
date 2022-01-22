@@ -22,7 +22,6 @@ import {
   TeamsMap,
   T_KILLFEED,
   T_YELLOW,
-  WeaponType,
 } from "../../types";
 
 type KillFeedThing = {
@@ -41,8 +40,13 @@ const playerColor = (player: string, teams: TeamsMap, round: number) => {
   }
 };
 
-const KillFeedIcon = (props: { src: string }) => (
-  <Image src={`/killfeed${props.src}`} h="20px" mr={2} />
+const KillFeedIcon = (props: { src: string; mx?: number }) => (
+  <Image
+    src={`${props.src}`}
+    h="20px"
+    mr={props.mx === undefined ? 2 : undefined}
+    mx={props.mx}
+  />
 );
 
 const KillFeedPlayer = (props: {
@@ -85,7 +89,7 @@ const KillFeedItem = (
 ) => {
   return (
     <EventBox borderColor={RED_KILLFEED}>
-      {props.kill.attackerBlind && <KillFeedIcon src="/blind.png" />}
+      {props.kill.attackerBlind && <KillFeedIcon src="/killfeed/blind.png" />}
       <KillFeedPlayer
         player={props.killer}
         color={playerColor(props.killer, props.teams, props.round)}
@@ -94,7 +98,7 @@ const KillFeedItem = (
       {props.kill.assistedFlash === true && (
         <>
           <KillFeedPlayer mx={2} player={"+"} color="white" />
-          <KillFeedIcon src="/flashassist.png" />
+          <KillFeedIcon src="/killfeed/flashassist.png" />
           <KillFeedPlayer
             player={props.kill.assister}
             color={playerColor(props.kill.assister, props.teams, props.round)}
@@ -102,16 +106,13 @@ const KillFeedItem = (
         </>
       )}
 
-      <KillFeedPlayer
-        mx={2}
-        player={WeaponType[props.kill.weapon]}
-        color="white"
-      />
-
-      {props.kill.noScope && <KillFeedIcon src="/noscope.png" />}
-      {props.kill.throughSmoke && <KillFeedIcon src="/smoke.png" />}
-      {props.kill.penetratedObjects > 0 && <KillFeedIcon src="/wallbang.png" />}
-      {props.kill.isHeadshot && <KillFeedIcon src="/headshot.png" />}
+      <KillFeedIcon src={`/weapons/${props.kill.weapon}.png`} mx={2} />
+      {props.kill.noScope && <KillFeedIcon src="/killfeed/noscope.png" />}
+      {props.kill.throughSmoke && <KillFeedIcon src="/killfeed/smoke.png" />}
+      {props.kill.penetratedObjects > 0 && (
+        <KillFeedIcon src="/killfeed/wallbang.png" />
+      )}
+      {props.kill.isHeadshot && <KillFeedIcon src="/killfeed/headshot.png" />}
       <KillFeedPlayer
         player={props.victim}
         color={playerColor(props.victim, props.teams, props.round)}
