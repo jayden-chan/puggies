@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func MapValTotal(m *map[string]int) int {
+func MapValTotal(m *StringIntMap) int {
 	sum := 0
 	for _, val := range *m {
 		sum += val
@@ -12,8 +12,8 @@ func MapValTotal(m *map[string]int) int {
 	return sum
 }
 
-func ArrayMapTotal(a *[]map[string]int) map[string]int {
-	ret := make(map[string]int)
+func ArrayMapTotal(a *[]StringIntMap) StringIntMap {
+	ret := make(StringIntMap)
 	for _, m := range *a {
 		for k, v := range m {
 			ret[k] += v
@@ -22,12 +22,12 @@ func ArrayMapTotal(a *[]map[string]int) map[string]int {
 	return ret
 }
 
-func HeadToHeadTotal(h *[]map[string]map[string]Kill) map[string]map[string]int {
-	ret := make(map[string]map[string]int)
+func HeadToHeadTotal(h *[]map[string]map[string]Kill) map[string]StringIntMap {
+	ret := make(map[string]StringIntMap)
 	for _, m := range *h {
 		for killer, victims := range m {
 			if ret[killer] == nil {
-				ret[killer] = make(map[string]int)
+				ret[killer] = make(StringIntMap)
 			}
 
 			for victim := range victims {
@@ -41,14 +41,14 @@ func HeadToHeadTotal(h *[]map[string]map[string]Kill) map[string]map[string]int 
 
 func ProcessWeaponName(name string) string {
 	toReplace := [][]string{
-		[]string{"models/weapons/", ""},
-		[]string{"v_", ""},
-		[]string{"w_", ""},
-		[]string{"_dropped", ""},
-		[]string{".mdl", ""},
-		[]string{"eq_incendiarygrenade", "fire"},
-		[]string{"eq_molotov", "fire"},
-		[]string{"eq_molotovgrenade", "fire"},
+		{"models/weapons/", ""},
+		{"v_", ""},
+		{"w_", ""},
+		{"_dropped", ""},
+		{".mdl", ""},
+		{"eq_incendiarygrenade", "fire"},
+		{"eq_molotov", "fire"},
+		{"eq_molotovgrenade", "fire"},
 	}
 
 	ret := name

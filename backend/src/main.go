@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"os"
 
 	r2 "github.com/golang/geo/r2"
@@ -28,21 +27,26 @@ func main() {
 	p := dem.NewParser(f)
 	defer p.Close()
 
-	var kills []map[string]int
-	var deaths []map[string]int
-	var assists []map[string]int
-	var timesTraded []map[string]int
-	var headshots []map[string]int
-	var damage []map[string]int
-	var flashAssists []map[string]int
-	var enemiesFlashed []map[string]int
-	var teammatesFlashed []map[string]int
-	var utilDamage []map[string]int
+	header, err := p.ParseHeader()
+	checkError(err)
 
-	var flashesThrown []map[string]int
-	var HEsThrown []map[string]int
-	var molliesThrown []map[string]int
-	var smokesThrown []map[string]int
+	mapMetadata := metadata.MapNameToMap[header.MapName]
+
+	var kills []StringIntMap
+	var deaths []StringIntMap
+	var assists []StringIntMap
+	var timesTraded []StringIntMap
+	var headshots []StringIntMap
+	var damage []StringIntMap
+	var flashAssists []StringIntMap
+	var enemiesFlashed []StringIntMap
+	var teammatesFlashed []StringIntMap
+	var utilDamage []StringIntMap
+
+	var flashesThrown []StringIntMap
+	var HEsThrown []StringIntMap
+	var molliesThrown []StringIntMap
+	var smokesThrown []StringIntMap
 	var headToHead []map[string]map[string]Kill
 
 	var rounds []Round
@@ -60,10 +64,6 @@ func main() {
 
 	deathTimes := make(map[string]Death)
 
-	header, err := p.ParseHeader()
-	checkError(err)
-
-	mapMetadata := metadata.MapNameToMap[header.MapName]
 	var points_shotsFired []r2.Point
 
 	// Register handler on kill events
@@ -212,21 +212,21 @@ func main() {
 
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
-		kills = append(kills, make(map[string]int))
-		deaths = append(deaths, make(map[string]int))
-		assists = append(assists, make(map[string]int))
-		timesTraded = append(timesTraded, make(map[string]int))
-		headshots = append(headshots, make(map[string]int))
-		damage = append(damage, make(map[string]int))
-		flashAssists = append(flashAssists, make(map[string]int))
-		enemiesFlashed = append(enemiesFlashed, make(map[string]int))
-		teammatesFlashed = append(teammatesFlashed, make(map[string]int))
-		utilDamage = append(utilDamage, make(map[string]int))
+		kills = append(kills, make(StringIntMap))
+		deaths = append(deaths, make(StringIntMap))
+		assists = append(assists, make(StringIntMap))
+		timesTraded = append(timesTraded, make(StringIntMap))
+		headshots = append(headshots, make(StringIntMap))
+		damage = append(damage, make(StringIntMap))
+		flashAssists = append(flashAssists, make(StringIntMap))
+		enemiesFlashed = append(enemiesFlashed, make(StringIntMap))
+		teammatesFlashed = append(teammatesFlashed, make(StringIntMap))
+		utilDamage = append(utilDamage, make(StringIntMap))
 
-		flashesThrown = append(flashesThrown, make(map[string]int))
-		HEsThrown = append(HEsThrown, make(map[string]int))
-		molliesThrown = append(molliesThrown, make(map[string]int))
-		smokesThrown = append(smokesThrown, make(map[string]int))
+		flashesThrown = append(flashesThrown, make(StringIntMap))
+		HEsThrown = append(HEsThrown, make(StringIntMap))
+		molliesThrown = append(molliesThrown, make(StringIntMap))
+		smokesThrown = append(smokesThrown, make(StringIntMap))
 
 		bombDefuser = ""
 		bombPlanter = ""
@@ -341,123 +341,28 @@ func main() {
 	totalMolliesThrown := ArrayMapTotal(&molliesThrown)
 	totalSmokesThrown := ArrayMapTotal(&smokesThrown)
 
-	kast := make(map[string]float64)
-	for i := 0; i < totalRounds; i++ {
-		for p := range teams {
-			// KAST
-			if kills[i][p] != 0 || assists[i][p] != 0 || deaths[i][p] == 0 || timesTraded[i][p] != 0 {
-				kast[p] += 1 / float64(totalRounds)
-			}
-		}
-	}
+	headshotPct, kd, kdiff, kpr := ComputeBasicStats(
+		totalRounds,
+		totalKills,
+		totalHeadshots,
+		totalDeaths,
+	)
 
-	for k, v := range kast {
-		kast[k] = math.Round(v * 100)
-	}
+	rws := ComputeRWS(winners, rounds, damage)
+	kast := ComputeKAST(totalRounds, teams, kills, assists, deaths, timesTraded)
+	adr := ComputeADR(totalRounds, totalDamage)
+	impact := ComputImpact(totalRounds, teams, totalAssists, kpr)
+	k2, k3, k4, k5 := ComputMultikills(kills)
 
-	rws := make(map[string]float64)
-	for i := 0; i < totalRounds; i++ {
-		winTeamTotalDamage := 0
-		for p := range winners[i] {
-			player := winners[i][p]
-			winTeamTotalDamage += damage[i][player]
-		}
-
-		for p := range winners[i] {
-			switch rounds[i].Reason {
-			case int(events.RoundEndReasonBombDefused):
-				player := winners[i][p]
-				if player == rounds[i].Defuser {
-					rws[player] += 30.00 / float64(totalRounds)
-				}
-				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 70.00) / float64(totalRounds)
-
-			case int(events.RoundEndReasonTargetBombed):
-				player := winners[i][p]
-				if player == rounds[i].Planter {
-					rws[player] += 30.00 / float64(totalRounds)
-				}
-				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 70.00) / float64(totalRounds)
-
-			default:
-				player := winners[i][p]
-				rws[player] += (float64(damage[i][player]) / float64(winTeamTotalDamage) * 100.00) / float64(totalRounds)
-			}
-		}
-	}
-
-	for player := range rws {
-		rws[player] = math.Round(rws[player]*100) / 100
-	}
-
-	// Initialze these maps with all players from kills + deaths
-	// in case anyone got 0 kills or 0 deaths (lol)
-	kd := make(map[string]float64)
-	kdiff := make(map[string]int)
-	kpr := make(map[string]float64)
-	headshotPct := make(map[string]float64)
-	adr := make(map[string]float64)
-
-	k2 := make(map[string]int)
-	k3 := make(map[string]int)
-	k4 := make(map[string]int)
-	k5 := make(map[string]int)
-
-	// Compute headshot percentages, K/D & K-D etc
-	for player, numKills := range totalKills {
-		numHeadshots := totalHeadshots[player]
-		numDeaths := totalDeaths[player]
-
-		if numHeadshots == 0 || numKills == 0 {
-			headshotPct[player] = 0
-		} else {
-			headshotPct[player] = math.Round((float64(numHeadshots) / float64(numKills)) * 100)
-		}
-
-		if numDeaths == 0 {
-			kd[player] = math.Inf(1)
-		} else {
-			kd[player] = math.Round((float64(numKills)/float64(numDeaths))*100) / 100
-		}
-
-		kdiff[player] = numKills - numDeaths
-		kpr[player] = math.Round((float64(numKills)/float64(totalRounds))*100) / 100
-	}
-
-	for player, playerDamage := range totalDamage {
-		adr[player] = math.Round((float64(playerDamage) / float64(totalRounds)))
-	}
-
-	impact := make(map[string]float64)
-	for p := range teams {
-		assistsPerRound := (float64(totalAssists[p]) / float64(totalRounds))
-
-		// https://flashed.gg/posts/reverse-engineering-hltv-rating/
-		impact[p] = math.Round((2.13*kpr[p]+0.42*assistsPerRound-0.41)*100) / 100
-	}
-
-	hltv := make(map[string]float64)
-	for p := range teams {
-		dpr := float64(totalDeaths[p]) / float64(totalRounds)
-
-		// https://flashed.gg/posts/reverse-engineering-hltv-rating/
-		hltv[p] = math.Round((0.0073*kast[p]+0.3591*kpr[p]-0.5329*dpr+0.2372*impact[p]+0.0032*adr[p]+0.1587)*100) / 100
-	}
-
-	for _, pKills := range kills {
-		for p, numKills := range pKills {
-			switch numKills {
-			case 2:
-				k2[p] += 1
-			case 3:
-				k3[p] += 1
-			case 4:
-				k4[p] += 1
-			case 5:
-				k5[p] += 1
-			}
-		}
-	}
+	hltv := ComputeHLTV(
+		totalRounds,
+		teams,
+		totalDeaths,
+		kast,
+		kpr,
+		impact,
+		adr,
+	)
 
 	jsonstring, _ := json.MarshalIndent(&Output{
 		TotalRounds:      totalRounds,
