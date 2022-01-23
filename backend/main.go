@@ -5,139 +5,24 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"strings"
+
+	r2 "github.com/golang/geo/r2"
 
 	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
-	demcommon "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
+	metadata "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/metadata"
 )
 
-func mapValTotal(m *map[string]int) int {
-	sum := 0
-	for _, val := range *m {
-		sum += val
+func checkError(err error) {
+	if err != nil {
+		panic(err)
 	}
-	return sum
-}
-
-func arrayMapTotal(a *[]map[string]int) map[string]int {
-	ret := make(map[string]int)
-	for _, m := range *a {
-		for k, v := range m {
-			ret[k] += v
-		}
-	}
-	return ret
-}
-
-func headToHeadTotal(h *[]map[string]map[string]Kill) map[string]map[string]int {
-	ret := make(map[string]map[string]int)
-	for _, m := range *h {
-		for killer, victims := range m {
-			if ret[killer] == nil {
-				ret[killer] = make(map[string]int)
-			}
-
-			for victim := range victims {
-				ret[killer][victim] += 1
-			}
-		}
-	}
-
-	return ret
-}
-
-func processWeaponName(name string) string {
-	toReplace := [][]string{
-		[]string{"models/weapons/", ""},
-		[]string{"v_", ""},
-		[]string{"w_", ""},
-		[]string{"_dropped", ""},
-		[]string{".mdl", ""},
-		[]string{"eq_incendiarygrenade", "fire"},
-		[]string{"eq_molotov", "fire"},
-		[]string{"eq_molotovgrenade", "fire"},
-	}
-
-	ret := name
-	for _, s := range toReplace {
-		ret = strings.Replace(ret, s[0], s[1], 1)
-	}
-	return ret
-}
-
-type Output struct {
-	TotalRounds      int                `json:"totalRounds"`
-	Teams            map[string]string  `json:"teams"`
-	Kills            map[string]int     `json:"kills"`
-	Assists          map[string]int     `json:"assists"`
-	Deaths           map[string]int     `json:"deaths"`
-	Trades           map[string]int     `json:"timesTraded"`
-	HeadshotPct      map[string]float64 `json:"headshotPct"`
-	Kd               map[string]float64 `json:"kd"`
-	Kdiff            map[string]int     `json:"kdiff"`
-	Kpr              map[string]float64 `json:"kpr"`
-	Adr              map[string]float64 `json:"adr"`
-	Kast             map[string]float64 `json:"kast"`
-	Impact           map[string]float64 `json:"impact"`
-	Hltv             map[string]float64 `json:"hltv"`
-	Rws              map[string]float64 `json:"rws"`
-	UtilDamage       map[string]int     `json:"utilDamage"`
-	FlashAssists     map[string]int     `json:"flashAssists"`
-	EnemiesFlashed   map[string]int     `json:"enemiesFlashed"`
-	TeammatesFlashed map[string]int     `json:"teammatesFlashed"`
-	Rounds           []Round            `json:"rounds"`
-
-	HeadToHead map[string]map[string]int    `json:"headToHead"`
-	KillFeed   []map[string]map[string]Kill `json:"killFeed"`
-
-	FlashesThrown map[string]int `json:"flashesThrown"`
-	SmokesThrown  map[string]int `json:"smokesThrown"`
-	MolliesThrown map[string]int `json:"molliesThrown"`
-	HEsThrown     map[string]int `json:"HEsThrown"`
-
-	// Can't name these 2k, 3k etc because identifiers can't start with
-	// numbers in Go
-	// "lul" - Tom
-	K2 map[string]int `json:"2k"`
-	K3 map[string]int `json:"3k"`
-	K4 map[string]int `json:"4k"`
-	K5 map[string]int `json:"5k"`
-}
-
-type Round struct {
-	Winner          string `json:"winner"`
-	Reason          int    `json:"winReason"`
-	Planter         string `json:"planter"`
-	Defuser         string `json:"defuser"`
-	PlanterTime     int64  `json:"planterTime"`
-	DefuserTime     int64  `json:"defuserTime"`
-	BombExplodeTime int64  `json:"bombExplodeTime"`
-}
-
-type Kill struct {
-	Weapon            string `json:"weapon"`
-	Assister          string `json:"assister"`
-	Time              int64  `json:"timeMs"`
-	IsHeadshot        bool   `json:"isHeadshot"`
-	AttackerBlind     bool   `json:"attackerBlind"`
-	AssistedFlash     bool   `json:"assistedFlash"`
-	NoScope           bool   `json:"noScope"`
-	ThroughSmoke      bool   `json:"throughSmoke"`
-	PenetratedObjects int    `json:"penetratedObjects"`
-}
-
-type Death struct {
-	KilledBy    string  `json:"killedBy"`
-	TimeOfDeath float64 `json:"timeOfDeath"`
 }
 
 func main() {
 	f, err := os.Open(os.Args[1])
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
 	defer f.Close()
 
 	p := dem.NewParser(f)
@@ -174,6 +59,12 @@ func main() {
 	var bombExplodeTime int64 = 0
 
 	deathTimes := make(map[string]Death)
+
+	header, err := p.ParseHeader()
+	checkError(err)
+
+	mapMetadata := metadata.MapNameToMap[header.MapName]
+	var points_shotsFired []r2.Point
 
 	// Register handler on kill events
 	p.RegisterEventHandler(func(e events.Kill) {
@@ -219,7 +110,7 @@ func main() {
 				}
 
 				headToHead[len(headToHead)-1][e.Killer.Name][e.Victim.Name] = Kill{
-					Weapon:            processWeaponName(e.Weapon.OriginalString),
+					Weapon:            ProcessWeaponName(e.Weapon.OriginalString),
 					Assister:          assister,
 					Time:              p.CurrentTime().Milliseconds() - roundStartTime,
 					IsHeadshot:        e.IsHeadshot,
@@ -280,21 +171,24 @@ func main() {
 			return
 		}
 
-		if e.Weapon.Type == demcommon.EqFlash {
+		if e.Weapon.Type == common.EqFlash {
 			flashesThrown[len(flashesThrown)-1][e.Shooter.Name] += 1
 		}
 
-		if e.Weapon.Type == demcommon.EqHE {
+		if e.Weapon.Type == common.EqHE {
 			HEsThrown[len(HEsThrown)-1][e.Shooter.Name] += 1
 		}
 
-		if e.Weapon.Type == demcommon.EqMolotov || e.Weapon.Type == demcommon.EqIncendiary {
+		if e.Weapon.Type == common.EqMolotov || e.Weapon.Type == common.EqIncendiary {
 			molliesThrown[len(molliesThrown)-1][e.Shooter.Name] += 1
 		}
 
-		if e.Weapon.Type == demcommon.EqSmoke {
+		if e.Weapon.Type == common.EqSmoke {
 			smokesThrown[len(smokesThrown)-1][e.Shooter.Name] += 1
 		}
+
+		x, y := mapMetadata.TranslateScale(e.Shooter.Position().X, e.Shooter.Position().Y)
+		points_shotsFired = append(points_shotsFired, r2.Point{X: x, Y: y})
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerHurt) {
@@ -310,7 +204,7 @@ func main() {
 
 			// fmt.Fprintf(os.Stderr, "%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
 
-			if e.Weapon.Type == demcommon.EqHE || e.Weapon.Type == demcommon.EqMolotov || e.Weapon.Type == demcommon.EqIncendiary {
+			if e.Weapon.Type == common.EqHE || e.Weapon.Type == common.EqMolotov || e.Weapon.Type == common.EqIncendiary {
 				utilDamage[len(utilDamage)-1][e.Attacker.Name] += e.HealthDamageTaken
 			}
 		}
@@ -359,9 +253,9 @@ func main() {
 		winner := ""
 
 		switch e.Winner {
-		case demcommon.TeamCounterTerrorists:
+		case common.TeamCounterTerrorists:
 			winner = "CT"
-		case demcommon.TeamTerrorists:
+		case common.TeamTerrorists:
 			winner = "T"
 		}
 
@@ -386,16 +280,16 @@ func main() {
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
 	err = p.ParseToEnd()
-	if err != nil {
-		panic(err)
-	}
+	checkError(err)
+
+	fmt.Fprintln(os.Stderr, "Computing stats...")
 
 	// Figure out where the game actually goes live
 	startRound := 0
 	for i := len(kills) - 2; i > 0; i-- {
-		killsNext := mapValTotal(&kills[i+1])
-		killsCurr := mapValTotal(&kills[i])
-		killsPrev := mapValTotal(&kills[i-1])
+		killsNext := MapValTotal(&kills[i+1])
+		killsCurr := MapValTotal(&kills[i])
+		killsPrev := MapValTotal(&kills[i-1])
 
 		// Three consecutive rounds with 0 kills will be
 		// considered the start of the game (faceit + pugsetup
@@ -430,22 +324,22 @@ func main() {
 	rounds = rounds[len(rounds)-totalRounds:]
 	winners = winners[len(winners)-totalRounds:]
 
-	h2hTotal := headToHeadTotal(&headToHead)
-	totalKills := arrayMapTotal(&kills)
-	totalDeaths := arrayMapTotal(&deaths)
-	totalAssists := arrayMapTotal(&assists)
-	totalTimesTraded := arrayMapTotal(&timesTraded)
-	totalHeadshots := arrayMapTotal(&headshots)
-	totalDamage := arrayMapTotal(&damage)
-	totalFlashAssists := arrayMapTotal(&flashAssists)
-	totalEnemiesFlashed := arrayMapTotal(&enemiesFlashed)
-	totalTeammatesFlashed := arrayMapTotal(&teammatesFlashed)
-	totalUtilDamage := arrayMapTotal(&utilDamage)
+	h2hTotal := HeadToHeadTotal(&headToHead)
+	totalKills := ArrayMapTotal(&kills)
+	totalDeaths := ArrayMapTotal(&deaths)
+	totalAssists := ArrayMapTotal(&assists)
+	totalTimesTraded := ArrayMapTotal(&timesTraded)
+	totalHeadshots := ArrayMapTotal(&headshots)
+	totalDamage := ArrayMapTotal(&damage)
+	totalFlashAssists := ArrayMapTotal(&flashAssists)
+	totalEnemiesFlashed := ArrayMapTotal(&enemiesFlashed)
+	totalTeammatesFlashed := ArrayMapTotal(&teammatesFlashed)
+	totalUtilDamage := ArrayMapTotal(&utilDamage)
 
-	totalFlashesThrown := arrayMapTotal(&flashesThrown)
-	totalHEsThrown := arrayMapTotal(&HEsThrown)
-	totalMolliesThrown := arrayMapTotal(&molliesThrown)
-	totalSmokesThrown := arrayMapTotal(&smokesThrown)
+	totalFlashesThrown := ArrayMapTotal(&flashesThrown)
+	totalHEsThrown := ArrayMapTotal(&HEsThrown)
+	totalMolliesThrown := ArrayMapTotal(&molliesThrown)
+	totalSmokesThrown := ArrayMapTotal(&smokesThrown)
 
 	kast := make(map[string]float64)
 	for i := 0; i < totalRounds; i++ {
@@ -565,7 +459,6 @@ func main() {
 		}
 	}
 
-	fmt.Fprintln(os.Stderr, len(rounds))
 	jsonstring, _ := json.MarshalIndent(&Output{
 		TotalRounds:      totalRounds,
 		Teams:            teams,
@@ -601,4 +494,6 @@ func main() {
 	}, "", "  ")
 
 	fmt.Println(string(jsonstring))
+	fmt.Fprintln(os.Stderr, "Generating heatmaps...")
+	GenHeatmap(points_shotsFired, header, GetHeatmapFileName(os.Args[1], "shotsFired"))
 }
