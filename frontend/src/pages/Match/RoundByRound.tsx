@@ -6,9 +6,12 @@ import {
   AccordionPanel,
   Box,
   Flex,
+  FlexProps,
   Heading,
   Image,
+  ImageProps,
   Text,
+  TextProps,
 } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -40,38 +43,29 @@ const playerColor = (player: string, teams: TeamsMap, round: number) => {
   }
 };
 
-const KillFeedIcon = (props: { src: string; mx?: number }) => (
+const KillFeedIcon = (props: ImageProps) => (
   <Image
+    {...props}
     src={`${props.src}`}
     h="20px"
     mr={props.mx === undefined ? 2 : undefined}
-    mx={props.mx}
   />
 );
 
-const KillFeedPlayer = (props: {
-  player: string;
-  color: string;
-  mx?: number;
-}) => (
-  <Text
-    as="span"
-    mt="2px"
-    mx={props.mx ?? undefined}
-    fontWeight="bold"
-    color={props.color}
-  >
+const KillFeedPlayer = (
+  props: TextProps & {
+    player: string;
+  }
+) => (
+  <Text {...props} as="span" mt="2px" fontWeight="bold">
     {props.player}
   </Text>
 );
 
-const EventBox = (props: {
-  borderColor: string;
-  children: React.ReactNode;
-}) => (
+const EventBox = (props: FlexProps) => (
   <Flex
+    {...props}
     bg="black"
-    borderColor={props.borderColor}
     alignItems="center"
     borderRadius={8}
     borderWidth={3}
@@ -229,7 +223,7 @@ export const RoundByRoundList = (props: {
                   const minutes = Math.floor(Math.round(ms / 1000) / 60);
 
                   return (
-                    <Flex>
+                    <Flex key={j}>
                       <Flex
                         h="2.4rem"
                         px={2}

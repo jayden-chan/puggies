@@ -1,4 +1,11 @@
-import { Box, Flex, Grid, GridItem, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  FlexProps,
+  Grid,
+  GridItem,
+  useColorMode,
+} from "@chakra-ui/react";
 import React from "react";
 import { HeadToHead } from "../../types";
 
@@ -25,6 +32,21 @@ const headToHeadColor = (diff: number): string => {
     }
   }
 };
+
+const KillCountCircle = (props: FlexProps) => (
+  <Flex
+    {...props}
+    alignItems="center"
+    style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
+    borderRadius="30px"
+    justifyContent="center"
+    position="absolute"
+    h="40px"
+    w="40px"
+  >
+    {props.children}
+  </Flex>
+);
 
 export const HeadToHeadTable = (props: {
   headToHead: HeadToHead;
@@ -74,34 +96,20 @@ export const HeadToHeadTable = (props: {
                   }
                 >
                   <Box w="100px" h="90px" position="relative">
-                    <Flex
-                      alignItems="center"
+                    <KillCountCircle
                       backgroundColor={headToHeadColor(-diff)}
-                      borderRadius="30px"
-                      justifyContent="center"
-                      position="absolute"
-                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
                       bottom="12px"
                       left="16px"
-                      h="40px"
-                      w="40px"
                     >
                       {rowKills}
-                    </Flex>
-                    <Flex
-                      alignItems="center"
+                    </KillCountCircle>
+                    <KillCountCircle
                       backgroundColor={headToHeadColor(diff)}
-                      borderRadius="30px"
-                      justifyContent="center"
-                      position="absolute"
-                      style={{ boxShadow: "-5px 5px 5px rgba(0, 0, 0, 0.40)" }}
                       top="12px"
                       right="16px"
-                      h="40px"
-                      w="40px"
                     >
                       {colKills}
-                    </Flex>
+                    </KillCountCircle>
                   </Box>
                 </Flex>
               );
