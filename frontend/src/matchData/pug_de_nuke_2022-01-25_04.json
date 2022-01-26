@@ -1,0 +1,2607 @@
+{
+  "totalRounds": 22,
+  "teams": {
+    "BrianD": "CT",
+    "MrGenericUser": "T",
+    "Mushie": "T",
+    "Nana4321": "T",
+    "Wild_West": "CT",
+    "atomic": "CT",
+    "felix": "T",
+    "honestpretzels": "CT",
+    "jiaedin": "CT",
+    "kevin": "T"
+  },
+  "kills": {
+    "BrianD": 11,
+    "MrGenericUser": 13,
+    "Mushie": 17,
+    "Nana4321": 11,
+    "Wild_West": 8,
+    "atomic": 18,
+    "felix": 18,
+    "honestpretzels": 19,
+    "jiaedin": 17,
+    "kevin": 33
+  },
+  "assists": {
+    "BrianD": 2,
+    "MrGenericUser": 4,
+    "Mushie": 3,
+    "Nana4321": 3,
+    "Wild_West": 4,
+    "atomic": 2,
+    "felix": 2,
+    "honestpretzels": 2,
+    "jiaedin": 3,
+    "kevin": 3
+  },
+  "deaths": {
+    "BrianD": 19,
+    "MrGenericUser": 14,
+    "Mushie": 17,
+    "Nana4321": 15,
+    "Wild_West": 19,
+    "atomic": 16,
+    "felix": 14,
+    "honestpretzels": 19,
+    "jiaedin": 19,
+    "kevin": 13
+  },
+  "timesTraded": {
+    "BrianD": 6,
+    "MrGenericUser": 3,
+    "Mushie": 3,
+    "Nana4321": 3,
+    "Wild_West": 3,
+    "atomic": 4,
+    "felix": 3,
+    "honestpretzels": 2,
+    "jiaedin": 6,
+    "kevin": 3
+  },
+  "headshotPct": {
+    "BrianD": 18,
+    "MrGenericUser": 15,
+    "Mushie": 53,
+    "Nana4321": 27,
+    "Wild_West": 13,
+    "atomic": 28,
+    "felix": 61,
+    "honestpretzels": 58,
+    "jiaedin": 41,
+    "kevin": 52
+  },
+  "kd": {
+    "BrianD": 0.58,
+    "MrGenericUser": 0.93,
+    "Mushie": 1,
+    "Nana4321": 0.73,
+    "Wild_West": 0.42,
+    "atomic": 1.13,
+    "felix": 1.29,
+    "honestpretzels": 1,
+    "jiaedin": 0.89,
+    "kevin": 2.54
+  },
+  "kdiff": {
+    "BrianD": -8,
+    "MrGenericUser": -1,
+    "Mushie": 0,
+    "Nana4321": -4,
+    "Wild_West": -11,
+    "atomic": 2,
+    "felix": 4,
+    "honestpretzels": 0,
+    "jiaedin": -2,
+    "kevin": 20
+  },
+  "kpr": {
+    "BrianD": 0.5,
+    "MrGenericUser": 0.59,
+    "Mushie": 0.77,
+    "Nana4321": 0.5,
+    "Wild_West": 0.36,
+    "atomic": 0.82,
+    "felix": 0.82,
+    "honestpretzels": 0.86,
+    "jiaedin": 0.77,
+    "kevin": 1.5
+  },
+  "adr": {
+    "BrianD": 51,
+    "MrGenericUser": 79,
+    "Mushie": 81,
+    "Nana4321": 58,
+    "Wild_West": 48,
+    "atomic": 73,
+    "felix": 71,
+    "honestpretzels": 109,
+    "jiaedin": 82,
+    "kevin": 132
+  },
+  "kast": {
+    "BrianD": 64,
+    "MrGenericUser": 68,
+    "Mushie": 73,
+    "Nana4321": 59,
+    "Wild_West": 45,
+    "atomic": 77,
+    "felix": 77,
+    "honestpretzels": 68,
+    "jiaedin": 82,
+    "kevin": 91
+  },
+  "impact": {
+    "BrianD": 0.69,
+    "MrGenericUser": 0.92,
+    "Mushie": 1.29,
+    "Nana4321": 0.71,
+    "Wild_West": 0.43,
+    "atomic": 1.37,
+    "felix": 1.37,
+    "honestpretzels": 1.46,
+    "jiaedin": 1.29,
+    "kevin": 2.84
+  },
+  "hltv": {
+    "BrianD": 0.67,
+    "MrGenericUser": 1,
+    "Mushie": 1.12,
+    "Nana4321": 0.76,
+    "Wild_West": 0.41,
+    "atomic": 1.19,
+    "felix": 1.23,
+    "honestpretzels": 1.2,
+    "jiaedin": 1.14,
+    "kevin": 2.14
+  },
+  "rws": {
+    "BrianD": 3.71,
+    "MrGenericUser": 15.09,
+    "Mushie": 9.1,
+    "Nana4321": 9.87,
+    "Wild_West": 4.69,
+    "atomic": 7.07,
+    "felix": 11.77,
+    "honestpretzels": 10.45,
+    "jiaedin": 5.9,
+    "kevin": 22.35
+  },
+  "utilDamage": {
+    "MrGenericUser": 242,
+    "Mushie": 44,
+    "felix": 48,
+    "honestpretzels": 40,
+    "jiaedin": 32
+  },
+  "flashAssists": {
+    "Nana4321": 1,
+    "kevin": 1
+  },
+  "enemiesFlashed": {
+    "Mushie": 5,
+    "Nana4321": 1,
+    "Wild_West": 3,
+    "atomic": 8,
+    "honestpretzels": 7,
+    "kevin": 13
+  },
+  "teammatesFlashed": {
+    "Wild_West": 2,
+    "atomic": 2,
+    "honestpretzels": 1,
+    "jiaedin": 2,
+    "kevin": 1
+  },
+  "rounds": [
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "jiaedin",
+      "defuser": "",
+      "planterTime": 58609,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 7,
+      "planter": "atomic",
+      "defuser": "kevin",
+      "planterTime": 123125,
+      "defuserTime": 141359,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 7,
+      "planter": "jiaedin",
+      "defuser": "kevin",
+      "planterTime": 74618,
+      "defuserTime": 96180,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 7,
+      "planter": "honestpretzels",
+      "defuser": "Nana4321",
+      "planterTime": 34914,
+      "defuserTime": 73422,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "BrianD",
+      "defuser": "",
+      "planterTime": 59586,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 7,
+      "planter": "BrianD",
+      "defuser": "kevin",
+      "planterTime": 76961,
+      "defuserTime": 110344,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "jiaedin",
+      "defuser": "",
+      "planterTime": 69406,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 7,
+      "planter": "honestpretzels",
+      "defuser": "MrGenericUser",
+      "planterTime": 126149,
+      "defuserTime": 148922,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "Nana4321",
+      "defuser": "",
+      "planterTime": 55438,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 7,
+      "planter": "felix",
+      "defuser": "atomic",
+      "planterTime": 72047,
+      "defuserTime": 94305,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "CT",
+      "winReason": 8,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "T",
+      "winReason": 1,
+      "planter": "MrGenericUser",
+      "defuser": "",
+      "planterTime": 73117,
+      "defuserTime": 0,
+      "bombExplodeTime": 114164
+    },
+    {
+      "winner": "T",
+      "winReason": 1,
+      "planter": "MrGenericUser",
+      "defuser": "",
+      "planterTime": 84828,
+      "defuserTime": 0,
+      "bombExplodeTime": 125836
+    },
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "Nana4321",
+      "defuser": "",
+      "planterTime": 51344,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    },
+    {
+      "winner": "T",
+      "winReason": 9,
+      "planter": "",
+      "defuser": "",
+      "planterTime": 0,
+      "defuserTime": 0,
+      "bombExplodeTime": 0
+    }
+  ],
+  "headToHead": {
+    "BrianD": {
+      "MrGenericUser": 4,
+      "Mushie": 3,
+      "Nana4321": 2,
+      "felix": 2
+    },
+    "MrGenericUser": {
+      "BrianD": 2,
+      "Wild_West": 4,
+      "atomic": 2,
+      "honestpretzels": 2,
+      "jiaedin": 3
+    },
+    "Mushie": {
+      "BrianD": 4,
+      "Wild_West": 4,
+      "atomic": 4,
+      "honestpretzels": 2,
+      "jiaedin": 3
+    },
+    "Nana4321": {
+      "BrianD": 3,
+      "Wild_West": 1,
+      "atomic": 4,
+      "honestpretzels": 2,
+      "jiaedin": 1
+    },
+    "Wild_West": {
+      "MrGenericUser": 2,
+      "Mushie": 2,
+      "Nana4321": 3,
+      "kevin": 1
+    },
+    "atomic": {
+      "MrGenericUser": 3,
+      "Mushie": 3,
+      "Nana4321": 2,
+      "felix": 5,
+      "kevin": 5
+    },
+    "felix": {
+      "BrianD": 4,
+      "Wild_West": 3,
+      "atomic": 2,
+      "honestpretzels": 2,
+      "jiaedin": 7
+    },
+    "honestpretzels": {
+      "MrGenericUser": 2,
+      "Mushie": 2,
+      "Nana4321": 4,
+      "felix": 4,
+      "kevin": 7
+    },
+    "jiaedin": {
+      "MrGenericUser": 3,
+      "Mushie": 7,
+      "Nana4321": 4,
+      "felix": 3
+    },
+    "kevin": {
+      "BrianD": 6,
+      "Wild_West": 7,
+      "atomic": 4,
+      "honestpretzels": 11,
+      "jiaedin": 5
+    }
+  },
+  "killFeed": [
+    {
+      "Mushie": {
+        "BrianD": {
+          "weapon": "pist_223",
+          "assister": "",
+          "timeMs": 47211,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "kevin": {
+          "weapon": "knife_flip",
+          "assister": "honestpretzels",
+          "timeMs": 94211,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "felix": {
+          "weapon": "pist_tec9",
+          "assister": "",
+          "timeMs": 46305,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "MrGenericUser": {
+          "weapon": "pist_glock18",
+          "assister": "",
+          "timeMs": 52562,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": "pist_glock18",
+          "assister": "",
+          "timeMs": 76844,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "Wild_West": {
+          "weapon": "pist_223",
+          "assister": "",
+          "timeMs": 61523,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "pist_223",
+          "assister": "",
+          "timeMs": 83672,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "pist_223",
+          "assister": "MrGenericUser",
+          "timeMs": 78633,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "Mushie": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 57851,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "felix": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 41015,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "MrGenericUser": {
+        "Wild_West": {
+          "weapon": "pist_223",
+          "assister": "kevin",
+          "timeMs": 39093,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Mushie": {
+        "atomic": {
+          "weapon": "pist_p250",
+          "assister": "",
+          "timeMs": 56874,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 39945,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 33648,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 48078,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "Nana4321": {
+          "weapon": "snip_awp",
+          "assister": "",
+          "timeMs": 37234,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "Mushie",
+          "timeMs": 77992,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Mushie": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 35679,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 41484,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 55625,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 27648,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": true,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "Nana4321",
+          "timeMs": 120172,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Mushie": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 39820,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 38898,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 41187,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 55672,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 42633,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "MrGenericUser": {
+          "weapon": "pist_tec9",
+          "assister": "",
+          "timeMs": 45031,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Mushie": {
+          "weapon": "pist_deagle",
+          "assister": "",
+          "timeMs": 41765,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 35516,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Mushie": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 78453,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 67727,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "felix",
+          "timeMs": 76297,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "Mushie": {
+          "weapon": "rif_galilar",
+          "assister": "Wild_West",
+          "timeMs": 79875,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 35281,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "felix": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 48219,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 41000,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "pist_223",
+          "assister": "",
+          "timeMs": 126859,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": true,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "MrGenericUser": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 40149,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Nana4321": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 75532,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 47883,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "Mushie": {
+          "weapon": "pist_tec9",
+          "assister": "",
+          "timeMs": 35368,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "felix": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 48836,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 73313,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "Mushie",
+          "timeMs": 80969,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "atomic": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 44000,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": true,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 73110,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Mushie": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 37703,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "BrianD": {
+          "weapon": "knife_karam",
+          "assister": "",
+          "timeMs": 60555,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 70774,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": true,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 45859,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 35547,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 34539,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "MrGenericUser": {
+        "jiaedin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 32406,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Mushie": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 53203,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Nana4321": {
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 40734,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "felix": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 39632,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 35804,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 35187,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "MrGenericUser",
+          "timeMs": 34359,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Nana4321": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 63969,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "kevin",
+          "timeMs": 59008,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 65953,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "jiaedin",
+          "timeMs": 57070,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "Wild_West": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 36234,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "MrGenericUser": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 29219,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 62469,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "felix": {
+          "weapon": "smg_mac10",
+          "assister": "BrianD",
+          "timeMs": 42344,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 48297,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 46469,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "rif_ak47",
+          "assister": "jiaedin",
+          "timeMs": 60789,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "MrGenericUser": {
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 32289,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Mushie": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 59547,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Nana4321": {
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 50422,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Wild_West": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 55383,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "felix": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 47531,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 38726,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Nana4321": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "MrGenericUser",
+          "timeMs": 50281,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 45594,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "atomic",
+          "timeMs": 50438,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 40578,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 42086,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_ak47",
+          "assister": "Nana4321",
+          "timeMs": 60867,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Mushie": {
+        "atomic": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 56492,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Wild_West": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 45102,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 91070,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 87664,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 57352,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "BrianD": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 97164,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Wild_West": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 104469,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 65344,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "MrGenericUser": {
+        "BrianD": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 94297,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 43414,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Nana4321": {
+        "Wild_West": {
+          "weapon": "snip_awp",
+          "assister": "",
+          "timeMs": 41289,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 85117,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 100828,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 40711,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Mushie": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 75234,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 97781,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "MrGenericUser": {
+        "BrianD": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 57734,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "felix": {
+          "weapon": "rif_galilar",
+          "assister": "",
+          "timeMs": 54898,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 62000,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 31633,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "MrGenericUser": {
+          "weapon": "rif_ak47",
+          "assister": "atomic",
+          "timeMs": 61133,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 80492,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "Nana4321",
+          "timeMs": 30953,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "MrGenericUser": {
+        "Wild_West": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 108040,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 79196,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        },
+        "honestpretzels": {
+          "weapon": "rif_m4a1_s",
+          "assister": "kevin",
+          "timeMs": 133914,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Mushie": {
+        "BrianD": {
+          "weapon": "smg_p90",
+          "assister": "MrGenericUser",
+          "timeMs": 42016,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "Mushie": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 42977,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "felix": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 43282,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "jiaedin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "Mushie",
+          "timeMs": 40579,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "Nana4321": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 41672,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 43391,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Mushie": {
+        "Wild_West": {
+          "weapon": "pist_glock18",
+          "assister": "",
+          "timeMs": 71782,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "pist_glock18",
+          "assister": "Nana4321",
+          "timeMs": 41360,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "pist_glock18",
+          "assister": "",
+          "timeMs": 54891,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "felix": {
+          "weapon": "pist_223",
+          "assister": "",
+          "timeMs": 37110,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "BrianD": {
+          "weapon": "pist_glock18",
+          "assister": "",
+          "timeMs": 40438,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "pist_glock18",
+          "assister": "",
+          "timeMs": 46922,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Mushie": {
+        "BrianD": {
+          "weapon": "smg_mac10",
+          "assister": "kevin",
+          "timeMs": 27235,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": true,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Wild_West": {
+        "MrGenericUser": {
+          "weapon": "pist_deagle",
+          "assister": "",
+          "timeMs": 35657,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "Nana4321": {
+          "weapon": "smg_mp9",
+          "assister": "Wild_West",
+          "timeMs": 62313,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "felix": {
+          "weapon": "pist_223",
+          "assister": "",
+          "timeMs": 75532,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "honestpretzels": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 45563,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "kevin": {
+          "weapon": "pist_deagle",
+          "assister": "",
+          "timeMs": 40485,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Mushie": {
+          "weapon": "pist_deagle",
+          "assister": "",
+          "timeMs": 35594,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "jiaedin": {
+          "weapon": "smg_ump45",
+          "assister": "",
+          "timeMs": 39149,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "felix": {
+          "weapon": "shot_mag7",
+          "assister": "",
+          "timeMs": 94352,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Wild_West": {
+        "MrGenericUser": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 92602,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 94250,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": "smg_mac10",
+          "assister": "",
+          "timeMs": 93727,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "kevin": {
+          "weapon": "rif_famas",
+          "assister": "",
+          "timeMs": 31875,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
+      }
+    },
+    {
+      "MrGenericUser": {
+        "jiaedin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 65797,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Nana4321": {
+        "BrianD": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 46062,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Wild_West": {
+        "Mushie": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 48586,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "Nana4321": {
+          "weapon": "rif_m4a1",
+          "assister": "BrianD",
+          "timeMs": 65695,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "kevin": {
+          "weapon": "rif_m4a1",
+          "assister": "",
+          "timeMs": 112289,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "honestpretzels": {
+        "felix": {
+          "weapon": "rif_famas",
+          "assister": "",
+          "timeMs": 28164,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "Wild_West": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 63172,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "honestpretzels": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 42570,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "Mushie": {
+        "Wild_West": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 62328,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_ak47",
+          "assister": "felix",
+          "timeMs": 110680,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Wild_West": {
+        "kevin": {
+          "weapon": "rif_m4a1_s",
+          "assister": "",
+          "timeMs": 48328,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "MrGenericUser": {
+          "weapon": "rif_m4a1",
+          "assister": "",
+          "timeMs": 124227,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "rif_m4a1",
+          "assister": "Wild_West",
+          "timeMs": 111133,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "BrianD": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 47813,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "jiaedin": {
+        "Nana4321": {
+          "weapon": "rif_m4a1",
+          "assister": "",
+          "timeMs": 49750,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "felix": {
+          "weapon": "rif_m4a1",
+          "assister": "",
+          "timeMs": 76414,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "honestpretzels": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 29211,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "MrGenericUser": {
+        "Wild_West": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 36789,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 31555,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "Nana4321": {
+        "atomic": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 56156,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "atomic": {
+        "kevin": {
+          "weapon": "rif_ak47",
+          "assister": "honestpretzels",
+          "timeMs": 47805,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 1
+        }
+      },
+      "felix": {
+        "BrianD": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 34453,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "honestpretzels": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 27695,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    },
+    {
+      "BrianD": {
+        "MrGenericUser": {
+          "weapon": "smg_ump45",
+          "assister": "",
+          "timeMs": 36149,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Mushie": {
+          "weapon": "smg_ump45",
+          "assister": "jiaedin",
+          "timeMs": 34039,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Nana4321": {
+          "weapon": "smg_ump45",
+          "assister": "Wild_West",
+          "timeMs": 35039,
+          "isHeadshot": false,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "felix": {
+        "BrianD": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 41750,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "Wild_West": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 63547,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "atomic": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 36360,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        },
+        "jiaedin": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 59453,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      },
+      "kevin": {
+        "honestpretzels": {
+          "weapon": "rif_ak47",
+          "assister": "",
+          "timeMs": 58125,
+          "isHeadshot": true,
+          "attackerBlind": false,
+          "assistedFlash": false,
+          "noScope": false,
+          "throughSmoke": false,
+          "penetratedObjects": 0
+        }
+      }
+    }
+  ],
+  "flashesThrown": {
+    "BrianD": 2,
+    "Mushie": 8,
+    "Nana4321": 3,
+    "Wild_West": 5,
+    "atomic": 8,
+    "honestpretzels": 18,
+    "jiaedin": 2,
+    "kevin": 8
+  },
+  "smokesThrown": {
+    "BrianD": 2,
+    "Mushie": 12,
+    "Nana4321": 1,
+    "Wild_West": 3,
+    "atomic": 14,
+    "felix": 2,
+    "honestpretzels": 16,
+    "jiaedin": 5,
+    "kevin": 13
+  },
+  "molliesThrown": {
+    "BrianD": 3,
+    "MrGenericUser": 11,
+    "Mushie": 13,
+    "Nana4321": 1,
+    "Wild_West": 1,
+    "atomic": 5,
+    "felix": 2,
+    "honestpretzels": 4,
+    "jiaedin": 7,
+    "kevin": 12
+  },
+  "HEsThrown": {
+    "MrGenericUser": 9,
+    "Mushie": 9,
+    "atomic": 12,
+    "felix": 4,
+    "honestpretzels": 1,
+    "jiaedin": 2
+  },
+  "2k": {
+    "BrianD": 2,
+    "MrGenericUser": 2,
+    "Mushie": 2,
+    "Nana4321": 1,
+    "atomic": 5,
+    "felix": 1,
+    "honestpretzels": 6,
+    "jiaedin": 5,
+    "kevin": 5
+  },
+  "3k": {
+    "BrianD": 1,
+    "MrGenericUser": 1,
+    "Mushie": 2,
+    "Nana4321": 1,
+    "Wild_West": 1,
+    "felix": 1,
+    "kevin": 3
+  },
+  "4k": {
+    "felix": 1,
+    "kevin": 2
+  },
+  "5k": {}
+}

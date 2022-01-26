@@ -1,6 +1,9 @@
 import { format, parse } from "date-fns";
 import pug_de_mirage_2022_01_15 from "./matchData/pug_de_mirage_2022-01-15_06.json";
 import pug_de_nuke_2022_01_15 from "./matchData/pug_de_nuke_2022-01-15_05.json";
+import pug_de_nuke_2022_01_25 from "./matchData/pug_de_nuke_2022-01-25_04.json";
+import pug_de_overpass_2022_01_25 from "./matchData/pug_de_overpass_2022-01-25_05.json";
+
 import {
   BombExplodeEvent,
   DefuseEvent,
@@ -50,7 +53,7 @@ const processData = (
   const [regex, map, date] =
     info.id.match(/^pug_(.*?)_(\d\d\d\d-\d\d-\d\d)/) ?? [];
   if (!regex) {
-    throw new Error("Failed to map data");
+    throw new Error("Failed to extract map/date from match id");
   }
 
   const dateString = format(
@@ -145,6 +148,24 @@ const processData = (
 };
 
 export const data = [
+  {
+    info: {
+      demoLink:
+        "https://drive.google.com/file/d/1cu06v4aGRCNfuiizK2b_G2ywUm4eHKSD/view?usp=sharing",
+      id: "pug_de_overpass_2022-01-25_05",
+    },
+    // @ts-ignore
+    rawData: pug_de_overpass_2022_01_25 as RawData,
+  },
+  {
+    info: {
+      demoLink:
+        "https://drive.google.com/file/d/1AWmtqa4eCBBMrb4f2eaAoyy_rGMLT94z/view?usp=sharing",
+      id: "pug_de_nuke_2022-01-25_04",
+    },
+    // @ts-ignore
+    rawData: pug_de_nuke_2022_01_25 as RawData,
+  },
   {
     info: {
       demoLink:
