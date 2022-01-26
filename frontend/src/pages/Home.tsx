@@ -10,11 +10,10 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
+import { MatchInfo } from "../api";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
-import { data } from "../data";
-import { Match } from "../types";
 
-const MatchCard = (props: { match: Match }) => {
+const MatchCard = (props: { match: MatchInfo }) => {
   const {
     id,
     map,
@@ -23,7 +22,7 @@ const MatchCard = (props: { match: Match }) => {
     teamBRounds,
     teamATitle,
     teamBTitle,
-  } = props.match.meta;
+  } = props.match;
   return (
     <Link as={ReactRouterLink} to={`/match/${id}`}>
       <Flex
@@ -32,7 +31,7 @@ const MatchCard = (props: { match: Match }) => {
         borderRadius={10}
         style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
       >
-        <Image src={`/maps/${map}.jpg`} maxW="150px" mr={5} />
+        <Image src={`/img/maps/${map}.jpg`} maxW="150px" mr={5} />
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
             {map} - {dateString}
@@ -61,7 +60,7 @@ const MatchCard = (props: { match: Match }) => {
   );
 };
 
-export const Home = () => (
+export const Home = (props: { matches: MatchInfo[] }) => (
   <Container maxW="container.xl" mt={16}>
     <Flex alignItems="center" justifyContent="space-between">
       <Heading lineHeight="unset" mb={0}>
@@ -73,8 +72,8 @@ export const Home = () => (
     <Heading as="h2" fontSize="3xl">
       Matches
     </Heading>
-    {data.map((m) => (
-      <MatchCard key={m.meta.id} match={m} />
+    {props.matches.map((m) => (
+      <MatchCard key={m.id} match={m} />
     ))}
   </Container>
 );

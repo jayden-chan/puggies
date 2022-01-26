@@ -1,0 +1,42 @@
+[
+  {
+    "id": "pug_de_mirage_2022-01-15_06",
+    "dateString": "Sat Jan 15 2022",
+    "dateTimestamp": 1642233600000,
+    "map": "de_mirage",
+    "teamARounds": 16,
+    "teamBRounds": 14,
+    "teamATitle": "team_kevin",
+    "teamBTitle": "team_atomic"
+  },
+  {
+    "id": "pug_de_nuke_2022-01-15_05",
+    "dateString": "Sat Jan 15 2022",
+    "dateTimestamp": 1642233600000,
+    "map": "de_nuke",
+    "teamARounds": 16,
+    "teamBRounds": 4,
+    "teamATitle": "team_atomic",
+    "teamBTitle": "team_nosidE"
+  },
+  {
+    "id": "pug_de_nuke_2022-01-25_04",
+    "dateString": "Tue Jan 25 2022",
+    "dateTimestamp": 1643097600000,
+    "map": "de_nuke",
+    "teamARounds": 6,
+    "teamBRounds": 16,
+    "teamATitle": "team_honestpretzels",
+    "teamBTitle": "team_kevin"
+  },
+  {
+    "id": "pug_de_overpass_2022-01-25_05",
+    "dateString": "Tue Jan 25 2022",
+    "dateTimestamp": 1643097600000,
+    "map": "de_overpass",
+    "teamARounds": 9,
+    "teamBRounds": 16,
+    "teamATitle": "team_honestpretzels",
+    "teamBTitle": "team_jiaedin"
+  }
+]

@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Link,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -12,9 +13,10 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getPlayers } from "../../data";
+import { DataAPI, MatchInfo } from "../../api";
+import { demoLinks, getPlayers } from "../../data";
 import { Match, RawData } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { PlayerInfo } from "./PlayerInfo";
@@ -22,26 +24,36 @@ import { RoundByRoundList } from "./RoundByRound";
 import { RoundsVisualization } from "./RoundsVisualization";
 import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
 
-export const MatchPage = (props: { data: Match[] }) => {
+export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const { id = "" } = useParams();
-  const match = props.data.find((m) => m.meta.id === id);
 
+  const [match, setMatch] = useState<Match | undefined>();
   const [sortCol, setSortCol] = useState<keyof RawData>("hltv");
   const [reversed, setReversed] = useState(false);
 
+  useEffect(() => {
+    const api = new DataAPI("");
+    api
+      .fetchMatch(props.matches.find((f) => f.id === id)!)
+      .then((m) => setMatch(m));
+  }, [id, props.matches]);
+
   if (match === undefined) {
-    return <></>;
+    return (
+      <Flex
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        h="90vh"
+      >
+        <Spinner size="xl" mb={5} />
+        <Text>Loading match...</Text>
+      </Flex>
+    );
   }
 
-  const {
-    demoLink,
-    map,
-    dateString,
-    teamARounds,
-    teamBRounds,
-    teamATitle,
-    teamBTitle,
-  } = match.meta;
+  const { map, dateString, teamARounds, teamBRounds, teamATitle, teamBTitle } =
+    match.meta;
 
   const teamAPlayers = getPlayers(match, "CT", sortCol, reversed);
   const teamBPlayers = getPlayers(match, "T", sortCol, reversed);
@@ -61,7 +73,7 @@ export const MatchPage = (props: { data: Match[] }) => {
         <Heading>pug on {map} </Heading>
         <Heading fontSize="lg" as="h2">
           {dateString}{" "}
-          <Link isExternal href={demoLink}>
+          <Link isExternal href={demoLinks[match.meta.id] ?? "BUH"}>
             (demo link)
           </Link>
         </Heading>

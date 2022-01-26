@@ -46,7 +46,7 @@ const playerColor = (player: string, teams: TeamsMap, round: number) => {
 const KillFeedIcon = (props: ImageProps) => (
   <Image
     {...props}
-    src={`${props.src}`}
+    src={`/img${props.src}`}
     h="20px"
     mr={props.mx === undefined ? 2 : undefined}
   />

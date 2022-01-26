@@ -106,7 +106,6 @@ export type Match = RawData & {
   roundByRound: RoundByRound;
   name: { [key: string]: string };
   meta: {
-    demoLink: string;
     id: string;
     dateString: string;
     map: string;
