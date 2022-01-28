@@ -83,28 +83,36 @@ func main() {
 				TimeOfDeath: p.CurrentTime().Seconds(),
 			}
 
-			if prd.headToHead != nil {
-				if prd.headToHead[len(prd.headToHead)-1][e.Killer.Name] == nil {
-					prd.headToHead[len(prd.headToHead)-1][e.Killer.Name] = make(map[string]Kill)
-				}
+			if prd.headToHead[len(prd.headToHead)-1][e.Killer.Name] == nil {
+				prd.headToHead[len(prd.headToHead)-1][e.Killer.Name] = make(map[string]Kill)
+			}
 
-				assister := ""
-				if e.Assister != nil {
-					assister = e.Assister.Name
-				}
+			assister := ""
+			if e.Assister != nil {
+				assister = e.Assister.Name
+			}
 
-				prd.headToHead[len(prd.headToHead)-1][e.Killer.Name][e.Victim.Name] = Kill{
-					Weapon:            ProcessWeaponName(e.Weapon.OriginalString),
-					Assister:          assister,
-					Time:              p.CurrentTime().Milliseconds() - roundStartTime,
-					IsHeadshot:        e.IsHeadshot,
-					AttackerBlind:     e.AttackerBlind,
-					AssistedFlash:     e.AssistedFlash,
-					NoScope:           e.NoScope,
-					ThroughSmoke:      e.ThroughSmoke,
-					PenetratedObjects: e.PenetratedObjects,
+			killInfo := Kill{
+				Weapon:            ProcessWeaponName(e.Weapon.OriginalString),
+				Assister:          assister,
+				Time:              p.CurrentTime().Milliseconds() - roundStartTime,
+				IsHeadshot:        e.IsHeadshot,
+				AttackerBlind:     e.AttackerBlind,
+				AssistedFlash:     e.AssistedFlash,
+				NoScope:           e.NoScope,
+				ThroughSmoke:      e.ThroughSmoke,
+				PenetratedObjects: e.PenetratedObjects,
+			}
+
+			if prd.openings[len(prd.openings)-1] == nil {
+				prd.openings[len(prd.openings)-1] = &OpeningKill{
+					Kill:     killInfo,
+					Attacker: e.Killer.Name,
+					Victim:   e.Victim.Name,
 				}
 			}
+
+			prd.headToHead[len(prd.headToHead)-1][e.Killer.Name][e.Victim.Name] = killInfo
 
 			// check for trade kills
 			for player := range prd.deaths[len(prd.deaths)-1] {
@@ -330,6 +338,7 @@ func main() {
 		Rounds:           rounds,
 		HeadToHead:       h2hTotal,
 		KillFeed:         prd.headToHead,
+		OpeningKills:     totals.openingKills,
 
 		FlashesThrown: totals.flashesThrown,
 		SmokesThrown:  totals.smokesThrown,

@@ -24,6 +24,7 @@ type Output struct {
 	EnemiesFlashed   StringIntMap      `json:"enemiesFlashed"`
 	TeammatesFlashed StringIntMap      `json:"teammatesFlashed"`
 	Rounds           []Round           `json:"rounds"`
+	OpeningKills     []OpeningKill     `json:"openingKills"`
 
 	HeadToHead map[string]StringIntMap      `json:"headToHead"`
 	KillFeed   []map[string]map[string]Kill `json:"killFeed"`

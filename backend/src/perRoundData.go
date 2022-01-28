@@ -1,5 +1,11 @@
 package main
 
+type OpeningKill struct {
+	Kill     Kill   `json:"kill"`
+	Attacker string `json:"attacker"`
+	Victim   string `json:"victim"`
+}
+
 type PerRoundData struct {
 	kills            []StringIntMap
 	deaths           []StringIntMap
@@ -11,6 +17,7 @@ type PerRoundData struct {
 	enemiesFlashed   []StringIntMap
 	teammatesFlashed []StringIntMap
 	utilDamage       []StringIntMap
+	openings         []*OpeningKill
 
 	flashesThrown []StringIntMap
 	HEsThrown     []StringIntMap
@@ -35,6 +42,7 @@ type Totals struct {
 	hEsThrown        StringIntMap
 	molliesThrown    StringIntMap
 	smokesThrown     StringIntMap
+	openingKills     []OpeningKill
 }
 
 func InitPerRoundData() PerRoundData {
@@ -49,6 +57,7 @@ func InitPerRoundData() PerRoundData {
 		enemiesFlashed:   nil,
 		teammatesFlashed: nil,
 		utilDamage:       nil,
+		openings:         nil,
 		flashesThrown:    nil,
 		HEsThrown:        nil,
 		molliesThrown:    nil,
@@ -68,6 +77,7 @@ func (prd *PerRoundData) NewRound() {
 	prd.enemiesFlashed = append(prd.enemiesFlashed, make(StringIntMap))
 	prd.teammatesFlashed = append(prd.teammatesFlashed, make(StringIntMap))
 	prd.utilDamage = append(prd.utilDamage, make(StringIntMap))
+	prd.openings = append(prd.openings, nil)
 
 	prd.flashesThrown = append(prd.flashesThrown, make(StringIntMap))
 	prd.HEsThrown = append(prd.HEsThrown, make(StringIntMap))
@@ -89,6 +99,7 @@ func (prd *PerRoundData) CropToRealRounds(startRound int) {
 	prd.enemiesFlashed = prd.enemiesFlashed[startRound+1:]
 	prd.teammatesFlashed = prd.teammatesFlashed[startRound+1:]
 	prd.utilDamage = prd.utilDamage[startRound+1:]
+	prd.openings = prd.openings[startRound+1:]
 
 	prd.flashesThrown = prd.flashesThrown[startRound+1:]
 	prd.HEsThrown = prd.HEsThrown[startRound+1:]
@@ -114,5 +125,19 @@ func (prd *PerRoundData) ComputeTotals() Totals {
 		hEsThrown:        ArrayMapTotal(&prd.HEsThrown),
 		molliesThrown:    ArrayMapTotal(&prd.molliesThrown),
 		smokesThrown:     ArrayMapTotal(&prd.smokesThrown),
+		openingKills:     derefOpeningKillArray(prd.openings),
 	}
+}
+
+func derefOpeningKillArray(openings []*OpeningKill) []OpeningKill {
+	ret := make([]OpeningKill, len(openings))
+	for i, k := range openings {
+		// in case there was somehow no kills in the round
+		if k == nil {
+			ret[i] = OpeningKill{}
+		} else {
+			ret[i] = *k
+		}
+	}
+	return ret
 }
