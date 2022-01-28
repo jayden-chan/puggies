@@ -5,7 +5,6 @@ import {
   Flex,
   Heading,
   Link,
-  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -17,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DataAPI, MatchInfo } from "../../api";
 import { demoLinks, getPlayers } from "../../data";
+import { Loading } from "../../Loading";
 import { Match, RawData } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { PlayerInfo } from "./PlayerInfo";
@@ -39,17 +39,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   }, [id, props.matches]);
 
   if (match === undefined) {
-    return (
-      <Flex
-        flexDir="column"
-        alignItems="center"
-        justifyContent="center"
-        h="90vh"
-      >
-        <Spinner size="xl" mb={5} />
-        <Text>Loading match...</Text>
-      </Flex>
-    );
+    return <Loading text="Loading match..." />;
   }
 
   const { map, dateString, teamARounds, teamBRounds, teamATitle, teamBTitle } =

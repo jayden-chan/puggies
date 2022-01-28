@@ -1,15 +1,9 @@
-import {
-  ChakraProvider,
-  extendTheme,
-  Flex,
-  Spinner,
-  Text,
-  ThemeConfig,
-} from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, ThemeConfig } from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { DataAPI, MatchInfo } from "./api";
+import { Loading } from "./Loading";
 import { Home } from "./pages/Home";
 import { MatchPage } from "./pages/Match";
 
@@ -28,17 +22,7 @@ export const App = () => {
   }, []);
 
   if (matches === undefined) {
-    return (
-      <Flex
-        flexDir="column"
-        alignItems="center"
-        justifyContent="center"
-        h="90vh"
-      >
-        <Spinner size="xl" mb={5} />
-        <Text>Loading matches...</Text>
-      </Flex>
-    );
+    return <Loading text="Loading matches..." />;
   }
 
   return (
