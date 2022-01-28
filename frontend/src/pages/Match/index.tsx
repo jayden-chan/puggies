@@ -16,13 +16,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DataAPI, MatchInfo } from "../../api";
 import { demoLinks, getPlayers } from "../../data";
-import { Loading } from "../../Loading";
+import { Loading } from "../../components/Loading";
 import { Match, RawData } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { PlayerInfo } from "./PlayerInfo";
 import { RoundByRoundList } from "./RoundByRound";
 import { RoundsVisualization } from "./RoundsVisualization";
 import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
+import { OpeningDuels } from "./OpeningDuels";
 
 export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const { id = "" } = useParams();
@@ -87,6 +88,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
           <Tab>Utility</Tab>
           <Tab>Head to Head</Tab>
           <Tab>Performances</Tab>
+          <Tab>Opening Duels</Tab>
           <Tab>Rounds</Tab>
         </TabList>
 
@@ -158,6 +160,11 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
                 { title: teamBTitle, players: teamBPlayers },
               ]}
             />
+          </TabPanel>
+
+          {/* Opening duels page */}
+          <TabPanel>
+            <OpeningDuels data={match.openingKills} />
           </TabPanel>
 
           {/* Rounds page */}

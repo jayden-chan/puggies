@@ -22,6 +22,12 @@ export type KillFeed = { [key: string]: { [key: string]: Kill } }[];
 export type TeamsMap = { [key: string]: Team };
 export type NumericMap = { [key: string]: number };
 
+export type OpeningKill = {
+  kill: Kill;
+  attacker: string;
+  victim: string;
+};
+
 export type KillEvent = {
   kind: "kill";
   killer: string;
@@ -104,6 +110,7 @@ export type RawData = {
 export type Match = RawData & {
   efPerFlash: NumericMap;
   roundByRound: RoundByRound;
+  openingKills: OpeningKill[];
   name: { [key: string]: string };
   meta: {
     id: string;

@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { msToRoundTime } from "../../data";
 import {
   CT_BLUE,
   CT_KILLFEED,
@@ -218,9 +219,7 @@ export const RoundByRoundList = (props: {
             <AccordionPanel>
               <Flex flexDirection="column" alignItems="start" mt={2}>
                 {events.map((event, j) => {
-                  const ms = event.time;
-                  const seconds = Math.round(ms / 1000) % 60;
-                  const minutes = Math.floor(Math.round(ms / 1000) / 60);
+                  const timeString = msToRoundTime(event.time);
 
                   return (
                     <Flex key={j}>
@@ -232,8 +231,7 @@ export const RoundByRoundList = (props: {
                         mr={1}
                         alignItems="center"
                       >
-                        {`${minutes}`.padStart(2, "0")}:
-                        {`${seconds}`.padStart(2, "0")}
+                        {timeString}
                       </Flex>
                       {event.kind === "kill" && (
                         <KillFeedItem

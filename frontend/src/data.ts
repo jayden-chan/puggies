@@ -31,6 +31,14 @@ export const getScore = (
   );
 };
 
+export const msToRoundTime = (ms: number): string => {
+  const seconds = Math.round(ms / 1000) % 60;
+  const minutes = Math.floor(Math.round(ms / 1000) / 60);
+  return `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+};
+
 export const demoLinks: { [key: string]: string } = {
   "pug_de_overpass_2022-01-25_05":
     "https://drive.google.com/file/d/1cu06v4aGRCNfuiizK2b_G2ywUm4eHKSD/view?usp=sharing",
