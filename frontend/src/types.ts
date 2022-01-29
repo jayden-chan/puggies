@@ -111,7 +111,6 @@ export type Match = RawData & {
   efPerFlash: NumericMap;
   roundByRound: RoundByRound;
   openingKills: OpeningKill[];
-  name: { [key: string]: string };
   meta: {
     id: string;
     dateString: string;

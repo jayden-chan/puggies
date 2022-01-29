@@ -7,13 +7,11 @@ export type TableSchema = {
   key: keyof Match;
   title: string;
   label?: string;
-  minW?: string;
   pct?: boolean;
   clickable?: boolean;
 }[];
 
 export const utilTableSchema: TableSchema = [
-  { key: "name", title: "Player", minW: "150px", clickable: false },
   { key: "smokesThrown", title: "Smokes", label: "# of smokes thrown" },
   { key: "molliesThrown", title: "Molotovs", label: "# of molotovs thrown" },
   { key: "HEsThrown", title: "HE", label: "# of HE grenades thrown" },
@@ -26,7 +24,6 @@ export const utilTableSchema: TableSchema = [
 ];
 
 export const scoreTableSchema: TableSchema = [
-  { key: "name", title: "Player", minW: "150px", clickable: false },
   { key: "kills", title: "K", label: "Kills" },
   { key: "assists", title: "A", label: "Assists" },
   { key: "deaths", title: "D", label: "Deaths" },
@@ -60,6 +57,7 @@ export const StatTable = (props: {
     <Table variant="simple" size="sm">
       <Thead>
         <Tr>
+          <Th>Player</Th>
           {props.schema.map((col) => (
             <Th
               key={col.title}
@@ -97,9 +95,12 @@ export const StatTable = (props: {
       <Tbody>
         {props.players.map((player) => (
           <Tr key={player}>
+            <Td minW="150px" key={`${player}name`}>
+              {player}
+            </Td>
             {props.schema.map((col) => {
               return (
-                <Td minW={col.minW ?? "unset"} key={`${player}${col.key}`}>
+                <Td key={`${player}${col.key}`}>
                   {/* @ts-ignore */}
                   {props.data[col.key][player] ?? 0}
                   {col.pct === true ? "%" : ""}
