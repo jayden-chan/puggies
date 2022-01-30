@@ -74,7 +74,7 @@ func GetPlayers(teams map[string]string, hltv StringF64Map, side string) []strin
 	return ret
 }
 
-func GetScore(rounds []Round, side string) int {
+func GetScore(rounds []Round, side string, toRound int) int {
 	score := 0
 	currSide := side
 
@@ -92,7 +92,7 @@ func GetScore(rounds []Round, side string) int {
 			}
 		}
 
-		if round.Winner == currSide {
+		if round.Winner == currSide && i-1 < toRound {
 			score += 1
 		}
 	}

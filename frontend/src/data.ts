@@ -1,35 +1,19 @@
-import { RawData, Round, Team } from "./types";
+import { format, parse } from "date-fns";
+import { Match, Stats, Team } from "./types";
 
 export const getPlayers = (
-  data: RawData,
+  data: Match,
   side: Team,
-  sortCol: keyof RawData,
+  sortCol: keyof Stats,
   reverse: boolean
 ): string[] =>
   Object.keys(data.teams)
     .filter((player) => data.teams[player] === side)
     .sort((a, b) => {
-      // @ts-ignore
-      const aa = data[sortCol][reverse ? a : b] ?? 0;
-      // @ts-ignore
-      const bb = data[sortCol][reverse ? b : a] ?? 0;
+      const aa = data.stats[sortCol][reverse ? a : b] ?? 0;
+      const bb = data.stats[sortCol][reverse ? b : a] ?? 0;
       return aa - bb;
     });
-
-export const getScore = (
-  rounds: Round[],
-  team: Team,
-  toRound: number
-): number => {
-  return (
-    rounds
-      .slice(0, toRound > 15 ? 15 : toRound)
-      .filter((r) => r.winner !== team).length +
-    rounds
-      .slice(15, toRound <= 15 ? 15 : toRound)
-      .filter((r) => r.winner === team).length
-  );
-};
 
 export const msToRoundTime = (ms: number): string => {
   const seconds = Math.round(ms / 1000) % 60;
@@ -37,6 +21,17 @@ export const msToRoundTime = (ms: number): string => {
   return `${minutes.toString().padStart(2, "0")}:${seconds
     .toString()
     .padStart(2, "0")}`;
+};
+
+export const getDateInfo = (id: string): [string, number] => {
+  const [regex, date] = id.match(/(\d\d\d\d-\d\d-\d\d)/) ?? [];
+  if (!regex) {
+    throw new Error("Failed to extract map/date from match id");
+  }
+
+  const dateParsed = parse(date, "yyyy-MM-dd", new Date());
+  const dateString = format(dateParsed, "EEE MMM dd yyyy");
+  return [dateString, dateParsed.valueOf()];
 };
 
 export const demoLinks: { [key: string]: string } = {

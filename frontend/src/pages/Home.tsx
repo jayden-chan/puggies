@@ -12,17 +12,13 @@ import * as React from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { MatchInfo } from "../api";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
+import { getDateInfo } from "../data";
 
 const MatchCard = (props: { match: MatchInfo }) => {
-  const {
-    id,
-    map,
-    dateString,
-    teamARounds,
-    teamBRounds,
-    teamATitle,
-    teamBTitle,
-  } = props.match;
+  const { id, map, teamAScore, teamBScore, teamATitle, teamBTitle } =
+    props.match;
+  const [dateString] = getDateInfo(id);
+
   return (
     <Link as={ReactRouterLink} to={`/match/${id}`}>
       <Flex
@@ -44,7 +40,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
               -
             </Heading>
             <Heading as="h4" fontSize="2xl">
-              {teamARounds}:{teamBRounds}
+              {teamAScore}:{teamBScore}
             </Heading>
             <Heading as="h4" fontSize="xl" fontWeight="normal" ml={2}>
               -

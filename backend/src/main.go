@@ -308,7 +308,7 @@ func main() {
 		adr,
 	)
 
-	jsonstring, _ := json.MarshalIndent(&Output{
+	jsonstring, _ := json.Marshal(&Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
 		Rounds:      rounds,
@@ -345,17 +345,18 @@ func main() {
 
 		HeadToHead:   HeadToHeadTotal(&prd.headToHead),
 		KillFeed:     prd.headToHead,
+		RoundByRound: ComputeRoundByRound(rounds, prd.headToHead),
 		OpeningKills: totals.openingKills,
 
 		Meta: MetaData{
 			Map:        header.MapName,
 			Id:         GetDemoFileName(os.Args[1]),
-			TeamAScore: GetScore(rounds, "CT"),
-			TeamBScore: GetScore(rounds, "T"),
+			TeamAScore: GetScore(rounds, "CT", 999999999),
+			TeamBScore: GetScore(rounds, "T", 999999999),
 			TeamATitle: "team_" + GetPlayers(teams, hltv, "CT")[0],
 			TeamBTitle: "team_" + GetPlayers(teams, hltv, "T")[0],
 		},
-	}, "", "  ")
+	})
 
 	fmt.Println(string(jsonstring))
 	fmt.Fprintln(os.Stderr, "Generating heatmaps...")

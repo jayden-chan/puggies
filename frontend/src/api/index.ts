@@ -1,12 +1,11 @@
+import { getDateInfo } from "../data";
 import { Match } from "../types";
 
 export type MatchInfo = {
   id: string;
-  dateString: string;
-  dateTimestamp: number;
   map: string;
-  teamARounds: number;
-  teamBRounds: number;
+  teamAScore: number;
+  teamBScore: number;
   teamATitle: string;
   teamBTitle: string;
 };
@@ -26,6 +25,10 @@ export class DataAPI {
       await fetch(`${this.endpoint}/matchInfo.json`)
     ).json()) as MatchInfo[];
 
-    return results.sort((a, b) => b.dateTimestamp - a.dateTimestamp);
+    return results.sort((a, b) => {
+      const [, aTs] = getDateInfo(a.id);
+      const [, bTs] = getDateInfo(b.id);
+      return bTs - aTs;
+    });
   }
 }

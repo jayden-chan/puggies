@@ -2,6 +2,7 @@ package main
 
 type StringIntMap map[string]int
 type StringF64Map map[string]float64
+type KillFeed []map[string]map[string]Kill
 
 type MetaData struct {
 	Map        string `json:"map"`
@@ -54,8 +55,9 @@ type Output struct {
 	Meta  MetaData `json:"meta"`
 	Stats Stats    `json:"stats"`
 
-	HeadToHead map[string]StringIntMap      `json:"headToHead"`
-	KillFeed   []map[string]map[string]Kill `json:"killFeed"`
+	HeadToHead   map[string]StringIntMap `json:"headToHead"`
+	KillFeed     KillFeed                `json:"killFeed"`
+	RoundByRound []RoundOverview         `json:"roundByRound"`
 }
 
 type Round struct {
@@ -83,4 +85,26 @@ type Kill struct {
 type Death struct {
 	KilledBy    string  `json:"killedBy"`
 	TimeOfDeath float64 `json:"timeOfDeath"`
+}
+
+type RoundEvent struct {
+	Kind string `json:"kind"`
+	Time int64  `json:"time"`
+
+	// kind == kill
+	Killer string `json:"killer,omitempty"`
+	Victim string `json:"victim,omitempty"`
+	Kill   *Kill  `json:"kill,omitempty"`
+
+	// kind == plant
+	Planter string `json:"planter,omitempty"`
+
+	// kind == defuse
+	Defuser string `json:"defuser,omitempty"`
+}
+
+type RoundOverview struct {
+	TeamAScore int          `json:"teamAScore"`
+	TeamBScore int          `json:"teamBScore"`
+	Events     []RoundEvent `json:"events"`
 }

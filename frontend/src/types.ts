@@ -1,3 +1,5 @@
+import { MatchInfo } from "./api";
+
 export const T_YELLOW = "#ead18a";
 export const CT_BLUE = "#b5d4ee";
 
@@ -32,8 +34,8 @@ export type KillEvent = {
   kind: "kill";
   killer: string;
   victim: string;
-  time: number;
   kill: Kill;
+  time: number;
 };
 
 export type PlantEvent = {
@@ -71,53 +73,47 @@ export type Kill = {
   penetratedObjects: number;
 };
 
-export type RawData = {
+export type Match = {
   totalRounds: number;
   teams: TeamsMap;
-  kills: NumericMap;
-  assists: NumericMap;
-  deaths: NumericMap;
-  timesTraded: NumericMap;
-  headshotPct: NumericMap;
-  kd: NumericMap;
-  kdiff: NumericMap;
-  kpr: NumericMap;
-  adr: NumericMap;
-  kast: NumericMap;
-  impact: NumericMap;
-  hltv: NumericMap;
-  rws: NumericMap;
-  flashAssists: NumericMap;
-  enemiesFlashed: NumericMap;
-  teammatesFlashed: NumericMap;
   rounds: Round[];
+  openingKills: OpeningKill[];
 
-  flashesThrown: NumericMap;
-  HEsThrown: NumericMap;
-  molliesThrown: NumericMap;
-  smokesThrown: NumericMap;
-  utilDamage: NumericMap;
+  meta: MatchInfo;
+
+  stats: Stats;
 
   headToHead: HeadToHead;
   killFeed: KillFeed;
+  roundByRound: RoundByRound;
+};
+
+export type Stats = {
+  adr: NumericMap;
+  assists: NumericMap;
+  deaths: NumericMap;
+  enemiesFlashed: NumericMap;
+  flashAssists: NumericMap;
+  flashesThrown: NumericMap;
+  HEsThrown: NumericMap;
+  headshotPct: NumericMap;
+  hltv: NumericMap;
+  impact: NumericMap;
+  kast: NumericMap;
+  kd: NumericMap;
+  kdiff: NumericMap;
+  kills: NumericMap;
+  kpr: NumericMap;
+  molliesThrown: NumericMap;
+  rws: NumericMap;
+  smokesThrown: NumericMap;
+  teammatesFlashed: NumericMap;
+  timesTraded: NumericMap;
+  utilDamage: NumericMap;
+  efPerFlash: NumericMap;
 
   "2k": NumericMap;
   "3k": NumericMap;
   "4k": NumericMap;
   "5k": NumericMap;
-};
-
-export type Match = RawData & {
-  efPerFlash: NumericMap;
-  roundByRound: RoundByRound;
-  openingKills: OpeningKill[];
-  meta: {
-    id: string;
-    map: string;
-    dateString: string;
-    teamARounds: number;
-    teamBRounds: number;
-    teamATitle: string;
-    teamBTitle: string;
-  };
 };

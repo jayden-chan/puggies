@@ -2,6 +2,7 @@ package main
 
 import (
 	"math"
+	"sort"
 
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
@@ -187,5 +188,63 @@ func ComputeEFPerFlash(flashesThrown StringIntMap, enemiesFlashed StringIntMap) 
 	for player, f := range flashesThrown {
 		ret[player] = math.Round((float64(enemiesFlashed[player])/float64(f))*100) / 100
 	}
+	return ret
+}
+
+func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
+	var ret []RoundOverview
+	for i, k := range killFeed {
+		roundInfo := rounds[i]
+		teamAScore := GetScore(rounds, "CT", i+1)
+		teamBScore := GetScore(rounds, "T", i+1)
+		var events []RoundEvent
+
+		for killer, k2 := range k {
+			for victim, deathInfo := range k2 {
+				kill := deathInfo
+				events = append(events, RoundEvent{
+					Kind:   "kill",
+					Killer: killer,
+					Victim: victim,
+					Time:   kill.Time,
+					Kill:   &kill,
+				})
+			}
+		}
+
+		if roundInfo.Planter != "" {
+			events = append(events, RoundEvent{
+				Kind:    "plant",
+				Time:    roundInfo.PlanterTime,
+				Planter: roundInfo.Planter,
+			})
+		}
+
+		if roundInfo.Defuser != "" {
+			events = append(events, RoundEvent{
+				Kind:    "defuse",
+				Time:    roundInfo.DefuserTime,
+				Defuser: roundInfo.Defuser,
+			})
+		}
+
+		if roundInfo.BombExplodeTime != 0 {
+			events = append(events, RoundEvent{
+				Kind: "bomb_explode",
+				Time: roundInfo.BombExplodeTime,
+			})
+		}
+
+		sort.Slice(events, func(i, j int) bool {
+			return events[i].Time < events[j].Time
+		})
+
+		ret = append(ret, RoundOverview{
+			TeamAScore: teamAScore,
+			TeamBScore: teamBScore,
+			Events:     events,
+		})
+	}
+
 	return ret
 }

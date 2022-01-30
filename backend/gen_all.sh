@@ -9,24 +9,15 @@ set -e
 for f in $files; do
     matchId=${f:t:r}
 
-    # process demo
-    go run src/*.go $f > "$matchId.json"
-    cd ../frontend
+    outPath="../frontend/public/matches/$matchId.json"
+    go run src/*.go $f > "$outPath"
+    jq '.meta' "$outPath" > "$matchId-meta.json"
 
-    # post-processing (previously in frontend but moved out to nodejs script)
-    node processData.js "$matchId" ../backend/"$matchId.json"
-    mv "$matchId.json" public/matches/
-
-    # cleanup
-    cd ../backend
-    rm "$matchId.json"
     if [ "$1" != "--keep-img" ]; then
         rm ${f:t:r}*.png
     fi
 done
 
-cd ../frontend
 # combine metadata files into one array in json file
-jq -s 'map(.)'  *-meta.json > public/matchInfo.json
+jq -s 'map(.)'  *-meta.json > ../frontend/public/matchInfo.json
 rm *-meta.json
-cd ../backend

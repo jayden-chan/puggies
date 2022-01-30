@@ -15,21 +15,21 @@ import {
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { DataAPI, MatchInfo } from "../../api";
-import { demoLinks, getPlayers } from "../../data";
 import { Loading } from "../../components/Loading";
-import { Match, RawData } from "../../types";
+import { demoLinks, getDateInfo, getPlayers } from "../../data";
+import { Match, Stats } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
+import { OpeningDuels } from "./OpeningDuels";
 import { PlayerInfo } from "./PlayerInfo";
 import { RoundByRoundList } from "./RoundByRound";
 import { RoundsVisualization } from "./RoundsVisualization";
 import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
-import { OpeningDuels } from "./OpeningDuels";
 
 export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const { id = "" } = useParams();
 
   const [match, setMatch] = useState<Match | undefined>();
-  const [sortCol, setSortCol] = useState<keyof RawData>("hltv");
+  const [sortCol, setSortCol] = useState<keyof Stats>("hltv");
   const [reversed, setReversed] = useState(false);
 
   useEffect(() => {
@@ -43,8 +43,9 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     return <Loading text="Loading match..." />;
   }
 
-  const { map, dateString, teamARounds, teamBRounds, teamATitle, teamBTitle } =
-    match.meta;
+  const { map, teamAScore, teamBScore, teamATitle, teamBTitle } = match.meta;
+
+  const [dateString] = getDateInfo(match.meta.id);
 
   const teamAPlayers = getPlayers(match, "CT", sortCol, reversed);
   const teamBPlayers = getPlayers(match, "T", sortCol, reversed);
@@ -53,7 +54,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     if (key === sortCol) {
       setReversed((prev) => !prev);
     } else {
-      setSortCol(key as keyof RawData);
+      setSortCol(key as keyof Stats);
       setReversed(false);
     }
   };
@@ -74,9 +75,9 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
         <Text mx={5} as="h2" fontSize="xl">
           {teamATitle}
         </Text>
-        <Heading mx={2}>{teamARounds}</Heading>
+        <Heading mx={2}>{teamAScore}</Heading>
         <Heading mx={1}>:</Heading>
-        <Heading mx={2}>{teamBRounds}</Heading>
+        <Heading mx={2}>{teamBScore}</Heading>
         <Text mx={5} as="h2" fontSize="xl">
           {teamBTitle}
         </Text>
