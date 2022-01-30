@@ -3,36 +3,38 @@ package main
 type StringIntMap map[string]int
 type StringF64Map map[string]float64
 
-type Output struct {
-	TotalRounds      int               `json:"totalRounds"`
-	Teams            map[string]string `json:"teams"`
-	Kills            StringIntMap      `json:"kills"`
-	Assists          StringIntMap      `json:"assists"`
-	Deaths           StringIntMap      `json:"deaths"`
-	Trades           StringIntMap      `json:"timesTraded"`
-	HeadshotPct      StringF64Map      `json:"headshotPct"`
-	Kd               StringF64Map      `json:"kd"`
-	Kdiff            StringIntMap      `json:"kdiff"`
-	Kpr              StringF64Map      `json:"kpr"`
-	Adr              StringF64Map      `json:"adr"`
-	Kast             StringF64Map      `json:"kast"`
-	Impact           StringF64Map      `json:"impact"`
-	Hltv             StringF64Map      `json:"hltv"`
-	Rws              StringF64Map      `json:"rws"`
-	UtilDamage       StringIntMap      `json:"utilDamage"`
-	FlashAssists     StringIntMap      `json:"flashAssists"`
-	EnemiesFlashed   StringIntMap      `json:"enemiesFlashed"`
-	TeammatesFlashed StringIntMap      `json:"teammatesFlashed"`
-	Rounds           []Round           `json:"rounds"`
-	OpeningKills     []OpeningKill     `json:"openingKills"`
+type MetaData struct {
+	Map        string `json:"map"`
+	Id         string `json:"id"`
+	TeamAScore int    `json:"teamAScore"`
+	TeamBScore int    `json:"teamBScore"`
+	TeamATitle string `json:"teamATitle"`
+	TeamBTitle string `json:"teamBTitle"`
+}
 
-	HeadToHead map[string]StringIntMap      `json:"headToHead"`
-	KillFeed   []map[string]map[string]Kill `json:"killFeed"`
-
-	FlashesThrown StringIntMap `json:"flashesThrown"`
-	SmokesThrown  StringIntMap `json:"smokesThrown"`
-	MolliesThrown StringIntMap `json:"molliesThrown"`
-	HEsThrown     StringIntMap `json:"HEsThrown"`
+type Stats struct {
+	Adr              StringF64Map `json:"adr"`
+	Assists          StringIntMap `json:"assists"`
+	Deaths           StringIntMap `json:"deaths"`
+	EnemiesFlashed   StringIntMap `json:"enemiesFlashed"`
+	FlashAssists     StringIntMap `json:"flashAssists"`
+	FlashesThrown    StringIntMap `json:"flashesThrown"`
+	HEsThrown        StringIntMap `json:"HEsThrown"`
+	HeadshotPct      StringF64Map `json:"headshotPct"`
+	Hltv             StringF64Map `json:"hltv"`
+	Impact           StringF64Map `json:"impact"`
+	Kast             StringF64Map `json:"kast"`
+	Kd               StringF64Map `json:"kd"`
+	Kdiff            StringIntMap `json:"kdiff"`
+	Kills            StringIntMap `json:"kills"`
+	Kpr              StringF64Map `json:"kpr"`
+	MolliesThrown    StringIntMap `json:"molliesThrown"`
+	Rws              StringF64Map `json:"rws"`
+	SmokesThrown     StringIntMap `json:"smokesThrown"`
+	TeammatesFlashed StringIntMap `json:"teammatesFlashed"`
+	Trades           StringIntMap `json:"timesTraded"`
+	UtilDamage       StringIntMap `json:"utilDamage"`
+	EFPerFlash       StringF64Map `json:"efPerFlash"`
 
 	// Can't name these 2k, 3k etc because identifiers can't start with
 	// numbers in Go
@@ -41,6 +43,19 @@ type Output struct {
 	K3 StringIntMap `json:"3k"`
 	K4 StringIntMap `json:"4k"`
 	K5 StringIntMap `json:"5k"`
+}
+
+type Output struct {
+	TotalRounds  int               `json:"totalRounds"`
+	Teams        map[string]string `json:"teams"`
+	Rounds       []Round           `json:"rounds"`
+	OpeningKills []OpeningKill     `json:"openingKills"`
+
+	Meta  MetaData `json:"meta"`
+	Stats Stats    `json:"stats"`
+
+	HeadToHead map[string]StringIntMap      `json:"headToHead"`
+	KillFeed   []map[string]map[string]Kill `json:"killFeed"`
 }
 
 type Round struct {

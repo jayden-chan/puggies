@@ -181,3 +181,11 @@ func ComputMultikills(kills []StringIntMap) (StringIntMap, StringIntMap, StringI
 
 	return k2, k3, k4, k5
 }
+
+func ComputeEFPerFlash(flashesThrown StringIntMap, enemiesFlashed StringIntMap) StringF64Map {
+	ret := make(StringF64Map)
+	for player, f := range flashesThrown {
+		ret[player] = math.Round((float64(enemiesFlashed[player])/float64(f))*100) / 100
+	}
+	return ret
+}

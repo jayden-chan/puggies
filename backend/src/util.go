@@ -1,6 +1,7 @@
 package main
 
 import (
+	"sort"
 	"strings"
 )
 
@@ -56,4 +57,49 @@ func ProcessWeaponName(name string) string {
 		ret = strings.Replace(ret, s[0], s[1], 1)
 	}
 	return ret
+}
+
+func GetPlayers(teams map[string]string, hltv StringF64Map, side string) []string {
+	ret := make([]string, 0)
+	for player, team := range teams {
+		if team == side {
+			ret = append(ret, player)
+		}
+	}
+
+	sort.Slice(ret, func(i, j int) bool {
+		return hltv[ret[j]] < hltv[ret[i]]
+	})
+
+	return ret
+}
+
+func GetScore(rounds []Round, side string) int {
+	score := 0
+	currSide := side
+
+	// We will iterate the array backwards since the `side`
+	// parameter is for which side the team finished on
+	for i := len(rounds); i > 0; i-- {
+		round := rounds[i-1]
+
+		// Switch sides at half time and during overtime
+		if i == 15 || (i > 30 && (i-3)%6 == 0) {
+			if currSide == "T" {
+				currSide = "CT"
+			} else {
+				currSide = "T"
+			}
+		}
+
+		if round.Winner == currSide {
+			score += 1
+		}
+	}
+
+	return score
+}
+
+func GetDemoFileName(path string) string {
+	return strings.Replace(path[strings.LastIndex(path, "/")+1:], ".dem", "", 1)
 }

@@ -49,7 +49,6 @@ const processData = (info, rawData) => {
       teamATitle,
       teamBTitle,
     },
-    name: Object.fromEntries(Object.keys(rawData.teams).map((p) => [p, p])),
     roundByRound: rawData.killFeed.map((k, i) => {
       const roundInfo = rawData.rounds[i];
       const teamAScore = getScore(rawData.rounds, "CT", i + 1);

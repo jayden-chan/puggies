@@ -113,8 +113,8 @@ export type Match = RawData & {
   openingKills: OpeningKill[];
   meta: {
     id: string;
-    dateString: string;
     map: string;
+    dateString: string;
     teamARounds: number;
     teamBRounds: number;
     teamATitle: string;

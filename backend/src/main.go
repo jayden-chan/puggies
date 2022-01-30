@@ -286,8 +286,6 @@ func main() {
 	rounds = rounds[len(rounds)-totalRounds:]
 	winners = winners[len(winners)-totalRounds:]
 
-	h2hTotal := HeadToHeadTotal(&prd.headToHead)
-
 	headshotPct, kd, kdiff, kpr := ComputeBasicStats(
 		totalRounds,
 		totals.kills,
@@ -295,7 +293,6 @@ func main() {
 		totals.deaths,
 	)
 
-	rws := ComputeRWS(winners, rounds, prd.damage)
 	kast := ComputeKAST(totalRounds, teams, prd.kills, prd.assists, prd.deaths, prd.timesTraded)
 	adr := ComputeADR(totalRounds, totals.damage)
 	impact := ComputImpact(totalRounds, teams, totals.assists, kpr)
@@ -312,38 +309,52 @@ func main() {
 	)
 
 	jsonstring, _ := json.MarshalIndent(&Output{
-		TotalRounds:      totalRounds,
-		Teams:            teams,
-		Kills:            totals.kills,
-		Assists:          totals.assists,
-		Deaths:           totals.deaths,
-		Trades:           totals.timesTraded,
-		HeadshotPct:      headshotPct,
-		Kd:               kd,
-		Kdiff:            kdiff,
-		Kpr:              kpr,
-		Adr:              adr,
-		Kast:             kast,
-		Impact:           impact,
-		Hltv:             hltv,
-		Rws:              rws,
-		K2:               k2,
-		K3:               k3,
-		K4:               k4,
-		K5:               k5,
-		UtilDamage:       totals.utilDamage,
-		FlashAssists:     totals.flashAssists,
-		EnemiesFlashed:   totals.enemiesFlashed,
-		TeammatesFlashed: totals.teammatesFlashed,
-		Rounds:           rounds,
-		HeadToHead:       h2hTotal,
-		KillFeed:         prd.headToHead,
-		OpeningKills:     totals.openingKills,
+		TotalRounds: totalRounds,
+		Teams:       teams,
+		Rounds:      rounds,
 
-		FlashesThrown: totals.flashesThrown,
-		SmokesThrown:  totals.smokesThrown,
-		MolliesThrown: totals.molliesThrown,
-		HEsThrown:     totals.hEsThrown,
+		Stats: Stats{
+			Adr:              adr,
+			Assists:          totals.assists,
+			Deaths:           totals.deaths,
+			EnemiesFlashed:   totals.enemiesFlashed,
+			FlashAssists:     totals.flashAssists,
+			FlashesThrown:    totals.flashesThrown,
+			HEsThrown:        totals.hEsThrown,
+			HeadshotPct:      headshotPct,
+			Hltv:             hltv,
+			Impact:           impact,
+			Kast:             kast,
+			Kd:               kd,
+			Kdiff:            kdiff,
+			Kills:            totals.kills,
+			Kpr:              kpr,
+			MolliesThrown:    totals.molliesThrown,
+			Rws:              ComputeRWS(winners, rounds, prd.damage),
+			SmokesThrown:     totals.smokesThrown,
+			TeammatesFlashed: totals.teammatesFlashed,
+			Trades:           totals.timesTraded,
+			UtilDamage:       totals.utilDamage,
+			EFPerFlash:       ComputeEFPerFlash(totals.flashesThrown, totals.enemiesFlashed),
+
+			K2: k2,
+			K3: k3,
+			K4: k4,
+			K5: k5,
+		},
+
+		HeadToHead:   HeadToHeadTotal(&prd.headToHead),
+		KillFeed:     prd.headToHead,
+		OpeningKills: totals.openingKills,
+
+		Meta: MetaData{
+			Map:        header.MapName,
+			Id:         GetDemoFileName(os.Args[1]),
+			TeamAScore: GetScore(rounds, "CT"),
+			TeamBScore: GetScore(rounds, "T"),
+			TeamATitle: "team_" + GetPlayers(teams, hltv, "CT")[0],
+			TeamBTitle: "team_" + GetPlayers(teams, hltv, "T")[0],
+		},
 	}, "", "  ")
 
 	fmt.Println(string(jsonstring))
