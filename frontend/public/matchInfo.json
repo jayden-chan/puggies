@@ -24,11 +24,19 @@
     "teamBTitle": "team_kevin"
   },
   {
+    "map": "de_nuke",
+    "id": "pug_de_nuke_2022-01-30_06",
+    "teamAScore": 8,
+    "teamBScore": 16,
+    "teamATitle": "team_kevin",
+    "teamBTitle": "team_jiaedin"
+  },
+  {
     "map": "de_overpass",
     "id": "pug_de_overpass_2022-01-25_05",
     "teamAScore": 9,
     "teamBScore": 16,
     "teamATitle": "team_honestpretzels",
-    "teamBTitle": "team_jiaedin"
+    "teamBTitle": "team_kevin"
   }
 ]

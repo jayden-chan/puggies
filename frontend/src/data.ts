@@ -43,4 +43,6 @@ export const demoLinks: { [key: string]: string } = {
     "https://drive.google.com/file/d/12pxs1BvM5z20XPdznlTbG54EAqMhYfNo/view?usp=sharing",
   "pug_de_nuke_2022-01-15_05":
     "https://drive.google.com/file/d/1nwOuFzF42yhw4FXLNxpa2V3_hNFsZvrP/view?usp=sharing",
+  "pug_de_nuke_2022-01-30_06":
+    "https://drive.google.com/file/d/1PqBiW9QvktRzM310o4tq3Zwj5CIlme33/view?usp=sharing",
 };
