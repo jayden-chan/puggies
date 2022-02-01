@@ -19,6 +19,16 @@ func checkError(err error) {
 	}
 }
 
+func updateTeams(p *dem.Parser, teams *map[string]string) {
+	for _, tPlayer := range (*p).GameState().TeamTerrorists().Members() {
+		(*teams)[tPlayer.Name] = "T"
+	}
+
+	for _, ctPlayer := range (*p).GameState().TeamCounterTerrorists().Members() {
+		(*teams)[ctPlayer.Name] = "CT"
+	}
+}
+
 func main() {
 	f, err := os.Open(os.Args[1])
 	checkError(err)
@@ -215,17 +225,16 @@ func main() {
 		bombPlanterTime = 0
 		bombDefuserTime = 0
 
-		teams = make(map[string]string)
-		players := p.GameState().Participants().Playing()
-		for idx := range players {
-			player := players[idx]
-			switch player.Team {
-			case common.TeamCounterTerrorists:
-				teams[player.Name] = "CT"
-			case common.TeamTerrorists:
-				teams[player.Name] = "T"
-			}
+		if teams == nil {
+			teams = make(map[string]string)
 		}
+
+		updateTeams(&p, &teams)
+	})
+
+	// Update the teams when the side switches
+	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
+		updateTeams(&p, &teams)
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
