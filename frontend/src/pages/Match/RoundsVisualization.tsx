@@ -1,8 +1,10 @@
 import {
+  Box,
   Divider,
   Flex,
   FlexProps,
   Grid,
+  GridProps,
   Heading,
   Text,
 } from "@chakra-ui/react";
@@ -42,14 +44,16 @@ const RoundResultIcon = (props: {
   );
 };
 
-const RoundResultGridHalf = (props: {
+const RoundResultGrid = (props: {
   rounds: Round[];
-  range: number[];
+  range: [number, number];
   topTeam: Team;
+  styles?: GridProps;
 }) => (
   <Grid
+    {...props.styles}
     templateRows="repeat(2, 1.9rem)"
-    templateColumns="repeat(15, 1.9rem)"
+    templateColumns={`repeat(${props.range[1] - props.range[0]}, 1.9rem)`}
     gridAutoFlow="column"
     gap={1}
   >
@@ -90,8 +94,19 @@ export const RoundsVisualization = (props: { data: Match }) => {
   const teamAStartSide = data.roundByRound[0].teamASide;
   const teamBStartSide = data.roundByRound[0].teamBSide;
 
+  const overtimes =
+    data.rounds.length > 30
+      ? Array.from(Array(Math.ceil((data.rounds.length - 30) / 6)).keys())
+      : [];
+
   return (
-    <Flex my={5} h="110px" alignItems="center" justifyContent="flex-start">
+    <Flex
+      my={5}
+      h="110px"
+      alignItems="center"
+      justifyContent="flex-start"
+      overflowX="scroll"
+    >
       <Flex mr={10}>
         <FlexCol mr={5}>
           <ScoreNumber side={teamAStartSide} rounds={[0, 15]} />
@@ -105,46 +120,66 @@ export const RoundsVisualization = (props: { data: Match }) => {
           <ScoreNumber side={teamAStartSide} rounds={[15, 30]} />
         </FlexCol>
 
-        {data.rounds.length > 30 &&
-          Array.from(
-            Array(Math.ceil((data.rounds.length - 30) / 6)).keys()
-          ).map((overtime) => {
-            const i = 30 + overtime * 6;
-            const sideA = overtime % 2 === 0 ? teamBStartSide : teamAStartSide;
-            const sideB = overtime % 2 === 0 ? teamAStartSide : teamBStartSide;
-            return (
-              <FlexCol ml={5}>
-                <Flex>
-                  <ScoreNumber side={sideA} rounds={[i, i + 3]} />
-                  <Heading fontSize="3xl" mx={0.5}>
-                    :
-                  </Heading>
-                  <ScoreNumber side={sideB} rounds={[i + 3, i + 6]} />
-                </Flex>
-                <Text>OT {overtime + 1}</Text>
-                <Flex>
-                  <ScoreNumber side={sideB} rounds={[i, i + 3]} />
-                  <Heading fontSize="3xl" mx={0.5}>
-                    :
-                  </Heading>
-                  <ScoreNumber side={sideA} rounds={[i + 3, i + 6]} />
-                </Flex>
-              </FlexCol>
-            );
-          })}
+        {overtimes.map((ot) => {
+          const i = 30 + ot * 6;
+          const sideA = ot % 2 === 0 ? teamBStartSide : teamAStartSide;
+          const sideB = ot % 2 === 0 ? teamAStartSide : teamBStartSide;
+          return (
+            <FlexCol ml={5} key={`otscore${ot}`}>
+              <Flex>
+                <ScoreNumber side={sideA} rounds={[i, i + 3]} />
+                <Heading fontSize="3xl" mx={0.5}>
+                  :
+                </Heading>
+                <ScoreNumber side={sideB} rounds={[i + 3, i + 6]} />
+              </Flex>
+              <Text>OT {ot + 1}</Text>
+              <Flex>
+                <ScoreNumber side={sideB} rounds={[i, i + 3]} />
+                <Heading fontSize="3xl" mx={0.5}>
+                  :
+                </Heading>
+                <ScoreNumber side={sideA} rounds={[i + 3, i + 6]} />
+              </Flex>
+            </FlexCol>
+          );
+        })}
       </Flex>
 
-      <RoundResultGridHalf
+      <RoundResultGrid
         rounds={data.rounds}
         range={[0, 15]}
         topTeam={teamAStartSide}
       />
       <Divider orientation="vertical" mx={5} />
-      <RoundResultGridHalf
+      <RoundResultGrid
         rounds={data.rounds}
         range={[15, 30]}
         topTeam={teamBStartSide}
       />
+      {overtimes
+        .map((ot) => {
+          const i = 30 + ot * 6;
+          const sideA = ot % 2 === 0 ? teamBStartSide : teamAStartSide;
+          const sideB = ot % 2 === 0 ? teamAStartSide : teamBStartSide;
+          return [
+            <Divider orientation="vertical" mx={5} key={`otdiv${ot}`} />,
+            <RoundResultGrid
+              rounds={data.rounds}
+              range={[i, i + 3]}
+              styles={{ mr: 1 }}
+              topTeam={sideA}
+              key={`otviz1_${ot}`}
+            />,
+            <RoundResultGrid
+              rounds={data.rounds}
+              range={[i + 3, i + 6]}
+              topTeam={sideB}
+              key={`otviz2_${ot}`}
+            />,
+          ];
+        })
+        .flat()}
     </Flex>
   );
 };
