@@ -1,5 +1,4 @@
 import {
-  Box,
   Divider,
   Flex,
   FlexProps,
@@ -142,7 +141,7 @@ export const RoundsVisualization = (props: { data: Match }) => {
                   </Heading>
                   <ScoreNumber side={sideB} rounds={[i + 3, i + 6]} />
                 </Flex>
-                <Text>OT{overtime + 1}</Text>
+                <Text>OT {overtime + 1}</Text>
                 <Flex>
                   <ScoreNumber side={sideB} rounds={[i, i + 3]} />
                   <Heading fontSize="3xl" mx={0.5}>
