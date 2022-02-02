@@ -118,7 +118,7 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
 
   return (
     <Box
-      bg={props.round.winner === "CT" ? CT_BLUE : T_YELLOW}
+      bg={TEAM_COLORS_MAP[props.round.winner]}
       borderRadius={5}
       w="1.9rem"
       h="1.9rem"

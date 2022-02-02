@@ -16,6 +16,10 @@ export const KILLFEED_COLORS_MAP = {
 };
 
 export type Team = "T" | "CT";
+export const INVERT_TEAM = {
+  T: "CT" as Team,
+  CT: "T" as Team,
+};
 
 export type Round = {
   winner: Team;

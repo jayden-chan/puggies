@@ -82,7 +82,7 @@ const FlexCol = (props: FlexProps) => (
 export const RoundsVisualization = (props: { data: Match }) => {
   const { data } = props;
   const ScoreNumber = (props: { rounds: number[]; side: Team }) => (
-    <Heading textColor={props.side === "T" ? T_YELLOW : CT_BLUE} fontSize="3xl">
+    <Heading textColor={TEAM_COLORS_MAP[props.side]} fontSize="3xl">
       {
         data.rounds
           .slice(...props.rounds)
