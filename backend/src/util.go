@@ -74,9 +74,10 @@ func GetPlayers(teams map[string]string, hltv StringF64Map, side string) []strin
 	return ret
 }
 
-func GetScore(rounds []Round, side string, toRound int) int {
+func GetScore(rounds []Round, side string, toRound int) (int, string) {
 	score := 0
 	currSide := side
+	roundSide := ""
 
 	// We will iterate the array backwards since the `side`
 	// parameter is for which side the team finished on
@@ -92,12 +93,19 @@ func GetScore(rounds []Round, side string, toRound int) int {
 			}
 		}
 
-		if round.Winner == currSide && i-1 < toRound {
-			score += 1
+		if i-1 < toRound {
+			if roundSide == "" {
+				roundSide = currSide
+			}
+
+			if round.Winner == currSide {
+				score += 1
+			}
 		}
+
 	}
 
-	return score
+	return score, roundSide
 }
 
 func GetDemoFileName(path string) string {

@@ -169,7 +169,7 @@ func main() {
 	})
 
 	p.RegisterEventHandler(func(e events.WeaponFire) {
-		if e.Shooter == nil {
+		if e.Shooter == nil || prd.flashesThrown == nil {
 			return
 		}
 
@@ -234,10 +234,12 @@ func main() {
 
 	// Update the teams when the side switches
 	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
+		fmt.Fprintln(os.Stderr, "SIDE SWITCH")
 		updateTeams(&p, &teams)
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
+		fmt.Fprintln(os.Stderr, e)
 		winner := ""
 
 		switch e.Winner {
@@ -317,6 +319,9 @@ func main() {
 		adr,
 	)
 
+	teamAScore, _ := GetScore(rounds, "CT", 999999999)
+	teamBScore, _ := GetScore(rounds, "T", 999999999)
+
 	jsonstring, _ := json.Marshal(&Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
@@ -360,8 +365,8 @@ func main() {
 		Meta: MetaData{
 			Map:        header.MapName,
 			Id:         GetDemoFileName(os.Args[1]),
-			TeamAScore: GetScore(rounds, "CT", 999999999),
-			TeamBScore: GetScore(rounds, "T", 999999999),
+			TeamAScore: teamAScore,
+			TeamBScore: teamBScore,
 			TeamATitle: "team_" + GetPlayers(teams, hltv, "CT")[0],
 			TeamBTitle: "team_" + GetPlayers(teams, hltv, "T")[0],
 		},

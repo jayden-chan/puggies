@@ -2,10 +2,18 @@ import { MatchInfo } from "./api";
 
 export const T_YELLOW = "#ead18a";
 export const CT_BLUE = "#b5d4ee";
+export const TEAM_COLORS_MAP = {
+  T: T_YELLOW,
+  CT: CT_BLUE,
+};
 
 export const T_KILLFEED = "#C7A247";
 export const CT_KILLFEED = "#4F9EDE";
 export const RED_KILLFEED = "#800000";
+export const KILLFEED_COLORS_MAP = {
+  T: T_KILLFEED,
+  CT: CT_KILLFEED,
+};
 
 export type Team = "T" | "CT";
 
@@ -58,6 +66,8 @@ export type BombExplodeEvent = {
 export type RoundByRound = {
   teamAScore: number;
   teamBScore: number;
+  teamASide: Team;
+  teamBSide: Team;
   events: (KillEvent | PlantEvent | DefuseEvent | BombExplodeEvent)[];
 }[];
 

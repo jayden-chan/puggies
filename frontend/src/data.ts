@@ -26,7 +26,7 @@ export const msToRoundTime = (ms: number): string => {
 export const getDateInfo = (id: string): [string, number] => {
   const [regex, date] = id.match(/(\d\d\d\d-\d\d-\d\d)/) ?? [];
   if (!regex) {
-    throw new Error("Failed to extract map/date from match id");
+    return ["Jan 1 1970", 0];
   }
 
   const dateParsed = parse(date, "yyyy-MM-dd", new Date());

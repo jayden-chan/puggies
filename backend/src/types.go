@@ -106,5 +106,7 @@ type RoundEvent struct {
 type RoundOverview struct {
 	TeamAScore int          `json:"teamAScore"`
 	TeamBScore int          `json:"teamBScore"`
+	TeamASide  string       `json:"teamASide"`
+	TeamBSide  string       `json:"teamBSide"`
 	Events     []RoundEvent `json:"events"`
 }

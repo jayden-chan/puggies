@@ -2,7 +2,7 @@
 
 DEMOS_PATH=${DEMOS_PATH:-../demos}
 
-files=($DEMOS_PATH/pug_*.dem)
+files=($DEMOS_PATH/*.dem)
 rm -f ../frontend/public/matchInfo.json
 
 set -e

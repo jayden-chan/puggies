@@ -13,18 +13,23 @@ import {
   Text,
   TextProps,
 } from "@chakra-ui/react";
-import { faBomb, faCut, faSkull } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBomb,
+  faCut,
+  faSkull,
+  faStopwatch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { msToRoundTime } from "../../data";
 import {
   CT_BLUE,
-  CT_KILLFEED,
   Kill,
+  KILLFEED_COLORS_MAP,
   RED_KILLFEED,
   Round,
   RoundByRound,
   TeamsMap,
-  T_KILLFEED,
+  TEAM_COLORS_MAP,
   T_YELLOW,
 } from "../../types";
 
@@ -34,14 +39,9 @@ type KillFeedThing = {
   kill: Kill;
 };
 
-const playerColor = (player: string, teams: TeamsMap, round: number) => {
+const playerColor = (player: string, teams: TeamsMap) => {
   if (teams[player] === undefined) return "white";
-
-  if (round <= 15) {
-    return teams[player] === "T" ? CT_KILLFEED : T_KILLFEED;
-  } else {
-    return teams[player] === "CT" ? CT_KILLFEED : T_KILLFEED;
-  }
+  return KILLFEED_COLORS_MAP[teams[player]];
 };
 
 const KillFeedIcon = (props: ImageProps) => (
@@ -87,7 +87,7 @@ const KillFeedItem = (
       {props.kill.attackerBlind && <KillFeedIcon src="/killfeed/blind.png" />}
       <KillFeedPlayer
         player={props.killer}
-        color={playerColor(props.killer, props.teams, props.round)}
+        color={playerColor(props.killer, props.teams)}
       />
 
       {props.kill.assistedFlash === true && (
@@ -96,7 +96,7 @@ const KillFeedItem = (
           <KillFeedIcon src="/killfeed/flashassist.png" />
           <KillFeedPlayer
             player={props.kill.assister}
-            color={playerColor(props.kill.assister, props.teams, props.round)}
+            color={playerColor(props.kill.assister, props.teams)}
           />
         </>
       )}
@@ -110,7 +110,7 @@ const KillFeedItem = (
       {props.kill.isHeadshot && <KillFeedIcon src="/killfeed/headshot.png" />}
       <KillFeedPlayer
         player={props.victim}
-        color={playerColor(props.victim, props.teams, props.round)}
+        color={playerColor(props.victim, props.teams)}
       />
     </EventBox>
   );
@@ -128,6 +128,9 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
       break;
     case 7:
       icon = faCut;
+      break;
+    case 12:
+      icon = faStopwatch;
       break;
     default:
       icon = faSkull;
@@ -156,7 +159,7 @@ export const RoundByRoundList = (props: {
   return (
     <Accordion allowMultiple>
       {props.roundByRound.map((r, i) => {
-        const { teamAScore, teamBScore, events } = r;
+        const { teamAScore, teamBScore, teamASide, teamBSide, events } = r;
 
         return (
           <AccordionItem key={i}>
@@ -176,17 +179,13 @@ export const RoundByRoundList = (props: {
                 <Flex flex={1} justifyContent="center" alignItems="center">
                   <RoundResultIcon
                     round={props.rounds[i]}
-                    visibility={
-                      i < 15
-                        ? props.rounds[i].winner === "T"
-                        : props.rounds[i].winner === "CT"
-                    }
+                    visibility={props.rounds[i].winner === teamASide}
                   />
                   <Heading
                     as="h3"
                     fontSize="xl"
                     ml={3}
-                    textColor={i < 15 ? T_YELLOW : CT_BLUE}
+                    textColor={TEAM_COLORS_MAP[teamASide]}
                   >
                     {teamAScore}
                   </Heading>
@@ -197,17 +196,13 @@ export const RoundByRoundList = (props: {
                     as="h3"
                     fontSize="xl"
                     mr={3}
-                    textColor={i < 15 ? CT_BLUE : T_YELLOW}
+                    textColor={TEAM_COLORS_MAP[teamBSide]}
                   >
                     {teamBScore}
                   </Heading>
                   <RoundResultIcon
                     round={props.rounds[i]}
-                    visibility={
-                      i < 15
-                        ? props.rounds[i].winner === "CT"
-                        : props.rounds[i].winner === "T"
-                    }
+                    visibility={props.rounds[i].winner === teamBSide}
                   />
                 </Flex>
                 <Flex flex={1} justifyContent="center">

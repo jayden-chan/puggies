@@ -195,8 +195,8 @@ func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 	var ret []RoundOverview
 	for i, k := range killFeed {
 		roundInfo := rounds[i]
-		teamAScore := GetScore(rounds, "CT", i+1)
-		teamBScore := GetScore(rounds, "T", i+1)
+		teamAScore, teamASide := GetScore(rounds, "CT", i+1)
+		teamBScore, teamBSide := GetScore(rounds, "T", i+1)
 		var events []RoundEvent
 
 		for killer, k2 := range k {
@@ -242,6 +242,8 @@ func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 		ret = append(ret, RoundOverview{
 			TeamAScore: teamAScore,
 			TeamBScore: teamBScore,
+			TeamASide:  teamASide,
+			TeamBSide:  teamBSide,
 			Events:     events,
 		})
 	}
