@@ -6,13 +6,8 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import {
-  faBomb,
-  faCut,
-  faSkull,
-  faStopwatch,
-} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+import { getRoundIcon } from ".";
 import {
   CT_BLUE,
   Match,
@@ -28,22 +23,7 @@ const RoundResultIcon = (props: {
   topTeam: Team;
   roundNum: number;
 }) => {
-  let icon;
-  switch (props.round.winReason) {
-    case 1:
-      icon = faBomb;
-      break;
-    case 7:
-      icon = faCut;
-      break;
-    case 12:
-      icon = faStopwatch;
-      break;
-    default:
-      icon = faSkull;
-      break;
-  }
-
+  const icon = getRoundIcon(props.round);
   return (
     <>
       <GridIcon

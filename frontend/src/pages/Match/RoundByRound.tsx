@@ -13,13 +13,8 @@ import {
   Text,
   TextProps,
 } from "@chakra-ui/react";
-import {
-  faBomb,
-  faCut,
-  faSkull,
-  faStopwatch,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getRoundIcon } from ".";
 import { msToRoundTime } from "../../data";
 import {
   CT_BLUE,
@@ -121,22 +116,6 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
     return <Box w="1.9rem" h="1.9rem" visibility="hidden" />;
   }
 
-  let icon;
-  switch (props.round.winReason) {
-    case 1:
-      icon = faBomb;
-      break;
-    case 7:
-      icon = faCut;
-      break;
-    case 12:
-      icon = faStopwatch;
-      break;
-    default:
-      icon = faSkull;
-      break;
-  }
-
   return (
     <Box
       bg={props.round.winner === "CT" ? CT_BLUE : T_YELLOW}
@@ -145,7 +124,7 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
       h="1.9rem"
     >
       <Flex alignItems="center" justifyContent="center" h="100%">
-        <FontAwesomeIcon icon={icon} color="black" />
+        <FontAwesomeIcon icon={getRoundIcon(props.round)} color="black" />
       </Flex>
     </Box>
   );
