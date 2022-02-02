@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRoundIcon } from ".";
 import { msToRoundTime } from "../../data";
 import {
-  CT_BLUE,
   Kill,
   KILLFEED_COLORS_MAP,
   RED_KILLFEED,
@@ -25,7 +24,6 @@ import {
   RoundByRound,
   TeamsMap,
   TEAM_COLORS_MAP,
-  T_YELLOW,
 } from "../../types";
 
 type KillFeedThing = {
