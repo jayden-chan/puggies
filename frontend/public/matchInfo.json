@@ -38,5 +38,13 @@
     "teamBScore": 16,
     "teamATitle": "team_honestpretzels",
     "teamBTitle": "team_jiaedin"
+  },
+  {
+    "map": "de_vertigo",
+    "id": "pug_de_vertigo_2022-02-02_06",
+    "teamAScore": 15,
+    "teamBScore": 19,
+    "teamATitle": "team_kevin",
+    "teamBTitle": "team_Mushie"
   }
 ]
