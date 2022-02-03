@@ -7,6 +7,7 @@ import {
   LinkBox,
   LinkOverlay,
   VStack,
+  Text,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { Link } from "react-router-dom";
@@ -27,36 +28,30 @@ const MatchCard = (props: { match: MatchInfo }) => {
         borderRadius={10}
         flexDir={["column", null, null, "row"]}
         style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
+        alignItems="start"
       >
         <Image
           src={`/img/maps/${map}.jpg`}
-          maxW="150px"
+          maxW="180px"
           mr={5}
           mb={[3, null, null, 0]}
         />
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
             <LinkOverlay as={Link} to={`/match/${id}`}>
-              {map} - {dateString}
+              {dateString}
             </LinkOverlay>
           </Heading>
-          <Flex alignItems="center" justifyContent="center">
-            <Heading as="h4" fontSize="xl" fontWeight="normal" mr={2}>
-              {teamATitle}
-            </Heading>
-            <Heading as="h4" fontSize="xl" fontWeight="normal" mr={2}>
-              -
-            </Heading>
-            <Heading as="h4" fontSize="2xl">
+          <Heading as="h4" fontSize="xl">
+            {map}
+          </Heading>
+          <Heading as="h5" fontSize="xl" fontWeight="normal" mr={2}>
+            {teamATitle}{" "}
+            <Text as="span" fontWeight="bold">
               {teamAScore}:{teamBScore}
-            </Heading>
-            <Heading as="h4" fontSize="xl" fontWeight="normal" ml={2}>
-              -
-            </Heading>
-            <Heading as="h4" fontSize="xl" fontWeight="normal" ml={2}>
-              {teamBTitle}
-            </Heading>
-          </Flex>
+            </Text>{" "}
+            {teamBTitle}
+          </Heading>
         </VStack>
       </Flex>
     </LinkBox>
