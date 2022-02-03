@@ -4,12 +4,12 @@ import {
   Flex,
   Heading,
   Image,
-  Link,
-  Text,
+  LinkBox,
+  LinkOverlay,
   VStack,
 } from "@chakra-ui/react";
 import * as React from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MatchInfo } from "../api";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 import { getDateInfo } from "../data";
@@ -20,17 +20,25 @@ const MatchCard = (props: { match: MatchInfo }) => {
   const [dateString] = getDateInfo(id);
 
   return (
-    <Link as={ReactRouterLink} to={`/match/${id}`}>
+    <LinkBox>
       <Flex
         p={5}
         my={5}
         borderRadius={10}
+        flexDir={["column", null, null, "row"]}
         style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
       >
-        <Image src={`/img/maps/${map}.jpg`} maxW="150px" mr={5} />
+        <Image
+          src={`/img/maps/${map}.jpg`}
+          maxW="150px"
+          mr={5}
+          mb={[3, null, null, 0]}
+        />
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
-            {map} - {dateString}
+            <LinkOverlay as={Link} to={`/match/${id}`}>
+              {map} - {dateString}
+            </LinkOverlay>
           </Heading>
           <Flex alignItems="center" justifyContent="center">
             <Heading as="h4" fontSize="xl" fontWeight="normal" mr={2}>
@@ -50,9 +58,8 @@ const MatchCard = (props: { match: MatchInfo }) => {
             </Heading>
           </Flex>
         </VStack>
-        <Text></Text>
       </Flex>
-    </Link>
+    </LinkBox>
   );
 };
 

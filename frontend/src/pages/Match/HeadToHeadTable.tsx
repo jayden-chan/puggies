@@ -58,6 +58,7 @@ export const HeadToHeadTable = (props: {
       templateRows="repeat(6, auto)"
       templateColumns="repeat(6, min-content)"
       gap={1}
+      overflowX="auto"
     >
       <GridItem colSpan={1} key="asd">
         {" "}

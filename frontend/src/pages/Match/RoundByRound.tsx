@@ -163,10 +163,10 @@ export const RoundByRoundList = (props: {
                 <Heading
                   as="h3"
                   flex={1}
-                  fontSize="1.25rem"
+                  fontSize="1.1rem"
                   textAlign="left"
-                  lineHeight="1.25rem"
-                  height="1.25rem"
+                  lineHeight="1.1rem"
+                  height="1.1rem"
                 >
                   Round {i + 1}
                 </Heading>

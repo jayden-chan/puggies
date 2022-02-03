@@ -66,13 +66,14 @@ const KillGridHalf = (props: {
           return [
             ...[5, 4, 3, 2, 1].map((i) => (
               <GridIcon
+                key={`gi${i}_${roundNum}`}
                 bg={TEAM_COLORS_MAP[props.side]}
                 visibility={numKills >= i ? "visible" : "hidden"}
                 icon={faSkull}
               />
             )),
 
-            <GridItem bg="transparent" borderRadius={5}>
+            <GridItem bg="transparent" borderRadius={5} key={`gii${roundNum}`}>
               <Flex alignItems="center" justifyContent="center" h="100%">
                 {roundNum + 1 + props.rounds[0]}
               </Flex>

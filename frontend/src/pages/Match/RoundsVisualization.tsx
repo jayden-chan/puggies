@@ -48,24 +48,27 @@ const RoundResultGrid = (props: {
   range: [number, number];
   topTeam: Team;
   styles?: GridProps;
-}) => (
-  <Grid
-    {...props.styles}
-    templateRows="repeat(2, 1.9rem)"
-    templateColumns={`repeat(${props.range[1] - props.range[0]}, 1.9rem)`}
-    gridAutoFlow="column"
-    gap={1}
-  >
-    {props.rounds.slice(...props.range).map((r, i) => (
-      <RoundResultIcon
-        key={`round${i + props.range[0] + 1}`}
-        round={r}
-        topTeam={props.topTeam}
-        roundNum={i + props.range[0] + 1}
-      />
-    ))}
-  </Grid>
-);
+}) => {
+  const rounds = props.rounds.slice(...props.range);
+  return (
+    <Grid
+      {...props.styles}
+      templateRows="repeat(2, 1.9rem)"
+      templateColumns={`repeat(${rounds.length}, 1.9rem)`}
+      gridAutoFlow="column"
+      gap={1}
+    >
+      {rounds.map((r, i) => (
+        <RoundResultIcon
+          key={`round${i + props.range[0] + 1}`}
+          round={r}
+          topTeam={props.topTeam}
+          roundNum={i + props.range[0] + 1}
+        />
+      ))}
+    </Grid>
+  );
+};
 
 const FlexCol = (props: FlexProps) => (
   <Flex
@@ -99,13 +102,7 @@ export const RoundsVisualization = (props: { data: Match }) => {
       : [];
 
   return (
-    <Flex
-      my={5}
-      h="110px"
-      alignItems="center"
-      justifyContent="flex-start"
-      overflowX="auto"
-    >
+    <Flex my={5} h="110px" alignItems="center" justifyContent="flex-start">
       <Flex mr={10}>
         <FlexCol mr={5}>
           <ScoreNumber side={teamAStartSide} rounds={[0, 15]} />
