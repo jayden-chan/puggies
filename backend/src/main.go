@@ -325,6 +325,7 @@ func main() {
 	jsonstring, _ := json.Marshal(&Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
+		StartTeams:  ComputeStartSides(teams, rounds),
 		Rounds:      rounds,
 
 		Stats: Stats{

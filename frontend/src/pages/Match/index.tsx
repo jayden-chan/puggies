@@ -191,7 +191,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
           <TabPanel>
             <RoundByRoundList
               roundByRound={match.roundByRound}
-              teams={match.teams}
+              startTeams={match.startTeams}
               rounds={match.rounds}
             />
           </TabPanel>

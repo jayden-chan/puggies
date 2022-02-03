@@ -17,11 +17,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRoundIcon } from ".";
 import { msToRoundTime } from "../../data";
 import {
+  INVERT_TEAM,
   Kill,
   KILLFEED_COLORS_MAP,
   RED_KILLFEED,
   Round,
   RoundByRound,
+  Team,
   TeamsMap,
   TEAM_COLORS_MAP,
 } from "../../types";
@@ -32,9 +34,24 @@ type KillFeedThing = {
   kill: Kill;
 };
 
-const playerColor = (player: string, teams: TeamsMap) => {
-  if (teams[player] === undefined) return "white";
-  return KILLFEED_COLORS_MAP[teams[player]];
+const playerColor = (startTeam: Team | undefined, round: number) => {
+  if (startTeam === undefined) return "white";
+
+  if (round <= 15) {
+    return KILLFEED_COLORS_MAP[startTeam];
+  } else if (round <= 30) {
+    return KILLFEED_COLORS_MAP[INVERT_TEAM[startTeam]];
+  } else {
+    const ot = Math.ceil((round - 30) / 6);
+    const otRound = ((round - 1) % 6) + 1;
+    let side;
+    if (ot % 2 === 0) {
+      side = otRound <= 3 ? startTeam : INVERT_TEAM[startTeam];
+    } else {
+      side = otRound <= 3 ? INVERT_TEAM[startTeam] : startTeam;
+    }
+    return KILLFEED_COLORS_MAP[side];
+  }
 };
 
 const KillFeedIcon = (props: ImageProps) => (
@@ -73,37 +90,38 @@ const EventBox = (props: FlexProps) => (
 );
 
 const KillFeedItem = (
-  props: KillFeedThing & { round: number; teams: TeamsMap }
+  props: KillFeedThing & { round: number; startTeams: TeamsMap }
 ) => {
+  const { kill, round, startTeams } = props;
   return (
     <EventBox borderColor={RED_KILLFEED}>
-      {props.kill.attackerBlind && <KillFeedIcon src="/killfeed/blind.png" />}
+      {kill.attackerBlind && <KillFeedIcon src="/killfeed/blind.png" />}
       <KillFeedPlayer
         player={props.killer}
-        color={playerColor(props.killer, props.teams)}
+        color={playerColor(startTeams[props.killer], round)}
       />
 
-      {props.kill.assistedFlash === true && (
+      {kill.assistedFlash === true && (
         <>
           <KillFeedPlayer mx={2} player={"+"} color="white" />
           <KillFeedIcon src="/killfeed/flashassist.png" />
           <KillFeedPlayer
-            player={props.kill.assister}
-            color={playerColor(props.kill.assister, props.teams)}
+            player={kill.assister}
+            color={playerColor(startTeams[kill.assister], round)}
           />
         </>
       )}
 
-      <KillFeedIcon src={`/weapons/${props.kill.weapon}.png`} mx={2} />
-      {props.kill.noScope && <KillFeedIcon src="/killfeed/noscope.png" />}
-      {props.kill.throughSmoke && <KillFeedIcon src="/killfeed/smoke.png" />}
-      {props.kill.penetratedObjects > 0 && (
+      <KillFeedIcon src={`/weapons/${kill.weapon}.png`} mx={2} />
+      {kill.noScope && <KillFeedIcon src="/killfeed/noscope.png" />}
+      {kill.throughSmoke && <KillFeedIcon src="/killfeed/smoke.png" />}
+      {kill.penetratedObjects > 0 && (
         <KillFeedIcon src="/killfeed/wallbang.png" />
       )}
-      {props.kill.isHeadshot && <KillFeedIcon src="/killfeed/headshot.png" />}
+      {kill.isHeadshot && <KillFeedIcon src="/killfeed/headshot.png" />}
       <KillFeedPlayer
         player={props.victim}
-        color={playerColor(props.victim, props.teams)}
+        color={playerColor(startTeams[props.victim], round)}
       />
     </EventBox>
   );
@@ -130,7 +148,7 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
 
 export const RoundByRoundList = (props: {
   roundByRound: RoundByRound;
-  teams: TeamsMap;
+  startTeams: TeamsMap;
   rounds: Round[];
 }) => {
   return (
@@ -209,7 +227,7 @@ export const RoundByRoundList = (props: {
                         <KillFeedItem
                           key={j}
                           {...event}
-                          teams={props.teams}
+                          startTeams={props.startTeams}
                           round={i + 1}
                         />
                       )}

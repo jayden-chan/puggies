@@ -49,6 +49,7 @@ type Stats struct {
 type Output struct {
 	TotalRounds  int               `json:"totalRounds"`
 	Teams        map[string]string `json:"teams"`
+	StartTeams   map[string]string `json:"startTeams"`
 	Rounds       []Round           `json:"rounds"`
 	OpeningKills []OpeningKill     `json:"openingKills"`
 

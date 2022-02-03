@@ -100,7 +100,7 @@ const KillsVisualization = (props: {
       h="230px"
       alignItems="center"
       justifyContent="flex-start"
-      overflowX="scroll"
+      overflowX="auto"
       pt={3}
     >
       <KillGridHalf
@@ -155,13 +155,6 @@ export const PlayerInfo = (props: {
 }) => {
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
 
-  const selectedPlayerStartSide =
-    selectedPlayer === undefined
-      ? undefined
-      : props.match.teams[selectedPlayer] === "CT"
-      ? props.match.roundByRound[0].teamASide
-      : props.match.roundByRound[0].teamBSide;
-
   return (
     <Box>
       <Menu>
@@ -203,7 +196,7 @@ export const PlayerInfo = (props: {
           <KillsVisualization
             killFeed={props.match.killFeed}
             player={selectedPlayer}
-            startSide={selectedPlayerStartSide!}
+            startSide={props.match.startTeams[selectedPlayer]}
           />
         </>
       )}

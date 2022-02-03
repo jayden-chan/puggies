@@ -191,6 +191,21 @@ func ComputeEFPerFlash(flashesThrown StringIntMap, enemiesFlashed StringIntMap) 
 	return ret
 }
 
+func ComputeStartSides(teams map[string]string, rounds []Round) map[string]string {
+	_, teamAStartSide := GetScore(rounds, "CT", 1)
+	_, teamBStartSide := GetScore(rounds, "T", 1)
+	ret := make(map[string]string)
+	for player, team := range teams {
+		if team == "CT" {
+			ret[player] = teamAStartSide
+		} else {
+			ret[player] = teamBStartSide
+		}
+	}
+
+	return ret
+}
+
 func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 	var ret []RoundOverview
 	for i, k := range killFeed {

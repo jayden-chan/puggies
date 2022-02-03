@@ -104,7 +104,7 @@ export const RoundsVisualization = (props: { data: Match }) => {
       h="110px"
       alignItems="center"
       justifyContent="flex-start"
-      overflowX="scroll"
+      overflowX="auto"
     >
       <Flex mr={10}>
         <FlexCol mr={5}>

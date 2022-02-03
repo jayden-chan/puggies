@@ -90,6 +90,7 @@ export type Kill = {
 export type Match = {
   totalRounds: number;
   teams: TeamsMap;
+  startTeams: TeamsMap;
   rounds: Round[];
   openingKills: OpeningKill[];
 
