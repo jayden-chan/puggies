@@ -102,7 +102,14 @@ export const RoundsVisualization = (props: { data: Match }) => {
       : [];
 
   return (
-    <Flex my={5} h="110px" alignItems="center" justifyContent="flex-start">
+    <Flex
+      my={5}
+      h="110px"
+      w="100%"
+      alignItems="center"
+      justifyContent="flex-start"
+      overflowX="auto"
+    >
       <Flex mr={10}>
         <FlexCol mr={5}>
           <ScoreNumber side={teamAStartSide} rounds={[0, 15]} />

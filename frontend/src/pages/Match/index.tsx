@@ -11,7 +11,6 @@ import {
   TabPanels,
   Tabs,
   Text,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import {
   faBomb,
@@ -110,7 +109,10 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
       </Flex>
 
       <Tabs w={["95%", null, null, "80%"]}>
-        <TabList overflowX={["auto", "auto", "unset"]} overflowY="hidden">
+        <TabList
+          overflowX={["auto", "auto", "unset"]}
+          overflowY={["hidden", null, "unset"]}
+        >
           <Tab>Scoreboard</Tab>
           <Tab>Utility</Tab>
           <Tab>Head to Head</Tab>
@@ -122,21 +124,23 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
         <TabPanels overflowX="auto">
           {/* Stats page */}
           <TabPanel>
-            <StatTable
-              schema={scoreTableSchema}
-              data={match}
-              sort={{ key: sortCol, reversed }}
-              colClicked={colHeaderClicked}
-              players={teamAPlayers}
-            />
-            <RoundsVisualization data={match} />
-            <StatTable
-              schema={scoreTableSchema}
-              data={match}
-              sort={{ key: sortCol, reversed }}
-              colClicked={colHeaderClicked}
-              players={teamBPlayers}
-            />
+            <Box w="100%">
+              <StatTable
+                schema={scoreTableSchema}
+                data={match}
+                sort={{ key: sortCol, reversed }}
+                colClicked={colHeaderClicked}
+                players={teamAPlayers}
+              />
+              <RoundsVisualization data={match} />
+              <StatTable
+                schema={scoreTableSchema}
+                data={match}
+                sort={{ key: sortCol, reversed }}
+                colClicked={colHeaderClicked}
+                players={teamBPlayers}
+              />
+            </Box>
           </TabPanel>
 
           {/* Utility page */}

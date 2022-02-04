@@ -1,5 +1,14 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { Table, Tbody, Td, Th, Thead, Tooltip, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tooltip,
+  Tr,
+} from "@chakra-ui/react";
 import React from "react";
 import { Match, Stats } from "../../types";
 
@@ -23,6 +32,7 @@ export const utilTableSchema: TableSchema = [
   { key: "efPerFlash", title: "Enemies Blind per Flash" },
 ];
 
+// prettier-ignore
 export const scoreTableSchema: TableSchema = [
   { key: "kills", title: "K", label: "Kills" },
   { key: "assists", title: "A", label: "Assists" },
@@ -32,7 +42,6 @@ export const scoreTableSchema: TableSchema = [
   { key: "kdiff", title: "K-D", label: "Kill-death difference" },
   { key: "kpr", title: "K/R", label: "Kills per round" },
   { key: "adr", title: "ADR", label: "Average damage per round" },
-  // prettier-ignore
   { key: "headshotPct", title: "HS %", label: "Headshot kill percentage", pct: true },
   { key: "2k", title: "2K", label: "# of rounds with 2 kills" },
   { key: "3k", title: "3K", label: "# of rounds with 3 kills" },
@@ -40,9 +49,7 @@ export const scoreTableSchema: TableSchema = [
   { key: "5k", title: "5K", label: "# of rounds with 5 kills" },
   { key: "hltv", title: "HLTV 2.0", label: "Approximate HLTV 2.0 rating" },
   { key: "impact", title: "Impact", label: "Approximate HLTV Impact rating" },
-  // prettier-ignore
   { key: "kast", title: "KAST", label: "% of rounds with kill/assist/survived/traded", pct: true },
-  // prettier-ignore
   { key: "rws", title: "RWS", label: "Approximate average ESEA round win share" },
 ];
 
@@ -54,61 +61,67 @@ export const StatTable = (props: {
   colClicked?: (key: string) => void;
 }) => {
   return (
-    <Table variant="simple" size="sm">
-      <Thead>
-        <Tr>
-          <Th>Player</Th>
-          {props.schema.map((col) => (
-            <Th
-              key={col.title}
-              lineHeight="unset"
-              style={{ cursor: col.clickable ?? true ? "pointer" : "unset" }}
-              onClick={
-                props.colClicked !== undefined && (col.clickable ?? true)
-                  ? () => props.colClicked!(col.key)
-                  : undefined
-              }
-            >
-              {col.label !== undefined ? (
-                <Tooltip label={col.label}>{col.title}</Tooltip>
-              ) : (
-                col.title
-              )}
-              {props.sort.reversed ? (
-                <ChevronUpIcon
-                  w={4}
-                  h={4}
-                  visibility={col.key === props.sort.key ? "visible" : "hidden"}
-                />
-              ) : (
-                <ChevronDownIcon
-                  w={4}
-                  h={4}
-                  visibility={col.key === props.sort.key ? "visible" : "hidden"}
-                />
-              )}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
-
-      <Tbody>
-        {props.players.map((player) => (
-          <Tr key={player}>
-            <Td minW="150px" key={`${player}name`}>
-              {player}
-            </Td>
-            {props.schema.map((col) => {
-              return (
-                <Td key={`${player}${col.key}`}>
-                  {props.data.stats[col.key][player] ?? 0}
-                  {col.pct === true ? "%" : ""}
-                </Td>
-              );
-            })}
+    <Box overflowX="auto">
+      <Table variant="simple" size="sm">
+        <Thead>
+          <Tr>
+            <Th>Player</Th>
+            {props.schema.map((col) => (
+              <Th
+                key={col.title}
+                lineHeight="unset"
+                style={{ cursor: col.clickable ?? true ? "pointer" : "unset" }}
+                onClick={
+                  props.colClicked !== undefined && (col.clickable ?? true)
+                    ? () => props.colClicked!(col.key)
+                    : undefined
+                }
+              >
+                {col.label !== undefined ? (
+                  <Tooltip label={col.label}>{col.title}</Tooltip>
+                ) : (
+                  col.title
+                )}
+                {props.sort.reversed ? (
+                  <ChevronUpIcon
+                    w={4}
+                    h={4}
+                    visibility={
+                      col.key === props.sort.key ? "visible" : "hidden"
+                    }
+                  />
+                ) : (
+                  <ChevronDownIcon
+                    w={4}
+                    h={4}
+                    visibility={
+                      col.key === props.sort.key ? "visible" : "hidden"
+                    }
+                  />
+                )}
+              </Th>
+            ))}
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
+        </Thead>
+
+        <Tbody>
+          {props.players.map((player) => (
+            <Tr key={player}>
+              <Td minW="150px" key={`${player}name`}>
+                {player}
+              </Td>
+              {props.schema.map((col) => {
+                return (
+                  <Td key={`${player}${col.key}`}>
+                    {props.data.stats[col.key][player] ?? 0}
+                    {col.pct === true ? "%" : ""}
+                  </Td>
+                );
+              })}
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </Box>
   );
 };
