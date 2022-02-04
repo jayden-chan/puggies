@@ -41,8 +41,8 @@ export const openingsTableSchema: TableSchema = [
   { key: "openingKills", title: "FK", label: "First Kills" },
   { key: "openingDeaths", title: "FD", label: "First Deaths" },
   { key: "openingAttempts", title: "Opening Attempts" },
-  { key: "openingSuccess", title: "Success Rate", label: "% of opening duels resulting in a kill", pct: true },
   { key: "openingAttemptsPct", title: "Opening Involvement", label: "% of rounds where the player was involved in an opening duel", pct: true },
+  { key: "openingSuccess", title: "Success Rate", label: "% of opening duels resulting in a kill", pct: true },
 ];
 
 // prettier-ignore
