@@ -2,48 +2,48 @@ package main
 
 type OpeningKill struct {
 	Kill     Kill   `json:"kill"`
-	Attacker string `json:"attacker"`
-	Victim   string `json:"victim"`
+	Attacker uint64 `json:"attacker,string"`
+	Victim   uint64 `json:"victim,string"`
 }
 
 type PerRoundData struct {
-	kills            []StringIntMap
-	deaths           []StringIntMap
-	assists          []StringIntMap
-	deathsTraded     []StringIntMap
-	tradeKills       []StringIntMap
-	headshots        []StringIntMap
-	damage           []StringIntMap
-	flashAssists     []StringIntMap
-	enemiesFlashed   []StringIntMap
-	teammatesFlashed []StringIntMap
-	utilDamage       []StringIntMap
+	kills            []PlayerIntMap
+	deaths           []PlayerIntMap
+	assists          []PlayerIntMap
+	deathsTraded     []PlayerIntMap
+	tradeKills       []PlayerIntMap
+	headshots        []PlayerIntMap
+	damage           []PlayerIntMap
+	flashAssists     []PlayerIntMap
+	enemiesFlashed   []PlayerIntMap
+	teammatesFlashed []PlayerIntMap
+	utilDamage       []PlayerIntMap
 	openings         []*OpeningKill
 
-	flashesThrown []StringIntMap
-	HEsThrown     []StringIntMap
-	molliesThrown []StringIntMap
-	smokesThrown  []StringIntMap
+	flashesThrown []PlayerIntMap
+	HEsThrown     []PlayerIntMap
+	molliesThrown []PlayerIntMap
+	smokesThrown  []PlayerIntMap
 
-	headToHead []map[string]map[string]Kill
+	headToHead []map[uint64]map[uint64]Kill
 }
 
 type Totals struct {
-	kills            StringIntMap
-	deaths           StringIntMap
-	assists          StringIntMap
-	deathsTraded     StringIntMap
-	tradeKills       StringIntMap
-	headshots        StringIntMap
-	damage           StringIntMap
-	flashAssists     StringIntMap
-	enemiesFlashed   StringIntMap
-	teammatesFlashed StringIntMap
-	utilDamage       StringIntMap
-	flashesThrown    StringIntMap
-	hEsThrown        StringIntMap
-	molliesThrown    StringIntMap
-	smokesThrown     StringIntMap
+	kills            PlayerIntMap
+	deaths           PlayerIntMap
+	assists          PlayerIntMap
+	deathsTraded     PlayerIntMap
+	tradeKills       PlayerIntMap
+	headshots        PlayerIntMap
+	damage           PlayerIntMap
+	flashAssists     PlayerIntMap
+	enemiesFlashed   PlayerIntMap
+	teammatesFlashed PlayerIntMap
+	utilDamage       PlayerIntMap
+	flashesThrown    PlayerIntMap
+	hEsThrown        PlayerIntMap
+	molliesThrown    PlayerIntMap
+	smokesThrown     PlayerIntMap
 	openingKills     []OpeningKill
 }
 
@@ -70,25 +70,25 @@ func InitPerRoundData() PerRoundData {
 }
 
 func (prd *PerRoundData) NewRound() {
-	prd.kills = append(prd.kills, make(StringIntMap))
-	prd.deaths = append(prd.deaths, make(StringIntMap))
-	prd.assists = append(prd.assists, make(StringIntMap))
-	prd.deathsTraded = append(prd.deathsTraded, make(StringIntMap))
-	prd.tradeKills = append(prd.tradeKills, make(StringIntMap))
-	prd.headshots = append(prd.headshots, make(StringIntMap))
-	prd.damage = append(prd.damage, make(StringIntMap))
-	prd.flashAssists = append(prd.flashAssists, make(StringIntMap))
-	prd.enemiesFlashed = append(prd.enemiesFlashed, make(StringIntMap))
-	prd.teammatesFlashed = append(prd.teammatesFlashed, make(StringIntMap))
-	prd.utilDamage = append(prd.utilDamage, make(StringIntMap))
+	prd.kills = append(prd.kills, make(PlayerIntMap))
+	prd.deaths = append(prd.deaths, make(PlayerIntMap))
+	prd.assists = append(prd.assists, make(PlayerIntMap))
+	prd.deathsTraded = append(prd.deathsTraded, make(PlayerIntMap))
+	prd.tradeKills = append(prd.tradeKills, make(PlayerIntMap))
+	prd.headshots = append(prd.headshots, make(PlayerIntMap))
+	prd.damage = append(prd.damage, make(PlayerIntMap))
+	prd.flashAssists = append(prd.flashAssists, make(PlayerIntMap))
+	prd.enemiesFlashed = append(prd.enemiesFlashed, make(PlayerIntMap))
+	prd.teammatesFlashed = append(prd.teammatesFlashed, make(PlayerIntMap))
+	prd.utilDamage = append(prd.utilDamage, make(PlayerIntMap))
 	prd.openings = append(prd.openings, nil)
 
-	prd.flashesThrown = append(prd.flashesThrown, make(StringIntMap))
-	prd.HEsThrown = append(prd.HEsThrown, make(StringIntMap))
-	prd.molliesThrown = append(prd.molliesThrown, make(StringIntMap))
-	prd.smokesThrown = append(prd.smokesThrown, make(StringIntMap))
+	prd.flashesThrown = append(prd.flashesThrown, make(PlayerIntMap))
+	prd.HEsThrown = append(prd.HEsThrown, make(PlayerIntMap))
+	prd.molliesThrown = append(prd.molliesThrown, make(PlayerIntMap))
+	prd.smokesThrown = append(prd.smokesThrown, make(PlayerIntMap))
 
-	prd.headToHead = append(prd.headToHead, make(map[string]map[string]Kill))
+	prd.headToHead = append(prd.headToHead, make(map[uint64]map[uint64]Kill))
 }
 
 func (prd *PerRoundData) CropToRealRounds(startRound int) {

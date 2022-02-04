@@ -8,12 +8,12 @@ import (
 )
 
 func ComputeRWS(
-	winners [][]string,
+	winners [][]uint64,
 	rounds []Round,
-	damage []StringIntMap,
-) StringF64Map {
+	damage []PlayerIntMap,
+) PlayerF64Map {
 	totalRounds := len(rounds)
-	rws := make(map[string]float64)
+	rws := make(map[uint64]float64)
 	for i := 0; i < totalRounds; i++ {
 		winTeamTotalDamage := 0
 		for p := range winners[i] {
@@ -54,15 +54,15 @@ func ComputeRWS(
 // returns headshotPct, kd, kdiff, kpr
 func ComputeBasicStats(
 	totalRounds int,
-	totalKills StringIntMap,
-	totalHeadshots StringIntMap,
-	totalDeaths StringIntMap,
-) (StringF64Map, StringF64Map, StringIntMap, StringF64Map) {
+	totalKills PlayerIntMap,
+	totalHeadshots PlayerIntMap,
+	totalDeaths PlayerIntMap,
+) (PlayerF64Map, PlayerF64Map, PlayerIntMap, PlayerF64Map) {
 	// Compute headshot percentages, K/D & K-D etc
-	kd := make(StringF64Map)
-	kdiff := make(StringIntMap)
-	kpr := make(StringF64Map)
-	headshotPct := make(StringF64Map)
+	kd := make(PlayerF64Map)
+	kdiff := make(PlayerIntMap)
+	kpr := make(PlayerF64Map)
+	headshotPct := make(PlayerF64Map)
 	for player, numKills := range totalKills {
 		numHeadshots := totalHeadshots[player]
 		numDeaths := totalDeaths[player]
@@ -88,13 +88,13 @@ func ComputeBasicStats(
 
 func ComputeKAST(
 	totalRounds int,
-	teams map[string]string,
-	kills []StringIntMap,
-	assists []StringIntMap,
-	deaths []StringIntMap,
-	deathsTraded []StringIntMap,
-) StringF64Map {
-	kast := make(StringF64Map)
+	teams map[uint64]string,
+	kills []PlayerIntMap,
+	assists []PlayerIntMap,
+	deaths []PlayerIntMap,
+	deathsTraded []PlayerIntMap,
+) PlayerF64Map {
+	kast := make(PlayerF64Map)
 	for i := 0; i < totalRounds; i++ {
 		for p := range teams {
 			// KAST
@@ -114,8 +114,8 @@ func ComputeKAST(
 	return kast
 }
 
-func ComputeADR(totalRounds int, totalDamage StringIntMap) StringF64Map {
-	adr := make(StringF64Map)
+func ComputeADR(totalRounds int, totalDamage PlayerIntMap) PlayerF64Map {
+	adr := make(PlayerF64Map)
 	for player, playerDamage := range totalDamage {
 		adr[player] = math.Round((float64(playerDamage) / float64(totalRounds)))
 	}
@@ -124,11 +124,11 @@ func ComputeADR(totalRounds int, totalDamage StringIntMap) StringF64Map {
 
 func ComputImpact(
 	totalRounds int,
-	teams map[string]string,
-	totalAssists StringIntMap,
-	kpr StringF64Map,
-) StringF64Map {
-	impact := make(StringF64Map)
+	teams TeamsMap,
+	totalAssists PlayerIntMap,
+	kpr PlayerF64Map,
+) PlayerF64Map {
+	impact := make(PlayerF64Map)
 	for p := range teams {
 		assistsPerRound := (float64(totalAssists[p]) / float64(totalRounds))
 
@@ -141,14 +141,14 @@ func ComputImpact(
 
 func ComputeHLTV(
 	totalRounds int,
-	teams map[string]string,
-	totalDeaths StringIntMap,
-	kast StringF64Map,
-	kpr StringF64Map,
-	impact StringF64Map,
-	adr StringF64Map,
-) StringF64Map {
-	hltv := make(StringF64Map)
+	teams TeamsMap,
+	totalDeaths PlayerIntMap,
+	kast PlayerF64Map,
+	kpr PlayerF64Map,
+	impact PlayerF64Map,
+	adr PlayerF64Map,
+) PlayerF64Map {
+	hltv := make(PlayerF64Map)
 	for p := range teams {
 		dpr := float64(totalDeaths[p]) / float64(totalRounds)
 
@@ -159,11 +159,11 @@ func ComputeHLTV(
 	return hltv
 }
 
-func ComputMultikills(kills []StringIntMap) (StringIntMap, StringIntMap, StringIntMap, StringIntMap) {
-	k2 := make(StringIntMap)
-	k3 := make(StringIntMap)
-	k4 := make(StringIntMap)
-	k5 := make(StringIntMap)
+func ComputMultikills(kills []PlayerIntMap) (PlayerIntMap, PlayerIntMap, PlayerIntMap, PlayerIntMap) {
+	k2 := make(PlayerIntMap)
+	k3 := make(PlayerIntMap)
+	k4 := make(PlayerIntMap)
+	k5 := make(PlayerIntMap)
 
 	for _, pKills := range kills {
 		for p, numKills := range pKills {
@@ -183,18 +183,18 @@ func ComputMultikills(kills []StringIntMap) (StringIntMap, StringIntMap, StringI
 	return k2, k3, k4, k5
 }
 
-func ComputeEFPerFlash(flashesThrown StringIntMap, enemiesFlashed StringIntMap) StringF64Map {
-	ret := make(StringF64Map)
+func ComputeEFPerFlash(flashesThrown PlayerIntMap, enemiesFlashed PlayerIntMap) PlayerF64Map {
+	ret := make(PlayerF64Map)
 	for player, f := range flashesThrown {
 		ret[player] = math.Round((float64(enemiesFlashed[player])/float64(f))*100) / 100
 	}
 	return ret
 }
 
-func ComputeStartSides(teams map[string]string, rounds []Round) map[string]string {
+func ComputeStartSides(teams map[uint64]string, rounds []Round) map[uint64]string {
 	_, teamAStartSide := GetScore(rounds, "CT", 1)
 	_, teamBStartSide := GetScore(rounds, "T", 1)
-	ret := make(map[string]string)
+	ret := make(map[uint64]string)
 	for player, team := range teams {
 		if team == "CT" {
 			ret[player] = teamAStartSide
@@ -207,19 +207,19 @@ func ComputeStartSides(teams map[string]string, rounds []Round) map[string]strin
 }
 
 func ComputeOpenings(openingKills []OpeningKill) (
-	StringIntMap,
-	StringIntMap,
-	StringIntMap,
-	StringF64Map,
-	StringF64Map,
+	PlayerIntMap,
+	PlayerIntMap,
+	PlayerIntMap,
+	PlayerF64Map,
+	PlayerF64Map,
 ) {
 	numRounds := float64(len(openingKills))
 
-	oKills := make(StringIntMap)
-	oDeaths := make(StringIntMap)
-	oAttempts := make(StringIntMap)
-	oAttemptsPct := make(StringF64Map)
-	oSuccess := make(StringF64Map)
+	oKills := make(PlayerIntMap)
+	oDeaths := make(PlayerIntMap)
+	oAttempts := make(PlayerIntMap)
+	oAttemptsPct := make(PlayerF64Map)
+	oSuccess := make(PlayerF64Map)
 
 	for _, openingKill := range openingKills {
 		oKills[openingKill.Attacker] += 1
@@ -259,7 +259,7 @@ func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 			}
 		}
 
-		if roundInfo.Planter != "" {
+		if roundInfo.Planter != 0 {
 			events = append(events, RoundEvent{
 				Kind:    "plant",
 				Time:    roundInfo.PlanterTime,
@@ -267,7 +267,7 @@ func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 			})
 		}
 
-		if roundInfo.Defuser != "" {
+		if roundInfo.Defuser != 0 {
 			events = append(events, RoundEvent{
 				Kind:    "defuse",
 				Time:    roundInfo.DefuserTime,

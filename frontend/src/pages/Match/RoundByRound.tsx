@@ -20,6 +20,7 @@ import {
   INVERT_TEAM,
   Kill,
   KILLFEED_COLORS_MAP,
+  PlayerNames,
   RED_KILLFEED,
   Round,
   RoundByRound,
@@ -90,15 +91,19 @@ const EventBox = (props: FlexProps) => (
 );
 
 const KillFeedItem = (
-  props: KillFeedThing & { round: number; startTeams: TeamsMap }
+  props: KillFeedThing & {
+    round: number;
+    startTeams: TeamsMap;
+    playerNames: PlayerNames;
+  }
 ) => {
-  const { kill, round, startTeams } = props;
+  const { kill, round, startTeams, playerNames } = props;
   return (
     <EventBox borderColor={RED_KILLFEED}>
       {kill.attackerBlind && <KillFeedIcon src="/killfeed/blind.png" />}
       <KillFeedPlayer
-        player={props.killer}
-        color={playerColor(startTeams[props.killer], round)}
+        player={playerNames[props.killer.toString()]}
+        color={playerColor(startTeams[props.killer.toString()], round)}
       />
 
       {kill.assistedFlash === true && (
@@ -106,8 +111,8 @@ const KillFeedItem = (
           <KillFeedPlayer mx={2} player={"+"} color="white" />
           <KillFeedIcon src="/killfeed/flashassist.png" />
           <KillFeedPlayer
-            player={kill.assister}
-            color={playerColor(startTeams[kill.assister], round)}
+            player={playerNames[kill.assister.toString()]}
+            color={playerColor(startTeams[kill.assister.toString()], round)}
           />
         </>
       )}
@@ -120,8 +125,8 @@ const KillFeedItem = (
       )}
       {kill.isHeadshot && <KillFeedIcon src="/killfeed/headshot.png" />}
       <KillFeedPlayer
-        player={props.victim}
-        color={playerColor(startTeams[props.victim], round)}
+        player={playerNames[props.victim.toString()]}
+        color={playerColor(startTeams[props.victim.toString()], round)}
       />
     </EventBox>
   );
@@ -149,6 +154,7 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
 export const RoundByRoundList = (props: {
   roundByRound: RoundByRound;
   startTeams: TeamsMap;
+  playerNames: PlayerNames;
   rounds: Round[];
 }) => {
   return (
@@ -228,19 +234,20 @@ export const RoundByRoundList = (props: {
                           key={j}
                           {...event}
                           startTeams={props.startTeams}
+                          playerNames={props.playerNames}
                           round={i + 1}
                         />
                       )}
 
                       {event.kind === "plant" && (
                         <EventBox borderColor="gray">
-                          {event.planter} planted the bomb
+                          {props.playerNames[event.planter]} planted the bomb
                         </EventBox>
                       )}
 
                       {event.kind === "defuse" && (
                         <EventBox borderColor="gray">
-                          {event.defuser} defused the bomb
+                          {props.playerNames[event.defuser]} defused the bomb
                         </EventBox>
                       )}
 

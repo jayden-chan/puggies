@@ -2,67 +2,72 @@ package main
 
 type StringIntMap map[string]int
 type StringF64Map map[string]float64
-type KillFeed []map[string]map[string]Kill
+type PlayerIntMap map[uint64]int
+type PlayerF64Map map[uint64]float64
+type KillFeed []map[uint64]map[uint64]Kill
+type TeamsMap map[uint64]string
+type NamesMap map[uint64]string
 
 type MetaData struct {
-	Map        string `json:"map"`
-	Id         string `json:"id"`
-	TeamAScore int    `json:"teamAScore"`
-	TeamBScore int    `json:"teamBScore"`
-	TeamATitle string `json:"teamATitle"`
-	TeamBTitle string `json:"teamBTitle"`
+	Map         string   `json:"map"`
+	Id          string   `json:"id"`
+	PlayerNames NamesMap `json:"playerNames"`
+	TeamAScore  int      `json:"teamAScore"`
+	TeamBScore  int      `json:"teamBScore"`
+	TeamATitle  string   `json:"teamATitle"`
+	TeamBTitle  string   `json:"teamBTitle"`
 }
 
 type Stats struct {
-	Adr                StringF64Map `json:"adr"`
-	Assists            StringIntMap `json:"assists"`
-	Deaths             StringIntMap `json:"deaths"`
-	EFPerFlash         StringF64Map `json:"efPerFlash"`
-	EnemiesFlashed     StringIntMap `json:"enemiesFlashed"`
-	FlashAssists       StringIntMap `json:"flashAssists"`
-	FlashesThrown      StringIntMap `json:"flashesThrown"`
-	HEsThrown          StringIntMap `json:"HEsThrown"`
-	HeadshotPct        StringF64Map `json:"headshotPct"`
-	Hltv               StringF64Map `json:"hltv"`
-	Impact             StringF64Map `json:"impact"`
-	Kast               StringF64Map `json:"kast"`
-	Kd                 StringF64Map `json:"kd"`
-	Kdiff              StringIntMap `json:"kdiff"`
-	Kills              StringIntMap `json:"kills"`
-	Kpr                StringF64Map `json:"kpr"`
-	MolliesThrown      StringIntMap `json:"molliesThrown"`
-	OpeningAttempts    StringIntMap `json:"openingAttempts"`
-	OpeningAttemptsPct StringF64Map `json:"openingAttemptsPct"`
-	OpeningDeaths      StringIntMap `json:"openingDeaths"`
-	OpeningKills       StringIntMap `json:"openingKills"`
-	OpeningSuccess     StringF64Map `json:"openingSuccess"`
-	Rws                StringF64Map `json:"rws"`
-	SmokesThrown       StringIntMap `json:"smokesThrown"`
-	TeammatesFlashed   StringIntMap `json:"teammatesFlashed"`
-	DeathsTraded       StringIntMap `json:"deathsTraded"`
-	TradeKills         StringIntMap `json:"tradeKills"`
-	UtilDamage         StringIntMap `json:"utilDamage"`
+	Adr                PlayerF64Map `json:"adr"`
+	Assists            PlayerIntMap `json:"assists"`
+	Deaths             PlayerIntMap `json:"deaths"`
+	EFPerFlash         PlayerF64Map `json:"efPerFlash"`
+	EnemiesFlashed     PlayerIntMap `json:"enemiesFlashed"`
+	FlashAssists       PlayerIntMap `json:"flashAssists"`
+	FlashesThrown      PlayerIntMap `json:"flashesThrown"`
+	HEsThrown          PlayerIntMap `json:"HEsThrown"`
+	HeadshotPct        PlayerF64Map `json:"headshotPct"`
+	Hltv               PlayerF64Map `json:"hltv"`
+	Impact             PlayerF64Map `json:"impact"`
+	Kast               PlayerF64Map `json:"kast"`
+	Kd                 PlayerF64Map `json:"kd"`
+	Kdiff              PlayerIntMap `json:"kdiff"`
+	Kills              PlayerIntMap `json:"kills"`
+	Kpr                PlayerF64Map `json:"kpr"`
+	MolliesThrown      PlayerIntMap `json:"molliesThrown"`
+	OpeningAttempts    PlayerIntMap `json:"openingAttempts"`
+	OpeningAttemptsPct PlayerF64Map `json:"openingAttemptsPct"`
+	OpeningDeaths      PlayerIntMap `json:"openingDeaths"`
+	OpeningKills       PlayerIntMap `json:"openingKills"`
+	OpeningSuccess     PlayerF64Map `json:"openingSuccess"`
+	Rws                PlayerF64Map `json:"rws"`
+	SmokesThrown       PlayerIntMap `json:"smokesThrown"`
+	TeammatesFlashed   PlayerIntMap `json:"teammatesFlashed"`
+	DeathsTraded       PlayerIntMap `json:"deathsTraded"`
+	TradeKills         PlayerIntMap `json:"tradeKills"`
+	UtilDamage         PlayerIntMap `json:"utilDamage"`
 
 	// Can't name these 2k, 3k etc because identifiers can't start with
 	// numbers in Go
 	// "lul" - Tom
-	K2 StringIntMap `json:"2k"`
-	K3 StringIntMap `json:"3k"`
-	K4 StringIntMap `json:"4k"`
-	K5 StringIntMap `json:"5k"`
+	K2 PlayerIntMap `json:"2k"`
+	K3 PlayerIntMap `json:"3k"`
+	K4 PlayerIntMap `json:"4k"`
+	K5 PlayerIntMap `json:"5k"`
 }
 
 type Output struct {
-	TotalRounds  int               `json:"totalRounds"`
-	Teams        map[string]string `json:"teams"`
-	StartTeams   map[string]string `json:"startTeams"`
-	Rounds       []Round           `json:"rounds"`
-	OpeningKills []OpeningKill     `json:"openingKills"`
+	TotalRounds  int           `json:"totalRounds"`
+	Teams        TeamsMap      `json:"teams"`
+	StartTeams   TeamsMap      `json:"startTeams"`
+	Rounds       []Round       `json:"rounds"`
+	OpeningKills []OpeningKill `json:"openingKills"`
 
 	Meta  MetaData `json:"meta"`
 	Stats Stats    `json:"stats"`
 
-	HeadToHead   map[string]StringIntMap `json:"headToHead"`
+	HeadToHead   map[uint64]PlayerIntMap `json:"headToHead"`
 	KillFeed     KillFeed                `json:"killFeed"`
 	RoundByRound []RoundOverview         `json:"roundByRound"`
 }
@@ -70,8 +75,8 @@ type Output struct {
 type Round struct {
 	Winner          string `json:"winner"`
 	Reason          int    `json:"winReason"`
-	Planter         string `json:"planter"`
-	Defuser         string `json:"defuser"`
+	Planter         uint64 `json:"planter,string"`
+	Defuser         uint64 `json:"defuser,string"`
 	PlanterTime     int64  `json:"planterTime"`
 	DefuserTime     int64  `json:"defuserTime"`
 	BombExplodeTime int64  `json:"bombExplodeTime"`
@@ -79,7 +84,7 @@ type Round struct {
 
 type Kill struct {
 	Weapon            string `json:"weapon"`
-	Assister          string `json:"assister"`
+	Assister          uint64 `json:"assister,string"`
 	Time              int64  `json:"timeMs"`
 	IsHeadshot        bool   `json:"isHeadshot"`
 	AttackerBlind     bool   `json:"attackerBlind"`
@@ -90,7 +95,7 @@ type Kill struct {
 }
 
 type Death struct {
-	KilledBy    string  `json:"killedBy"`
+	KilledBy    uint64  `json:"killedBy,string"`
 	TimeOfDeath float64 `json:"timeOfDeath"`
 }
 
@@ -99,15 +104,15 @@ type RoundEvent struct {
 	Time int64  `json:"time"`
 
 	// kind == kill
-	Killer string `json:"killer,omitempty"`
-	Victim string `json:"victim,omitempty"`
+	Killer uint64 `json:"killer,omitempty,string"`
+	Victim uint64 `json:"victim,omitempty,string"`
 	Kill   *Kill  `json:"kill,omitempty"`
 
 	// kind == plant
-	Planter string `json:"planter,omitempty"`
+	Planter uint64 `json:"planter,omitempty,string"`
 
 	// kind == defuse
-	Defuser string `json:"defuser,omitempty"`
+	Defuser uint64 `json:"defuser,omitempty,string"`
 }
 
 type RoundOverview struct {

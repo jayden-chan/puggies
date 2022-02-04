@@ -70,7 +70,6 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const { map, teamAScore, teamBScore, teamATitle, teamBTitle } = match.meta;
 
   const [dateString] = getDateInfo(match.meta.id);
-
   const teamAPlayers = getPlayers(match, "CT", sortCol, reversed);
   const teamBPlayers = getPlayers(match, "T", sortCol, reversed);
 
@@ -135,7 +134,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
                 data={match}
                 sort={{ key: sortCol, reversed }}
                 colClicked={colHeaderClicked}
-                players={teamAPlayers}
+                playerIds={teamAPlayers}
                 styles={{ overflowX: "auto" }}
               />
               <RoundsVisualization data={match} />
@@ -144,7 +143,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
                 data={match}
                 sort={{ key: sortCol, reversed }}
                 colClicked={colHeaderClicked}
-                players={teamBPlayers}
+                playerIds={teamBPlayers}
                 styles={{ overflowX: "auto" }}
               />
             </Box>
@@ -157,7 +156,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
               data={match}
               sort={{ key: sortCol, reversed }}
               colClicked={colHeaderClicked}
-              players={teamAPlayers}
+              playerIds={teamAPlayers}
             />
             <Box my={5} />
             <StatTable
@@ -165,7 +164,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
               data={match}
               sort={{ key: sortCol, reversed }}
               colClicked={colHeaderClicked}
-              players={teamBPlayers}
+              playerIds={teamBPlayers}
             />
           </TabPanel>
 
@@ -180,6 +179,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
             <Flex justifyContent="center">
               <HeadToHeadTable
                 teams={[teamAPlayers, teamBPlayers]}
+                playerNames={match.meta.playerNames}
                 headToHead={match.headToHead}
               />
             </Flex>
@@ -203,7 +203,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
               data={match}
               sort={{ key: sortCol, reversed }}
               colClicked={colHeaderClicked}
-              players={teamAPlayers}
+              playerIds={teamAPlayers}
               styles={{ mb: 5 }}
             />
             <StatTable
@@ -211,10 +211,13 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
               data={match}
               sort={{ key: sortCol, reversed }}
               colClicked={colHeaderClicked}
-              players={teamBPlayers}
+              playerIds={teamBPlayers}
               styles={{ mb: 12 }}
             />
-            <OpeningDuels data={match.openingKills} />
+            <OpeningDuels
+              data={match.openingKills}
+              playerNames={match.meta.playerNames}
+            />
           </TabPanel>
 
           {/* Rounds page */}
@@ -222,6 +225,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
             <RoundByRoundList
               roundByRound={match.roundByRound}
               startTeams={match.startTeams}
+              playerNames={match.meta.playerNames}
               rounds={match.rounds}
             />
           </TabPanel>

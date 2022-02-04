@@ -4,6 +4,7 @@ import { Match } from "../types";
 export type MatchInfo = {
   id: string;
   map: string;
+  playerNames: { [key: string]: string };
   teamAScore: number;
   teamBScore: number;
   teamATitle: string;

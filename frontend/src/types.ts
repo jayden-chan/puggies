@@ -34,6 +34,7 @@ export type Round = {
 export type HeadToHead = { [key: string]: { [key: string]: number } };
 export type KillFeed = { [key: string]: { [key: string]: Kill } }[];
 export type TeamsMap = { [key: string]: Team };
+export type PlayerNames = { [key: string]: string };
 export type NumericMap = { [key: string]: number };
 
 export type OpeningKill = {

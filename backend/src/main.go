@@ -19,13 +19,13 @@ func checkError(err error) {
 	}
 }
 
-func updateTeams(p *dem.Parser, teams *map[string]string) {
+func updateTeams(p *dem.Parser, teams *TeamsMap) {
 	for _, tPlayer := range (*p).GameState().TeamTerrorists().Members() {
-		(*teams)[tPlayer.Name] = "T"
+		(*teams)[tPlayer.SteamID64] = "T"
 	}
 
 	for _, ctPlayer := range (*p).GameState().TeamCounterTerrorists().Members() {
-		(*teams)[ctPlayer.Name] = "CT"
+		(*teams)[ctPlayer.SteamID64] = "CT"
 	}
 }
 
@@ -45,18 +45,19 @@ func main() {
 	prd := InitPerRoundData()
 	var rounds []Round
 
-	var teams map[string]string
-	var winners [][]string
+	var teams TeamsMap
+	var playerNames NamesMap
+	var winners [][]uint64
 
 	// Only tracked for one round for use in KAST and RWS
-	var bombPlanter string
-	var bombDefuser string
+	var bombPlanter uint64
+	var bombDefuser uint64
 	var bombPlanterTime int64 = 0
 	var bombDefuserTime int64 = 0
 	var roundStartTime int64 = 0
 	var bombExplodeTime int64 = 0
 
-	deathTimes := make(map[string]Death)
+	deathTimes := make(map[uint64]Death)
 
 	var points_shotsFired []r2.Point
 
@@ -70,36 +71,36 @@ func main() {
 		}
 
 		if e.Victim != nil {
-			prd.deaths[len(prd.deaths)-1][e.Victim.Name] += 1
+			prd.deaths[len(prd.deaths)-1][e.Victim.SteamID64] += 1
 		}
 
 		if e.Assister != nil && e.Victim != nil && e.Assister.Team != e.Victim.Team {
 			if e.AssistedFlash {
-				prd.flashAssists[len(prd.flashAssists)-1][e.Assister.Name] += 1
+				prd.flashAssists[len(prd.flashAssists)-1][e.Assister.SteamID64] += 1
 			} else {
-				prd.assists[len(prd.assists)-1][e.Assister.Name] += 1
+				prd.assists[len(prd.assists)-1][e.Assister.SteamID64] += 1
 			}
 		}
 
 		if e.Killer != nil && e.Victim != nil && e.Killer.Team != e.Victim.Team {
-			prd.kills[len(prd.kills)-1][e.Killer.Name] += 1
+			prd.kills[len(prd.kills)-1][e.Killer.SteamID64] += 1
 
 			if e.IsHeadshot {
-				prd.headshots[len(prd.headshots)-1][e.Killer.Name] += 1
+				prd.headshots[len(prd.headshots)-1][e.Killer.SteamID64] += 1
 			}
 
-			deathTimes[e.Victim.Name] = Death{
-				KilledBy:    e.Killer.Name,
+			deathTimes[e.Victim.SteamID64] = Death{
+				KilledBy:    e.Killer.SteamID64,
 				TimeOfDeath: p.CurrentTime().Seconds(),
 			}
 
-			if prd.headToHead[len(prd.headToHead)-1][e.Killer.Name] == nil {
-				prd.headToHead[len(prd.headToHead)-1][e.Killer.Name] = make(map[string]Kill)
+			if prd.headToHead[len(prd.headToHead)-1][e.Killer.SteamID64] == nil {
+				prd.headToHead[len(prd.headToHead)-1][e.Killer.SteamID64] = make(map[uint64]Kill)
 			}
 
-			assister := ""
+			var assister uint64 = 0
 			if e.Assister != nil {
-				assister = e.Assister.Name
+				assister = e.Assister.SteamID64
 			}
 
 			killInfo := Kill{
@@ -117,20 +118,20 @@ func main() {
 			if prd.openings[len(prd.openings)-1] == nil {
 				prd.openings[len(prd.openings)-1] = &OpeningKill{
 					Kill:     killInfo,
-					Attacker: e.Killer.Name,
-					Victim:   e.Victim.Name,
+					Attacker: e.Killer.SteamID64,
+					Victim:   e.Victim.SteamID64,
 				}
 			}
 
-			prd.headToHead[len(prd.headToHead)-1][e.Killer.Name][e.Victim.Name] = killInfo
+			prd.headToHead[len(prd.headToHead)-1][e.Killer.SteamID64][e.Victim.SteamID64] = killInfo
 
 			// check for trade kills
 			for deadPlayer := range prd.deaths[len(prd.deaths)-1] {
-				if deathTimes[deadPlayer].KilledBy == e.Victim.Name {
+				if deathTimes[deadPlayer].KilledBy == e.Victim.SteamID64 {
 					// Using 5 seconds as the trade window for now
 					if p.CurrentTime().Seconds()-deathTimes[deadPlayer].TimeOfDeath <= 5 {
 						prd.deathsTraded[len(prd.deathsTraded)-1][deadPlayer] += 1
-						prd.tradeKills[len(prd.tradeKills)-1][e.Killer.Name] += 1
+						prd.tradeKills[len(prd.tradeKills)-1][e.Killer.SteamID64] += 1
 					}
 
 				}
@@ -148,20 +149,20 @@ func main() {
 		// https://counterstrike.fandom.com/wiki/Flashbang
 		if blindMs > 1950 {
 			if e.Attacker.Team == e.Player.Team {
-				prd.teammatesFlashed[len(prd.teammatesFlashed)-1][e.Attacker.Name] += 1
+				prd.teammatesFlashed[len(prd.teammatesFlashed)-1][e.Attacker.SteamID64] += 1
 			} else {
-				prd.enemiesFlashed[len(prd.enemiesFlashed)-1][e.Attacker.Name] += 1
+				prd.enemiesFlashed[len(prd.enemiesFlashed)-1][e.Attacker.SteamID64] += 1
 			}
 		}
 	})
 
 	p.RegisterEventHandler(func(e events.BombDefused) {
-		bombDefuser = e.Player.Name
+		bombDefuser = e.Player.SteamID64
 		bombDefuserTime = p.CurrentTime().Milliseconds() - roundStartTime
 	})
 
 	p.RegisterEventHandler(func(e events.BombPlanted) {
-		bombPlanter = e.Player.Name
+		bombPlanter = e.Player.SteamID64
 		bombPlanterTime = p.CurrentTime().Milliseconds() - roundStartTime
 	})
 
@@ -175,19 +176,19 @@ func main() {
 		}
 
 		if e.Weapon.Type == common.EqFlash {
-			prd.flashesThrown[len(prd.flashesThrown)-1][e.Shooter.Name] += 1
+			prd.flashesThrown[len(prd.flashesThrown)-1][e.Shooter.SteamID64] += 1
 		}
 
 		if e.Weapon.Type == common.EqHE {
-			prd.HEsThrown[len(prd.HEsThrown)-1][e.Shooter.Name] += 1
+			prd.HEsThrown[len(prd.HEsThrown)-1][e.Shooter.SteamID64] += 1
 		}
 
 		if e.Weapon.Type == common.EqMolotov || e.Weapon.Type == common.EqIncendiary {
-			prd.molliesThrown[len(prd.molliesThrown)-1][e.Shooter.Name] += 1
+			prd.molliesThrown[len(prd.molliesThrown)-1][e.Shooter.SteamID64] += 1
 		}
 
 		if e.Weapon.Type == common.EqSmoke {
-			prd.smokesThrown[len(prd.smokesThrown)-1][e.Shooter.Name] += 1
+			prd.smokesThrown[len(prd.smokesThrown)-1][e.Shooter.SteamID64] += 1
 		}
 
 		x, y := mapMetadata.TranslateScale(e.Shooter.Position().X, e.Shooter.Position().Y)
@@ -203,14 +204,14 @@ func main() {
 		}
 
 		if e.Attacker != nil && e.Player != nil && e.Attacker.Team != e.Player.Team {
-			prd.damage[len(prd.damage)-1][e.Attacker.Name] += e.HealthDamageTaken
+			prd.damage[len(prd.damage)-1][e.Attacker.SteamID64] += e.HealthDamageTaken
 
 			// fmt.Fprintf(os.Stderr, "%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
 
 			if e.Weapon.Type == common.EqHE ||
 				e.Weapon.Type == common.EqMolotov ||
 				e.Weapon.Type == common.EqIncendiary {
-				prd.utilDamage[len(prd.utilDamage)-1][e.Attacker.Name] += e.HealthDamageTaken
+				prd.utilDamage[len(prd.utilDamage)-1][e.Attacker.SteamID64] += e.HealthDamageTaken
 			}
 		}
 	})
@@ -219,15 +220,23 @@ func main() {
 	p.RegisterEventHandler(func(e events.RoundStart) {
 		prd.NewRound()
 
-		bombDefuser = ""
-		bombPlanter = ""
+		bombDefuser = 0
+		bombPlanter = 0
 		roundStartTime = p.CurrentTime().Milliseconds()
 		bombExplodeTime = 0
 		bombPlanterTime = 0
 		bombDefuserTime = 0
 
 		if teams == nil {
-			teams = make(map[string]string)
+			teams = make(TeamsMap)
+		}
+
+		if playerNames == nil {
+			playerNames = make(NamesMap)
+		}
+
+		for _, p := range p.GameState().Participants().Playing() {
+			playerNames[p.SteamID64] = p.Name
 		}
 
 		updateTeams(&p, &teams)
@@ -260,7 +269,7 @@ func main() {
 			BombExplodeTime: bombExplodeTime,
 		})
 
-		var roundWinners []string
+		var roundWinners []uint64
 		for player := range teams {
 			if teams[player] == winner {
 				roundWinners = append(roundWinners, player)
@@ -372,12 +381,13 @@ func main() {
 		OpeningKills: totals.openingKills,
 
 		Meta: MetaData{
-			Map:        header.MapName,
-			Id:         GetDemoFileName(os.Args[1]),
-			TeamAScore: teamAScore,
-			TeamBScore: teamBScore,
-			TeamATitle: "team_" + GetPlayers(teams, hltv, "CT")[0],
-			TeamBTitle: "team_" + GetPlayers(teams, hltv, "T")[0],
+			Map:         header.MapName,
+			Id:          GetDemoFileName(os.Args[1]),
+			PlayerNames: playerNames,
+			TeamAScore:  teamAScore,
+			TeamBScore:  teamBScore,
+			TeamATitle:  "team_" + GetPlayers(teams, playerNames, hltv, "CT")[0],
+			TeamBTitle:  "team_" + GetPlayers(teams, playerNames, hltv, "T")[0],
 		},
 	})
 

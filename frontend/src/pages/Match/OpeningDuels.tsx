@@ -11,13 +11,16 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { msToRoundTime } from "../../data";
-import { OpeningKill } from "../../types";
+import { OpeningKill, PlayerNames } from "../../types";
 
 const WeaponImg = (props: { name: string } & ImageProps) => (
   <Image src={`/img/weapons/${props.name}.png`} h={7} />
 );
 
-export const OpeningDuels = (props: { data: OpeningKill[] }) => {
+export const OpeningDuels = (props: {
+  data: OpeningKill[];
+  playerNames: PlayerNames;
+}) => {
   return (
     <Flex flexDir="column">
       <Table variant="simple" size="sm">
@@ -35,11 +38,11 @@ export const OpeningDuels = (props: { data: OpeningKill[] }) => {
           {props.data.map((k, i) => (
             <Tr key={i}>
               <Td>{i + 1}</Td>
-              <Td>{k.attacker}</Td>
+              <Td>{props.playerNames[k.attacker]}</Td>
               <Td>
                 <WeaponImg name={k.kill.weapon} />
               </Td>
-              <Td>{k.victim}</Td>
+              <Td>{props.playerNames[k.victim]}</Td>
               <Td>{msToRoundTime(k.kill.timeMs)}</Td>
             </Tr>
           ))}

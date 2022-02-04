@@ -7,7 +7,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import React from "react";
-import { HeadToHead } from "../../types";
+import { HeadToHead, PlayerNames } from "../../types";
 
 const headToHeadColor = (diff: number): string => {
   if (diff === 0) {
@@ -50,6 +50,7 @@ const KillCountCircle = (props: FlexProps) => (
 
 export const HeadToHeadTable = (props: {
   headToHead: HeadToHead;
+  playerNames: PlayerNames;
   teams: [string[], string[]];
 }) => {
   const { colorMode } = useColorMode();
@@ -65,7 +66,7 @@ export const HeadToHeadTable = (props: {
       </GridItem>
       {props.teams[0].map((p) => (
         <Flex alignItems="center" justifyContent="center" key={p} mb={3}>
-          {p}
+          {props.playerNames[p]}
         </Flex>
       ))}
 
@@ -79,7 +80,7 @@ export const HeadToHeadTable = (props: {
               mr={3}
               key={rowPlayer}
             >
-              {rowPlayer}
+              {props.playerNames[rowPlayer]}
             </Flex>,
             props.teams[0].map((columnPlayer) => {
               const colKills = props.headToHead[columnPlayer][rowPlayer] ?? 0;

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func MapValTotal(m *StringIntMap) int {
+func MapValTotal(m *PlayerIntMap) int {
 	sum := 0
 	for _, val := range *m {
 		sum += val
@@ -13,8 +13,8 @@ func MapValTotal(m *StringIntMap) int {
 	return sum
 }
 
-func ArrayMapTotal(a *[]StringIntMap) StringIntMap {
-	ret := make(StringIntMap)
+func ArrayMapTotal(a *[]PlayerIntMap) PlayerIntMap {
+	ret := make(PlayerIntMap)
 	for _, m := range *a {
 		for k, v := range m {
 			ret[k] += v
@@ -23,12 +23,12 @@ func ArrayMapTotal(a *[]StringIntMap) StringIntMap {
 	return ret
 }
 
-func HeadToHeadTotal(h *[]map[string]map[string]Kill) map[string]StringIntMap {
-	ret := make(map[string]StringIntMap)
+func HeadToHeadTotal(h *[]map[uint64]map[uint64]Kill) map[uint64]PlayerIntMap {
+	ret := make(map[uint64]PlayerIntMap)
 	for _, m := range *h {
 		for killer, victims := range m {
 			if ret[killer] == nil {
-				ret[killer] = make(StringIntMap)
+				ret[killer] = make(PlayerIntMap)
 			}
 
 			for victim := range victims {
@@ -59,17 +59,22 @@ func ProcessWeaponName(name string) string {
 	return ret
 }
 
-func GetPlayers(teams map[string]string, hltv StringF64Map, side string) []string {
+func GetPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side string) []string {
+	ids := make([]uint64, 0)
 	ret := make([]string, 0)
 	for player, team := range teams {
 		if team == side {
-			ret = append(ret, player)
+			ids = append(ids, player)
 		}
 	}
 
-	sort.Slice(ret, func(i, j int) bool {
-		return hltv[ret[j]] < hltv[ret[i]]
+	sort.Slice(ids, func(i, j int) bool {
+		return hltv[ids[j]] < hltv[ids[i]]
 	})
+
+	for _, id := range ids {
+		ret = append(ret, playerNames[id])
+	}
 
 	return ret
 }

@@ -11,7 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { Match, Stats } from "../../types";
+import { Match, PlayerNames, Stats } from "../../types";
 
 export type TableSchema = {
   key: keyof Stats;
@@ -67,7 +67,7 @@ export const scoreTableSchema: TableSchema = [
 
 export const StatTable = (props: {
   data: Match;
-  players: string[];
+  playerIds: string[];
   schema: TableSchema;
   sort: { key: keyof Stats; reversed: boolean };
   colClicked?: (key: string) => void;
@@ -118,10 +118,10 @@ export const StatTable = (props: {
         </Thead>
 
         <Tbody>
-          {props.players.map((player) => (
+          {props.playerIds.map((player) => (
             <Tr key={player}>
               <Td minW={["40vw", null, "160px"]} key={`${player}name`}>
-                {player}
+                {props.data.meta.playerNames[player]}
               </Td>
               {props.schema.map((col) => {
                 return (

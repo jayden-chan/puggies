@@ -155,12 +155,19 @@ export const PlayerInfo = (props: {
   ];
 }) => {
   const [selectedPlayer, setSelectedPlayer] = useState<string | undefined>();
+  const {
+    match: {
+      meta: { playerNames },
+    },
+  } = props;
 
   return (
     <Box>
       <Menu>
         <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          {selectedPlayer !== undefined ? selectedPlayer : "Select player"}
+          {selectedPlayer !== undefined
+            ? playerNames[selectedPlayer]
+            : "Select player"}
         </MenuButton>
         <MenuList>
           <MenuGroup title={props.teams[0].title}>
@@ -170,7 +177,7 @@ export const PlayerInfo = (props: {
                 value={player}
                 onClick={() => setSelectedPlayer(player)}
               >
-                {player}
+                {playerNames[player]}
               </MenuItem>
             ))}
           </MenuGroup>
@@ -182,7 +189,7 @@ export const PlayerInfo = (props: {
                 value={player}
                 onClick={() => setSelectedPlayer(player)}
               >
-                {player}
+                {playerNames[player]}
               </MenuItem>
             ))}
           </MenuGroup>
