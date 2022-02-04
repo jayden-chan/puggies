@@ -120,7 +120,7 @@ export const StatTable = (props: {
         <Tbody>
           {props.players.map((player) => (
             <Tr key={player}>
-              <Td minW={["40vw", null, null, "160px"]} key={`${player}name`}>
+              <Td minW={["40vw", null, "160px"]} key={`${player}name`}>
                 {player}
               </Td>
               {props.schema.map((col) => {

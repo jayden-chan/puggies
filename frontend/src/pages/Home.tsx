@@ -26,7 +26,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
         p={5}
         my={5}
         borderRadius={10}
-        flexDir={["column", null, null, "row"]}
+        flexDir={["column", null, "row"]}
         style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
         alignItems="start"
       >
@@ -34,7 +34,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
           src={`/img/maps/${map}.jpg`}
           maxW="180px"
           mr={5}
-          mb={[3, null, null, 0]}
+          mb={[3, null, 0]}
         />
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
