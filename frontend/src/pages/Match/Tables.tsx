@@ -42,7 +42,7 @@ export const openingsTableSchema: TableSchema = [
   { key: "openingDeaths", title: "FD", label: "First Deaths" },
   { key: "openingAttempts", title: "Opening Attempts" },
   { key: "openingSuccess", title: "Success Rate", label: "% of opening duels resulting in a kill", pct: true },
-  { key: "openingAttemptsPct", title: "Opening Involvement %", label: "% of rounds where the player was involved in an opening duel", pct: true },
+  { key: "openingAttemptsPct", title: "Opening Involvement", label: "% of rounds where the player was involved in an opening duel", pct: true },
 ];
 
 // prettier-ignore
@@ -74,7 +74,7 @@ export const StatTable = (props: {
   styles?: BoxProps;
 }) => {
   return (
-    <Box {...props.styles} overflowX="auto">
+    <Box {...props.styles}>
       <Table variant="simple" size="sm">
         <Thead>
           <Tr>

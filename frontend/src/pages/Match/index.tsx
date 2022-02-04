@@ -136,6 +136,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
                 sort={{ key: sortCol, reversed }}
                 colClicked={colHeaderClicked}
                 players={teamAPlayers}
+                styles={{ overflowX: "auto" }}
               />
               <RoundsVisualization data={match} />
               <StatTable
@@ -144,6 +145,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
                 sort={{ key: sortCol, reversed }}
                 colClicked={colHeaderClicked}
                 players={teamBPlayers}
+                styles={{ overflowX: "auto" }}
               />
             </Box>
           </TabPanel>
