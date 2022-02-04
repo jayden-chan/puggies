@@ -8,8 +8,9 @@ import {
   LinkOverlay,
   VStack,
   Text,
+  Skeleton,
 } from "@chakra-ui/react";
-import * as React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { MatchInfo } from "../api";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
@@ -19,6 +20,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
   const { id, map, teamAScore, teamBScore, teamATitle, teamBTitle } =
     props.match;
   const [dateString] = getDateInfo(id);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <LinkBox>
@@ -30,12 +32,13 @@ const MatchCard = (props: { match: MatchInfo }) => {
         style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
         alignItems="start"
       >
-        <Image
-          src={`/img/maps/${map}.jpg`}
-          maxW="180px"
-          mr={5}
-          mb={[3, null, 0]}
-        />
+        <Skeleton isLoaded={imageLoaded} mr={5} mb={[3, null, 0]}>
+          <Image
+            src={`/img/maps/${map}.jpg`}
+            onLoad={() => setImageLoaded(true)}
+            w="180px"
+          />
+        </Skeleton>
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
             <LinkOverlay as={Link} to={`/match/${id}`}>
