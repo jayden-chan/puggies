@@ -104,13 +104,15 @@ export type Match = {
 };
 
 export type Stats = {
+  HEsThrown: NumericMap;
   adr: NumericMap;
   assists: NumericMap;
   deaths: NumericMap;
+  deathsTraded: NumericMap;
+  efPerFlash: NumericMap;
   enemiesFlashed: NumericMap;
   flashAssists: NumericMap;
   flashesThrown: NumericMap;
-  HEsThrown: NumericMap;
   headshotPct: NumericMap;
   hltv: NumericMap;
   impact: NumericMap;
@@ -120,12 +122,16 @@ export type Stats = {
   kills: NumericMap;
   kpr: NumericMap;
   molliesThrown: NumericMap;
+  openingAttempts: NumericMap;
+  openingAttemptsPct: NumericMap;
+  openingDeaths: NumericMap;
+  openingKills: NumericMap;
+  openingSuccess: NumericMap;
   rws: NumericMap;
   smokesThrown: NumericMap;
   teammatesFlashed: NumericMap;
-  timesTraded: NumericMap;
+  tradeKills: NumericMap;
   utilDamage: NumericMap;
-  efPerFlash: NumericMap;
 
   "2k": NumericMap;
   "3k": NumericMap;

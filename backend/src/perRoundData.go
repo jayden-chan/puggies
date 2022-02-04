@@ -10,7 +10,8 @@ type PerRoundData struct {
 	kills            []StringIntMap
 	deaths           []StringIntMap
 	assists          []StringIntMap
-	timesTraded      []StringIntMap
+	deathsTraded     []StringIntMap
+	tradeKills       []StringIntMap
 	headshots        []StringIntMap
 	damage           []StringIntMap
 	flashAssists     []StringIntMap
@@ -31,7 +32,8 @@ type Totals struct {
 	kills            StringIntMap
 	deaths           StringIntMap
 	assists          StringIntMap
-	timesTraded      StringIntMap
+	deathsTraded     StringIntMap
+	tradeKills       StringIntMap
 	headshots        StringIntMap
 	damage           StringIntMap
 	flashAssists     StringIntMap
@@ -50,7 +52,8 @@ func InitPerRoundData() PerRoundData {
 		kills:            nil,
 		deaths:           nil,
 		assists:          nil,
-		timesTraded:      nil,
+		deathsTraded:     nil,
+		tradeKills:       nil,
 		headshots:        nil,
 		damage:           nil,
 		flashAssists:     nil,
@@ -70,7 +73,8 @@ func (prd *PerRoundData) NewRound() {
 	prd.kills = append(prd.kills, make(StringIntMap))
 	prd.deaths = append(prd.deaths, make(StringIntMap))
 	prd.assists = append(prd.assists, make(StringIntMap))
-	prd.timesTraded = append(prd.timesTraded, make(StringIntMap))
+	prd.deathsTraded = append(prd.deathsTraded, make(StringIntMap))
+	prd.tradeKills = append(prd.tradeKills, make(StringIntMap))
 	prd.headshots = append(prd.headshots, make(StringIntMap))
 	prd.damage = append(prd.damage, make(StringIntMap))
 	prd.flashAssists = append(prd.flashAssists, make(StringIntMap))
@@ -92,7 +96,8 @@ func (prd *PerRoundData) CropToRealRounds(startRound int) {
 
 	prd.deaths = prd.deaths[startRound+1:]
 	prd.assists = prd.assists[startRound+1:]
-	prd.timesTraded = prd.timesTraded[startRound+1:]
+	prd.deathsTraded = prd.deathsTraded[startRound+1:]
+	prd.tradeKills = prd.tradeKills[startRound+1:]
 	prd.headshots = prd.headshots[startRound+1:]
 	prd.damage = prd.damage[startRound+1:]
 	prd.flashAssists = prd.flashAssists[startRound+1:]
@@ -114,7 +119,8 @@ func (prd *PerRoundData) ComputeTotals() Totals {
 		kills:            ArrayMapTotal(&prd.kills),
 		deaths:           ArrayMapTotal(&prd.deaths),
 		assists:          ArrayMapTotal(&prd.assists),
-		timesTraded:      ArrayMapTotal(&prd.timesTraded),
+		deathsTraded:     ArrayMapTotal(&prd.deathsTraded),
+		tradeKills:       ArrayMapTotal(&prd.tradeKills),
 		headshots:        ArrayMapTotal(&prd.headshots),
 		damage:           ArrayMapTotal(&prd.damage),
 		flashAssists:     ArrayMapTotal(&prd.flashAssists),

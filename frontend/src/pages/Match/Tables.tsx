@@ -1,6 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
   Box,
+  BoxProps,
   Table,
   Tbody,
   Td,
@@ -20,11 +21,12 @@ export type TableSchema = {
   clickable?: boolean;
 }[];
 
+// prettier-ignore
 export const utilTableSchema: TableSchema = [
-  { key: "smokesThrown", title: "Smokes", label: "# of smokes thrown" },
-  { key: "molliesThrown", title: "Molotovs", label: "# of molotovs thrown" },
-  { key: "HEsThrown", title: "HE", label: "# of HE grenades thrown" },
-  { key: "flashesThrown", title: "Flashes", label: "# of flashes thrown" },
+  { key: "smokesThrown", title: "Smokes", label: "Smokes thrown" },
+  { key: "molliesThrown", title: "Molotovs", label: "Molotovs thrown" },
+  { key: "HEsThrown", title: "HE", label: "HE grenades thrown" },
+  { key: "flashesThrown", title: "Flashes", label: "Flashes thrown" },
   { key: "flashAssists", title: "FA", label: "Flash Assists" },
   { key: "utilDamage", title: "UD", label: "Utility Damage" },
   { key: "enemiesFlashed", title: "Enemies Blinded" },
@@ -33,20 +35,30 @@ export const utilTableSchema: TableSchema = [
 ];
 
 // prettier-ignore
+export const openingsTableSchema: TableSchema = [
+  { key: "tradeKills", title: "TK", label: "Trade kills" },
+  { key: "deathsTraded", title: "DT", label: "Deaths traded" },
+  { key: "openingKills", title: "FK", label: "First Kills" },
+  { key: "openingDeaths", title: "FD", label: "First Deaths" },
+  { key: "openingAttempts", title: "Opening Attempts" },
+  { key: "openingSuccess", title: "Success Rate", label: "% of opening duels resulting in a kill", pct: true },
+  { key: "openingAttemptsPct", title: "Opening Involvement %", label: "% of rounds where the player was involved in an opening duel", pct: true },
+];
+
+// prettier-ignore
 export const scoreTableSchema: TableSchema = [
   { key: "kills", title: "K", label: "Kills" },
   { key: "assists", title: "A", label: "Assists" },
   { key: "deaths", title: "D", label: "Deaths" },
-  { key: "timesTraded", title: "T", label: "# of times traded" },
   { key: "kd", title: "K/D", label: "Kill/death ratio" },
   { key: "kdiff", title: "K-D", label: "Kill-death difference" },
   { key: "kpr", title: "K/R", label: "Kills per round" },
   { key: "adr", title: "ADR", label: "Average damage per round" },
   { key: "headshotPct", title: "HS %", label: "Headshot kill percentage", pct: true },
-  { key: "2k", title: "2K", label: "# of rounds with 2 kills" },
-  { key: "3k", title: "3K", label: "# of rounds with 3 kills" },
-  { key: "4k", title: "4K", label: "# of rounds with 4 kills" },
-  { key: "5k", title: "5K", label: "# of rounds with 5 kills" },
+  { key: "2k", title: "2K", label: "Rounds with 2 kills" },
+  { key: "3k", title: "3K", label: "Rounds with 3 kills" },
+  { key: "4k", title: "4K", label: "Rounds with 4 kills" },
+  { key: "5k", title: "5K", label: "Rounds with 5 kills" },
   { key: "hltv", title: "HLTV 2.0", label: "Approximate HLTV 2.0 rating" },
   { key: "impact", title: "Impact", label: "Approximate HLTV Impact rating" },
   { key: "kast", title: "KAST", label: "% of rounds with kill/assist/survived/traded", pct: true },
@@ -59,9 +71,10 @@ export const StatTable = (props: {
   schema: TableSchema;
   sort: { key: keyof Stats; reversed: boolean };
   colClicked?: (key: string) => void;
+  styles?: BoxProps;
 }) => {
   return (
-    <Box overflowX="auto">
+    <Box {...props.styles} overflowX="auto">
       <Table variant="simple" size="sm">
         <Thead>
           <Tr>
@@ -107,7 +120,7 @@ export const StatTable = (props: {
         <Tbody>
           {props.players.map((player) => (
             <Tr key={player}>
-              <Td minW="150px" key={`${player}name`}>
+              <Td w="200px" key={`${player}name`}>
                 {player}
               </Td>
               {props.schema.map((col) => {

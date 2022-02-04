@@ -14,28 +14,34 @@ type MetaData struct {
 }
 
 type Stats struct {
-	Adr              StringF64Map `json:"adr"`
-	Assists          StringIntMap `json:"assists"`
-	Deaths           StringIntMap `json:"deaths"`
-	EnemiesFlashed   StringIntMap `json:"enemiesFlashed"`
-	FlashAssists     StringIntMap `json:"flashAssists"`
-	FlashesThrown    StringIntMap `json:"flashesThrown"`
-	HEsThrown        StringIntMap `json:"HEsThrown"`
-	HeadshotPct      StringF64Map `json:"headshotPct"`
-	Hltv             StringF64Map `json:"hltv"`
-	Impact           StringF64Map `json:"impact"`
-	Kast             StringF64Map `json:"kast"`
-	Kd               StringF64Map `json:"kd"`
-	Kdiff            StringIntMap `json:"kdiff"`
-	Kills            StringIntMap `json:"kills"`
-	Kpr              StringF64Map `json:"kpr"`
-	MolliesThrown    StringIntMap `json:"molliesThrown"`
-	Rws              StringF64Map `json:"rws"`
-	SmokesThrown     StringIntMap `json:"smokesThrown"`
-	TeammatesFlashed StringIntMap `json:"teammatesFlashed"`
-	Trades           StringIntMap `json:"timesTraded"`
-	UtilDamage       StringIntMap `json:"utilDamage"`
-	EFPerFlash       StringF64Map `json:"efPerFlash"`
+	Adr                StringF64Map `json:"adr"`
+	Assists            StringIntMap `json:"assists"`
+	Deaths             StringIntMap `json:"deaths"`
+	EFPerFlash         StringF64Map `json:"efPerFlash"`
+	EnemiesFlashed     StringIntMap `json:"enemiesFlashed"`
+	FlashAssists       StringIntMap `json:"flashAssists"`
+	FlashesThrown      StringIntMap `json:"flashesThrown"`
+	HEsThrown          StringIntMap `json:"HEsThrown"`
+	HeadshotPct        StringF64Map `json:"headshotPct"`
+	Hltv               StringF64Map `json:"hltv"`
+	Impact             StringF64Map `json:"impact"`
+	Kast               StringF64Map `json:"kast"`
+	Kd                 StringF64Map `json:"kd"`
+	Kdiff              StringIntMap `json:"kdiff"`
+	Kills              StringIntMap `json:"kills"`
+	Kpr                StringF64Map `json:"kpr"`
+	MolliesThrown      StringIntMap `json:"molliesThrown"`
+	OpeningAttempts    StringIntMap `json:"openingAttempts"`
+	OpeningAttemptsPct StringF64Map `json:"openingAttemptsPct"`
+	OpeningDeaths      StringIntMap `json:"openingDeaths"`
+	OpeningKills       StringIntMap `json:"openingKills"`
+	OpeningSuccess     StringF64Map `json:"openingSuccess"`
+	Rws                StringF64Map `json:"rws"`
+	SmokesThrown       StringIntMap `json:"smokesThrown"`
+	TeammatesFlashed   StringIntMap `json:"teammatesFlashed"`
+	DeathsTraded       StringIntMap `json:"deathsTraded"`
+	TradeKills         StringIntMap `json:"tradeKills"`
+	UtilDamage         StringIntMap `json:"utilDamage"`
 
 	// Can't name these 2k, 3k etc because identifiers can't start with
 	// numbers in Go

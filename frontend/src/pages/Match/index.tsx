@@ -29,7 +29,12 @@ import { OpeningDuels } from "./OpeningDuels";
 import { PlayerInfo } from "./PlayerInfo";
 import { RoundByRoundList } from "./RoundByRound";
 import { RoundsVisualization } from "./RoundsVisualization";
-import { scoreTableSchema, StatTable, utilTableSchema } from "./Tables";
+import {
+  openingsTableSchema,
+  scoreTableSchema,
+  StatTable,
+  utilTableSchema,
+} from "./Tables";
 
 export const getRoundIcon = (round: Round) => {
   switch (round.winReason) {
@@ -191,6 +196,22 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
 
           {/* Opening duels page */}
           <TabPanel>
+            <StatTable
+              schema={openingsTableSchema}
+              data={match}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
+              players={teamAPlayers}
+              styles={{ mb: 5 }}
+            />
+            <StatTable
+              schema={openingsTableSchema}
+              data={match}
+              sort={{ key: sortCol, reversed }}
+              colClicked={colHeaderClicked}
+              players={teamBPlayers}
+              styles={{ mb: 12 }}
+            />
             <OpeningDuels data={match.openingKills} />
           </TabPanel>
 

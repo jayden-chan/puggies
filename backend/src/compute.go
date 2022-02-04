@@ -92,7 +92,7 @@ func ComputeKAST(
 	kills []StringIntMap,
 	assists []StringIntMap,
 	deaths []StringIntMap,
-	timesTraded []StringIntMap,
+	deathsTraded []StringIntMap,
 ) StringF64Map {
 	kast := make(StringF64Map)
 	for i := 0; i < totalRounds; i++ {
@@ -101,7 +101,7 @@ func ComputeKAST(
 			if kills[i][p] != 0 ||
 				assists[i][p] != 0 ||
 				deaths[i][p] == 0 ||
-				timesTraded[i][p] != 0 {
+				deathsTraded[i][p] != 0 {
 				kast[p] += 1 / float64(totalRounds)
 			}
 		}
@@ -204,6 +204,38 @@ func ComputeStartSides(teams map[string]string, rounds []Round) map[string]strin
 	}
 
 	return ret
+}
+
+func ComputeOpenings(openingKills []OpeningKill) (
+	StringIntMap,
+	StringIntMap,
+	StringIntMap,
+	StringF64Map,
+	StringF64Map,
+) {
+	numRounds := float64(len(openingKills))
+
+	oKills := make(StringIntMap)
+	oDeaths := make(StringIntMap)
+	oAttempts := make(StringIntMap)
+	oAttemptsPct := make(StringF64Map)
+	oSuccess := make(StringF64Map)
+
+	for _, openingKill := range openingKills {
+		oKills[openingKill.Attacker] += 1
+		oDeaths[openingKill.Victim] += 1
+		oAttempts[openingKill.Attacker] += 1
+		oAttempts[openingKill.Victim] += 1
+		oAttemptsPct[openingKill.Attacker] += 1.0 / numRounds
+		oAttemptsPct[openingKill.Victim] += 1.0 / numRounds
+	}
+
+	for player, v := range oAttemptsPct {
+		oAttemptsPct[player] = math.Round(v * 100)
+		oSuccess[player] = math.Round((float64(oKills[player]) / float64(oAttempts[player])) * 100)
+	}
+
+	return oKills, oDeaths, oAttempts, oAttemptsPct, oSuccess
 }
 
 func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {

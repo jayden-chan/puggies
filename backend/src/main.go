@@ -125,11 +125,12 @@ func main() {
 			prd.headToHead[len(prd.headToHead)-1][e.Killer.Name][e.Victim.Name] = killInfo
 
 			// check for trade kills
-			for player := range prd.deaths[len(prd.deaths)-1] {
-				if deathTimes[player].KilledBy == e.Victim.Name {
+			for deadPlayer := range prd.deaths[len(prd.deaths)-1] {
+				if deathTimes[deadPlayer].KilledBy == e.Victim.Name {
 					// Using 5 seconds as the trade window for now
-					if p.CurrentTime().Seconds()-deathTimes[player].TimeOfDeath <= 5 {
-						prd.timesTraded[len(prd.timesTraded)-1][player] += 1
+					if p.CurrentTime().Seconds()-deathTimes[deadPlayer].TimeOfDeath <= 5 {
+						prd.deathsTraded[len(prd.deathsTraded)-1][deadPlayer] += 1
+						prd.tradeKills[len(prd.tradeKills)-1][e.Killer.Name] += 1
 					}
 
 				}
@@ -304,10 +305,11 @@ func main() {
 		totals.deaths,
 	)
 
-	kast := ComputeKAST(totalRounds, teams, prd.kills, prd.assists, prd.deaths, prd.timesTraded)
+	kast := ComputeKAST(totalRounds, teams, prd.kills, prd.assists, prd.deaths, prd.deathsTraded)
 	adr := ComputeADR(totalRounds, totals.damage)
 	impact := ComputImpact(totalRounds, teams, totals.assists, kpr)
 	k2, k3, k4, k5 := ComputMultikills(prd.kills)
+	oKills, oDeaths, oAttempts, oAttemptsPct, oSuccess := ComputeOpenings(totals.openingKills)
 
 	hltv := ComputeHLTV(
 		totalRounds,
@@ -329,28 +331,34 @@ func main() {
 		Rounds:      rounds,
 
 		Stats: Stats{
-			Adr:              adr,
-			Assists:          totals.assists,
-			Deaths:           totals.deaths,
-			EnemiesFlashed:   totals.enemiesFlashed,
-			FlashAssists:     totals.flashAssists,
-			FlashesThrown:    totals.flashesThrown,
-			HEsThrown:        totals.hEsThrown,
-			HeadshotPct:      headshotPct,
-			Hltv:             hltv,
-			Impact:           impact,
-			Kast:             kast,
-			Kd:               kd,
-			Kdiff:            kdiff,
-			Kills:            totals.kills,
-			Kpr:              kpr,
-			MolliesThrown:    totals.molliesThrown,
-			Rws:              ComputeRWS(winners, rounds, prd.damage),
-			SmokesThrown:     totals.smokesThrown,
-			TeammatesFlashed: totals.teammatesFlashed,
-			Trades:           totals.timesTraded,
-			UtilDamage:       totals.utilDamage,
-			EFPerFlash:       ComputeEFPerFlash(totals.flashesThrown, totals.enemiesFlashed),
+			Adr:                adr,
+			Assists:            totals.assists,
+			Deaths:             totals.deaths,
+			EFPerFlash:         ComputeEFPerFlash(totals.flashesThrown, totals.enemiesFlashed),
+			EnemiesFlashed:     totals.enemiesFlashed,
+			FlashAssists:       totals.flashAssists,
+			FlashesThrown:      totals.flashesThrown,
+			HEsThrown:          totals.hEsThrown,
+			HeadshotPct:        headshotPct,
+			Hltv:               hltv,
+			Impact:             impact,
+			Kast:               kast,
+			Kd:                 kd,
+			Kdiff:              kdiff,
+			Kills:              totals.kills,
+			Kpr:                kpr,
+			MolliesThrown:      totals.molliesThrown,
+			OpeningAttempts:    oAttempts,
+			OpeningAttemptsPct: oAttemptsPct,
+			OpeningDeaths:      oDeaths,
+			OpeningKills:       oKills,
+			OpeningSuccess:     oSuccess,
+			Rws:                ComputeRWS(winners, rounds, prd.damage),
+			SmokesThrown:       totals.smokesThrown,
+			TeammatesFlashed:   totals.teammatesFlashed,
+			DeathsTraded:       totals.deathsTraded,
+			TradeKills:         totals.tradeKills,
+			UtilDamage:         totals.utilDamage,
 
 			K2: k2,
 			K3: k3,
