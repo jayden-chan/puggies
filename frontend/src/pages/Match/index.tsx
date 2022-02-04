@@ -93,6 +93,8 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
 
       <Flex
         w={["95%", null, null, "80%"]}
+        mb={3}
+        mt={[3, null, null, 0]}
         alignItems="center"
         justifyContent="center"
       >
@@ -108,7 +110,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
       </Flex>
 
       <Tabs w={["95%", null, null, "80%"]}>
-        <TabList overflowX="auto" overflowY="hidden">
+        <TabList overflowX={["auto", "auto", "unset"]} overflowY="hidden">
           <Tab>Scoreboard</Tab>
           <Tab>Utility</Tab>
           <Tab>Head to Head</Tab>
