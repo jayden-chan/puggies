@@ -19,13 +19,28 @@ func checkError(err error) {
 	}
 }
 
-func updateTeams(p *dem.Parser, teams *TeamsMap) {
-	for _, tPlayer := range (*p).GameState().TeamTerrorists().Members() {
-		(*teams)[tPlayer.SteamID64] = "T"
+func updateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
+	tTeam := (*p).GameState().TeamTerrorists()
+	tTag := tTeam.ClanName()
+	ctTeam := (*p).GameState().TeamCounterTerrorists()
+	ctTag := ctTeam.ClanName()
+
+	if tTag != "" && ctTag != "" {
+		*tClanTag = tTag
+		*ctClanTag = ctTag
 	}
 
-	for _, ctPlayer := range (*p).GameState().TeamCounterTerrorists().Members() {
+	for _, tPlayer := range tTeam.Members() {
+		(*teams)[tPlayer.SteamID64] = "T"
+	}
+	for _, ctPlayer := range ctTeam.Members() {
 		(*teams)[ctPlayer.SteamID64] = "CT"
+	}
+}
+
+func updatePlayerNames(p *dem.Parser, playerNames *NamesMap) {
+	for _, player := range (*p).GameState().Participants().Playing() {
+		(*playerNames)[player.SteamID64] = player.Name
 	}
 }
 
@@ -41,13 +56,13 @@ func main() {
 	checkError(err)
 
 	mapMetadata := metadata.MapNameToMap[header.MapName]
+	demoFileName := GetDemoFileName(os.Args[1])
+	demoType := GetDemoType(demoFileName)
 
-	prd := InitPerRoundData()
-	var rounds []Round
+	prd := PerRoundData{}
 
 	var teams TeamsMap
 	var playerNames NamesMap
-	var winners [][]uint64
 
 	// Only tracked for one round for use in KAST and RWS
 	var bombPlanter uint64
@@ -57,9 +72,12 @@ func main() {
 	var roundStartTime int64 = 0
 	var bombExplodeTime int64 = 0
 
+	var ctClanTag string
+	var tClanTag string
+
 	consecutiveMatchStarts := 0
-	isLive := false
-	eseaMode := true
+	eseaMode := demoType == "ESEA match"
+	isLive := !eseaMode
 
 	deathTimes := make(map[uint64]Death)
 
@@ -221,22 +239,27 @@ func main() {
 			return
 		}
 
-		if consecutiveMatchStarts < 3 {
-			fmt.Fprintln(os.Stderr, "NOT LIVE -------------------------------------------------------")
-			isLive = false
-			consecutiveMatchStarts += 1
-		} else {
-			isLive = true
-			fmt.Fprintln(os.Stderr, "GOING LIVE -------------------------------------------------------")
-			consecutiveMatchStarts = 0
+		if eseaMode {
+			// The MatchStart event comes after the RoundStart in ESEA demos so we need to
+			// set the current round's live status in addition to updating the isLive variable
+			if consecutiveMatchStarts < 3 {
+				prd.isLive[len(prd.isLive)-1] = false
+				isLive = false
+				DebugBig("NOT LIVE")
+				consecutiveMatchStarts += 1
+			} else {
+				prd.isLive[len(prd.isLive)-1] = true
+				isLive = true
+				DebugBig("GOING LIVE")
+				consecutiveMatchStarts = 0
+			}
 		}
-
 	})
 
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
+		DebugBig("ROUND START")
 		prd.NewRound(isLive)
-		fmt.Fprintln(os.Stderr, "ROUND STARTED -------------------------------------------------------")
 
 		bombDefuser = 0
 		bombPlanter = 0
@@ -253,21 +276,18 @@ func main() {
 			playerNames = make(NamesMap)
 		}
 
-		for _, p := range p.GameState().Participants().Playing() {
-			playerNames[p.SteamID64] = p.Name
-		}
-
-		updateTeams(&p, &teams)
+		updatePlayerNames(&p, &playerNames)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
 	})
 
 	// Update the teams when the side switches
 	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
-		fmt.Fprintln(os.Stderr, "SIDE SWITCH")
-		updateTeams(&p, &teams)
+		DebugBig("SIDE SWITCH")
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
-		fmt.Fprintln(os.Stderr, e)
+		Debug(e)
 		winner := ""
 
 		switch e.Winner {
@@ -277,7 +297,13 @@ func main() {
 			winner = "T"
 		}
 
-		rounds = append(rounds, Round{
+		if len(prd.rounds) == 0 {
+			return
+		}
+
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
+
+		prd.rounds[len(prd.rounds)-1] = Round{
 			Winner:          winner,
 			Reason:          int(e.Reason),
 			Planter:         bombPlanter,
@@ -285,7 +311,7 @@ func main() {
 			PlanterTime:     bombPlanterTime,
 			DefuserTime:     bombDefuserTime,
 			BombExplodeTime: bombExplodeTime,
-		})
+		}
 
 		var roundWinners []uint64
 		for player := range teams {
@@ -293,7 +319,8 @@ func main() {
 				roundWinners = append(roundWinners, player)
 			}
 		}
-		winners = append(winners, roundWinners)
+
+		prd.winners[len(prd.winners)-1] = roundWinners
 	})
 
 	fmt.Fprintln(os.Stderr, "Parsing demo...")
@@ -301,32 +328,9 @@ func main() {
 	checkError(err)
 	fmt.Fprintln(os.Stderr, "Computing stats...")
 
-	// Figure out where the game actually goes live
-	startRound := 0
-	for i := len(prd.kills) - 2; i > 0; i-- {
-		killsNext := MapValTotal(&prd.kills[i+1])
-		killsCurr := MapValTotal(&prd.kills[i])
-		killsPrev := MapValTotal(&prd.kills[i-1])
-
-		// Three consecutive rounds with 0 kills will be
-		// considered the start of the game (faceit + pugsetup
-		// have the triple-restart and then MATCH IS LIVE thing)
-		if killsPrev+killsCurr+killsNext == 0 {
-			startRound = i + 1
-		}
-	}
-
-	prd.CropToRealRounds(startRound, eseaMode)
+	prd.CropToRealRounds(eseaMode)
 	totals := prd.ComputeTotals()
 	totalRounds := len(prd.kills)
-
-	fmt.Fprintln(os.Stderr, "START ROUND", startRound)
-	fmt.Fprintln(os.Stderr, "TOTAL ROUNDS", totalRounds)
-
-	// Need to slice the rounds array differently because it's not
-	// being appended-to on the RoundStart event
-	rounds = rounds[len(rounds)-totalRounds:]
-	winners = winners[len(winners)-totalRounds:]
 
 	headshotPct, kd, kdiff, kpr := ComputeBasicStats(
 		totalRounds,
@@ -351,14 +355,14 @@ func main() {
 		adr,
 	)
 
-	teamAScore, _ := GetScore(rounds, "CT", 999999999)
-	teamBScore, _ := GetScore(rounds, "T", 999999999)
+	teamAScore, _ := GetScore(prd.rounds, "CT", 999999999)
+	teamBScore, _ := GetScore(prd.rounds, "T", 999999999)
 
 	jsonstring, err := json.Marshal(&Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
-		StartTeams:  ComputeStartSides(teams, rounds),
-		Rounds:      rounds,
+		StartTeams:  ComputeStartSides(teams, prd.rounds),
+		Rounds:      prd.rounds,
 
 		Stats: Stats{
 			Adr:                adr,
@@ -383,14 +387,12 @@ func main() {
 			OpeningDeaths:      oDeaths,
 			OpeningKills:       oKills,
 			OpeningSuccess:     oSuccess,
-			// Rws:                ComputeRWS(winners, rounds, prd.damage),
-			// FIXME
-			Rws:              oSuccess,
-			SmokesThrown:     totals.smokesThrown,
-			TeammatesFlashed: totals.teammatesFlashed,
-			DeathsTraded:     totals.deathsTraded,
-			TradeKills:       totals.tradeKills,
-			UtilDamage:       totals.utilDamage,
+			Rws:                ComputeRWS(prd.winners, prd.rounds, prd.damage),
+			SmokesThrown:       totals.smokesThrown,
+			TeammatesFlashed:   totals.teammatesFlashed,
+			DeathsTraded:       totals.deathsTraded,
+			TradeKills:         totals.tradeKills,
+			UtilDamage:         totals.utilDamage,
 
 			K2: k2,
 			K3: k3,
@@ -400,17 +402,18 @@ func main() {
 
 		HeadToHead:   HeadToHeadTotal(&prd.headToHead),
 		KillFeed:     prd.headToHead,
-		RoundByRound: ComputeRoundByRound(rounds, prd.headToHead),
+		RoundByRound: ComputeRoundByRound(prd.rounds, prd.headToHead),
 		OpeningKills: totals.openingKills,
 
 		Meta: MetaData{
 			Map:         header.MapName,
-			Id:          GetDemoFileName(os.Args[1]),
+			Id:          demoFileName,
+			DemoType:    demoType,
 			PlayerNames: playerNames,
 			TeamAScore:  teamAScore,
 			TeamBScore:  teamBScore,
-			TeamATitle:  "team_" + GetPlayers(teams, playerNames, hltv, "CT")[0],
-			TeamBTitle:  "team_" + GetPlayers(teams, playerNames, hltv, "T")[0],
+			TeamATitle:  GetTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
+			TeamBTitle:  GetTeamName(tClanTag, teams, playerNames, hltv, "T"),
 		},
 	})
 

@@ -27,6 +27,9 @@ type PerRoundData struct {
 
 	headToHead []map[uint64]map[uint64]Kill
 
+	rounds  []Round
+	winners [][]uint64
+
 	isLive []bool
 }
 
@@ -47,29 +50,6 @@ type Totals struct {
 	molliesThrown    PlayerIntMap
 	smokesThrown     PlayerIntMap
 	openingKills     []OpeningKill
-}
-
-func InitPerRoundData() PerRoundData {
-	return PerRoundData{
-		kills:            nil,
-		deaths:           nil,
-		assists:          nil,
-		deathsTraded:     nil,
-		tradeKills:       nil,
-		headshots:        nil,
-		damage:           nil,
-		flashAssists:     nil,
-		enemiesFlashed:   nil,
-		teammatesFlashed: nil,
-		utilDamage:       nil,
-		openings:         nil,
-		flashesThrown:    nil,
-		HEsThrown:        nil,
-		molliesThrown:    nil,
-		smokesThrown:     nil,
-		headToHead:       nil,
-		isLive:           nil,
-	}
 }
 
 func (prd *PerRoundData) NewRound(isLive bool) {
@@ -93,63 +73,54 @@ func (prd *PerRoundData) NewRound(isLive bool) {
 
 	prd.headToHead = append(prd.headToHead, make(map[uint64]map[uint64]Kill))
 
+	prd.rounds = append(prd.rounds, Round{})
+	prd.winners = append(prd.winners, nil)
+
 	prd.isLive = append(prd.isLive, isLive)
 }
 
-func filterByLiveRoundsInt(data []PlayerIntMap, isLive []bool) []PlayerIntMap {
-	var ret []PlayerIntMap
-	for i, live := range isLive {
-		if live {
-			ret = append(ret, data[i-1])
-		}
-	}
-	return ret
-}
-
-func filterByLiveRoundsOpeningKill(data []*OpeningKill, isLive []bool) []*OpeningKill {
-	var ret []*OpeningKill
-	for i, live := range isLive {
-		if live {
-			ret = append(ret, data[i-1])
-		}
-	}
-	return ret
-}
-
-func filterByLiveRoundsH2H(data []map[uint64]map[uint64]Kill, isLive []bool) []map[uint64]map[uint64]Kill {
-	var ret []map[uint64]map[uint64]Kill
-	for i, live := range isLive {
-		if live {
-			// FIXME: this is probably wrong
-			ret = append(ret, data[i-1])
-		}
-	}
-	return ret
-}
-
-func (prd *PerRoundData) CropToRealRounds(startRound int, useLiveMode bool) {
+func (prd *PerRoundData) CropToRealRounds(useLiveMode bool) {
 	if useLiveMode {
-		prd.kills = filterByLiveRoundsInt(prd.kills, prd.isLive)
+		prd.kills = FilterByLiveRoundsInt(prd.kills, prd.isLive)
 
-		prd.deaths = filterByLiveRoundsInt(prd.deaths, prd.isLive)
-		prd.assists = filterByLiveRoundsInt(prd.assists, prd.isLive)
-		prd.deathsTraded = filterByLiveRoundsInt(prd.deathsTraded, prd.isLive)
-		prd.tradeKills = filterByLiveRoundsInt(prd.tradeKills, prd.isLive)
-		prd.headshots = filterByLiveRoundsInt(prd.headshots, prd.isLive)
-		prd.damage = filterByLiveRoundsInt(prd.damage, prd.isLive)
-		prd.flashAssists = filterByLiveRoundsInt(prd.flashAssists, prd.isLive)
-		prd.enemiesFlashed = filterByLiveRoundsInt(prd.enemiesFlashed, prd.isLive)
-		prd.teammatesFlashed = filterByLiveRoundsInt(prd.teammatesFlashed, prd.isLive)
-		prd.utilDamage = filterByLiveRoundsInt(prd.utilDamage, prd.isLive)
-		prd.openings = filterByLiveRoundsOpeningKill(prd.openings, prd.isLive)
+		prd.deaths = FilterByLiveRoundsInt(prd.deaths, prd.isLive)
+		prd.assists = FilterByLiveRoundsInt(prd.assists, prd.isLive)
+		prd.deathsTraded = FilterByLiveRoundsInt(prd.deathsTraded, prd.isLive)
+		prd.tradeKills = FilterByLiveRoundsInt(prd.tradeKills, prd.isLive)
+		prd.headshots = FilterByLiveRoundsInt(prd.headshots, prd.isLive)
+		prd.damage = FilterByLiveRoundsInt(prd.damage, prd.isLive)
+		prd.flashAssists = FilterByLiveRoundsInt(prd.flashAssists, prd.isLive)
+		prd.enemiesFlashed = FilterByLiveRoundsInt(prd.enemiesFlashed, prd.isLive)
+		prd.teammatesFlashed = FilterByLiveRoundsInt(prd.teammatesFlashed, prd.isLive)
+		prd.utilDamage = FilterByLiveRoundsInt(prd.utilDamage, prd.isLive)
+		prd.openings = FilterByLiveRoundsOpeningKill(prd.openings, prd.isLive)
 
-		prd.flashesThrown = filterByLiveRoundsInt(prd.flashesThrown, prd.isLive)
-		prd.HEsThrown = filterByLiveRoundsInt(prd.HEsThrown, prd.isLive)
-		prd.molliesThrown = filterByLiveRoundsInt(prd.molliesThrown, prd.isLive)
-		prd.smokesThrown = filterByLiveRoundsInt(prd.smokesThrown, prd.isLive)
+		prd.flashesThrown = FilterByLiveRoundsInt(prd.flashesThrown, prd.isLive)
+		prd.HEsThrown = FilterByLiveRoundsInt(prd.HEsThrown, prd.isLive)
+		prd.molliesThrown = FilterByLiveRoundsInt(prd.molliesThrown, prd.isLive)
+		prd.smokesThrown = FilterByLiveRoundsInt(prd.smokesThrown, prd.isLive)
 
-		prd.headToHead = filterByLiveRoundsH2H(prd.headToHead, prd.isLive)
+		prd.headToHead = FilterByLiveRoundsH2H(prd.headToHead, prd.isLive)
+
+		prd.rounds = FilterByLiveRoundsRounds(prd.rounds, prd.isLive)
+		prd.winners = FilterByLiveRoundsWinners(prd.winners, prd.isLive)
 	} else {
+
+		// Figure out where the game actually goes live
+		startRound := 0
+		for i := len(prd.kills) - 2; i > 0; i-- {
+			killsNext := MapValTotal(&prd.kills[i+1])
+			killsCurr := MapValTotal(&prd.kills[i])
+			killsPrev := MapValTotal(&prd.kills[i-1])
+
+			// Three consecutive rounds with 0 kills will be
+			// considered the start of the game (faceit + pugsetup
+			// have the triple-restart and then MATCH IS LIVE thing)
+			if killsPrev+killsCurr+killsNext == 0 {
+				startRound = i + 1
+			}
+		}
+
 		prd.kills = prd.kills[startRound+1:]
 
 		prd.deaths = prd.deaths[startRound+1:]
@@ -170,6 +141,9 @@ func (prd *PerRoundData) CropToRealRounds(startRound int, useLiveMode bool) {
 		prd.smokesThrown = prd.smokesThrown[startRound+1:]
 
 		prd.headToHead = prd.headToHead[startRound+1:]
+
+		prd.rounds = prd.rounds[startRound+1:]
+		prd.winners = prd.winners[startRound+1:]
 	}
 }
 

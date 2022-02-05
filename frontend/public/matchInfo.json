@@ -1,7 +1,50 @@
 [
   {
     "map": "de_mirage",
+    "id": "1-d2a640d9-ac59-4281-a7cb-895145ba5274-1-1",
+    "demoType": "FACEIT match",
+    "playerNames": {
+      "76561198017097534": "No0n",
+      "76561198023560311": "ericluvsrice",
+      "76561198027592433": "inc_shift",
+      "76561198042900212": "SaneDaneV1",
+      "76561198044264201": "AtomicTF",
+      "76561198072365864": "verg0",
+      "76561198072540953": "1eriss",
+      "76561198079862187": "EungCoconut",
+      "76561198084529668": "LithiumFrost",
+      "76561199100682165": "Mushhiiee"
+    },
+    "teamAScore": 21,
+    "teamBScore": 25,
+    "teamATitle": "team_-nivek",
+    "teamBTitle": "team_verg0"
+  },
+  {
+    "map": "de_mirage",
+    "id": "esea_match_16841568",
+    "demoType": "ESEA match",
+    "playerNames": {
+      "76561198040695945": "MiceHonestpretzels",
+      "76561198043151702": "PUFF | MaxSama",
+      "76561198077993563": "PUFF | Pufflezao",
+      "76561198079862187": "Micen051d3",
+      "76561198084529668": "MiceLithiumFrost",
+      "76561198173867603": "PUFF | kewbz",
+      "76561198216066565": "PUFF | LibraH",
+      "76561198258466567": "PUFF | SebTheGoose",
+      "76561199100682165": "MiceMuugggiiii",
+      "76561199169854245": "Micexx_epicgamer420_x"
+    },
+    "teamAScore": 25,
+    "teamBScore": 23,
+    "teamATitle": "minigun mice",
+    "teamBTitle": "Pufflez N Sons"
+  },
+  {
+    "map": "de_mirage",
     "id": "pug_de_mirage_2022-01-15_06",
+    "demoType": "pug",
     "playerNames": {
       "76561198013396978": "awesomaave",
       "76561198040695945": "honestpretzels",
@@ -22,6 +65,7 @@
   {
     "map": "de_nuke",
     "id": "pug_de_nuke_2022-01-15_05",
+    "demoType": "pug",
     "playerNames": {
       "76561198013396978": "awesomaave",
       "76561198040695945": "honestpretzels",
@@ -42,6 +86,7 @@
   {
     "map": "de_nuke",
     "id": "pug_de_nuke_2022-01-25_04",
+    "demoType": "pug",
     "playerNames": {
       "76561198040695945": "honestpretzels",
       "76561198044264201": "atomic",
@@ -62,6 +107,7 @@
   {
     "map": "de_nuke",
     "id": "pug_de_nuke_2022-01-30_06",
+    "demoType": "pug",
     "playerNames": {
       "76561198013396978": "awesomaave",
       "76561198050102896": "MrGenericUser",
@@ -82,6 +128,7 @@
   {
     "map": "de_overpass",
     "id": "pug_de_overpass_2022-01-25_05",
+    "demoType": "pug",
     "playerNames": {
       "76561198040695945": "honestpretzels",
       "76561198044264201": "atomic",
@@ -102,6 +149,7 @@
   {
     "map": "de_vertigo",
     "id": "pug_de_vertigo_2022-02-02_06",
+    "demoType": "pug",
     "playerNames": {
       "76561198040695945": "HONESTPRETZELS",
       "76561198050102896": "MrGenericUser",

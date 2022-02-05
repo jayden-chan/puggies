@@ -11,6 +11,7 @@ type NamesMap map[uint64]string
 type MetaData struct {
 	Map         string   `json:"map"`
 	Id          string   `json:"id"`
+	DemoType    string   `json:"demoType"`
 	PlayerNames NamesMap `json:"playerNames"`
 	TeamAScore  int      `json:"teamAScore"`
 	TeamBScore  int      `json:"teamBScore"`

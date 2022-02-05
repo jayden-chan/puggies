@@ -67,7 +67,8 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     return <Loading text="Loading match..." />;
   }
 
-  const { map, teamAScore, teamBScore, teamATitle, teamBTitle } = match.meta;
+  const { map, demoType, teamAScore, teamBScore, teamATitle, teamBTitle } =
+    match.meta;
 
   const [dateString] = getDateInfo(match.meta.id);
   const teamAPlayers = getPlayers(match, "CT", sortCol, reversed);
@@ -85,12 +86,16 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   return (
     <Flex w="100%" h="100vh" pt={30} alignItems="center" flexDirection="column">
       <Box w={["95%", null, null, "80%"]} mb={3}>
-        <Heading>pug on {map} </Heading>
+        <Heading>
+          {demoType} on {map}{" "}
+        </Heading>
         <Heading fontSize="lg" as="h2">
           {dateString}{" "}
-          <Link isExternal href={demoLinks[match.meta.id] ?? "BUH"}>
-            (demo link)
-          </Link>
+          {demoLinks[match.meta.id] && (
+            <Link isExternal href={demoLinks[match.meta.id]}>
+              (demo link)
+            </Link>
+          )}
         </Heading>
       </Box>
 

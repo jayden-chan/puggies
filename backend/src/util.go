@@ -123,6 +123,31 @@ func GetDemoFileName(path string) string {
 	return strings.Replace(path[strings.LastIndex(path, "/")+1:], ".dem", "", 1)
 }
 
+func GetDemoType(demoFileName string) string {
+	if strings.HasPrefix(demoFileName, "esea") {
+		return "ESEA match"
+	} else if strings.HasPrefix(demoFileName, "pug_") {
+		return "pug"
+	} else if strings.HasPrefix(demoFileName, "1-") {
+		return "FACEIT match"
+	} else {
+		return "match"
+	}
+}
+
+func GetTeamName(
+	clanTag string,
+	teams TeamsMap,
+	playerNames NamesMap,
+	hltv PlayerF64Map,
+	side string,
+) string {
+	if clanTag != "" {
+		return clanTag
+	}
+	return "team_" + GetPlayers(teams, playerNames, hltv, side)[0]
+}
+
 func GetWeaponFileName(weapon common.EquipmentType) string {
 	switch weapon {
 	case common.EqP2000:
