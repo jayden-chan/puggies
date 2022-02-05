@@ -3,6 +3,8 @@ package main
 import (
 	"sort"
 	"strings"
+
+	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
 func MapValTotal(m *PlayerIntMap) int {
@@ -40,7 +42,7 @@ func HeadToHeadTotal(h *[]map[uint64]map[uint64]Kill) map[uint64]PlayerIntMap {
 	return ret
 }
 
-func ProcessWeaponName(name string) string {
+func ProcessWeaponName(w common.Equipment) string {
 	toReplace := [][]string{
 		{"models/weapons/", ""},
 		{"v_", ""},
@@ -52,11 +54,15 @@ func ProcessWeaponName(name string) string {
 		{"eq_molotovgrenade", "fire"},
 	}
 
-	ret := name
-	for _, s := range toReplace {
-		ret = strings.Replace(ret, s[0], s[1], 1)
+	originalString := w.OriginalString
+	if originalString == "" {
+		return GetWeaponFileName(w.Type)
 	}
-	return ret
+
+	for _, s := range toReplace {
+		originalString = strings.Replace(originalString, s[0], s[1], 1)
+	}
+	return originalString
 }
 
 func GetPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side string) []string {
@@ -115,4 +121,87 @@ func GetScore(rounds []Round, side string, toRound int) (int, string) {
 
 func GetDemoFileName(path string) string {
 	return strings.Replace(path[strings.LastIndex(path, "/")+1:], ".dem", "", 1)
+}
+
+func GetWeaponFileName(weapon common.EquipmentType) string {
+	switch weapon {
+	case common.EqP2000:
+		return "pist_hkp2000"
+	case common.EqGlock:
+		return "pist_glock18"
+	case common.EqP250:
+		return "pist_p250"
+	case common.EqDeagle:
+		return "pist_deagle"
+	case common.EqFiveSeven:
+		return "pist_fiveseven"
+	case common.EqDualBerettas:
+		return "pist_elite"
+	case common.EqTec9:
+		return "pist_tec9"
+	case common.EqCZ:
+		return "pist_cz75a"
+	case common.EqUSP:
+		return "pist_223"
+	case common.EqRevolver:
+		return "pist_revolver"
+	case common.EqMP7:
+		return "smg_mp7"
+	case common.EqMP9:
+		return "smg_mp9"
+	case common.EqBizon:
+		return "smg_bizon"
+	case common.EqMac10:
+		return "smg_mac10"
+	case common.EqUMP:
+		return "smg_ump45"
+	case common.EqP90:
+		return "smg_p90"
+	case common.EqMP5:
+		return "smg_mp5sd"
+	case common.EqSawedOff:
+		return "shot_sawedoff"
+	case common.EqNova:
+		return "shot_nova"
+	case common.EqMag7:
+		return "shot_mag7"
+	case common.EqXM1014:
+		return "shot_xm1014"
+	case common.EqM249:
+		return "mach_m249"
+	case common.EqNegev:
+		return "mach_negev"
+	case common.EqGalil:
+		return "rif_galilar"
+	case common.EqFamas:
+		return "rif_famas"
+	case common.EqAK47:
+		return "rif_ak47"
+	case common.EqM4A4:
+		return "rif_m4a1"
+	case common.EqM4A1:
+		return "rif_m4a1_s"
+	case common.EqSSG08:
+		return "snip_ssg08"
+	case common.EqSG553:
+		return "rif_sg556"
+	case common.EqAUG:
+		return "rif_aug"
+	case common.EqAWP:
+		return "snip_awp"
+	case common.EqScar20:
+		return "snip_scar20"
+	case common.EqG3SG1:
+		return "snip_g3sg1"
+	case common.EqZeus:
+		return "eq_taser"
+	case common.EqMolotov:
+		return "eq_molotov"
+	case common.EqIncendiary:
+		return "eq_molotov"
+	case common.EqHE:
+		return "eq_fraggrenade"
+	}
+
+	return "UNKNOWN"
 }

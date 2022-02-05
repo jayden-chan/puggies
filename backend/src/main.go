@@ -104,7 +104,7 @@ func main() {
 			}
 
 			killInfo := Kill{
-				Weapon:            ProcessWeaponName(e.Weapon.OriginalString),
+				Weapon:            ProcessWeaponName(*e.Weapon),
 				Assister:          assister,
 				Time:              p.CurrentTime().Milliseconds() - roundStartTime,
 				IsHeadshot:        e.IsHeadshot,
@@ -136,10 +136,6 @@ func main() {
 
 				}
 			}
-		}
-
-		if e.Killer != nil && e.Killer.Name == "" {
-			fmt.Printf("%s <%v> %s %f\n", e.Killer, e.Weapon, e.Victim, p.CurrentTime().Seconds())
 		}
 	})
 
