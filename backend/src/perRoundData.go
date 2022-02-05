@@ -26,6 +26,8 @@ type PerRoundData struct {
 	smokesThrown  []PlayerIntMap
 
 	headToHead []map[uint64]map[uint64]Kill
+
+	isLive []bool
 }
 
 type Totals struct {
@@ -66,10 +68,11 @@ func InitPerRoundData() PerRoundData {
 		molliesThrown:    nil,
 		smokesThrown:     nil,
 		headToHead:       nil,
+		isLive:           nil,
 	}
 }
 
-func (prd *PerRoundData) NewRound() {
+func (prd *PerRoundData) NewRound(isLive bool) {
 	prd.kills = append(prd.kills, make(PlayerIntMap))
 	prd.deaths = append(prd.deaths, make(PlayerIntMap))
 	prd.assists = append(prd.assists, make(PlayerIntMap))
@@ -89,29 +92,85 @@ func (prd *PerRoundData) NewRound() {
 	prd.smokesThrown = append(prd.smokesThrown, make(PlayerIntMap))
 
 	prd.headToHead = append(prd.headToHead, make(map[uint64]map[uint64]Kill))
+
+	prd.isLive = append(prd.isLive, isLive)
 }
 
-func (prd *PerRoundData) CropToRealRounds(startRound int) {
-	prd.kills = prd.kills[startRound+1:]
+func filterByLiveRoundsInt(data []PlayerIntMap, isLive []bool) []PlayerIntMap {
+	var ret []PlayerIntMap
+	for i, live := range isLive {
+		if live {
+			ret = append(ret, data[i-1])
+		}
+	}
+	return ret
+}
 
-	prd.deaths = prd.deaths[startRound+1:]
-	prd.assists = prd.assists[startRound+1:]
-	prd.deathsTraded = prd.deathsTraded[startRound+1:]
-	prd.tradeKills = prd.tradeKills[startRound+1:]
-	prd.headshots = prd.headshots[startRound+1:]
-	prd.damage = prd.damage[startRound+1:]
-	prd.flashAssists = prd.flashAssists[startRound+1:]
-	prd.enemiesFlashed = prd.enemiesFlashed[startRound+1:]
-	prd.teammatesFlashed = prd.teammatesFlashed[startRound+1:]
-	prd.utilDamage = prd.utilDamage[startRound+1:]
-	prd.openings = prd.openings[startRound+1:]
+func filterByLiveRoundsOpeningKill(data []*OpeningKill, isLive []bool) []*OpeningKill {
+	var ret []*OpeningKill
+	for i, live := range isLive {
+		if live {
+			ret = append(ret, data[i-1])
+		}
+	}
+	return ret
+}
 
-	prd.flashesThrown = prd.flashesThrown[startRound+1:]
-	prd.HEsThrown = prd.HEsThrown[startRound+1:]
-	prd.molliesThrown = prd.molliesThrown[startRound+1:]
-	prd.smokesThrown = prd.smokesThrown[startRound+1:]
+func filterByLiveRoundsH2H(data []map[uint64]map[uint64]Kill, isLive []bool) []map[uint64]map[uint64]Kill {
+	var ret []map[uint64]map[uint64]Kill
+	for i, live := range isLive {
+		if live {
+			// FIXME: this is probably wrong
+			ret = append(ret, data[i-1])
+		}
+	}
+	return ret
+}
 
-	prd.headToHead = prd.headToHead[startRound+1:]
+func (prd *PerRoundData) CropToRealRounds(startRound int, useLiveMode bool) {
+	if useLiveMode {
+		prd.kills = filterByLiveRoundsInt(prd.kills, prd.isLive)
+
+		prd.deaths = filterByLiveRoundsInt(prd.deaths, prd.isLive)
+		prd.assists = filterByLiveRoundsInt(prd.assists, prd.isLive)
+		prd.deathsTraded = filterByLiveRoundsInt(prd.deathsTraded, prd.isLive)
+		prd.tradeKills = filterByLiveRoundsInt(prd.tradeKills, prd.isLive)
+		prd.headshots = filterByLiveRoundsInt(prd.headshots, prd.isLive)
+		prd.damage = filterByLiveRoundsInt(prd.damage, prd.isLive)
+		prd.flashAssists = filterByLiveRoundsInt(prd.flashAssists, prd.isLive)
+		prd.enemiesFlashed = filterByLiveRoundsInt(prd.enemiesFlashed, prd.isLive)
+		prd.teammatesFlashed = filterByLiveRoundsInt(prd.teammatesFlashed, prd.isLive)
+		prd.utilDamage = filterByLiveRoundsInt(prd.utilDamage, prd.isLive)
+		prd.openings = filterByLiveRoundsOpeningKill(prd.openings, prd.isLive)
+
+		prd.flashesThrown = filterByLiveRoundsInt(prd.flashesThrown, prd.isLive)
+		prd.HEsThrown = filterByLiveRoundsInt(prd.HEsThrown, prd.isLive)
+		prd.molliesThrown = filterByLiveRoundsInt(prd.molliesThrown, prd.isLive)
+		prd.smokesThrown = filterByLiveRoundsInt(prd.smokesThrown, prd.isLive)
+
+		prd.headToHead = filterByLiveRoundsH2H(prd.headToHead, prd.isLive)
+	} else {
+		prd.kills = prd.kills[startRound+1:]
+
+		prd.deaths = prd.deaths[startRound+1:]
+		prd.assists = prd.assists[startRound+1:]
+		prd.deathsTraded = prd.deathsTraded[startRound+1:]
+		prd.tradeKills = prd.tradeKills[startRound+1:]
+		prd.headshots = prd.headshots[startRound+1:]
+		prd.damage = prd.damage[startRound+1:]
+		prd.flashAssists = prd.flashAssists[startRound+1:]
+		prd.enemiesFlashed = prd.enemiesFlashed[startRound+1:]
+		prd.teammatesFlashed = prd.teammatesFlashed[startRound+1:]
+		prd.utilDamage = prd.utilDamage[startRound+1:]
+		prd.openings = prd.openings[startRound+1:]
+
+		prd.flashesThrown = prd.flashesThrown[startRound+1:]
+		prd.HEsThrown = prd.HEsThrown[startRound+1:]
+		prd.molliesThrown = prd.molliesThrown[startRound+1:]
+		prd.smokesThrown = prd.smokesThrown[startRound+1:]
+
+		prd.headToHead = prd.headToHead[startRound+1:]
+	}
 }
 
 func (prd *PerRoundData) ComputeTotals() Totals {

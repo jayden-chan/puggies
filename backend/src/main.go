@@ -57,6 +57,10 @@ func main() {
 	var roundStartTime int64 = 0
 	var bombExplodeTime int64 = 0
 
+	consecutiveMatchStarts := 0
+	isLive := false
+	eseaMode := true
+
 	deathTimes := make(map[uint64]Death)
 
 	var points_shotsFired []r2.Point
@@ -212,9 +216,27 @@ func main() {
 		}
 	})
 
+	p.RegisterEventHandler(func(e events.MatchStart) {
+		if prd.isLive == nil {
+			return
+		}
+
+		if consecutiveMatchStarts < 3 {
+			fmt.Fprintln(os.Stderr, "NOT LIVE -------------------------------------------------------")
+			isLive = false
+			consecutiveMatchStarts += 1
+		} else {
+			isLive = true
+			fmt.Fprintln(os.Stderr, "GOING LIVE -------------------------------------------------------")
+			consecutiveMatchStarts = 0
+		}
+
+	})
+
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
-		prd.NewRound()
+		prd.NewRound(isLive)
+		fmt.Fprintln(os.Stderr, "ROUND STARTED -------------------------------------------------------")
 
 		bombDefuser = 0
 		bombPlanter = 0
@@ -294,9 +316,12 @@ func main() {
 		}
 	}
 
-	prd.CropToRealRounds(startRound)
+	prd.CropToRealRounds(startRound, eseaMode)
 	totals := prd.ComputeTotals()
 	totalRounds := len(prd.kills)
+
+	fmt.Fprintln(os.Stderr, "START ROUND", startRound)
+	fmt.Fprintln(os.Stderr, "TOTAL ROUNDS", totalRounds)
 
 	// Need to slice the rounds array differently because it's not
 	// being appended-to on the RoundStart event
@@ -329,7 +354,7 @@ func main() {
 	teamAScore, _ := GetScore(rounds, "CT", 999999999)
 	teamBScore, _ := GetScore(rounds, "T", 999999999)
 
-	jsonstring, _ := json.Marshal(&Output{
+	jsonstring, err := json.Marshal(&Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
 		StartTeams:  ComputeStartSides(teams, rounds),
@@ -358,12 +383,14 @@ func main() {
 			OpeningDeaths:      oDeaths,
 			OpeningKills:       oKills,
 			OpeningSuccess:     oSuccess,
-			Rws:                ComputeRWS(winners, rounds, prd.damage),
-			SmokesThrown:       totals.smokesThrown,
-			TeammatesFlashed:   totals.teammatesFlashed,
-			DeathsTraded:       totals.deathsTraded,
-			TradeKills:         totals.tradeKills,
-			UtilDamage:         totals.utilDamage,
+			// Rws:                ComputeRWS(winners, rounds, prd.damage),
+			// FIXME
+			Rws:              oSuccess,
+			SmokesThrown:     totals.smokesThrown,
+			TeammatesFlashed: totals.teammatesFlashed,
+			DeathsTraded:     totals.deathsTraded,
+			TradeKills:       totals.tradeKills,
+			UtilDamage:       totals.utilDamage,
 
 			K2: k2,
 			K3: k3,
@@ -387,6 +414,7 @@ func main() {
 		},
 	})
 
+	checkError(err)
 	fmt.Println(string(jsonstring))
 	fmt.Fprintln(os.Stderr, "Generating heatmaps...")
 	GenHeatmap(points_shotsFired, header, GetHeatmapFileName(os.Args[1], "shotsFired"))
