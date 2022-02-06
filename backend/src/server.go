@@ -1,7 +1,12 @@
 package main
 
-import "github.com/gin-gonic/gin"
-import "net/http"
+import (
+	"net/http"
+	"os"
+	"strings"
+
+	"github.com/gin-gonic/gin"
+)
 
 func ping(c *gin.Context) {
 	c.JSON(200, gin.H{
@@ -12,12 +17,26 @@ func ping(c *gin.Context) {
 func RunServer(dataPath, frontendPath string) {
 	r := gin.Default()
 
+	// Set the Gin trusted proxies if provided
+	trustedProxies := os.Getenv("PUGGIES_TRUSTED_PROXIES")
+	if trustedProxies != "" {
+		proxies := strings.Split(trustedProxies, ",")
+		r.SetTrustedProxies(proxies)
+	}
+
 	r.Static("/app", frontendPath)
 	r.StaticFile("/favicon.ico", frontendPath+"/favicon.ico")
 
 	r.NoRoute(func(c *gin.Context) {
-		c.File(frontendPath + "/index.html")
+		// Serve the frontend in the event of a 404 at /app so that
+		// the frontend routing works properly
+		if strings.HasPrefix(c.Request.URL.Path, "/app") {
+			c.File(frontendPath + "/index.html")
+		} else {
+			c.String(404, "404 not found\n")
+		}
 	})
+
 	r.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/app")
 	})
