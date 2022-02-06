@@ -2,10 +2,7 @@ import { getDateInfo } from "../data";
 import { Match, MatchInfo } from "../types";
 
 export class DataAPI {
-  private endpoint: string;
-  constructor(endpoint: string) {
-    this.endpoint = endpoint;
-  }
+  private endpoint = "/api/v1";
 
   public async fetchMatch(info: MatchInfo): Promise<Match> {
     return (await fetch(`${this.endpoint}/matches/${info.id}.json`)).json();

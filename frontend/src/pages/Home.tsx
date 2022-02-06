@@ -38,7 +38,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
         {showImages && (
           <Skeleton isLoaded={mapLoaded} mr={5} mb={[3, null, 0]}>
             <Image
-              src={`/img/maps/${map}.jpg`}
+              src={`${process.env.PUBLIC_URL}/img/maps/${map}.jpg`}
               onLoad={() => setMapLoaded(true)}
               h="6.5rem"
             />
@@ -64,7 +64,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
         {demoType !== "pugsetup" && showImages && (
           <Skeleton isLoaded={logoLoaded} ml="auto" mb={[3, null, 0]}>
             <Image
-              src={`/img/${demoType}.png`}
+              src={`${process.env.PUBLIC_URL}/img/${demoType}.png`}
               onLoad={() => setLogoLoaded(true)}
               h="6.5rem"
             />

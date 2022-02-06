@@ -33,6 +33,7 @@
     "test": "echo no tests && exit 1",
     "deploy": "react-scripts build && cd build && cp index.html 200.html && surge . --domain=pugs.jayden.codes"
   },
+  "homepage": "/app",
   "eslintConfig": {
     "extends": "react-app"
   },

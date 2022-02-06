@@ -62,7 +62,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const [reversed, setReversed] = useState(false);
 
   useEffect(() => {
-    const api = new DataAPI("");
+    const api = new DataAPI();
     api
       .fetchMatch(props.matches.find((f) => f.id === id)!)
       .then((m) => setMatch(m));

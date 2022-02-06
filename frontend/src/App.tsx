@@ -18,7 +18,7 @@ const theme = extendTheme({ config });
 export const App = () => {
   const [matches, setMatches] = useState<MatchInfo[] | undefined>();
   useEffect(() => {
-    const api = new DataAPI("");
+    const api = new DataAPI();
     api.fetchMatches().then((m) => setMatches(m));
   }, []);
 

@@ -4,3 +4,4 @@
 *.dem
 node_modules
 demos
+backend/data
