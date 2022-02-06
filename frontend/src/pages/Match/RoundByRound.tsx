@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getRoundIcon } from ".";
 import { msToRoundTime } from "../../data";
 import {
+  GRAY_KILLFEED,
   INVERT_TEAM,
   Kill,
   KILLFEED_COLORS_MAP,
@@ -24,6 +25,7 @@ import {
   RED_KILLFEED,
   Round,
   RoundByRound,
+  RoundEvent,
   Team,
   TeamsMap,
   TEAM_COLORS_MAP,
@@ -90,6 +92,12 @@ const EventBox = (props: FlexProps) => (
   </Flex>
 );
 
+const KillLocation = (props: TextProps) => (
+  <Text {...props} ml={2} color={GRAY_KILLFEED}>
+    @{props.children}
+  </Text>
+);
+
 const KillFeedItem = (
   props: KillFeedThing & {
     round: number;
@@ -106,7 +114,7 @@ const KillFeedItem = (
         color={playerColor(startTeams[props.killer.toString()], round)}
       />
 
-      <Text ml={2}>@{props.kill.attackerLocation}</Text>
+      <KillLocation>{props.kill.attackerLocation}</KillLocation>
 
       {kill.assistedFlash === true && (
         <>
@@ -130,7 +138,7 @@ const KillFeedItem = (
         player={playerNames[props.victim.toString()]}
         color={playerColor(startTeams[props.victim.toString()], round)}
       />
-      <Text ml={2}>@{props.kill.victimLocation}</Text>
+      <KillLocation>{props.kill.victimLocation}</KillLocation>
     </EventBox>
   );
 };
@@ -153,6 +161,52 @@ const RoundResultIcon = (props: { round: Round; visibility: boolean }) => {
     </Box>
   );
 };
+
+const EventsFeed = (props: {
+  events: RoundEvent[];
+  startTeams: TeamsMap;
+  playerNames: PlayerNames;
+  round: number;
+}) => (
+  <Flex flexDirection="column" alignItems="start" mt={2} overflowX="auto">
+    {props.events.map((event, j) => {
+      const timeString = msToRoundTime(event.time);
+
+      return (
+        <Flex key={j}>
+          <Flex h="2.4rem" px={2} py={1} mt={1} mr={1} alignItems="center">
+            {timeString}
+          </Flex>
+          {event.kind === "kill" && (
+            <KillFeedItem
+              key={j}
+              {...event}
+              startTeams={props.startTeams}
+              playerNames={props.playerNames}
+              round={props.round}
+            />
+          )}
+
+          {event.kind === "plant" && (
+            <EventBox borderColor="gray">
+              {props.playerNames[event.planter]} planted the bomb
+            </EventBox>
+          )}
+
+          {event.kind === "defuse" && (
+            <EventBox borderColor="gray">
+              {props.playerNames[event.defuser]} defused the bomb
+            </EventBox>
+          )}
+
+          {event.kind === "bomb_explode" && (
+            <EventBox borderColor="gray">Bomb exploded</EventBox>
+          )}
+        </Flex>
+      );
+    })}
+  </Flex>
+);
 
 export const RoundByRoundList = (props: {
   roundByRound: RoundByRound;
@@ -216,51 +270,12 @@ export const RoundByRoundList = (props: {
             </AccordionButton>
 
             <AccordionPanel>
-              <Flex flexDirection="column" alignItems="start" mt={2}>
-                {events.map((event, j) => {
-                  const timeString = msToRoundTime(event.time);
-
-                  return (
-                    <Flex key={j}>
-                      <Flex
-                        h="2.4rem"
-                        px={2}
-                        py={1}
-                        mt={1}
-                        mr={1}
-                        alignItems="center"
-                      >
-                        {timeString}
-                      </Flex>
-                      {event.kind === "kill" && (
-                        <KillFeedItem
-                          key={j}
-                          {...event}
-                          startTeams={props.startTeams}
-                          playerNames={props.playerNames}
-                          round={i + 1}
-                        />
-                      )}
-
-                      {event.kind === "plant" && (
-                        <EventBox borderColor="gray">
-                          {props.playerNames[event.planter]} planted the bomb
-                        </EventBox>
-                      )}
-
-                      {event.kind === "defuse" && (
-                        <EventBox borderColor="gray">
-                          {props.playerNames[event.defuser]} defused the bomb
-                        </EventBox>
-                      )}
-
-                      {event.kind === "bomb_explode" && (
-                        <EventBox borderColor="gray">Bomb exploded</EventBox>
-                      )}
-                    </Flex>
-                  );
-                })}
-              </Flex>
+              <EventsFeed
+                events={events}
+                startTeams={props.startTeams}
+                playerNames={props.playerNames}
+                round={i + 1}
+              />
             </AccordionPanel>
           </AccordionItem>
         );

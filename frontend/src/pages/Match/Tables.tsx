@@ -36,8 +36,8 @@ export const utilTableSchema: TableSchema = [
 
 // prettier-ignore
 export const openingsTableSchema: TableSchema = [
-  { key: "tradeKills", title: "TK", label: "Trade kills" },
-  { key: "deathsTraded", title: "DT", label: "Deaths traded" },
+  { key: "tradeKills", title: "TrK", label: "Trade kills" },
+  { key: "deathsTraded", title: "TrD", label: "Deaths traded" },
   { key: "openingKills", title: "FK", label: "First Kills" },
   { key: "openingDeaths", title: "FD", label: "First Deaths" },
   { key: "openingAttempts", title: "Opening Attempts" },

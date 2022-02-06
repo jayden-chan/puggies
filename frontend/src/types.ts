@@ -8,6 +8,7 @@ export const TEAM_COLORS_MAP = {
 export const T_KILLFEED = "#C7A247";
 export const CT_KILLFEED = "#4F9EDE";
 export const RED_KILLFEED = "#800000";
+export const GRAY_KILLFEED = "#999999";
 export const KILLFEED_COLORS_MAP = {
   T: T_KILLFEED,
   CT: CT_KILLFEED,
@@ -66,12 +67,18 @@ export type BombExplodeEvent = {
   time: number;
 };
 
+export type RoundEvent =
+  | KillEvent
+  | PlantEvent
+  | DefuseEvent
+  | BombExplodeEvent;
+
 export type RoundByRound = {
   teamAScore: number;
   teamBScore: number;
   teamASide: Team;
   teamBSide: Team;
-  events: (KillEvent | PlantEvent | DefuseEvent | BombExplodeEvent)[];
+  events: RoundEvent[];
 }[];
 
 export type Kill = {
