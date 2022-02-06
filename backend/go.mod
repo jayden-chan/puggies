@@ -1,4 +1,4 @@
-module github.com/jayden-chan/csgo-demo-stats-backend
+module github.com/jayden-chan/puggies-backend
 
 go 1.17
 

@@ -55,5 +55,10 @@ func RunServer(dataPath, frontendPath string) {
 		}
 	})
 
-	r.Run(":9115")
+	port := os.Getenv("PUGGIES_HTTP_PORT")
+	if port == "" {
+		port = "9115"
+	}
+
+	r.Run(":" + port)
 }

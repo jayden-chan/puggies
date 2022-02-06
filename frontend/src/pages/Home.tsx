@@ -79,7 +79,7 @@ export const Home = (props: { matches: MatchInfo[] }) => (
   <Container maxW="container.xl" mt={16}>
     <Flex alignItems="center" justifyContent="space-between">
       <Heading lineHeight="unset" mb={0}>
-        CSGO Match Stats
+        Puggies
       </Heading>
       <ColorModeSwitcher mx={2} justifySelf="flex-end" />
     </Flex>
