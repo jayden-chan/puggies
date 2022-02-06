@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/dustin/go-heatmap v0.0.0-20180603032536-b89dbd73785a // indirect
+	github.com/gin-contrib/gzip v0.0.5 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect

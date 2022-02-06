@@ -3,8 +3,11 @@ github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dustin/go-heatmap v0.0.0-20180603032536-b89dbd73785a h1:o0oeorr6BKW/lHrT2NWX1CQn6LDhr5lvAPIIjTDC1bg=
 github.com/dustin/go-heatmap v0.0.0-20180603032536-b89dbd73785a/go.mod h1:VBmwC4U3p2SMEKr+/m5j0eby7rmUtSoA5TGLwe6P+3A=
+github.com/gin-contrib/gzip v0.0.5 h1:mhnVU32YnnBh2LPH2iqRqsA/eR7SAqRaD388jL2s/j0=
+github.com/gin-contrib/gzip v0.0.5/go.mod h1:OPIK6HR0Um2vNmBUTlayD7qle4yVVRZT0PyhdUigrKk=
 github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE=
 github.com/gin-contrib/sse v0.1.0/go.mod h1:RHrZQHXnP2xjPF+u1gW/2HnVO7nvIa9PG3Gm+fLHvGI=
+github.com/gin-gonic/gin v1.7.4/go.mod h1:jD2toBW3GZUr5UMcdrwQA10I7RuaFOl/SGeDjXkfUtY=
 github.com/gin-gonic/gin v1.7.7 h1:3DoBmSbJbZAWqXJC3SLjAPfutPJJRN1U5pALB7EeTTs=
 github.com/gin-gonic/gin v1.7.7/go.mod h1:axIBovoeJpVj8S3BwE0uPMTeReE4+AfFtqpqaZ1qq1U=
 github.com/go-gl/gl v0.0.0-20180407155706-68e253793080/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
