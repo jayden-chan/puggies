@@ -14,6 +14,16 @@ func main() {
 			fmt.Fprintln(os.Stderr, "Provide the path to the demo file")
 		}
 	case "serve":
-		RunServer("data")
+		dataPath := os.Getenv("PUGGIES_DATA_PATH")
+		if dataPath == "" {
+			dataPath = "/data"
+		}
+
+		frontendPath := os.Getenv("PUGGIES_FRONTEND_PATH")
+		if frontendPath == "" {
+			frontendPath = "/workspace/frontend/build"
+		}
+
+		RunServer(dataPath, frontendPath)
 	}
 }

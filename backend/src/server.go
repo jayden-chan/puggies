@@ -9,14 +9,14 @@ func ping(c *gin.Context) {
 	})
 }
 
-func RunServer(dataPath string) {
+func RunServer(dataPath, frontendPath string) {
 	r := gin.Default()
 
-	r.Static("/app", "../frontend/build")
-	r.StaticFile("/favicon.ico", "../frontend/build/favicon.ico")
+	r.Static("/app", frontendPath)
+	r.StaticFile("/favicon.ico", frontendPath+"/favicon.ico")
 
 	r.NoRoute(func(c *gin.Context) {
-		c.File("../frontend/build/index.html")
+		c.File(frontendPath + "/index.html")
 	})
 	r.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/app")
