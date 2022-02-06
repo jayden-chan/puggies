@@ -4,6 +4,7 @@ import (
 	"sort"
 	"strings"
 
+	dem "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs"
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
@@ -174,6 +175,31 @@ Outer:
 				(*playerNames)[player] = (*playerNames)[player][1:]
 			}
 		}
+	}
+}
+
+func UpdateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
+	tTeam := (*p).GameState().TeamTerrorists()
+	tTag := tTeam.ClanName()
+	ctTeam := (*p).GameState().TeamCounterTerrorists()
+	ctTag := ctTeam.ClanName()
+
+	if tTag != "" && ctTag != "" {
+		*tClanTag = tTag
+		*ctClanTag = ctTag
+	}
+
+	for _, tPlayer := range tTeam.Members() {
+		(*teams)[tPlayer.SteamID64] = "T"
+	}
+	for _, ctPlayer := range ctTeam.Members() {
+		(*teams)[ctPlayer.SteamID64] = "CT"
+	}
+}
+
+func UpdatePlayerNames(p *dem.Parser, playerNames *NamesMap) {
+	for _, player := range (*p).GameState().Participants().Playing() {
+		(*playerNames)[player.SteamID64] = player.Name
 	}
 }
 
