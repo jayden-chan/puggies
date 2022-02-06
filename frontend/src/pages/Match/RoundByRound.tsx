@@ -106,6 +106,8 @@ const KillFeedItem = (
         color={playerColor(startTeams[props.killer.toString()], round)}
       />
 
+      <Text ml={2}>@{props.kill.attackerLocation}</Text>
+
       {kill.assistedFlash === true && (
         <>
           <KillFeedPlayer mx={2} player={"+"} color="white" />
@@ -128,6 +130,7 @@ const KillFeedItem = (
         player={playerNames[props.victim.toString()]}
         color={playerColor(startTeams[props.victim.toString()], round)}
       />
+      <Text ml={2}>@{props.kill.victimLocation}</Text>
     </EventBox>
   );
 };

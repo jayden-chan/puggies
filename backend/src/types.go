@@ -93,6 +93,8 @@ type Kill struct {
 	NoScope           bool   `json:"noScope"`
 	ThroughSmoke      bool   `json:"throughSmoke"`
 	PenetratedObjects int    `json:"penetratedObjects"`
+	AttackerLocation  string `json:"attackerLocation"`
+	VictimLocation    string `json:"victimLocation"`
 }
 
 type Death struct {

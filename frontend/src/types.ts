@@ -84,6 +84,8 @@ export type Kill = {
   noScope: boolean;
   throughSmoke: boolean;
   penetratedObjects: number;
+  attackerLocation: string;
+  victimLocation: string;
 };
 
 export type DemoType = "esea" | "pugsetup" | "faceit" | "steam";

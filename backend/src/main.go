@@ -135,6 +135,8 @@ func main() {
 				NoScope:           e.NoScope,
 				ThroughSmoke:      e.ThroughSmoke,
 				PenetratedObjects: e.PenetratedObjects,
+				AttackerLocation:  e.Killer.LastPlaceName(),
+				VictimLocation:    e.Victim.LastPlaceName(),
 			}
 
 			if prd.openings[len(prd.openings)-1] == nil {
