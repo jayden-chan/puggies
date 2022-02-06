@@ -101,6 +101,17 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
               (demo link)
             </Link>
           )}
+          {demoType === "esea" && (
+            <Link
+              isExternal
+              href={`https://play.esea.net/match/${id.replace(
+                "esea_match_",
+                ""
+              )}`}
+            >
+              (ESEA match page)
+            </Link>
+          )}
         </Heading>
       </Box>
 
