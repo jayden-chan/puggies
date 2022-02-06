@@ -1,16 +1,5 @@
 import { getDateInfo } from "../data";
-import { Match } from "../types";
-
-export type MatchInfo = {
-  id: string;
-  map: string;
-  demoType: string;
-  playerNames: { [key: string]: string };
-  teamAScore: number;
-  teamBScore: number;
-  teamATitle: string;
-  teamBTitle: string;
-};
+import { Match, MatchInfo } from "../types";
 
 export class DataAPI {
   private endpoint: string;

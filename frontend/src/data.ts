@@ -1,5 +1,5 @@
 import { format, parse } from "date-fns";
-import { Match, Stats, Team } from "./types";
+import { DemoType, Match, Stats, Team } from "./types";
 
 export const getPlayers = (
   data: Match,
@@ -23,8 +23,21 @@ export const msToRoundTime = (ms: number): string => {
     .padStart(2, "0")}`;
 };
 
+export const getDemoTypePretty = (demoType: DemoType): string => {
+  switch (demoType) {
+    case "esea":
+      return "ESEA match";
+    case "pugsetup":
+      return "PUG";
+    case "faceit":
+      return "FACEIT match";
+    case "steam":
+      return "Match";
+  }
+};
+
 export const getDateInfo = (id: string): [string, number] => {
-  const [regex, date] = id.match(/(\d\d\d\d-\d\d-\d\d)/) ?? [];
+  const [regex, date] = id.match(/(\d\d\d\d-\d\d-\d\d)/) ?? demoDates[id] ?? [];
   if (!regex) {
     return ["Jan 1 1970", 0];
   }
@@ -47,4 +60,8 @@ export const demoLinks: { [key: string]: string } = {
     "https://drive.google.com/file/d/1PqBiW9QvktRzM310o4tq3Zwj5CIlme33/view?usp=sharing",
   "pug_de_vertigo_2022-02-02_06":
     "https://drive.google.com/file/d/1-bnV4eVgPpzH42avrbRsY92FlyJLMGRz/view?usp=sharing",
+};
+
+export const demoDates: { [key: string]: string[] } = {
+  esea_match_16841568: ["_", "2022-01-31"],
 };

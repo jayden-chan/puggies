@@ -20,10 +20,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { DataAPI, MatchInfo } from "../../api";
+import { DataAPI } from "../../api";
 import { Loading } from "../../components/Loading";
-import { demoLinks, getDateInfo, getPlayers } from "../../data";
-import { Match, Round, Stats } from "../../types";
+import {
+  demoLinks,
+  getDateInfo,
+  getDemoTypePretty,
+  getPlayers,
+} from "../../data";
+import { Match, Round, Stats, MatchInfo } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
 import { PlayerInfo } from "./PlayerInfo";
@@ -87,7 +92,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     <Flex w="100%" h="100vh" pt={30} alignItems="center" flexDirection="column">
       <Box w={["95%", null, null, "80%"]} mb={3}>
         <Heading>
-          {demoType} on {map}{" "}
+          {getDemoTypePretty(demoType)} on {map}
         </Heading>
         <Heading fontSize="lg" as="h2">
           {dateString}{" "}

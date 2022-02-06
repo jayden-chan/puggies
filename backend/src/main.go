@@ -76,7 +76,7 @@ func main() {
 	var tClanTag string
 
 	consecutiveMatchStarts := 0
-	eseaMode := demoType == "ESEA match"
+	eseaMode := demoType == "esea"
 	isLive := !eseaMode
 
 	deathTimes := make(map[uint64]Death)
@@ -327,6 +327,11 @@ func main() {
 	err = p.ParseToEnd()
 	checkError(err)
 	fmt.Fprintln(os.Stderr, "Computing stats...")
+
+	if eseaMode {
+		StripPlayerPrefixes(teams, &playerNames, "CT")
+		StripPlayerPrefixes(teams, &playerNames, "T")
+	}
 
 	prd.CropToRealRounds(eseaMode)
 	totals := prd.ComputeTotals()

@@ -1,5 +1,3 @@
-import { MatchInfo } from "./api";
-
 export const T_YELLOW = "#ead18a";
 export const CT_BLUE = "#b5d4ee";
 export const TEAM_COLORS_MAP = {
@@ -86,6 +84,19 @@ export type Kill = {
   noScope: boolean;
   throughSmoke: boolean;
   penetratedObjects: number;
+};
+
+export type DemoType = "esea" | "pugsetup" | "faceit" | "steam";
+
+export type MatchInfo = {
+  id: string;
+  map: string;
+  demoType: DemoType;
+  playerNames: { [key: string]: string };
+  teamAScore: number;
+  teamBScore: number;
+  teamATitle: string;
+  teamBTitle: string;
 };
 
 export type Match = {

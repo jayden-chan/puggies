@@ -125,13 +125,13 @@ func GetDemoFileName(path string) string {
 
 func GetDemoType(demoFileName string) string {
 	if strings.HasPrefix(demoFileName, "esea") {
-		return "ESEA match"
+		return "esea"
 	} else if strings.HasPrefix(demoFileName, "pug_") {
-		return "pug"
+		return "pugsetup"
 	} else if strings.HasPrefix(demoFileName, "1-") {
-		return "FACEIT match"
+		return "faceit"
 	} else {
-		return "match"
+		return "steam"
 	}
 }
 
@@ -146,6 +146,35 @@ func GetTeamName(
 		return clanTag
 	}
 	return "team_" + GetPlayers(teams, playerNames, hltv, side)[0]
+}
+
+// better hope that everyone doesn't have the same first letter of their name!
+func StripPlayerPrefixes(teams TeamsMap, playerNames *NamesMap, side string) {
+Outer:
+	for {
+		var char byte = 0
+		for player, team := range teams {
+			if team != side {
+				continue
+			}
+
+			first := (*playerNames)[player][0]
+			if char == 0 {
+				char = first
+				continue
+			}
+
+			if first != char {
+				break Outer
+			}
+		}
+
+		for player, team := range teams {
+			if team == side {
+				(*playerNames)[player] = (*playerNames)[player][1:]
+			}
+		}
+	}
 }
 
 func GetWeaponFileName(weapon common.EquipmentType) string {
