@@ -23,7 +23,7 @@ func main() {
 		frontendPath := os.Getenv("PUGGIES_FRONTEND_PATH")
 		if frontendPath == "" {
 			// default path for docker
-			frontendPath = "/workspace/frontend/build"
+			frontendPath = "/frontend/build"
 		}
 
 		RunServer(dataPath, frontendPath)

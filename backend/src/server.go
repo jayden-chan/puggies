@@ -37,6 +37,12 @@ func RunServer(dataPath, frontendPath string) {
 		c.Redirect(http.StatusMovedPermanently, "/app")
 	})
 
+	// Source code and license
+	r.StaticFile("/puggies-src.tar.gz", frontendPath+"/puggies-src.tar.gz")
+	r.GET("/LICENSE", func(c *gin.Context) {
+		c.File(frontendPath + "/LICENSE")
+	})
+
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/ping", ping)

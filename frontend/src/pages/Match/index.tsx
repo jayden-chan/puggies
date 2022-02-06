@@ -69,7 +69,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   }, [id, props.matches]);
 
   if (match === undefined) {
-    return <Loading text="Loading match..." />;
+    return <Loading minH="calc(100vh - 2.6rem)">Loading match...</Loading>;
   }
 
   const { map, demoType, teamAScore, teamBScore, teamATitle, teamBTitle } =
@@ -89,7 +89,13 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   };
 
   return (
-    <Flex w="100%" h="100vh" pt={30} alignItems="center" flexDirection="column">
+    <Flex
+      w="100%"
+      minH="calc(100vh - 2.6rem)"
+      pt={30}
+      alignItems="center"
+      flexDirection="column"
+    >
       <Box w={["95%", null, null, "80%"]} mb={3}>
         <Heading>
           {getDemoTypePretty(demoType)} on {map}

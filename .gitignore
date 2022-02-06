@@ -2,6 +2,7 @@
 *.swp
 *.bin
 *.dem
+*.tar.gz
 node_modules
 demos
 backend/data

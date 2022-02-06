@@ -1,10 +1,12 @@
 FROM golang:1.17.5 as backendBuilder
 
+ARG src_tarball
+
 WORKDIR /workspace
 COPY ./backend/go.mod ./backend/go.sum ./
 COPY ./backend/src .
 ENV CGO_ENABLED=0
-RUN go get && go build -o main .
+RUN go get && go build -o puggies .
 
 FROM node:lts-alpine as frontendBuilder
 
@@ -22,15 +24,19 @@ RUN yarn build
 
 FROM scratch
 
-WORKDIR /workspace
+WORKDIR /
 COPY --from=backendBuilder \
-     /workspace/main \
-     /workspace/backend/main
+     /workspace/puggies \
+     /backend/puggies
 
 COPY --from=frontendBuilder \
     /workspace/build \
-    /workspace/frontend/build
+    /frontend/build
+
+COPY ./puggies-src.tar.gz /frontend/build/
+COPY ./LICENSE /frontend/build/
 
 ENV GIN_MODE=release
 EXPOSE 9115/tcp
-CMD ["/workspace/backend/main", "serve"]
+ENTRYPOINT ["/backend/puggies"]
+CMD ["serve"]
