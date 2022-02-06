@@ -6,16 +6,16 @@ import {
   Image,
   LinkBox,
   LinkOverlay,
-  VStack,
-  Text,
   Skeleton,
+  Text,
   useBreakpointValue,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { MatchInfo } from "../types";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 import { getDateInfo } from "../data";
+import { MatchInfo } from "../types";
 
 const MatchCard = (props: { match: MatchInfo }) => {
   const { id, map, demoType, teamAScore, teamBScore, teamATitle, teamBTitle } =

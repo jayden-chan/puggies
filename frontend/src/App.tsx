@@ -3,10 +3,10 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { DataAPI } from "./api";
-import { MatchInfo } from "./types";
 import { Loading } from "./components/Loading";
 import { Home } from "./pages/Home";
 import { MatchPage } from "./pages/Match";
+import { MatchInfo } from "./types";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",

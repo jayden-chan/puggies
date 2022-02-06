@@ -28,7 +28,7 @@ import {
   getDemoTypePretty,
   getPlayers,
 } from "../../data";
-import { Match, Round, Stats, MatchInfo } from "../../types";
+import { Match, MatchInfo, Round, Stats } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
 import { PlayerInfo } from "./PlayerInfo";

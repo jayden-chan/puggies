@@ -11,7 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { Match, PlayerNames, Stats } from "../../types";
+import { Match, Stats } from "../../types";
 
 export type TableSchema = {
   key: keyof Stats;
@@ -120,7 +120,14 @@ export const StatTable = (props: {
         <Tbody>
           {props.playerIds.map((player) => (
             <Tr key={player}>
-              <Td minW={["40vw", null, "160px"]} key={`${player}name`}>
+              <Td
+                w={["40vw", null, "200px"]}
+                maxW={["40vw", null, "200px"]}
+                key={`${player}name`}
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              >
                 {props.data.meta.playerNames[player]}
               </Td>
               {props.schema.map((col) => {
