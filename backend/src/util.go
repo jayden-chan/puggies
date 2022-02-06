@@ -75,7 +75,7 @@ func GetPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side st
 		}
 	}
 
-	sort.Slice(ids, func(i, j int) bool {
+	sort.SliceStable(ids, func(i, j int) bool {
 		return hltv[ids[j]] < hltv[ids[i]]
 	})
 

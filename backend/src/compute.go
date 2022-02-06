@@ -282,7 +282,7 @@ func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 			})
 		}
 
-		sort.Slice(events, func(i, j int) bool {
+		sort.SliceStable(events, func(i, j int) bool {
 			return events[i].Time < events[j].Time
 		})
 
