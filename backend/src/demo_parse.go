@@ -57,7 +57,6 @@ func ParseDemo(path string) {
 
 	var points_shotsFired []r2.Point
 
-	// Register handler on kill events
 	p.RegisterEventHandler(func(e events.Kill) {
 		// In faceit these events can sometimes trigger before we
 		// even have a RoundStart event so the stats arrays will be

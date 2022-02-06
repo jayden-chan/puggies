@@ -16,11 +16,13 @@ func main() {
 	case "serve":
 		dataPath := os.Getenv("PUGGIES_DATA_PATH")
 		if dataPath == "" {
+			// default path for docker
 			dataPath = "/data"
 		}
 
 		frontendPath := os.Getenv("PUGGIES_FRONTEND_PATH")
 		if frontendPath == "" {
+			// default path for docker
 			frontendPath = "/workspace/frontend/build"
 		}
 

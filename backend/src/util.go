@@ -86,9 +86,9 @@ func GetPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side st
 	return ret
 }
 
-func GetScore(rounds []Round, side string, toRound int) (int, string) {
+func GetScore(rounds []Round, endSide string, toRound int) (int, string) {
 	score := 0
-	currSide := side
+	currSide := endSide
 	roundSide := ""
 
 	// We will iterate the array backwards since the `side`

@@ -10,7 +10,7 @@ for f in $files; do
     matchId=${f:t:r}
 
     outPath="../frontend/public/matches/$matchId.json"
-    go run src/*.go $f > "$outPath"
+    go run src/*.go parse $f > "$outPath"
     jq '.meta' "$outPath" > "$matchId-meta.json"
 
     if [ "$1" != "--keep-img" ]; then

@@ -58,7 +58,6 @@ func ComputeBasicStats(
 	totalHeadshots PlayerIntMap,
 	totalDeaths PlayerIntMap,
 ) (PlayerF64Map, PlayerF64Map, PlayerIntMap, PlayerF64Map) {
-	// Compute headshot percentages, K/D & K-D etc
 	kd := make(PlayerF64Map)
 	kdiff := make(PlayerIntMap)
 	kpr := make(PlayerF64Map)
@@ -97,7 +96,6 @@ func ComputeKAST(
 	kast := make(PlayerF64Map)
 	for i := 0; i < totalRounds; i++ {
 		for p := range teams {
-			// KAST
 			if kills[i][p] != 0 ||
 				assists[i][p] != 0 ||
 				deaths[i][p] == 0 ||
