@@ -1,6 +1,5 @@
 .git
 *.env
-*.tar.gz
 frontend/node_modules
 demos
 backend/data
