@@ -8,6 +8,13 @@ import (
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
+func NormalizeFolderPath(path string) string {
+	if strings.HasSuffix(path, "/") {
+		return path[:len(path)-1]
+	}
+	return path
+}
+
 func MapValTotal(m *PlayerIntMap) int {
 	sum := 0
 	for _, val := range *m {

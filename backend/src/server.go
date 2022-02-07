@@ -48,7 +48,7 @@ func RunServer(dataPath, frontendPath string) {
 		v1.GET("/ping", ping)
 		v1.GET("/health", ping)
 		v1.Static("/matches", dataPath+"/matches")
-		v1.StaticFile("/matchInfo.json", dataPath+"/matchInfo.json")
+		v1.StaticFile("/history.json", dataPath+"/history.json")
 	}
 
 	r.NoRoute(func(c *gin.Context) {

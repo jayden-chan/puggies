@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -19,7 +18,9 @@ func checkError(err error) {
 	}
 }
 
-func ParseDemo(path string) {
+func ParseDemo(path, heatmapsDir string) Output {
+	heatmapsDir = NormalizeFolderPath(heatmapsDir)
+
 	f, err := os.Open(path)
 	checkError(err)
 	defer f.Close()
@@ -298,7 +299,7 @@ func ParseDemo(path string) {
 		prd.winners[len(prd.winners)-1] = roundWinners
 	})
 
-	fmt.Fprintln(os.Stderr, "Parsing demo...")
+	fmt.Fprintln(os.Stderr, "Parsing demo "+demoFileName+" ...")
 	err = p.ParseToEnd()
 	checkError(err)
 	fmt.Fprintln(os.Stderr, "Computing stats...")
@@ -338,7 +339,7 @@ func ParseDemo(path string) {
 	teamAScore, _ := GetScore(prd.rounds, "CT", 999999999)
 	teamBScore, _ := GetScore(prd.rounds, "T", 999999999)
 
-	jsonstring, err := json.Marshal(&Output{
+	output := Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
 		StartTeams:  ComputeStartSides(teams, prd.rounds),
@@ -395,10 +396,10 @@ func ParseDemo(path string) {
 			TeamATitle:  GetTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
 			TeamBTitle:  GetTeamName(tClanTag, teams, playerNames, hltv, "T"),
 		},
-	})
+	}
 
 	checkError(err)
-	fmt.Println(string(jsonstring))
 	fmt.Fprintln(os.Stderr, "Generating heatmaps...")
-	GenHeatmap(points_shotsFired, header, GetHeatmapFileName(path, "shotsFired"))
+	GenHeatmap(points_shotsFired, header, heatmapsDir+"/"+GetHeatmapFileName(path, "shotsFired"))
+	return output
 }

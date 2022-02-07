@@ -11,7 +11,7 @@ export class DataAPI {
 
   public async fetchMatches(): Promise<MatchInfo[]> {
     const results = (await (
-      await fetch(`${this.endpoint}/matchInfo.json`)
+      await fetch(`${this.endpoint}/history.json`)
     ).json()) as MatchInfo[];
 
     return results.sort((a, b) => {
