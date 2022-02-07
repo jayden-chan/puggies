@@ -30,23 +30,6 @@ func main() {
 			fmt.Fprintln(os.Stderr, "Usage: parseAll /path/to/demos /output/path")
 		}
 	case "serve":
-		dataPath := os.Getenv("PUGGIES_DATA_PATH")
-		if dataPath == "" {
-			// default path for docker container
-			dataPath = "/data"
-		}
-
-		staticPath := os.Getenv("PUGGIES_STATIC_PATH")
-		if staticPath == "" {
-			// default path for docker container
-			staticPath = "/frontend/build"
-		}
-
-		frontendPath := os.Getenv("PUGGIES_FRONTEND_PATH")
-		if frontendPath == "" {
-			frontendPath = "/app"
-		}
-
-		RunServer(dataPath, staticPath, frontendPath)
+		RunServer()
 	}
 }
