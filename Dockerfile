@@ -37,6 +37,16 @@ COPY ./puggies-src.tar.gz /frontend/build/
 COPY ./LICENSE /frontend/build/LICENSE.txt
 
 ENV GIN_MODE=release
+ENV PUGGIES_HTTP_PORT=9115
+ENV PUGGIES_DATA_PATH=/data
+
+# do not change this without also changing PUBLIC_URL above
+ENV PUGGIES_FRONTEND_PATH=/app
+
+# do not change this without also updating the frontend build
+# commands above (not sure why anyone would want to change this though)
+ENV PUGGIES_STATIC_PATH=/frontend/build
+
 EXPOSE 9115/tcp
 ENTRYPOINT ["/backend/puggies"]
 CMD ["serve"]

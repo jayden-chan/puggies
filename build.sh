@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/sh
 
 git archive --format=tar HEAD > "puggies-src.tar.gz"
 
