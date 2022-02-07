@@ -7,10 +7,16 @@ import (
 )
 
 func main() {
-	switch os.Args[1] {
+	args := os.Args[1:]
+	if len(args) == 0 {
+		fmt.Println("Commands: parse, parseAll, serve")
+		return
+	}
+
+	switch args[0] {
 	case "parse":
-		if os.Args[2] != "" {
-			output := ParseDemo(os.Args[2], ".")
+		if len(args) >= 2 && args[1] != "" {
+			output := ParseDemo(args[1], ".")
 			json, err := json.MarshalIndent(&output, "", "  ")
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
@@ -21,8 +27,8 @@ func main() {
 			fmt.Fprintln(os.Stderr, "Usage: parse /path/to/demo.dem")
 		}
 	case "parseAll":
-		if os.Args[2] != "" && os.Args[3] != "" {
-			err := ParseAll(os.Args[2], os.Args[3])
+		if len(args) >= 3 && args[1] != "" && args[2] != "" {
+			err := ParseAll(args[1], args[2])
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 			}
