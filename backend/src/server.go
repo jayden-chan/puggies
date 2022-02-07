@@ -14,7 +14,7 @@ func join(elem ...string) string {
 	return filepath.Join(elem...)
 }
 
-func RunServer(dataPath, frontendPath string) {
+func RunServer(dataPath, staticPath, frontendPath string) {
 	r := gin.Default()
 
 	// Set the Gin trusted proxies if provided
@@ -30,20 +30,20 @@ func RunServer(dataPath, frontendPath string) {
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	// Frontend routes
-	r.Static("/app", frontendPath)
-	r.GET("/", redirToApp())
+	r.Static(frontendPath, staticPath)
+	r.GET("/", redirToApp(frontendPath))
 
 	// Static files in the root that browsers might ask for
-	r.StaticFile("/android-chrome-192x192.png", join(frontendPath, "android-chrome-192x192.png"))
-	r.StaticFile("/android-chrome-512x512.png", join(frontendPath, "android-chrome-512x512.png"))
-	r.StaticFile("/apple-touch-icon.png", join(frontendPath, "apple-touch-icon.png"))
-	r.StaticFile("/favicon-16x16.png", join(frontendPath, "favicon-16x16.png"))
-	r.StaticFile("/favicon-32x32.png", join(frontendPath, "favicon-32x32.png"))
-	r.StaticFile("/favicon.ico", join(frontendPath, "favicon.ico"))
+	r.StaticFile("/android-chrome-192x192.png", join(staticPath, "android-chrome-192x192.png"))
+	r.StaticFile("/android-chrome-512x512.png", join(staticPath, "android-chrome-512x512.png"))
+	r.StaticFile("/apple-touch-icon.png", join(staticPath, "apple-touch-icon.png"))
+	r.StaticFile("/favicon-16x16.png", join(staticPath, "favicon-16x16.png"))
+	r.StaticFile("/favicon-32x32.png", join(staticPath, "favicon-32x32.png"))
+	r.StaticFile("/favicon.ico", join(staticPath, "favicon.ico"))
 
 	// Source code and license
-	r.StaticFile("/puggies-src.tar.gz", join(frontendPath, "puggies-src.tar.gz"))
-	r.GET("/LICENSE.txt", license(frontendPath))
+	r.StaticFile("/puggies-src.tar.gz", join(staticPath, "puggies-src.tar.gz"))
+	r.GET("/LICENSE.txt", license(staticPath))
 
 	// API routes
 	v1 := r.Group("/api/v1")
@@ -55,7 +55,7 @@ func RunServer(dataPath, frontendPath string) {
 	}
 
 	// 404 handler
-	r.NoRoute(noRoute(frontendPath))
+	r.NoRoute(noRoute(staticPath, frontendPath))
 
 	port := os.Getenv("PUGGIES_HTTP_PORT")
 	if port == "" {
@@ -92,18 +92,18 @@ func license(frontendPath string) func(*gin.Context) {
 	}
 }
 
-func redirToApp() func(*gin.Context) {
+func redirToApp(frontendPath string) func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/app")
+		c.Redirect(http.StatusMovedPermanently, frontendPath)
 	}
 }
 
-func noRoute(frontendPath string) func(*gin.Context) {
+func noRoute(staticPath, frontendPath string) func(*gin.Context) {
 	return func(c *gin.Context) {
 		// Serve the frontend in the event of a 404 at /app so that
 		// the frontend routing works properly
-		if strings.HasPrefix(c.Request.URL.Path, "/app") {
-			c.File(join(frontendPath, "index.html"))
+		if strings.HasPrefix(c.Request.URL.Path, frontendPath) {
+			c.File(join(staticPath, "index.html"))
 		} else {
 			c.String(404, "404 not found\n")
 		}

@@ -18,7 +18,7 @@ func main() {
 				fmt.Println(string(json))
 			}
 		} else {
-			fmt.Fprintln(os.Stderr, "Usage: parseAll /path/to/demo.dem")
+			fmt.Fprintln(os.Stderr, "Usage: parse /path/to/demo.dem")
 		}
 	case "parseAll":
 		if os.Args[2] != "" && os.Args[3] != "" {
@@ -32,16 +32,21 @@ func main() {
 	case "serve":
 		dataPath := os.Getenv("PUGGIES_DATA_PATH")
 		if dataPath == "" {
-			// default path for docker
+			// default path for docker container
 			dataPath = "/data"
+		}
+
+		staticPath := os.Getenv("PUGGIES_STATIC_PATH")
+		if staticPath == "" {
+			// default path for docker container
+			staticPath = "/frontend/build"
 		}
 
 		frontendPath := os.Getenv("PUGGIES_FRONTEND_PATH")
 		if frontendPath == "" {
-			// default path for docker
-			frontendPath = "/frontend/build"
+			frontendPath = "/app"
 		}
 
-		RunServer(dataPath, frontendPath)
+		RunServer(dataPath, staticPath, frontendPath)
 	}
 }
