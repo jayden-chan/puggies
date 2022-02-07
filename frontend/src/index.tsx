@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/app">
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <ColorModeScript />
       <App />
     </BrowserRouter>

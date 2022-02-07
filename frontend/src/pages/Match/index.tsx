@@ -19,7 +19,7 @@ import {
   faStopwatch,
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { DataAPI } from "../../api";
 import { Loading } from "../../components/Loading";
 import {
@@ -55,6 +55,7 @@ export const getRoundIcon = (round: Round) => {
 };
 
 export const MatchPage = (props: { matches: MatchInfo[] }) => {
+  const navigate = useNavigate();
   const { id = "" } = useParams();
 
   const [match, setMatch] = useState<Match | undefined>();
@@ -63,9 +64,16 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
 
   useEffect(() => {
     const api = new DataAPI();
+    const matchId = props.matches.find((f) => f.id === id);
+    if (matchId === undefined) {
+      navigate("/404");
+      return;
+    }
+
     api
-      .fetchMatch(props.matches.find((f) => f.id === id)!)
-      .then((m) => setMatch(m));
+      .fetchMatch(matchId)
+      .then((m) => setMatch(m))
+      .catch((err) => console.error(err));
   }, [id, props.matches]);
 
   if (match === undefined) {

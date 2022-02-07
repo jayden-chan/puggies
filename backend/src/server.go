@@ -76,7 +76,7 @@ func ping() func(*gin.Context) {
 func matches(dataPath string) func(*gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")
-		c.File(join(dataPath, "matches", id+".json"))
+		c.File(join(dataPath, "matches", id))
 	}
 }
 

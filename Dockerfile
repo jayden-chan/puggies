@@ -1,7 +1,5 @@
 FROM golang:1.17.5 as backendBuilder
 
-ARG src_tarball
-
 WORKDIR /workspace
 COPY ./backend/go.mod ./backend/go.sum ./
 COPY ./backend/src .
@@ -16,6 +14,8 @@ COPY ./frontend/package.json ./frontend/tsconfig.json ./frontend/yarn.lock ./
 RUN yarn install
 
 ENV NODE_ENV=production
+ENV REACT_APP_PUGGIES_API_ENDPOINT=/api/v1
+ENV PUBLIC_URL=/app
 
 COPY ./frontend/public ./public
 COPY ./frontend/src ./src

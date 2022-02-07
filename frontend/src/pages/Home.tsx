@@ -76,7 +76,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
 };
 
 export const Home = (props: { matches: MatchInfo[] }) => (
-  <Container maxW="container.xl" mt={16}>
+  <Container maxW="container.xl" mt={8}>
     <Flex alignItems="center" justifyContent="space-between">
       <Heading lineHeight="unset" mb={0}>
         Puggies

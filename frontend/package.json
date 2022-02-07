@@ -30,8 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "echo no tests && exit 1",
-    "deploy": "react-scripts build && cd build && cp index.html 200.html && surge . --domain=pugs.jayden.codes"
+    "test": "echo no tests && exit 1"
   },
   "homepage": "/app",
   "eslintConfig": {

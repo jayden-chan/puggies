@@ -38,7 +38,7 @@ const Footer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Flex h="2.5rem" alignItems="center" px={2.5} color="gray">
+      <Flex h="2.5rem" alignItems="center" px={2.5} color="#777">
         <Text mr={4} fontWeight="bold">
           Puggies 1.0.0
         </Text>
