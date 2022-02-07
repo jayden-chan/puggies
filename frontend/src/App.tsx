@@ -49,7 +49,7 @@ const Footer = () => {
         <Link isExternal href="https://github.com/jayden-chan/puggies" mr={4}>
           GitHub
         </Link>
-        <Link href="/LICENSE" mr={4}>
+        <Link href="/LICENSE.txt" mr={4}>
           License
         </Link>
         <Link onClick={onOpen}>Logo Attribution</Link>

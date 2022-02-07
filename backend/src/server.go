@@ -43,7 +43,7 @@ func RunServer(dataPath, frontendPath string) {
 
 	// Source code and license
 	r.StaticFile("/puggies-src.tar.gz", join(frontendPath, "puggies-src.tar.gz"))
-	r.GET("/LICENSE", license(frontendPath))
+	r.GET("/LICENSE.txt", license(frontendPath))
 
 	// API routes
 	v1 := r.Group("/api/v1")
@@ -88,7 +88,7 @@ func history(dataPath string) func(*gin.Context) {
 
 func license(frontendPath string) func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.File(join(frontendPath, "LICENSE"))
+		c.File(join(frontendPath, "LICENSE.txt"))
 	}
 }
 

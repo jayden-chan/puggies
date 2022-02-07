@@ -34,7 +34,7 @@ COPY --from=frontendBuilder \
     /frontend/build
 
 COPY ./puggies-src.tar.gz /frontend/build/
-COPY ./LICENSE /frontend/build/
+COPY ./LICENSE /frontend/build/LICENSE.txt
 
 ENV GIN_MODE=release
 EXPOSE 9115/tcp
