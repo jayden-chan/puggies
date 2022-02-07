@@ -3,6 +3,7 @@ import {
   ChakraProvider,
   extendTheme,
   Flex,
+  Image,
   Link,
   Modal,
   ModalBody,
@@ -94,6 +95,9 @@ const Header = () => {
       fontWeight="bold"
     >
       <Link as={ReactRouterLink} to="/" mr={3}>
+        <Image src={`${process.env.PUBLIC_URL}/favicon-32x32.png`} />
+      </Link>
+      <Link as={ReactRouterLink} to="/">
         Home
       </Link>
     </Flex>
