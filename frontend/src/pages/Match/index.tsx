@@ -74,7 +74,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
       .fetchMatch(matchId)
       .then((m) => setMatch(m))
       .catch((err) => console.error(err));
-  }, [id, props.matches]);
+  }, [id, props.matches, navigate]);
 
   if (match === undefined) {
     return <Loading minH="calc(100vh - 5.5rem)">Loading match...</Loading>;

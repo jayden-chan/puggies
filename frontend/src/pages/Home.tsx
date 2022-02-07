@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ColorModeSwitcher } from "../ColorModeSwitcher";
 import { getDateInfo } from "../data";
 import { MatchInfo } from "../types";
 
@@ -79,9 +78,8 @@ export const Home = (props: { matches: MatchInfo[] }) => (
   <Container maxW="container.xl" mt={8}>
     <Flex alignItems="center" justifyContent="space-between">
       <Heading lineHeight="unset" mb={0}>
-        Puggies
+        Home
       </Heading>
-      <ColorModeSwitcher mx={2} justifySelf="flex-end" />
     </Flex>
     <Divider my={5} />
     <Heading as="h2" fontSize="3xl">
