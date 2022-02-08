@@ -42,6 +42,27 @@
     "teamBTitle": "Pufflez N Sons"
   },
   {
+    "map": "de_vertigo",
+    "id": "esea_match_16846368",
+    "demoType": "esea",
+    "playerNames": {
+      "76561198040695945": "Honestpretzels",
+      "76561198079862187": "n051d3",
+      "76561198084529668": "jiaedin",
+      "76561198130102127": "ItsPeace",
+      "76561198154180312": "pleaselovecrack",
+      "76561198311581357": "hoobody",
+      "76561198844922246": "iTsbRidGe",
+      "76561199065335191": "BushMaster2007",
+      "76561199100682165": "Muugggiiii",
+      "76561199169854245": "xx_epicgamer420_x"
+    },
+    "teamAScore": 16,
+    "teamBScore": 7,
+    "teamATitle": "minigun mice",
+    "teamBTitle": "Seattle University"
+  },
+  {
     "map": "de_mirage",
     "id": "pug_de_mirage_2022-01-15_06",
     "demoType": "pugsetup",
@@ -144,7 +165,7 @@
     "teamAScore": 9,
     "teamBScore": 16,
     "teamATitle": "team_honestpretzels",
-    "teamBTitle": "team_kevin"
+    "teamBTitle": "team_jiaedin"
   },
   {
     "map": "de_vertigo",

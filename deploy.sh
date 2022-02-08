@@ -7,4 +7,7 @@ cp ../LICENSE build/LICENSE.txt
 cp ../puggies-src.tar.gz build
 cd build
 cp index.html 200.html
-surge . --domain=pugs.jayden.codes
+
+if [ "$1" = "--full" ]; then
+    surge . --domain=pugs.jayden.codes
+fi
