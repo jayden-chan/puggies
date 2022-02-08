@@ -54,6 +54,9 @@ func ParseAll(inDir, outDir string, incremental bool) error {
 
 		if !incremental {
 			output, err = parseAndWrite(path, heatmapsDir, outDir)
+			if err != nil {
+				return err
+			}
 		} else {
 			outputFiles := GetOutputFilesList(path, heatmapsDir)
 			outputFiles["mainJson"] = mainJsonOutputPath(outDir, GetDemoFileName(path))
@@ -63,6 +66,9 @@ func ParseAll(inDir, outDir string, incremental bool) error {
 				if _, err := os.Stat(outFile); errors.Is(err, os.ErrNotExist) {
 					// if one of the output files is missing re-analyze the entire demo
 					output, err = parseAndWrite(path, heatmapsDir, outDir)
+					if err != nil {
+						return err
+					}
 					hasAllFiles = false
 					break
 				}
@@ -80,10 +86,6 @@ func ParseAll(inDir, outDir string, incremental bool) error {
 					return err
 				}
 			}
-		}
-
-		if err != nil {
-			return err
 		}
 
 		metas = append(metas, output.Meta)
