@@ -18,8 +18,15 @@ func checkError(err error) {
 	}
 }
 
-func ParseDemo(path, heatmapsDir string) Output {
+func GetOutputFilesList(path, heatmapsDir string) map[string]string {
 	heatmapsDir = NormalizeFolderPath(heatmapsDir)
+	return map[string]string{
+		"heatmapShotsFired": join(heatmapsDir, GetHeatmapFileName(path, "shotsFired")),
+	}
+}
+
+func ParseDemo(path, heatmapsDir string) Output {
+	outputFiles := GetOutputFilesList(path, heatmapsDir)
 
 	f, err := os.Open(path)
 	checkError(err)
@@ -400,6 +407,6 @@ func ParseDemo(path, heatmapsDir string) Output {
 
 	checkError(err)
 	fmt.Fprintln(os.Stderr, "Generating heatmaps...")
-	GenHeatmap(points_shotsFired, header, heatmapsDir+"/"+GetHeatmapFileName(path, "shotsFired"))
+	GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"])
 	return output
 }

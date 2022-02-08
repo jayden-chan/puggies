@@ -28,7 +28,14 @@ func main() {
 		}
 	case "parseAll":
 		if len(args) >= 3 && args[1] != "" && args[2] != "" {
-			err := ParseAll(args[1], args[2])
+			incremental := false
+			for _, arg := range args {
+				if arg == "--incremental" {
+					incremental = true
+				}
+			}
+
+			err := ParseAll(args[1], args[2], incremental)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 			}
