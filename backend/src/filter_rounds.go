@@ -47,7 +47,10 @@ func FilterByLiveRoundsWinners(data [][]uint64, isLive []bool) [][]uint64 {
 	for i, live := range isLive {
 		if live {
 			if data[i] == nil {
-				panic("ERROR: Found \"live\" round with winners = nil")
+				panic("FATAL: Found live round with winners = nil. " +
+					"This is a bug. Please report it at " +
+					GitHubLink + "/issues/new",
+				)
 			}
 
 			retI := make([]uint64, len(data[i]))

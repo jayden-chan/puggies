@@ -1,21 +1,50 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 )
 
-func Debug(a ...interface{}) {
-	debug := os.Getenv("PUGGIES_DEBUG")
-	if debug == "true" || debug == "1" {
-		fmt.Fprintln(os.Stderr, a...)
+type Logger struct {
+	inner     *log.Logger
+	debugMode bool
+}
+
+func newLogger(debugMode bool) *Logger {
+	var inner *log.Logger
+	if debugMode {
+		inner = log.New(os.Stderr, "[puggies-core] ", 0)
+	} else {
+		inner = log.New(os.Stderr, "[puggies-core] ", log.Flags())
+	}
+
+	return &Logger{
+		inner,
+		debugMode,
 	}
 }
 
-func DebugBig(a ...interface{}) {
-	debug := os.Getenv("PUGGIES_DEBUG")
-	a = append(a, "----------------------------------------------------")
-	if debug == "true" || debug == "1" {
-		fmt.Fprintln(os.Stderr, a...)
+func (l *Logger) Debug(format string, a ...interface{}) {
+	if l.debugMode {
+		l.inner.Printf("[debug] "+format, a...)
 	}
+}
+
+func (l *Logger) DebugBig(format string, a ...interface{}) {
+	if l.debugMode {
+		a = append(a, "----------------------------------------------------")
+		l.inner.Printf("[debug] "+format, a...)
+	}
+}
+
+func (l *Logger) Info(format string, v ...interface{}) {
+	l.inner.Printf("[info] "+format, v...)
+}
+
+func (l *Logger) Warn(format string, v ...interface{}) {
+	l.inner.Printf("[warn] "+format, v...)
+}
+
+func (l *Logger) Error(format string, v ...interface{}) {
+	l.inner.Printf("[error] "+format, v...)
 }

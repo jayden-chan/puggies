@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	r2 "github.com/golang/geo/r2"
@@ -12,12 +11,6 @@ import (
 	metadata "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/metadata"
 )
 
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func GetOutputFilesList(path, heatmapsDir string) map[string]string {
 	heatmapsDir = NormalizeFolderPath(heatmapsDir)
 	return map[string]string{
@@ -25,18 +18,23 @@ func GetOutputFilesList(path, heatmapsDir string) map[string]string {
 	}
 }
 
-func ParseDemo(path, heatmapsDir string) Output {
+func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
 	outputFiles := GetOutputFilesList(path, heatmapsDir)
 
 	f, err := os.Open(path)
-	checkError(err)
+	if err != nil {
+		return Output{}, err
+	}
+
 	defer f.Close()
 
 	p := dem.NewParser(f)
 	defer p.Close()
 
 	header, err := p.ParseHeader()
-	checkError(err)
+	if err != nil {
+		return Output{}, err
+	}
 
 	mapMetadata := metadata.MapNameToMap[header.MapName]
 	demoFileName := GetDemoFileName(path)
@@ -207,7 +205,7 @@ func ParseDemo(path, heatmapsDir string) Output {
 		if e.Attacker != nil && e.Player != nil && e.Attacker.Team != e.Player.Team {
 			prd.damage[len(prd.damage)-1][e.Attacker.SteamID64] += e.HealthDamageTaken
 
-			// fmt.Fprintf(os.Stderr, "%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
+			// logger.Printf("%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
 
 			if e.Weapon.Type == common.EqHE ||
 				e.Weapon.Type == common.EqMolotov ||
@@ -228,12 +226,12 @@ func ParseDemo(path, heatmapsDir string) Output {
 			if consecutiveMatchStarts < 3 {
 				prd.isLive[len(prd.isLive)-1] = false
 				isLive = false
-				DebugBig("NOT LIVE")
+				logger.DebugBig("NOT LIVE")
 				consecutiveMatchStarts += 1
 			} else {
 				prd.isLive[len(prd.isLive)-1] = true
 				isLive = true
-				DebugBig("GOING LIVE")
+				logger.DebugBig("GOING LIVE")
 				consecutiveMatchStarts = 0
 			}
 		}
@@ -241,7 +239,7 @@ func ParseDemo(path, heatmapsDir string) Output {
 
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
-		DebugBig("ROUND START")
+		logger.DebugBig("ROUND START")
 		prd.NewRound(isLive)
 
 		bombDefuser = 0
@@ -265,12 +263,12 @@ func ParseDemo(path, heatmapsDir string) Output {
 
 	// Update the teams when the side switches
 	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
-		DebugBig("SIDE SWITCH")
+		logger.DebugBig("SIDE SWITCH")
 		UpdateTeams(&p, &teams, &ctClanTag, &tClanTag)
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
-		Debug(e)
+		logger.Debug("", e)
 		winner := ""
 
 		switch e.Winner {
@@ -306,10 +304,13 @@ func ParseDemo(path, heatmapsDir string) Output {
 		prd.winners[len(prd.winners)-1] = roundWinners
 	})
 
-	fmt.Fprintln(os.Stderr, "Parsing demo "+demoFileName+" ...")
+	logger.Info("[demo=%s] parsing demo", demoFileName)
 	err = p.ParseToEnd()
-	checkError(err)
-	fmt.Fprintln(os.Stderr, "Computing stats...")
+	if err != nil {
+		return Output{}, err
+	}
+
+	logger.Info("[demo=%s] computing stats", demoFileName)
 
 	if eseaMode {
 		StripPlayerPrefixes(teams, &playerNames, "CT")
@@ -405,8 +406,15 @@ func ParseDemo(path, heatmapsDir string) Output {
 		},
 	}
 
-	checkError(err)
-	fmt.Fprintln(os.Stderr, "Generating heatmaps...")
-	GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"])
-	return output
+	if err != nil {
+		return Output{}, err
+	}
+
+	logger.Info("[demo=%s] generating heatmaps", demoFileName)
+	err = GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"])
+	if err != nil {
+		return Output{}, err
+	}
+
+	return output, nil
 }

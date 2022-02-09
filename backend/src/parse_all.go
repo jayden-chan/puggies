@@ -11,8 +11,12 @@ func mainJsonOutputPath(outDir, id string) string {
 	return join(outDir, "matches", id+".json")
 }
 
-func parseAndWrite(path, heatmapsDir, outDir string) (Output, error) {
-	output := ParseDemo(path, heatmapsDir)
+func parseAndWrite(path, heatmapsDir, outDir string, logger *Logger) (Output, error) {
+	output, err := ParseDemo(path, heatmapsDir, logger)
+	if err != nil {
+		return Output{}, err
+	}
+
 	json, err := json.Marshal(&output)
 	if err != nil {
 		return Output{}, err
@@ -26,7 +30,7 @@ func parseAndWrite(path, heatmapsDir, outDir string) (Output, error) {
 	return output, nil
 }
 
-func ParseAll(inDir, outDir string, incremental bool) error {
+func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
 	inDir = NormalizeFolderPath(inDir)
 	outDir = NormalizeFolderPath(outDir)
 
@@ -47,13 +51,13 @@ func ParseAll(inDir, outDir string, incremental bool) error {
 
 	var metas []MetaData
 	for _, f := range files {
-		Debug(f)
+		logger.Debug(f)
 		path := f
 		heatmapsDir := join(outDir, "heatmaps")
 		var output Output
 
 		if !incremental {
-			output, err = parseAndWrite(path, heatmapsDir, outDir)
+			output, err = parseAndWrite(path, heatmapsDir, outDir, logger)
 			if err != nil {
 				return err
 			}
@@ -65,7 +69,7 @@ func ParseAll(inDir, outDir string, incremental bool) error {
 			for _, outFile := range outputFiles {
 				if _, err := os.Stat(outFile); errors.Is(err, os.ErrNotExist) {
 					// if one of the output files is missing re-analyze the entire demo
-					output, err = parseAndWrite(path, heatmapsDir, outDir)
+					output, err = parseAndWrite(path, heatmapsDir, outDir, logger)
 					if err != nil {
 						return err
 					}
