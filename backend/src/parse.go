@@ -18,7 +18,7 @@ func GetOutputFilesList(path, heatmapsDir string) map[string]string {
 	}
 }
 
-func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
+func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output, error) {
 	outputFiles := GetOutputFilesList(path, heatmapsDir)
 
 	f, err := os.Open(path)
@@ -411,7 +411,7 @@ func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
 	}
 
 	logger.Infof("[demo=%s] generating heatmaps", demoFileName)
-	err = GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"])
+	err = GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], config.mapsPath)
 	if err != nil {
 		return Output{}, err
 	}

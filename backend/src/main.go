@@ -33,17 +33,17 @@ func main() {
 
 	switch args[0] {
 	case "parse":
-		commandParse(args, logger)
+		commandParse(args, config, logger)
 	case "parseAll":
-		commandParseAll(args, logger)
+		commandParseAll(args, config, logger)
 	case "serve":
 		commandServe(config, logger)
 	}
 }
 
-func commandParse(args []string, logger *Logger) {
+func commandParse(args []string, config Config, logger *Logger) {
 	if len(args) >= 2 && args[1] != "" {
-		output, err := ParseDemo(args[1], ".", logger)
+		output, err := ParseDemo(args[1], ".", config, logger)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return
@@ -60,7 +60,7 @@ func commandParse(args []string, logger *Logger) {
 	}
 }
 
-func commandParseAll(args []string, logger *Logger) {
+func commandParseAll(args []string, config Config, logger *Logger) {
 	if len(args) >= 3 && args[1] != "" && args[2] != "" {
 		incremental := false
 		for _, arg := range args {
@@ -69,7 +69,7 @@ func commandParseAll(args []string, logger *Logger) {
 			}
 		}
 
-		err := ParseAll(args[1], args[2], incremental, logger)
+		err := ParseAll(args[1], args[2], incremental, config, logger)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
@@ -95,7 +95,7 @@ func commandServe(config Config, logger *Logger) {
 			// and the new demo will be parsed. this also has the benefit of
 			// ensuring the entire folder is up to date in case the server
 			// was down for a period of time or something like that.
-			err := ParseAll(config.demosPath, config.dataPath, true, logger)
+			err := ParseAll(config.demosPath, config.dataPath, true, config, logger)
 			if err != nil {
 				logger.Errorf("[trigger=%s] failed to perform partial re-scan: %s", f, err.Error())
 			}

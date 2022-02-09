@@ -11,8 +11,8 @@ func mainJsonOutputPath(outDir, id string) string {
 	return join(outDir, "matches", id+".json")
 }
 
-func parseAndWrite(path, heatmapsDir, outDir string, logger *Logger) (Output, error) {
-	output, err := ParseDemo(path, heatmapsDir, logger)
+func parseAndWrite(path, heatmapsDir, outDir string, config Config, logger *Logger) (Output, error) {
+	output, err := ParseDemo(path, heatmapsDir, config, logger)
 	if err != nil {
 		return Output{}, err
 	}
@@ -30,7 +30,7 @@ func parseAndWrite(path, heatmapsDir, outDir string, logger *Logger) (Output, er
 	return output, nil
 }
 
-func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
+func ParseAll(inDir, outDir string, incremental bool, config Config, logger *Logger) error {
 	inDir = NormalizeFolderPath(inDir)
 	outDir = NormalizeFolderPath(outDir)
 
@@ -57,7 +57,7 @@ func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
 		var output Output
 
 		if !incremental {
-			output, err = parseAndWrite(path, heatmapsDir, outDir, logger)
+			output, err = parseAndWrite(path, heatmapsDir, outDir, config, logger)
 			if err != nil {
 				return err
 			}
@@ -70,7 +70,7 @@ func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
 				if _, err := os.Stat(outFile); errors.Is(err, os.ErrNotExist) {
 					// if one of the output files is missing re-analyze the entire demo
 					logger.Infof("demo %s is missing files. parsing now", f)
-					output, err = parseAndWrite(path, heatmapsDir, outDir, logger)
+					output, err = parseAndWrite(path, heatmapsDir, outDir, config, logger)
 					if err != nil {
 						return err
 					}

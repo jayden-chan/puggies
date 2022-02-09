@@ -9,6 +9,7 @@ import (
 type Config struct {
 	dataPath                         string
 	demosPath                        string
+	mapsPath                         string
 	staticPath                       string
 	frontendPath                     string
 	port                             string
@@ -21,6 +22,7 @@ func GetConfig(logger *Logger) Config {
 	return Config{
 		dataPath:                         envOrString("PUGGIES_DATA_PATH", "/data"),
 		demosPath:                        envOrString("PUGGIES_DEMOS_PATH", "/demos"),
+		mapsPath:                         envOrString("PUGGIES_MAPS_PATH", "/backend/maps"),
 		staticPath:                       envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		frontendPath:                     envOrString("PUGGIES_FRONTEND_PATH", "/app"),
 		port:                             envOrString("PUGGIES_HTTP_PORT", "9115"),
@@ -34,6 +36,7 @@ func (config Config) String() string {
 	ret := "\n{\n"
 	ret += "\t" + "dataPath: " + config.dataPath + "\n"
 	ret += "\t" + "demosPath: " + config.demosPath + "\n"
+	ret += "\t" + "mapsPath: " + config.mapsPath + "\n"
 	ret += "\t" + "staticPath: " + config.staticPath + "\n"
 	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
 	ret += "\t" + "port: " + config.port + "\n"

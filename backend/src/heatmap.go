@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/draw"
 	"image/jpeg"
@@ -21,10 +20,13 @@ const (
 )
 
 func GetHeatmapFileName(demoPath string, dataSet string) string {
-	return strings.Replace(demoPath[strings.LastIndex(demoPath, "/")+1:], ".dem", "-shotsFired.png", 1)
+	return strings.Replace(demoPath[strings.LastIndex(demoPath, "/")+1:], ".dem", "-"+dataSet+".png", 1)
 }
 
-func GenHeatmap(points []r2.Point, header common.DemoHeader, outPath string) error {
+func GenHeatmap(points []r2.Point,
+	header common.DemoHeader,
+	outPath, mapsPath string,
+) error {
 	// Find bounding rectangle for points to get around the normalization done by the heatmap library
 	r2Bounds := r2.RectFromPoints(points...)
 	padding := float64(dotSize) / 2.0 // Calculating padding amount to avoid shrinkage by the heatmap library
@@ -41,7 +43,8 @@ func GenHeatmap(points []r2.Point, header common.DemoHeader, outPath string) err
 	}
 
 	// Load map overview image
-	fMap, err := os.Open(fmt.Sprintf("./maps/%s.jpg", header.MapName))
+	mapPath := join(mapsPath, header.MapName+".jpg")
+	fMap, err := os.Open(mapPath)
 	if err != nil {
 		return err
 	}
@@ -60,6 +63,10 @@ func GenHeatmap(points []r2.Point, header common.DemoHeader, outPath string) err
 	draw.Draw(img, bounds, imgHeatmap, image.Point{}, draw.Over)
 
 	outf, err := os.OpenFile(outPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+
 	err = jpeg.Encode(outf, img, &jpeg.Options{Quality: jpegQuality})
 	if err != nil {
 		return err
