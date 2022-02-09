@@ -39,19 +39,19 @@ func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
 		return err
 	}
 
-	err = os.MkdirAll(outDir+"/matches", os.ModePerm)
+	err = os.MkdirAll(join(outDir, "/matches"), os.ModePerm)
 	if err != nil {
 		return err
 	}
 
-	err = os.MkdirAll(outDir+"/heatmaps", os.ModePerm)
+	err = os.MkdirAll(join(outDir, "/heatmaps"), os.ModePerm)
 	if err != nil {
 		return err
 	}
 
 	var metas []MetaData
 	for _, f := range files {
-		logger.Debug(f)
+		logger.Debugf("scanning file %s", f)
 		path := f
 		heatmapsDir := join(outDir, "heatmaps")
 		var output Output
@@ -69,6 +69,7 @@ func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
 			for _, outFile := range outputFiles {
 				if _, err := os.Stat(outFile); errors.Is(err, os.ErrNotExist) {
 					// if one of the output files is missing re-analyze the entire demo
+					logger.Infof("demo %s is missing files. parsing now", f)
 					output, err = parseAndWrite(path, heatmapsDir, outDir, logger)
 					if err != nil {
 						return err
@@ -80,6 +81,7 @@ func ParseAll(inDir, outDir string, incremental bool, logger *Logger) error {
 
 			// if all output files are present then just read the output file
 			if hasAllFiles {
+				logger.Debugf("demo %s has all files present", f)
 				fileContents, err := os.ReadFile(outputFiles["mainJson"])
 				if err != nil {
 					return err

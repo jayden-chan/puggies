@@ -59,7 +59,7 @@ func envOrNumber(key string, defaultV int, logger *Logger) int {
 	}
 	i, err := strconv.Atoi(val)
 	if err != nil {
-		logger.Warn("invalid number \"%s\" provided for variable %s. Using default value of %d", val, key, defaultV)
+		logger.Warnf("invalid number \"%s\" provided for variable %s. Using default value of %d", val, key, defaultV)
 		return defaultV
 	}
 	return i

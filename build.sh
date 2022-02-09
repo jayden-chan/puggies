@@ -19,5 +19,5 @@ else
         -t "$registry"puggies:"$maj" \
         -t "$registry"puggies:"$maj.$min" \
         -t "$registry"puggies:"$maj.$min.$pat" \
-        -t "$registry"puggies:latest 
+        -t "$registry"puggies:latest
 fi

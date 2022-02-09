@@ -15,7 +15,7 @@ func join(elem ...string) string {
 }
 
 func RegisterRescanJob(s *gocron.Scheduler, config Config, logger *Logger) {
-	logger.Info("starting incremental demo folder rescan interval job")
+	logger.Info("registering incremental demo folder rescan interval job")
 	s.Every(config.incrementalRescanIntervalMinutes).Minutes().Do(func() {
 		logger.Info("[trigger=cron] starting incremental demo folder rescan")
 		err := ParseAll(config.demosPath, config.dataPath, true, logger)

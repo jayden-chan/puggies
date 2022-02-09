@@ -205,7 +205,7 @@ func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
 		if e.Attacker != nil && e.Player != nil && e.Attacker.Team != e.Player.Team {
 			prd.damage[len(prd.damage)-1][e.Attacker.SteamID64] += e.HealthDamageTaken
 
-			// logger.Printf("%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
+			// logger.Debugf("%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
 
 			if e.Weapon.Type == common.EqHE ||
 				e.Weapon.Type == common.EqMolotov ||
@@ -268,7 +268,7 @@ func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
-		logger.Debug("", e)
+		logger.Debug(e)
 		winner := ""
 
 		switch e.Winner {
@@ -304,13 +304,13 @@ func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
 		prd.winners[len(prd.winners)-1] = roundWinners
 	})
 
-	logger.Info("[demo=%s] parsing demo", demoFileName)
+	logger.Infof("[demo=%s] parsing demo", demoFileName)
 	err = p.ParseToEnd()
 	if err != nil {
 		return Output{}, err
 	}
 
-	logger.Info("[demo=%s] computing stats", demoFileName)
+	logger.Infof("[demo=%s] computing stats", demoFileName)
 
 	if eseaMode {
 		StripPlayerPrefixes(teams, &playerNames, "CT")
@@ -410,7 +410,7 @@ func ParseDemo(path, heatmapsDir string, logger *Logger) (Output, error) {
 		return Output{}, err
 	}
 
-	logger.Info("[demo=%s] generating heatmaps", demoFileName)
+	logger.Infof("[demo=%s] generating heatmaps", demoFileName)
 	err = GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"])
 	if err != nil {
 		return Output{}, err

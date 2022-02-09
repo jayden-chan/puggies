@@ -29,7 +29,7 @@ func main() {
 
 	logger := newLogger(debug)
 	config := GetConfig(logger)
-	logger.Debug("using config: %s", config)
+	logger.Debugf("using config: %s", config)
 
 	switch args[0] {
 	case "parse":
@@ -82,8 +82,26 @@ func commandServe(config Config, logger *Logger) {
 	scheduler := gocron.NewScheduler(time.UTC)
 	RegisterRescanJob(scheduler, config, logger)
 	logger.Info("starting job scheduler")
-	go scheduler.StartBlocking()
+	scheduler.StartAsync()
 
-	logger.Info("starting Puggies HTTP server on port %s", config.port)
+	go func() {
+		fileChanged := make(chan string)
+		go watchDemoDir(config.demosPath, fileChanged, logger)
+		for f := range fileChanged {
+			logger.Infof("file change detected: %s", f)
+
+			// we will trigger a partial re-scan of the entire demos folder
+			// when a file changes. the already-parsed demos will be skipped
+			// and the new demo will be parsed. this also has the benefit of
+			// ensuring the entire folder is up to date in case the server
+			// was down for a period of time or something like that.
+			err := ParseAll(config.demosPath, config.dataPath, true, logger)
+			if err != nil {
+				logger.Errorf("[trigger=%s] failed to perform partial re-scan: %s", f, err.Error())
+			}
+		}
+	}()
+
+	logger.Infof("starting Puggies HTTP server on port %s", config.port)
 	RunServer(config, logger)
 }
