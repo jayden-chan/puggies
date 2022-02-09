@@ -12,7 +12,7 @@ if [ "$maj" = "" -o "$min" = "" -o "$pat" = "" ]; then
     docker build . -f Dockerfile \
         -t "$registry"puggies:latest
 else
-    echo "Building and tagging as $registry/puggies:$maj.$min.$pat"
+    echo "Building and tagging as ${registry}puggies:$maj.$min.$pat"
     echo
 
     docker build . -f Dockerfile \
