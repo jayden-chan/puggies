@@ -80,7 +80,7 @@ func commandParseAll(args []string, config Config, logger *Logger) {
 
 func commandServe(config Config, logger *Logger) {
 	scheduler := gocron.NewScheduler(time.UTC)
-	registerRescanJob(scheduler, config, logger)
+	registerJobs(scheduler, config, logger)
 	logger.Info("starting job scheduler")
 	scheduler.StartAsync()
 
@@ -94,7 +94,7 @@ func commandServe(config Config, logger *Logger) {
 			// when a file changes. the already-parsed demos will be skipped
 			// and the new demo will be parsed. this also has the benefit of
 			// ensuring the entire folder is up to date in case the server
-			// was down for a period of time or something like that.
+			// somehow missed some of the file changed events or something.
 			doRescan("filechange", config, logger)
 		}
 	}()
