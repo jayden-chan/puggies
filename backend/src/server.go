@@ -14,14 +14,20 @@ func join(elem ...string) string {
 	return filepath.Join(elem...)
 }
 
+func doRescan(trigger string, config Config, logger *Logger) {
+	logger.Infof("[trigger=%s] starting incremental demo folder rescan", trigger)
+	err := ParseAll(config.demosPath, config.dataPath, true, config, logger)
+	if err != nil {
+		logger.Errorf("failed to re-scan demos folder: %s", err.Error())
+	} else {
+		logger.Infof("[trigger=%s] incremental demo folder rescan finished", trigger)
+	}
+}
+
 func RegisterRescanJob(s *gocron.Scheduler, config Config, logger *Logger) {
 	logger.Info("registering incremental demo folder rescan interval job")
 	s.Every(config.incrementalRescanIntervalMinutes).Minutes().Do(func() {
-		logger.Info("[trigger=cron] starting incremental demo folder rescan")
-		err := ParseAll(config.demosPath, config.dataPath, true, config, logger)
-		if err != nil {
-			logger.Errorf("incremental demo parse interval failed. reason: %s", err.Error())
-		}
+		doRescan("cron", config, logger)
 	})
 }
 
@@ -83,15 +89,7 @@ func rescan(config Config, logger *Logger) func(*gin.Context) {
 			"message": "Incremental re-scan of demos folder started",
 		})
 
-		go func() {
-			logger.Info("[trigger=api] starting incremental demo folder rescan")
-			err := ParseAll(config.demosPath, config.dataPath, true, config, logger)
-			if err != nil {
-				logger.Errorf("failed to re-scan demos folder: %s", err.Error())
-			} else {
-				logger.Info("completed incremental re-scan demos folder")
-			}
-		}()
+		go doRescan("api", config, logger)
 	}
 }
 
