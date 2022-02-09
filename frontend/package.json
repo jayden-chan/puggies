@@ -33,6 +33,7 @@
     "test": "echo no tests && exit 1"
   },
   "homepage": "/app",
+  "proxy": "http://localhost:9115",
   "eslintConfig": {
     "extends": "react-app"
   },

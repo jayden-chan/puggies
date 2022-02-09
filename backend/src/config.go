@@ -24,7 +24,7 @@ func GetConfig(logger *Logger) Config {
 		staticPath:                       envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		frontendPath:                     envOrString("PUGGIES_FRONTEND_PATH", "/app"),
 		port:                             envOrString("PUGGIES_HTTP_PORT", "9115"),
-		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 5, logger),
+		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 30, logger),
 		trustedProxies:                   getTrustedProxies(),
 		debug:                            logger.debugMode,
 	}
