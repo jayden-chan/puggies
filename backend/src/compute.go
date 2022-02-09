@@ -7,7 +7,7 @@ import (
 	events "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/events"
 )
 
-func ComputeRWS(
+func computeRWS(
 	winners [][]uint64,
 	rounds []Round,
 	damage []PlayerIntMap,
@@ -52,7 +52,7 @@ func ComputeRWS(
 }
 
 // returns headshotPct, kd, kdiff, kpr
-func ComputeBasicStats(
+func computeBasicStats(
 	totalRounds int,
 	totalKills PlayerIntMap,
 	totalHeadshots PlayerIntMap,
@@ -85,7 +85,7 @@ func ComputeBasicStats(
 	return headshotPct, kd, kdiff, kpr
 }
 
-func ComputeKAST(
+func computeKAST(
 	totalRounds int,
 	teams map[uint64]string,
 	kills []PlayerIntMap,
@@ -112,7 +112,7 @@ func ComputeKAST(
 	return kast
 }
 
-func ComputeADR(totalRounds int, totalDamage PlayerIntMap) PlayerF64Map {
+func computeADR(totalRounds int, totalDamage PlayerIntMap) PlayerF64Map {
 	adr := make(PlayerF64Map)
 	for player, playerDamage := range totalDamage {
 		adr[player] = math.Round((float64(playerDamage) / float64(totalRounds)))
@@ -120,7 +120,7 @@ func ComputeADR(totalRounds int, totalDamage PlayerIntMap) PlayerF64Map {
 	return adr
 }
 
-func ComputImpact(
+func computeImpact(
 	totalRounds int,
 	teams TeamsMap,
 	totalAssists PlayerIntMap,
@@ -137,7 +137,7 @@ func ComputImpact(
 	return impact
 }
 
-func ComputeHLTV(
+func computeHLTV(
 	totalRounds int,
 	teams TeamsMap,
 	totalDeaths PlayerIntMap,
@@ -157,7 +157,7 @@ func ComputeHLTV(
 	return hltv
 }
 
-func ComputMultikills(kills []PlayerIntMap) (PlayerIntMap, PlayerIntMap, PlayerIntMap, PlayerIntMap) {
+func computeMultikills(kills []PlayerIntMap) (PlayerIntMap, PlayerIntMap, PlayerIntMap, PlayerIntMap) {
 	k2 := make(PlayerIntMap)
 	k3 := make(PlayerIntMap)
 	k4 := make(PlayerIntMap)
@@ -181,7 +181,7 @@ func ComputMultikills(kills []PlayerIntMap) (PlayerIntMap, PlayerIntMap, PlayerI
 	return k2, k3, k4, k5
 }
 
-func ComputeEFPerFlash(flashesThrown PlayerIntMap, enemiesFlashed PlayerIntMap) PlayerF64Map {
+func computeEFPerFlash(flashesThrown PlayerIntMap, enemiesFlashed PlayerIntMap) PlayerF64Map {
 	ret := make(PlayerF64Map)
 	for player, f := range flashesThrown {
 		ret[player] = math.Round((float64(enemiesFlashed[player])/float64(f))*100) / 100
@@ -189,9 +189,9 @@ func ComputeEFPerFlash(flashesThrown PlayerIntMap, enemiesFlashed PlayerIntMap) 
 	return ret
 }
 
-func ComputeStartSides(teams map[uint64]string, rounds []Round) map[uint64]string {
-	_, teamAStartSide := GetScore(rounds, "CT", 1)
-	_, teamBStartSide := GetScore(rounds, "T", 1)
+func computeStartSides(teams map[uint64]string, rounds []Round) map[uint64]string {
+	_, teamAStartSide := getScore(rounds, "CT", 1)
+	_, teamBStartSide := getScore(rounds, "T", 1)
 	ret := make(map[uint64]string)
 	for player, team := range teams {
 		if team == "CT" {
@@ -204,7 +204,7 @@ func ComputeStartSides(teams map[uint64]string, rounds []Round) map[uint64]strin
 	return ret
 }
 
-func ComputeOpenings(openingKills []OpeningKill) (
+func computeOpenings(openingKills []OpeningKill) (
 	PlayerIntMap,
 	PlayerIntMap,
 	PlayerIntMap,
@@ -236,12 +236,12 @@ func ComputeOpenings(openingKills []OpeningKill) (
 	return oKills, oDeaths, oAttempts, oAttemptsPct, oSuccess
 }
 
-func ComputeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
+func computeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
 	var ret []RoundOverview
 	for i, k := range killFeed {
 		roundInfo := rounds[i]
-		teamAScore, teamASide := GetScore(rounds, "CT", i+1)
-		teamBScore, teamBSide := GetScore(rounds, "T", i+1)
+		teamAScore, teamASide := getScore(rounds, "CT", i+1)
+		teamBScore, teamBSide := getScore(rounds, "T", i+1)
 		var events []RoundEvent
 
 		for killer, k2 := range k {

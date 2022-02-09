@@ -18,7 +18,7 @@ type Config struct {
 	debug                            bool
 }
 
-func GetConfig(logger *Logger) Config {
+func getConfig(logger *Logger) Config {
 	return Config{
 		dataPath:                         envOrString("PUGGIES_DATA_PATH", "/data"),
 		demosPath:                        envOrString("PUGGIES_DEMOS_PATH", "/demos"),

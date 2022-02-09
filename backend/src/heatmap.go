@@ -19,11 +19,11 @@ const (
 	jpegQuality = 90
 )
 
-func GetHeatmapFileName(demoPath string, dataSet string) string {
+func getHeatmapFileName(demoPath string, dataSet string) string {
 	return strings.Replace(demoPath[strings.LastIndex(demoPath, "/")+1:], ".dem", "-"+dataSet+".png", 1)
 }
 
-func GenHeatmap(points []r2.Point,
+func genHeatmap(points []r2.Point,
 	header common.DemoHeader,
 	outPath, mapsPath string,
 ) error {

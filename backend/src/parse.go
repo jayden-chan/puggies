@@ -11,15 +11,15 @@ import (
 	metadata "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/metadata"
 )
 
-func GetOutputFilesList(path, heatmapsDir string) map[string]string {
-	heatmapsDir = NormalizeFolderPath(heatmapsDir)
+func getOutputFilesList(path, heatmapsDir string) map[string]string {
+	heatmapsDir = normalizeFolderPath(heatmapsDir)
 	return map[string]string{
-		"heatmapShotsFired": join(heatmapsDir, GetHeatmapFileName(path, "shotsFired")),
+		"heatmapShotsFired": join(heatmapsDir, getHeatmapFileName(path, "shotsFired")),
 	}
 }
 
-func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output, error) {
-	outputFiles := GetOutputFilesList(path, heatmapsDir)
+func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output, error) {
+	outputFiles := getOutputFilesList(path, heatmapsDir)
 
 	f, err := os.Open(path)
 	if err != nil {
@@ -37,8 +37,8 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	}
 
 	mapMetadata := metadata.MapNameToMap[header.MapName]
-	demoFileName := GetDemoFileName(path)
-	demoType := GetDemoType(demoFileName)
+	demoFileName := getDemoFileName(path)
+	demoType := getDemoType(demoFileName)
 
 	prd := PerRoundData{}
 
@@ -105,7 +105,7 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			}
 
 			killInfo := Kill{
-				Weapon:            ProcessWeaponName(*e.Weapon),
+				Weapon:            processWeaponName(*e.Weapon),
 				Assister:          assister,
 				Time:              p.CurrentTime().Milliseconds() - roundStartTime,
 				IsHeadshot:        e.IsHeadshot,
@@ -257,14 +257,14 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			playerNames = make(NamesMap)
 		}
 
-		UpdatePlayerNames(&p, &playerNames)
-		UpdateTeams(&p, &teams, &ctClanTag, &tClanTag)
+		updatePlayerNames(&p, &playerNames)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
 	})
 
 	// Update the teams when the side switches
 	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
 		logger.DebugBig("SIDE SWITCH")
-		UpdateTeams(&p, &teams, &ctClanTag, &tClanTag)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
@@ -282,7 +282,7 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			return
 		}
 
-		UpdateTeams(&p, &teams, &ctClanTag, &tClanTag)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
 
 		prd.rounds[len(prd.rounds)-1] = Round{
 			Winner:          winner,
@@ -313,28 +313,28 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	logger.Infof("[demo=%s] computing stats", demoFileName)
 
 	if eseaMode {
-		StripPlayerPrefixes(teams, &playerNames, "CT")
-		StripPlayerPrefixes(teams, &playerNames, "T")
+		stripPlayerPrefixes(teams, &playerNames, "CT")
+		stripPlayerPrefixes(teams, &playerNames, "T")
 	}
 
 	prd.CropToRealRounds(eseaMode)
 	totals := prd.ComputeTotals()
 	totalRounds := len(prd.kills)
 
-	headshotPct, kd, kdiff, kpr := ComputeBasicStats(
+	headshotPct, kd, kdiff, kpr := computeBasicStats(
 		totalRounds,
 		totals.kills,
 		totals.headshots,
 		totals.deaths,
 	)
 
-	kast := ComputeKAST(totalRounds, teams, prd.kills, prd.assists, prd.deaths, prd.deathsTraded)
-	adr := ComputeADR(totalRounds, totals.damage)
-	impact := ComputImpact(totalRounds, teams, totals.assists, kpr)
-	k2, k3, k4, k5 := ComputMultikills(prd.kills)
-	oKills, oDeaths, oAttempts, oAttemptsPct, oSuccess := ComputeOpenings(totals.openingKills)
+	kast := computeKAST(totalRounds, teams, prd.kills, prd.assists, prd.deaths, prd.deathsTraded)
+	adr := computeADR(totalRounds, totals.damage)
+	impact := computeImpact(totalRounds, teams, totals.assists, kpr)
+	k2, k3, k4, k5 := computeMultikills(prd.kills)
+	oKills, oDeaths, oAttempts, oAttemptsPct, oSuccess := computeOpenings(totals.openingKills)
 
-	hltv := ComputeHLTV(
+	hltv := computeHLTV(
 		totalRounds,
 		teams,
 		totals.deaths,
@@ -344,20 +344,20 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		adr,
 	)
 
-	teamAScore, _ := GetScore(prd.rounds, "CT", 999999999)
-	teamBScore, _ := GetScore(prd.rounds, "T", 999999999)
+	teamAScore, _ := getScore(prd.rounds, "CT", 999999999)
+	teamBScore, _ := getScore(prd.rounds, "T", 999999999)
 
 	output := Output{
 		TotalRounds: totalRounds,
 		Teams:       teams,
-		StartTeams:  ComputeStartSides(teams, prd.rounds),
+		StartTeams:  computeStartSides(teams, prd.rounds),
 		Rounds:      prd.rounds,
 
 		Stats: Stats{
 			Adr:                adr,
 			Assists:            totals.assists,
 			Deaths:             totals.deaths,
-			EFPerFlash:         ComputeEFPerFlash(totals.flashesThrown, totals.enemiesFlashed),
+			EFPerFlash:         computeEFPerFlash(totals.flashesThrown, totals.enemiesFlashed),
 			EnemiesFlashed:     totals.enemiesFlashed,
 			FlashAssists:       totals.flashAssists,
 			FlashesThrown:      totals.flashesThrown,
@@ -376,7 +376,7 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			OpeningDeaths:      oDeaths,
 			OpeningKills:       oKills,
 			OpeningSuccess:     oSuccess,
-			Rws:                ComputeRWS(prd.winners, prd.rounds, prd.damage),
+			Rws:                computeRWS(prd.winners, prd.rounds, prd.damage),
 			SmokesThrown:       totals.smokesThrown,
 			TeammatesFlashed:   totals.teammatesFlashed,
 			DeathsTraded:       totals.deathsTraded,
@@ -389,9 +389,9 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			K5: k5,
 		},
 
-		HeadToHead:   HeadToHeadTotal(&prd.headToHead),
+		HeadToHead:   headToHeadTotal(&prd.headToHead),
 		KillFeed:     prd.headToHead,
-		RoundByRound: ComputeRoundByRound(prd.rounds, prd.headToHead),
+		RoundByRound: computeRoundByRound(prd.rounds, prd.headToHead),
 		OpeningKills: totals.openingKills,
 
 		Meta: MetaData{
@@ -401,8 +401,8 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			PlayerNames: playerNames,
 			TeamAScore:  teamAScore,
 			TeamBScore:  teamBScore,
-			TeamATitle:  GetTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
-			TeamBTitle:  GetTeamName(tClanTag, teams, playerNames, hltv, "T"),
+			TeamATitle:  getTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
+			TeamBTitle:  getTeamName(tClanTag, teams, playerNames, hltv, "T"),
 		},
 	}
 
@@ -411,7 +411,7 @@ func ParseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	}
 
 	logger.Infof("[demo=%s] generating heatmaps", demoFileName)
-	err = GenHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], config.mapsPath)
+	err = genHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], config.mapsPath)
 	if err != nil {
 		return Output{}, err
 	}

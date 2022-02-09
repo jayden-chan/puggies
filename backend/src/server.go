@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"path/filepath"
 	"strings"
 
 	"github.com/gin-contrib/gzip"
@@ -10,28 +9,24 @@ import (
 	"github.com/go-co-op/gocron"
 )
 
-func join(elem ...string) string {
-	return filepath.Join(elem...)
-}
-
 func doRescan(trigger string, config Config, logger *Logger) {
 	logger.Infof("[trigger=%s] starting incremental demo folder rescan", trigger)
-	err := ParseAll(config.demosPath, config.dataPath, true, config, logger)
+	err := parseAll(config.demosPath, config.dataPath, true, config, logger)
 	if err != nil {
-		logger.Errorf("failed to re-scan demos folder: %s", err.Error())
+		logger.Errorf("[trigger=%s] failed to re-scan demos folder: %s", trigger, err.Error())
 	} else {
 		logger.Infof("[trigger=%s] incremental demo folder rescan finished", trigger)
 	}
 }
 
-func RegisterRescanJob(s *gocron.Scheduler, config Config, logger *Logger) {
+func registerRescanJob(s *gocron.Scheduler, config Config, logger *Logger) {
 	logger.Info("registering incremental demo folder rescan interval job")
 	s.Every(config.incrementalRescanIntervalMinutes).Minutes().Do(func() {
 		doRescan("cron", config, logger)
 	})
 }
 
-func RunServer(config Config, logger *Logger) {
+func runServer(config Config, logger *Logger) {
 	r := gin.Default()
 
 	if len(config.trustedProxies) != 0 {

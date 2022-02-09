@@ -2,7 +2,7 @@ package main
 
 // Go doesn't have generics LMAO this is cringe
 
-func FilterByLiveRoundsInt(data []PlayerIntMap, isLive []bool) []PlayerIntMap {
+func filterByLiveRoundsInt(data []PlayerIntMap, isLive []bool) []PlayerIntMap {
 	var ret []PlayerIntMap
 	for i, live := range isLive {
 		if live {
@@ -12,7 +12,7 @@ func FilterByLiveRoundsInt(data []PlayerIntMap, isLive []bool) []PlayerIntMap {
 	return ret
 }
 
-func FilterByLiveRoundsOpeningKill(data []*OpeningKill, isLive []bool) []*OpeningKill {
+func filterByLiveRoundsOpeningKill(data []*OpeningKill, isLive []bool) []*OpeningKill {
 	var ret []*OpeningKill
 	for i, live := range isLive {
 		if live {
@@ -22,7 +22,7 @@ func FilterByLiveRoundsOpeningKill(data []*OpeningKill, isLive []bool) []*Openin
 	return ret
 }
 
-func FilterByLiveRoundsH2H(data []map[uint64]map[uint64]Kill, isLive []bool) []map[uint64]map[uint64]Kill {
+func filterByLiveRoundsH2H(data []map[uint64]map[uint64]Kill, isLive []bool) []map[uint64]map[uint64]Kill {
 	var ret []map[uint64]map[uint64]Kill
 	for i, live := range isLive {
 		if live {
@@ -32,7 +32,7 @@ func FilterByLiveRoundsH2H(data []map[uint64]map[uint64]Kill, isLive []bool) []m
 	return ret
 }
 
-func FilterByLiveRoundsRounds(data []Round, isLive []bool) []Round {
+func filterByLiveRoundsRounds(data []Round, isLive []bool) []Round {
 	var ret []Round
 	for i, live := range isLive {
 		if live {
@@ -42,7 +42,7 @@ func FilterByLiveRoundsRounds(data []Round, isLive []bool) []Round {
 	return ret
 }
 
-func FilterByLiveRoundsWinners(data [][]uint64, isLive []bool) [][]uint64 {
+func filterByLiveRoundsWinners(data [][]uint64, isLive []bool) [][]uint64 {
 	var ret [][]uint64
 	for i, live := range isLive {
 		if live {

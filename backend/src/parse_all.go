@@ -12,7 +12,7 @@ func mainJsonOutputPath(outDir, id string) string {
 }
 
 func parseAndWrite(path, heatmapsDir, outDir string, config Config, logger *Logger) (Output, error) {
-	output, err := ParseDemo(path, heatmapsDir, config, logger)
+	output, err := parseDemo(path, heatmapsDir, config, logger)
 	if err != nil {
 		return Output{}, err
 	}
@@ -30,9 +30,9 @@ func parseAndWrite(path, heatmapsDir, outDir string, config Config, logger *Logg
 	return output, nil
 }
 
-func ParseAll(inDir, outDir string, incremental bool, config Config, logger *Logger) error {
-	inDir = NormalizeFolderPath(inDir)
-	outDir = NormalizeFolderPath(outDir)
+func parseAll(inDir, outDir string, incremental bool, config Config, logger *Logger) error {
+	inDir = normalizeFolderPath(inDir)
+	outDir = normalizeFolderPath(outDir)
 
 	files, err := filepath.Glob(inDir + "/*.dem")
 	if err != nil {
@@ -62,8 +62,8 @@ func ParseAll(inDir, outDir string, incremental bool, config Config, logger *Log
 				return err
 			}
 		} else {
-			outputFiles := GetOutputFilesList(path, heatmapsDir)
-			outputFiles["mainJson"] = mainJsonOutputPath(outDir, GetDemoFileName(path))
+			outputFiles := getOutputFilesList(path, heatmapsDir)
+			outputFiles["mainJson"] = mainJsonOutputPath(outDir, getDemoFileName(path))
 
 			hasAllFiles := true
 			for _, outFile := range outputFiles {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"path/filepath"
 	"sort"
 	"strings"
 
@@ -8,14 +9,18 @@ import (
 	"github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/common"
 )
 
-func NormalizeFolderPath(path string) string {
+func join(elem ...string) string {
+	return filepath.Join(elem...)
+}
+
+func normalizeFolderPath(path string) string {
 	if strings.HasSuffix(path, "/") {
 		return path[:len(path)-1]
 	}
 	return path
 }
 
-func MapValTotal(m *PlayerIntMap) int {
+func mapValTotal(m *PlayerIntMap) int {
 	sum := 0
 	for _, val := range *m {
 		sum += val
@@ -23,7 +28,7 @@ func MapValTotal(m *PlayerIntMap) int {
 	return sum
 }
 
-func ArrayMapTotal(a *[]PlayerIntMap) PlayerIntMap {
+func arrayMapTotal(a *[]PlayerIntMap) PlayerIntMap {
 	ret := make(PlayerIntMap)
 	for _, m := range *a {
 		for k, v := range m {
@@ -33,7 +38,7 @@ func ArrayMapTotal(a *[]PlayerIntMap) PlayerIntMap {
 	return ret
 }
 
-func HeadToHeadTotal(h *[]map[uint64]map[uint64]Kill) map[uint64]PlayerIntMap {
+func headToHeadTotal(h *[]map[uint64]map[uint64]Kill) map[uint64]PlayerIntMap {
 	ret := make(map[uint64]PlayerIntMap)
 	for _, m := range *h {
 		for killer, victims := range m {
@@ -50,7 +55,7 @@ func HeadToHeadTotal(h *[]map[uint64]map[uint64]Kill) map[uint64]PlayerIntMap {
 	return ret
 }
 
-func ProcessWeaponName(w common.Equipment) string {
+func processWeaponName(w common.Equipment) string {
 	toReplace := [][]string{
 		{"models/weapons/", ""},
 		{"v_", ""},
@@ -64,7 +69,7 @@ func ProcessWeaponName(w common.Equipment) string {
 
 	originalString := w.OriginalString
 	if originalString == "" {
-		return GetWeaponFileName(w.Type)
+		return getWeaponFileName(w.Type)
 	}
 
 	for _, s := range toReplace {
@@ -73,7 +78,7 @@ func ProcessWeaponName(w common.Equipment) string {
 	return originalString
 }
 
-func GetPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side string) []string {
+func getPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side string) []string {
 	ids := make([]uint64, 0)
 	ret := make([]string, 0)
 	for player, team := range teams {
@@ -93,7 +98,7 @@ func GetPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side st
 	return ret
 }
 
-func GetScore(rounds []Round, endSide string, toRound int) (int, string) {
+func getScore(rounds []Round, endSide string, toRound int) (int, string) {
 	score := 0
 	currSide := endSide
 	roundSide := ""
@@ -127,11 +132,11 @@ func GetScore(rounds []Round, endSide string, toRound int) (int, string) {
 	return score, roundSide
 }
 
-func GetDemoFileName(path string) string {
+func getDemoFileName(path string) string {
 	return strings.Replace(path[strings.LastIndex(path, "/")+1:], ".dem", "", 1)
 }
 
-func GetDemoType(demoFileName string) string {
+func getDemoType(demoFileName string) string {
 	if strings.HasPrefix(demoFileName, "esea") {
 		return "esea"
 	} else if strings.HasPrefix(demoFileName, "pug_") {
@@ -143,7 +148,7 @@ func GetDemoType(demoFileName string) string {
 	}
 }
 
-func GetTeamName(
+func getTeamName(
 	clanTag string,
 	teams TeamsMap,
 	playerNames NamesMap,
@@ -153,11 +158,11 @@ func GetTeamName(
 	if clanTag != "" {
 		return clanTag
 	}
-	return "team_" + GetPlayers(teams, playerNames, hltv, side)[0]
+	return "team_" + getPlayers(teams, playerNames, hltv, side)[0]
 }
 
 // better hope that everyone doesn't have the same first letter of their name!
-func StripPlayerPrefixes(teams TeamsMap, playerNames *NamesMap, side string) {
+func stripPlayerPrefixes(teams TeamsMap, playerNames *NamesMap, side string) {
 Outer:
 	for {
 		var char byte = 0
@@ -185,7 +190,7 @@ Outer:
 	}
 }
 
-func UpdateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
+func updateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
 	tTeam := (*p).GameState().TeamTerrorists()
 	tTag := tTeam.ClanName()
 	ctTeam := (*p).GameState().TeamCounterTerrorists()
@@ -204,13 +209,13 @@ func UpdateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
 	}
 }
 
-func UpdatePlayerNames(p *dem.Parser, playerNames *NamesMap) {
+func updatePlayerNames(p *dem.Parser, playerNames *NamesMap) {
 	for _, player := range (*p).GameState().Participants().Playing() {
 		(*playerNames)[player.SteamID64] = player.Name
 	}
 }
 
-func GetWeaponFileName(weapon common.EquipmentType) string {
+func getWeaponFileName(weapon common.EquipmentType) string {
 	switch weapon {
 	case common.EqP2000:
 		return "pist_hkp2000"

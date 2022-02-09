@@ -28,7 +28,7 @@ func main() {
 	}
 
 	logger := newLogger(debug)
-	config := GetConfig(logger)
+	config := getConfig(logger)
 	logger.Debugf("using config: %s", config)
 
 	switch args[0] {
@@ -43,7 +43,7 @@ func main() {
 
 func commandParse(args []string, config Config, logger *Logger) {
 	if len(args) >= 2 && args[1] != "" {
-		output, err := ParseDemo(args[1], ".", config, logger)
+		output, err := parseDemo(args[1], ".", config, logger)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return
@@ -69,7 +69,7 @@ func commandParseAll(args []string, config Config, logger *Logger) {
 			}
 		}
 
-		err := ParseAll(args[1], args[2], incremental, config, logger)
+		err := parseAll(args[1], args[2], incremental, config, logger)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
@@ -80,7 +80,7 @@ func commandParseAll(args []string, config Config, logger *Logger) {
 
 func commandServe(config Config, logger *Logger) {
 	scheduler := gocron.NewScheduler(time.UTC)
-	RegisterRescanJob(scheduler, config, logger)
+	registerRescanJob(scheduler, config, logger)
 	logger.Info("starting job scheduler")
 	scheduler.StartAsync()
 
@@ -95,13 +95,10 @@ func commandServe(config Config, logger *Logger) {
 			// and the new demo will be parsed. this also has the benefit of
 			// ensuring the entire folder is up to date in case the server
 			// was down for a period of time or something like that.
-			err := ParseAll(config.demosPath, config.dataPath, true, config, logger)
-			if err != nil {
-				logger.Errorf("[trigger=%s] failed to perform partial re-scan: %s", f, err.Error())
-			}
+			doRescan("filechange", config, logger)
 		}
 	}()
 
 	logger.Infof("starting Puggies HTTP server on port %s", config.port)
-	RunServer(config, logger)
+	runServer(config, logger)
 }

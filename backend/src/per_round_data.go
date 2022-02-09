@@ -81,37 +81,37 @@ func (prd *PerRoundData) NewRound(isLive bool) {
 
 func (prd *PerRoundData) CropToRealRounds(useLiveMode bool) {
 	if useLiveMode {
-		prd.kills = FilterByLiveRoundsInt(prd.kills, prd.isLive)
+		prd.kills = filterByLiveRoundsInt(prd.kills, prd.isLive)
 
-		prd.deaths = FilterByLiveRoundsInt(prd.deaths, prd.isLive)
-		prd.assists = FilterByLiveRoundsInt(prd.assists, prd.isLive)
-		prd.deathsTraded = FilterByLiveRoundsInt(prd.deathsTraded, prd.isLive)
-		prd.tradeKills = FilterByLiveRoundsInt(prd.tradeKills, prd.isLive)
-		prd.headshots = FilterByLiveRoundsInt(prd.headshots, prd.isLive)
-		prd.damage = FilterByLiveRoundsInt(prd.damage, prd.isLive)
-		prd.flashAssists = FilterByLiveRoundsInt(prd.flashAssists, prd.isLive)
-		prd.enemiesFlashed = FilterByLiveRoundsInt(prd.enemiesFlashed, prd.isLive)
-		prd.teammatesFlashed = FilterByLiveRoundsInt(prd.teammatesFlashed, prd.isLive)
-		prd.utilDamage = FilterByLiveRoundsInt(prd.utilDamage, prd.isLive)
-		prd.openings = FilterByLiveRoundsOpeningKill(prd.openings, prd.isLive)
+		prd.deaths = filterByLiveRoundsInt(prd.deaths, prd.isLive)
+		prd.assists = filterByLiveRoundsInt(prd.assists, prd.isLive)
+		prd.deathsTraded = filterByLiveRoundsInt(prd.deathsTraded, prd.isLive)
+		prd.tradeKills = filterByLiveRoundsInt(prd.tradeKills, prd.isLive)
+		prd.headshots = filterByLiveRoundsInt(prd.headshots, prd.isLive)
+		prd.damage = filterByLiveRoundsInt(prd.damage, prd.isLive)
+		prd.flashAssists = filterByLiveRoundsInt(prd.flashAssists, prd.isLive)
+		prd.enemiesFlashed = filterByLiveRoundsInt(prd.enemiesFlashed, prd.isLive)
+		prd.teammatesFlashed = filterByLiveRoundsInt(prd.teammatesFlashed, prd.isLive)
+		prd.utilDamage = filterByLiveRoundsInt(prd.utilDamage, prd.isLive)
+		prd.openings = filterByLiveRoundsOpeningKill(prd.openings, prd.isLive)
 
-		prd.flashesThrown = FilterByLiveRoundsInt(prd.flashesThrown, prd.isLive)
-		prd.HEsThrown = FilterByLiveRoundsInt(prd.HEsThrown, prd.isLive)
-		prd.molliesThrown = FilterByLiveRoundsInt(prd.molliesThrown, prd.isLive)
-		prd.smokesThrown = FilterByLiveRoundsInt(prd.smokesThrown, prd.isLive)
+		prd.flashesThrown = filterByLiveRoundsInt(prd.flashesThrown, prd.isLive)
+		prd.HEsThrown = filterByLiveRoundsInt(prd.HEsThrown, prd.isLive)
+		prd.molliesThrown = filterByLiveRoundsInt(prd.molliesThrown, prd.isLive)
+		prd.smokesThrown = filterByLiveRoundsInt(prd.smokesThrown, prd.isLive)
 
-		prd.headToHead = FilterByLiveRoundsH2H(prd.headToHead, prd.isLive)
+		prd.headToHead = filterByLiveRoundsH2H(prd.headToHead, prd.isLive)
 
-		prd.rounds = FilterByLiveRoundsRounds(prd.rounds, prd.isLive)
-		prd.winners = FilterByLiveRoundsWinners(prd.winners, prd.isLive)
+		prd.rounds = filterByLiveRoundsRounds(prd.rounds, prd.isLive)
+		prd.winners = filterByLiveRoundsWinners(prd.winners, prd.isLive)
 	} else {
 
 		// Figure out where the game actually goes live
 		startRound := 0
 		for i := len(prd.kills) - 2; i > 0; i-- {
-			killsNext := MapValTotal(&prd.kills[i+1])
-			killsCurr := MapValTotal(&prd.kills[i])
-			killsPrev := MapValTotal(&prd.kills[i-1])
+			killsNext := mapValTotal(&prd.kills[i+1])
+			killsCurr := mapValTotal(&prd.kills[i])
+			killsPrev := mapValTotal(&prd.kills[i-1])
 
 			// Three consecutive rounds with 0 kills will be
 			// considered the start of the game (faceit + pugsetup
@@ -149,21 +149,21 @@ func (prd *PerRoundData) CropToRealRounds(useLiveMode bool) {
 
 func (prd *PerRoundData) ComputeTotals() Totals {
 	return Totals{
-		kills:            ArrayMapTotal(&prd.kills),
-		deaths:           ArrayMapTotal(&prd.deaths),
-		assists:          ArrayMapTotal(&prd.assists),
-		deathsTraded:     ArrayMapTotal(&prd.deathsTraded),
-		tradeKills:       ArrayMapTotal(&prd.tradeKills),
-		headshots:        ArrayMapTotal(&prd.headshots),
-		damage:           ArrayMapTotal(&prd.damage),
-		flashAssists:     ArrayMapTotal(&prd.flashAssists),
-		enemiesFlashed:   ArrayMapTotal(&prd.enemiesFlashed),
-		teammatesFlashed: ArrayMapTotal(&prd.teammatesFlashed),
-		utilDamage:       ArrayMapTotal(&prd.utilDamage),
-		flashesThrown:    ArrayMapTotal(&prd.flashesThrown),
-		hEsThrown:        ArrayMapTotal(&prd.HEsThrown),
-		molliesThrown:    ArrayMapTotal(&prd.molliesThrown),
-		smokesThrown:     ArrayMapTotal(&prd.smokesThrown),
+		kills:            arrayMapTotal(&prd.kills),
+		deaths:           arrayMapTotal(&prd.deaths),
+		assists:          arrayMapTotal(&prd.assists),
+		deathsTraded:     arrayMapTotal(&prd.deathsTraded),
+		tradeKills:       arrayMapTotal(&prd.tradeKills),
+		headshots:        arrayMapTotal(&prd.headshots),
+		damage:           arrayMapTotal(&prd.damage),
+		flashAssists:     arrayMapTotal(&prd.flashAssists),
+		enemiesFlashed:   arrayMapTotal(&prd.enemiesFlashed),
+		teammatesFlashed: arrayMapTotal(&prd.teammatesFlashed),
+		utilDamage:       arrayMapTotal(&prd.utilDamage),
+		flashesThrown:    arrayMapTotal(&prd.flashesThrown),
+		hEsThrown:        arrayMapTotal(&prd.HEsThrown),
+		molliesThrown:    arrayMapTotal(&prd.molliesThrown),
+		smokesThrown:     arrayMapTotal(&prd.smokesThrown),
 		openingKills:     derefOpeningKillArray(prd.openings),
 	}
 }
