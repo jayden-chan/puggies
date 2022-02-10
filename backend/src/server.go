@@ -10,12 +10,12 @@ import (
 )
 
 func doRescan(trigger string, config Config, logger *Logger) {
-	logger.Infof("[trigger=%s] starting incremental demo folder rescan", trigger)
+	logger.Infof("trigger=%s starting incremental demo folder rescan", trigger)
 	err := parseAll(config.demosPath, config.dataPath, true, config, logger)
 	if err != nil {
-		logger.Errorf("[trigger=%s] failed to re-scan demos folder: %s", trigger, err.Error())
+		logger.Errorf("trigger=%s failed to re-scan demos folder: %s", trigger, err.Error())
 	} else {
-		logger.Infof("[trigger=%s] incremental demo folder rescan finished", trigger)
+		logger.Infof("trigger=%s incremental demo folder rescan finished", trigger)
 	}
 }
 
@@ -58,9 +58,10 @@ func runServer(config Config, logger *Logger) {
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/ping", ping())
-		v1.GET("/health", ping())
+		v1.GET("/health", health())
 		v1.GET("/matches/:id", matches(config.dataPath))
-		v1.GET("/history.json", history(config.dataPath))
+		v1.GET("/history.json", staticInRoot(config.dataPath, "history.json"))
+		v1.GET("/usermeta.json", staticInRoot(config.dataPath, "usermeta.json"))
 
 		v1.PATCH("/rescan", rescan(config, logger))
 	}
@@ -74,6 +75,15 @@ func ping() func(*gin.Context) {
 	return func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
+		})
+	}
+}
+
+// may update this later with actual health information
+func health() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "healthy",
 		})
 	}
 }
@@ -95,9 +105,9 @@ func matches(dataPath string) func(*gin.Context) {
 	}
 }
 
-func history(dataPath string) func(*gin.Context) {
+func staticInRoot(dataPath, fileName string) func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.File(join(dataPath, "history.json"))
+		c.File(join(dataPath, fileName))
 	}
 }
 

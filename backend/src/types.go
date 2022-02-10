@@ -9,14 +9,16 @@ type TeamsMap map[uint64]string
 type NamesMap map[uint64]string
 
 type MetaData struct {
-	Map         string   `json:"map"`
-	Id          string   `json:"id"`
-	DemoType    string   `json:"demoType"`
-	PlayerNames NamesMap `json:"playerNames"`
-	TeamAScore  int      `json:"teamAScore"`
-	TeamBScore  int      `json:"teamBScore"`
-	TeamATitle  string   `json:"teamATitle"`
-	TeamBTitle  string   `json:"teamBTitle"`
+	Map           string   `json:"map"`
+	Id            string   `json:"id"`
+	Date          string   `json:"date"`
+	DateTimestamp int64    `json:"dateTimestamp"`
+	DemoType      string   `json:"demoType"`
+	PlayerNames   NamesMap `json:"playerNames"`
+	TeamAScore    int      `json:"teamAScore"`
+	TeamBScore    int      `json:"teamBScore"`
+	TeamATitle    string   `json:"teamATitle"`
+	TeamBTitle    string   `json:"teamBTitle"`
 }
 
 type Stats struct {

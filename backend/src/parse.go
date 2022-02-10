@@ -39,6 +39,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	mapMetadata := metadata.MapNameToMap[header.MapName]
 	demoFileName := getDemoFileName(path)
 	demoType := getDemoType(demoFileName)
+	demoTime := getDemoTime(demoFileName)
 
 	prd := PerRoundData{}
 
@@ -304,13 +305,13 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		prd.winners[len(prd.winners)-1] = roundWinners
 	})
 
-	logger.Infof("[demo=%s] parsing demo", demoFileName)
+	logger.Infof("demo=%s parsing demo", demoFileName)
 	err = p.ParseToEnd()
 	if err != nil {
 		return Output{}, err
 	}
 
-	logger.Infof("[demo=%s] computing stats", demoFileName)
+	logger.Infof("demo=%s computing stats", demoFileName)
 
 	if eseaMode {
 		stripPlayerPrefixes(teams, &playerNames, "CT")
@@ -395,14 +396,16 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		OpeningKills: totals.openingKills,
 
 		Meta: MetaData{
-			Map:         header.MapName,
-			Id:          demoFileName,
-			DemoType:    demoType,
-			PlayerNames: playerNames,
-			TeamAScore:  teamAScore,
-			TeamBScore:  teamBScore,
-			TeamATitle:  getTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
-			TeamBTitle:  getTeamName(tClanTag, teams, playerNames, hltv, "T"),
+			Map:           header.MapName,
+			Id:            demoFileName,
+			Date:          demoTime.Format("Mon Jan 2 2006"),
+			DateTimestamp: demoTime.UnixMilli(),
+			DemoType:      demoType,
+			PlayerNames:   playerNames,
+			TeamAScore:    teamAScore,
+			TeamBScore:    teamBScore,
+			TeamATitle:    getTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
+			TeamBTitle:    getTeamName(tClanTag, teams, playerNames, hltv, "T"),
 		},
 	}
 
@@ -410,7 +413,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		return Output{}, err
 	}
 
-	logger.Infof("[demo=%s] generating heatmaps", demoFileName)
+	logger.Infof("demo=%s generating heatmaps", demoFileName)
 	err = genHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], config.mapsPath)
 	if err != nil {
 		return Output{}, err

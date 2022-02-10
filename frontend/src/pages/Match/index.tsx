@@ -22,13 +22,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DataAPI } from "../../api";
 import { Loading } from "../../components/Loading";
-import {
-  demoLinks,
-  getDateInfo,
-  getDemoTypePretty,
-  getPlayers,
-} from "../../data";
-import { Match, MatchInfo, Round, Stats } from "../../types";
+import { getDemoTypePretty, getESEAId, getPlayers } from "../../data";
+import { Match, MatchInfo, Round, Stats, UserMeta } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
 import { PlayerInfo } from "./PlayerInfo";
@@ -54,7 +49,10 @@ export const getRoundIcon = (round: Round) => {
   }
 };
 
-export const MatchPage = (props: { matches: MatchInfo[] }) => {
+export const MatchPage = (props: {
+  matches: MatchInfo[];
+  userMeta: UserMeta | undefined;
+}) => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
 
@@ -64,14 +62,14 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
 
   useEffect(() => {
     const api = new DataAPI();
-    const matchId = props.matches.find((f) => f.id === id);
-    if (matchId === undefined) {
+    const thisMatch = props.matches.find((f) => f.id === id);
+    if (thisMatch === undefined) {
       navigate("/404");
       return;
     }
 
     api
-      .fetchMatch(matchId)
+      .fetchMatch(thisMatch.id)
       .then((m) => setMatch(m))
       .catch((err) => console.error(err));
   }, [id, props.matches, navigate]);
@@ -80,10 +78,22 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     return <Loading minH="calc(100vh - 5.5rem)">Loading match...</Loading>;
   }
 
-  const { map, demoType, teamAScore, teamBScore, teamATitle, teamBTitle } =
-    match.meta;
+  const {
+    map,
+    demoType,
+    date,
+    teamAScore,
+    teamBScore,
+    teamATitle,
+    teamBTitle,
+  } = match.meta;
 
-  const [dateString] = getDateInfo(match.meta.id);
+  const demoLink =
+    match.meta.demoLink ??
+    (props.userMeta !== undefined ? props.userMeta[id]?.demoLink : undefined);
+
+  const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
+
   const teamAPlayers = getPlayers(match, "CT", sortCol, reversed);
   const teamBPlayers = getPlayers(match, "T", sortCol, reversed);
 
@@ -109,20 +119,14 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
           {getDemoTypePretty(demoType)} on {map}
         </Heading>
         <Heading fontSize="lg" as="h2">
-          {dateString}{" "}
-          {demoLinks[match.meta.id] && (
-            <Link isExternal href={demoLinks[match.meta.id]}>
+          {date}{" "}
+          {demoLink && (
+            <Link isExternal href={demoLink}>
               (demo link)
             </Link>
           )}
-          {demoType === "esea" && (
-            <Link
-              isExternal
-              href={`https://play.esea.net/match/${id.replace(
-                "esea_match_",
-                ""
-              )}`}
-            >
+          {eseaId && (
+            <Link isExternal href={`https://play.esea.net/match/${eseaId}`}>
               (ESEA match page)
             </Link>
           )}

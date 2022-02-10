@@ -97,9 +97,17 @@ export type Kill = {
 
 export type DemoType = "esea" | "pugsetup" | "faceit" | "steam";
 
+export type UserMeta = {
+  [key: string]: {
+    demoLink?: string;
+  };
+};
+
 export type MatchInfo = {
   id: string;
   map: string;
+  date: string;
+  dateTimestamp: number;
   demoType: DemoType;
   playerNames: { [key: string]: string };
   teamAScore: number;

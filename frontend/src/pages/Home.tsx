@@ -13,13 +13,19 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getDateInfo } from "../data";
-import { MatchInfo } from "../types";
+import { MatchInfo, UserMeta } from "../types";
 
 const MatchCard = (props: { match: MatchInfo }) => {
-  const { id, map, demoType, teamAScore, teamBScore, teamATitle, teamBTitle } =
-    props.match;
-  const [dateString] = getDateInfo(id);
+  const {
+    id,
+    map,
+    date,
+    demoType,
+    teamAScore,
+    teamBScore,
+    teamATitle,
+    teamBTitle,
+  } = props.match;
   const [mapLoaded, setMapLoaded] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
   const showImages = useBreakpointValue([false, false, true]);
@@ -40,13 +46,14 @@ const MatchCard = (props: { match: MatchInfo }) => {
               src={`${process.env.PUBLIC_URL}/img/maps/${map}.jpg`}
               onLoad={() => setMapLoaded(true)}
               h="6.5rem"
+              minH="6.5rem"
             />
           </Skeleton>
         )}
         <VStack align="start">
           <Heading as="h3" fontSize="2xl">
             <LinkOverlay as={Link} to={`/match/${id}`}>
-              {dateString}
+              {date}
             </LinkOverlay>
           </Heading>
           <Heading as="h4" fontSize="xl">
@@ -66,6 +73,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
               src={`${process.env.PUBLIC_URL}/img/${demoType}.png`}
               onLoad={() => setLogoLoaded(true)}
               h="6.5rem"
+              minH="6.5rem"
             />
           </Skeleton>
         )}
@@ -74,19 +82,24 @@ const MatchCard = (props: { match: MatchInfo }) => {
   );
 };
 
-export const Home = (props: { matches: MatchInfo[] }) => (
-  <Container maxW="container.xl" mt={8}>
-    <Flex alignItems="center" justifyContent="space-between">
-      <Heading lineHeight="unset" mb={0}>
-        Home
+export const Home = (props: {
+  matches: MatchInfo[];
+  userMeta: UserMeta | undefined;
+}) => {
+  return (
+    <Container maxW="container.xl" mt={8}>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Heading lineHeight="unset" mb={0}>
+          Home
+        </Heading>
+      </Flex>
+      <Divider my={5} />
+      <Heading as="h2" fontSize="3xl">
+        Matches
       </Heading>
-    </Flex>
-    <Divider my={5} />
-    <Heading as="h2" fontSize="3xl">
-      Matches
-    </Heading>
-    {props.matches.map((m) => (
-      <MatchCard key={m.id} match={m} />
-    ))}
-  </Container>
-);
+      {props.matches.map((m) => (
+        <MatchCard key={m.id} match={m} />
+      ))}
+    </Container>
+  );
+};
