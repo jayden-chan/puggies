@@ -33,10 +33,7 @@ import { msToRoundTime } from "../../data";
 import { OpeningKill, PlayerNames } from "../../types";
 
 const WeaponImg = (props: { name: string } & ImageProps) => (
-  <Image
-    src={`${process.env.PUBLIC_URL}/img/weapons/${props.name}.png`}
-    h={7}
-  />
+  <Image src={`/assets/weapons/${props.name}.png`} h={7} />
 );
 
 export const OpeningDuels = (props: {

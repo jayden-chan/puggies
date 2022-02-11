@@ -78,17 +78,17 @@ the demo parser unless necessary.
 Whether to print verbose debug information in the logs. If you are having an issue with
 the software and need to debug, it's a good idea to enable this.
 
-### `PUGGIES_MAPS_PATH`
+### `PUGGIES_ASSETS_PATH`
 **Type**: String
 
-**Default**: `/backend/maps`
+**Default**: `/backend/assets`
 
-The full path to the location where the CS:GO map image files are located.
+The full path to the location where the frontend and backend assets are located.
 
 If you are running in Docker you must leave this at the default setting.
 
 If you are running on bare metal you should set this to `/<path to puggies git
-root>/backend/maps`
+root>/backend/assets`
 
 ### `PUGGIES_STATIC_PATH`
 **Type**: String

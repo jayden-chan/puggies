@@ -433,7 +433,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	}
 
 	logger.Infof("demo=%s generating heatmaps", demoFileName)
-	err = genHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], config.mapsPath)
+	err = genHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], join(config.assetsPath, "minimaps"))
 	if err != nil {
 		return Output{}, err
 	}

@@ -20,7 +20,7 @@
 package main
 
 import (
-	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-contrib/gzip"
@@ -45,22 +45,23 @@ func registerJobs(s *gocron.Scheduler, config Config, logger *Logger) {
 	})
 }
 
-func staticFile(router *gin.Engine, relativePath, basepath string) {
-	filepath := join(basepath, relativePath)
+func genFileRoute(router *gin.Engine, maxAge int, basepath ...string) func(string) {
+	return func(relativePath string) {
+		finalFilePath := append(basepath, relativePath)
+		filepath := join(finalFilePath...)
 
-	if strings.Contains(relativePath, ":") || strings.Contains(relativePath, "*") {
-		panic("URL parameters can not be used when serving a static file")
+		if strings.Contains(relativePath, ":") || strings.Contains(relativePath, "*") {
+			panic("URL parameters can not be used when serving a static file")
+		}
+
+		handler := func(c *gin.Context) {
+			c.Header("Cache-Control", "max-age="+strconv.Itoa(maxAge))
+			c.File(filepath)
+		}
+
+		router.GET(relativePath, handler)
+		router.HEAD(relativePath, handler)
 	}
-
-	handler := func(c *gin.Context) {
-		// static files are good for a day at least, probably more
-		// but this is conservative
-		c.Header("Cache-Control", "max-age=86400")
-		c.File(filepath)
-	}
-
-	router.GET(relativePath, handler)
-	router.HEAD(relativePath, handler)
 }
 
 func runServer(config Config, logger *Logger) {
@@ -72,26 +73,90 @@ func runServer(config Config, logger *Logger) {
 		r.SetTrustedProxies(nil)
 	}
 
+	// static files are good for a day
+	staticFileRoute := genFileRoute(r, 86400, config.staticPath)
+	// assets are good for 3 days
+	assetRoute := genFileRoute(r, 259200, config.assetsPath, "..")
+
 	// Middlewares
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	// Serve the React frontend
-	r.Static(config.frontendPath, config.staticPath)
-	r.GET("/", redirToApp(config.frontendPath))
-
 	// Static files in the root that browsers might ask for
-	staticFile(r, "/android-chrome-192x192.png", config.staticPath)
-	staticFile(r, "/android-chrome-512x512.png", config.staticPath)
-	staticFile(r, "/apple-touch-icon.png", config.staticPath)
-	staticFile(r, "/favicon-16x16.png", config.staticPath)
-	staticFile(r, "/favicon-32x32.png", config.staticPath)
-	staticFile(r, "/favicon.ico", config.staticPath)
-	staticFile(r, "/manifest.json", config.staticPath)
-	staticFile(r, "/robots.txt", config.staticPath)
+	staticFileRoute("/android-chrome-192x192.png")
+	staticFileRoute("/android-chrome-512x512.png")
+	staticFileRoute("/apple-touch-icon.png")
+	staticFileRoute("/favicon-16x16.png")
+	staticFileRoute("/favicon-32x32.png")
+	staticFileRoute("/favicon.ico")
+	staticFileRoute("/manifest.json")
+	staticFileRoute("/robots.txt")
+
+	// Images (at /assets/)
+	assetRoute("/assets/logos/esea.png")
+	assetRoute("/assets/logos/faceit.png")
+	assetRoute("/assets/logos/steam.png")
+	assetRoute("/assets/killfeed/blind.png")
+	assetRoute("/assets/killfeed/flashassist.png")
+	assetRoute("/assets/killfeed/headshot.png")
+	assetRoute("/assets/killfeed/noscope.png")
+	assetRoute("/assets/killfeed/smoke.png")
+	assetRoute("/assets/killfeed/wallbang.png")
+	assetRoute("/assets/maps/de_ancient.jpeg")
+	assetRoute("/assets/maps/de_cache.jpg")
+	assetRoute("/assets/maps/de_dust2.jpg")
+	assetRoute("/assets/maps/de_inferno.jpg")
+	assetRoute("/assets/maps/de_mirage.jpg")
+	assetRoute("/assets/maps/de_nuke.jpg")
+	assetRoute("/assets/maps/de_overpass.jpg")
+	assetRoute("/assets/maps/de_train.jpg")
+	assetRoute("/assets/maps/de_vertigo.jpg")
+	assetRoute("/assets/weapons/eq_fraggrenade.png")
+	assetRoute("/assets/weapons/eq_taser.png")
+	assetRoute("/assets/weapons/fire.png")
+	assetRoute("/assets/weapons/knife_butterfly.png")
+	assetRoute("/assets/weapons/knife_flip.png")
+	assetRoute("/assets/weapons/knife_karam.png")
+	assetRoute("/assets/weapons/knife_m9_bay.png")
+	assetRoute("/assets/weapons/knife_push.png")
+	assetRoute("/assets/weapons/knife_survival_bowie.png")
+	assetRoute("/assets/weapons/mach_m249.png")
+	assetRoute("/assets/weapons/mach_negev.png")
+	assetRoute("/assets/weapons/pist_223.png")
+	assetRoute("/assets/weapons/pist_cz75.png")
+	assetRoute("/assets/weapons/pist_deagle.png")
+	assetRoute("/assets/weapons/pist_elite.png")
+	assetRoute("/assets/weapons/pist_fiveseven.png")
+	assetRoute("/assets/weapons/pist_glock18.png")
+	assetRoute("/assets/weapons/pist_hkp2000.png")
+	assetRoute("/assets/weapons/pist_p250.png")
+	assetRoute("/assets/weapons/pist_revolver.png")
+	assetRoute("/assets/weapons/pist_tec9.png")
+	assetRoute("/assets/weapons/rif_ak47.png")
+	assetRoute("/assets/weapons/rif_aug.png")
+	assetRoute("/assets/weapons/rif_famas.png")
+	assetRoute("/assets/weapons/rif_galilar.png")
+	assetRoute("/assets/weapons/rif_m4a1.png")
+	assetRoute("/assets/weapons/rif_m4a1_s.png")
+	assetRoute("/assets/weapons/rif_sg556.png")
+	assetRoute("/assets/weapons/shot_mag7.png")
+	assetRoute("/assets/weapons/shot_nova.png")
+	assetRoute("/assets/weapons/shot_sawedoff.png")
+	assetRoute("/assets/weapons/shot_xm1014.png")
+	assetRoute("/assets/weapons/smg_bizon.png")
+	assetRoute("/assets/weapons/smg_mac10.png")
+	assetRoute("/assets/weapons/smg_mp5sd.png")
+	assetRoute("/assets/weapons/smg_mp7.png")
+	assetRoute("/assets/weapons/smg_mp9.png")
+	assetRoute("/assets/weapons/smg_p90.png")
+	assetRoute("/assets/weapons/smg_ump45.png")
+	assetRoute("/assets/weapons/snip_awp.png")
+	assetRoute("/assets/weapons/snip_g3sg1.png")
+	assetRoute("/assets/weapons/snip_scar20.png")
+	assetRoute("/assets/weapons/snip_ssg08.png")
 
 	// Source code and license
-	staticFile(r, "/puggies-src.tar.gz", config.staticPath)
-	staticFile(r, "/LICENSE.txt", config.staticPath)
+	staticFileRoute("/puggies-src.tar.gz")
+	staticFileRoute("/LICENSE.txt")
 
 	// API routes
 	v1 := r.Group("/api/v1")
@@ -105,77 +170,11 @@ func runServer(config Config, logger *Logger) {
 		v1.PATCH("/rescan", rescan(config, logger))
 	}
 
+	// React frontend routes
+	r.Static(config.frontendPath, config.staticPath)
+	r.GET("/", redirToApp(config.frontendPath))
+
 	// 404 handler
 	r.NoRoute(noRoute(config.staticPath, config.frontendPath))
 	r.Run(":" + config.port)
-}
-
-func ping() func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	}
-}
-
-// may update this later with actual health information
-func health() func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "healthy",
-		})
-	}
-}
-
-func rescan(config Config, logger *Logger) func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Incremental re-scan of demos folder started",
-		})
-
-		go doRescan("api", config, logger)
-	}
-}
-
-func matches(dataPath string) func(*gin.Context) {
-	return func(c *gin.Context) {
-		id := c.Param("id")
-		if strings.Contains("..", id) {
-			c.String(400, "bruh\n")
-		}
-
-		c.File(join(dataPath, "matches", id+".json"))
-	}
-}
-
-func file(dataPath, fileName string) func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.File(join(dataPath, fileName))
-	}
-}
-
-func license(frontendPath string) func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.File(join(frontendPath, "LICENSE.txt"))
-	}
-}
-
-func redirToApp(frontendPath string) func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, frontendPath)
-	}
-}
-
-func noRoute(staticPath, frontendPath string) func(*gin.Context) {
-	return func(c *gin.Context) {
-		// Serve the frontend in the event of a 404 at /app so that
-		// the frontend routing works properly when navigating directly
-		// to a page like /match/my_match_id
-		path := c.Request.URL.Path
-		if strings.HasPrefix(path, frontendPath) && !isLikelyFile(path) {
-			c.File(join(staticPath, "index.html"))
-		} else {
-			c.String(404, "404 not found\n")
-		}
-	}
 }

@@ -79,7 +79,7 @@ const playerColor = (startTeam: Team | undefined, round: number) => {
 const KillFeedIcon = (props: ImageProps) => (
   <Image
     {...props}
-    src={`${process.env.PUBLIC_URL}/img${props.src}`}
+    src={`/assets${props.src}`}
     h="20px"
     mr={props.mx === undefined ? 2 : undefined}
   />
