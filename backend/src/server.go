@@ -169,8 +169,10 @@ func redirToApp(frontendPath string) func(*gin.Context) {
 func noRoute(staticPath, frontendPath string) func(*gin.Context) {
 	return func(c *gin.Context) {
 		// Serve the frontend in the event of a 404 at /app so that
-		// the frontend routing works properly
-		if strings.HasPrefix(c.Request.URL.Path, frontendPath) {
+		// the frontend routing works properly when navigating directly
+		// to a page like /match/my_match_id
+		path := c.Request.URL.Path
+		if strings.HasPrefix(path, frontendPath) && !isLikelyFile(path) {
 			c.File(join(staticPath, "index.html"))
 		} else {
 			c.String(404, "404 not found\n")

@@ -34,6 +34,25 @@ func join(elem ...string) string {
 	return filepath.Join(elem...)
 }
 
+// if the path ends in one of these extensions it's probably a file.
+// this is just used for the 404 route so we don't serve up the React
+// frontend in the case of a 404 when fetching a file (we only want to
+// serve the frontend when there's a 404 on a plain route like /match/my_match_id
+func isLikelyFile(path string) bool {
+	return strings.HasSuffix(path, ".png") ||
+		strings.HasSuffix(path, ".webp") ||
+		strings.HasSuffix(path, ".jpeg") ||
+		strings.HasSuffix(path, ".jpg") ||
+		strings.HasSuffix(path, ".gif") ||
+		strings.HasSuffix(path, ".json") ||
+		strings.HasSuffix(path, ".xml") ||
+		strings.HasSuffix(path, ".mp3") ||
+		strings.HasSuffix(path, ".mp4") ||
+		strings.HasSuffix(path, ".tar.gz") ||
+		strings.HasSuffix(path, ".zip") ||
+		strings.HasSuffix(path, ".txt")
+}
+
 func normalizeFolderPath(path string) string {
 	if strings.HasSuffix(path, "/") {
 		return path[:len(path)-1]
@@ -81,6 +100,8 @@ func processWeaponName(w common.Equipment) string {
 		{"models/weapons/", ""},
 		{"v_", ""},
 		{"w_", ""},
+		{"cz75a", "cz75"},
+		{"cz_75", "cz75"},
 		{"_dropped", ""},
 		{".mdl", ""},
 		{"eq_incendiarygrenade", "fire"},
