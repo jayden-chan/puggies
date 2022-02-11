@@ -35,7 +35,7 @@ ENV PUGGIES_FRONTEND_PATH=/app
 ENV PUGGIES_STATIC_PATH=/frontend/build
 
 COPY ./LICENSE /frontend/build/LICENSE.txt
-COPY ./backend/maps /backend/maps
+COPY ./backend/assets /backend/assets
 
 COPY --from=backendBuilder \
      /workspace/puggies \
