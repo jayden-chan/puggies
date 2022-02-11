@@ -26,6 +26,24 @@ func registerJobs(s *gocron.Scheduler, config Config, logger *Logger) {
 	})
 }
 
+func staticFile(router *gin.Engine, relativePath, basepath string) {
+	filepath := join(basepath, relativePath)
+
+	if strings.Contains(relativePath, ":") || strings.Contains(relativePath, "*") {
+		panic("URL parameters can not be used when serving a static file")
+	}
+
+	handler := func(c *gin.Context) {
+		// static files are good for a day at least, probably more
+		// but this is conservative
+		c.Header("Cache-Control", "max-age=86400")
+		c.File(filepath)
+	}
+
+	router.GET(relativePath, handler)
+	router.HEAD(relativePath, handler)
+}
+
 func runServer(config Config, logger *Logger) {
 	r := gin.Default()
 
@@ -38,21 +56,23 @@ func runServer(config Config, logger *Logger) {
 	// Middlewares
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	// Frontend routes
+	// Serve the React frontend
 	r.Static(config.frontendPath, config.staticPath)
 	r.GET("/", redirToApp(config.frontendPath))
 
 	// Static files in the root that browsers might ask for
-	r.StaticFile("/android-chrome-192x192.png", join(config.staticPath, "android-chrome-192x192.png"))
-	r.StaticFile("/android-chrome-512x512.png", join(config.staticPath, "android-chrome-512x512.png"))
-	r.StaticFile("/apple-touch-icon.png", join(config.staticPath, "apple-touch-icon.png"))
-	r.StaticFile("/favicon-16x16.png", join(config.staticPath, "favicon-16x16.png"))
-	r.StaticFile("/favicon-32x32.png", join(config.staticPath, "favicon-32x32.png"))
-	r.StaticFile("/favicon.ico", join(config.staticPath, "favicon.ico"))
+	staticFile(r, "/android-chrome-192x192.png", config.staticPath)
+	staticFile(r, "/android-chrome-512x512.png", config.staticPath)
+	staticFile(r, "/apple-touch-icon.png", config.staticPath)
+	staticFile(r, "/favicon-16x16.png", config.staticPath)
+	staticFile(r, "/favicon-32x32.png", config.staticPath)
+	staticFile(r, "/favicon.ico", config.staticPath)
+	staticFile(r, "/manifest.json", config.staticPath)
+	staticFile(r, "/robots.txt", config.staticPath)
 
 	// Source code and license
-	r.StaticFile("/puggies-src.tar.gz", join(config.staticPath, "puggies-src.tar.gz"))
-	r.GET("/LICENSE.txt", license(config.staticPath))
+	staticFile(r, "/puggies-src.tar.gz", config.staticPath)
+	staticFile(r, "/LICENSE.txt", config.staticPath)
 
 	// API routes
 	v1 := r.Group("/api/v1")
@@ -60,8 +80,8 @@ func runServer(config Config, logger *Logger) {
 		v1.GET("/ping", ping())
 		v1.GET("/health", health())
 		v1.GET("/matches/:id", matches(config.dataPath))
-		v1.GET("/history.json", staticInRoot(config.dataPath, "history.json"))
-		v1.GET("/usermeta.json", staticInRoot(config.dataPath, "usermeta.json"))
+		v1.GET("/history.json", file(config.dataPath, "history.json"))
+		v1.GET("/usermeta.json", file(config.dataPath, "usermeta.json"))
 
 		v1.PATCH("/rescan", rescan(config, logger))
 	}
@@ -101,11 +121,15 @@ func rescan(config Config, logger *Logger) func(*gin.Context) {
 func matches(dataPath string) func(*gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")
+		if strings.Contains("..", id) {
+			c.String(400, "bruh\n")
+		}
+
 		c.File(join(dataPath, "matches", id))
 	}
 }
 
-func staticInRoot(dataPath, fileName string) func(*gin.Context) {
+func file(dataPath, fileName string) func(*gin.Context) {
 	return func(c *gin.Context) {
 		c.File(join(dataPath, fileName))
 	}
