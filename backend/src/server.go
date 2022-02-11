@@ -99,8 +99,8 @@ func runServer(config Config, logger *Logger) {
 		v1.GET("/ping", ping())
 		v1.GET("/health", health())
 		v1.GET("/matches/:id", matches(config.dataPath))
-		v1.GET("/history.json", file(config.dataPath, "history.json"))
-		v1.GET("/usermeta.json", file(config.dataPath, "usermeta.json"))
+		v1.GET("/history", file(config.dataPath, "history.json"))
+		v1.GET("/usermeta", file(config.dataPath, "usermeta.json"))
 
 		v1.PATCH("/rescan", rescan(config, logger))
 	}
@@ -144,7 +144,7 @@ func matches(dataPath string) func(*gin.Context) {
 			c.String(400, "bruh\n")
 		}
 
-		c.File(join(dataPath, "matches", id))
+		c.File(join(dataPath, "matches", id+".json"))
 	}
 }
 

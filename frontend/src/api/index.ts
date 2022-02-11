@@ -20,20 +20,19 @@
 import { Match, MatchInfo, UserMeta } from "../types";
 
 export class DataAPI {
-  private endpoint =
-    process.env.REACT_APP_PUGGIES_API_ENDPOINT ?? process.env.PUBLIC_URL;
+  private endpoint = "/api/v1";
 
   public async fetchMatch(id: string): Promise<Match> {
-    return (await fetch(`${this.endpoint}/matches/${id}.json`)).json();
+    return (await fetch(`${this.endpoint}/matches/${id}`)).json();
   }
 
   public async fetchUserMeta(): Promise<UserMeta> {
-    return (await fetch(`${this.endpoint}/usermeta.json`)).json();
+    return (await fetch(`${this.endpoint}/usermeta`)).json();
   }
 
   public async fetchMatches(): Promise<MatchInfo[]> {
     const results = (await (
-      await fetch(`${this.endpoint}/history.json`)
+      await fetch(`${this.endpoint}/history`)
     ).json()) as MatchInfo[];
 
     return results.sort((a, b) => b.dateTimestamp - a.dateTimestamp);
