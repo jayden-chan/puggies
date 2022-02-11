@@ -23,7 +23,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -40,14 +39,8 @@ func main() {
 		return
 	}
 
-	debug := false
-	debugVar := os.Getenv("PUGGIES_DEBUG")
-	if strings.ToLower(debugVar) == "true" || debugVar == "1" {
-		debug = true
-	}
-
-	logger := newLogger(debug)
-	config := getConfig(logger)
+	config := getConfig()
+	logger := newLogger(config.debug)
 	logger.Debugf("using config: %s", config)
 
 	switch args[0] {

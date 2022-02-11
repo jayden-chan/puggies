@@ -20,6 +20,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -37,7 +38,9 @@ type Config struct {
 	debug                            bool
 }
 
-func getConfig(logger *Logger) Config {
+func getConfig() Config {
+	// FOR DEVELOPERS: Make sure you update the configuration documentation when adding
+	// a new variable here. Also update the String() method to print the variable
 	return Config{
 		dataPath:                         envOrString("PUGGIES_DATA_PATH", "/data"),
 		demosPath:                        envOrString("PUGGIES_DEMOS_PATH", "/demos"),
@@ -45,9 +48,9 @@ func getConfig(logger *Logger) Config {
 		staticPath:                       envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		frontendPath:                     envOrString("PUGGIES_FRONTEND_PATH", "/app"),
 		port:                             envOrString("PUGGIES_HTTP_PORT", "9115"),
-		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 60, logger),
-		trustedProxies:                   getTrustedProxies(),
-		debug:                            logger.debugMode,
+		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 180),
+		trustedProxies:                   envStringList("PUGGIES_TRUSTED_PROXIES"),
+		debug:                            envOrBool("PUGGIES_DEBUG", false),
 	}
 }
 
@@ -74,21 +77,32 @@ func envOrString(key, defaultV string) string {
 	return val
 }
 
-func envOrNumber(key string, defaultV int, logger *Logger) int {
+func envOrBool(key string, defaultV bool) bool {
+	val := strings.ToLower(os.Getenv(key))
+	if val == "true" || val == "1" {
+		return true
+	}
+	if val == "false" || val == "0" {
+		return false
+	}
+	return defaultV
+}
+
+func envOrNumber(key string, defaultV int) int {
 	val := os.Getenv(key)
 	if val == "" {
 		return defaultV
 	}
 	i, err := strconv.Atoi(val)
 	if err != nil {
-		logger.Warnf("invalid number \"%s\" provided for variable %s. Using default value of %d", val, key, defaultV)
+		fmt.Fprintf(os.Stderr, "[warn] invalid number \"%s\" provided for variable %s. Using default value of %d", val, key, defaultV)
 		return defaultV
 	}
 	return i
 }
 
-func getTrustedProxies() []string {
-	val := os.Getenv("PUGGIES_TRUSTED_PROXIES")
+func envStringList(envKey string) []string {
+	val := os.Getenv(envKey)
 	if val == "" {
 		return nil
 	}
