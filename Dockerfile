@@ -27,12 +27,17 @@ WORKDIR /
 
 ENV GIN_MODE=release
 
-# do not change this without also changing PUBLIC_URL above
-ENV PUGGIES_FRONTEND_PATH=/app
-
-# do not change this without also updating the frontend COPY
-# commands above (not sure why anyone would want to change this though)
-ENV PUGGIES_STATIC_PATH=/frontend/build
+# None of these variables should need to be changed, the defaults are setup to work
+# with the docker container. Only change these if you know what you're doing!!
+# ENV PUGGIES_DATA_PATH=/data
+# ENV PUGGIES_DEMOS_PATH=/demos
+# ENV PUGGIES_STATIC_PATH=/frontend/build
+# ENV PUGGIES_ASSETS_PATH=/backend/assets
+# ENV PUGGIES_FRONTEND_PATH=/app
+# ENV PUGGIES_HTTP_PORT=9115
+# ENV PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES=180
+# ENV PUGGIES_TRUSTED_PROXIES=""
+# ENV PUGGIES_DEBUG="0"
 
 COPY ./LICENSE /frontend/build/LICENSE.txt
 COPY ./backend/assets /backend/assets
