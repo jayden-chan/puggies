@@ -61,7 +61,7 @@ func commandParse(args []string, config Config, logger *Logger) {
 }
 
 func commandParseAll(args []string, config Config, logger *Logger) {
-	if len(args) >= 3 && args[1] != "" && args[2] != "" {
+	if len(args) >= 3 {
 		incremental := false
 		for _, arg := range args {
 			if arg == "--incremental" {
