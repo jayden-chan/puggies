@@ -27,44 +27,44 @@ import (
 )
 
 type Config struct {
-	dataPath                         string
-	demosPath                        string
-	staticPath                       string
 	assetsPath                       string
-	frontendPath                     string
-	port                             string
-	incrementalRescanIntervalMinutes int
-	trustedProxies                   []string
+	dataPath                         string
 	debug                            bool
+	demosPath                        string
+	frontendPath                     string
+	incrementalRescanIntervalMinutes int
+	port                             string
+	staticPath                       string
+	trustedProxies                   []string
 }
 
 func getConfig() Config {
 	// FOR DEVELOPERS: Make sure you update the configuration documentation when adding
 	// a new variable here. Also update the String() method to print the variable
 	return Config{
-		dataPath:                         envOrString("PUGGIES_DATA_PATH", "/data"),
-		demosPath:                        envOrString("PUGGIES_DEMOS_PATH", "/demos"),
-		staticPath:                       envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		assetsPath:                       envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
-		frontendPath:                     envOrString("PUGGIES_FRONTEND_PATH", "/app"),
-		port:                             envOrString("PUGGIES_HTTP_PORT", "9115"),
-		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 180),
-		trustedProxies:                   envStringList("PUGGIES_TRUSTED_PROXIES"),
+		dataPath:                         envOrString("PUGGIES_DATA_PATH", "/data"),
 		debug:                            envOrBool("PUGGIES_DEBUG", false),
+		demosPath:                        envOrString("PUGGIES_DEMOS_PATH", "/demos"),
+		frontendPath:                     envOrString("PUGGIES_FRONTEND_PATH", "/app"),
+		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 180),
+		port:                             envOrString("PUGGIES_HTTP_PORT", "9115"),
+		staticPath:                       envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
+		trustedProxies:                   envStringList("PUGGIES_TRUSTED_PROXIES"),
 	}
 }
 
 func (config Config) String() string {
 	ret := "\n{\n"
-	ret += "\t" + "dataPath: " + config.dataPath + "\n"
-	ret += "\t" + "demosPath: " + config.demosPath + "\n"
-	ret += "\t" + "staticPath: " + config.staticPath + "\n"
 	ret += "\t" + "assetsPath: " + config.assetsPath + "\n"
-	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
-	ret += "\t" + "port: " + config.port + "\n"
-	ret += "\t" + "incrementalRescanIntervalMinutes: " + strconv.Itoa(config.incrementalRescanIntervalMinutes) + "\n"
-	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"
+	ret += "\t" + "dataPath: " + config.dataPath + "\n"
 	ret += "\t" + "debug: " + strconv.FormatBool(config.debug) + "\n"
+	ret += "\t" + "demosPath: " + config.demosPath + "\n"
+	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
+	ret += "\t" + "incrementalRescanIntervalMinutes: " + strconv.Itoa(config.incrementalRescanIntervalMinutes) + "\n"
+	ret += "\t" + "port: " + config.port + "\n"
+	ret += "\t" + "staticPath: " + config.staticPath + "\n"
+	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"
 	ret += "}"
 	return ret
 }
