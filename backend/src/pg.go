@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"strings"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -17,27 +18,20 @@ func createMigrationClient(config Config) (*migrate.Migrate, error) {
 		strings.Replace(config.dbConnString, "postgres://", "pgx://", 1))
 }
 
-func migrateUp(config Config) error {
+func runMigration(config Config, dir string) error {
 	m, err := createMigrationClient(config)
 	if err != nil {
 		return err
 	}
 
-	err = m.Up()
-	if err != nil {
-		return err
+	if dir == "up" {
+		err = m.Up()
+	} else if dir == "down" {
+		err = m.Down()
+	} else {
+		err = errors.New("Invalid migration direction \"" + dir + "\"")
 	}
 
-	return nil
-}
-
-func migrateDown(config Config) error {
-	m, err := createMigrationClient(config)
-	if err != nil {
-		return err
-	}
-
-	err = m.Down()
 	if err != nil {
 		return err
 	}

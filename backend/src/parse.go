@@ -30,16 +30,7 @@ import (
 	metadata "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/metadata"
 )
 
-func getOutputFilesList(path, heatmapsDir string) map[string]string {
-	heatmapsDir = normalizeFolderPath(heatmapsDir)
-	return map[string]string{
-		"heatmapShotsFired": join(heatmapsDir, getHeatmapFileName(path, "shotsFired")),
-	}
-}
-
 func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output, error) {
-	outputFiles := getOutputFilesList(path, heatmapsDir)
-
 	f, err := os.Open(path)
 	if err != nil {
 		return Output{}, err
@@ -81,7 +72,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	isLive := !eseaMode
 	deathTimes := make(map[uint64]Death)
 
-	var points_shotsFired []r2.Point
+	heatmaps := make(map[string][]r2.Point)
 
 	p.RegisterEventHandler(func(e events.Kill) {
 		// In faceit these events can sometimes trigger before we
@@ -211,7 +202,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		}
 
 		x, y := mapMetadata.TranslateScale(e.Shooter.Position().X, e.Shooter.Position().Y)
-		points_shotsFired = append(points_shotsFired, r2.Point{X: x, Y: y})
+		heatmaps["shotsFired"] = append(heatmaps["shotsFired"], r2.Point{X: x, Y: y})
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerHurt) {
@@ -429,16 +420,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			TeamBTitle:    getTeamName(tClanTag, teams, playerNames, hltv, "T"),
 		},
 		MatchData: matchData,
-	}
-
-	if err != nil {
-		return Output{}, err
-	}
-
-	logger.Infof("demo=%s generating heatmaps", demoFileName)
-	err = genHeatmap(points_shotsFired, header, outputFiles["heatmapShotsFired"], join(config.assetsPath, "minimaps"))
-	if err != nil {
-		return Output{}, err
+		HeatMaps:  heatmaps,
 	}
 
 	return output, nil

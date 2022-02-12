@@ -124,18 +124,8 @@ func commandServe(config Config, logger *Logger) {
 }
 
 func commandMigrate(args []string, config Config, logger *Logger) {
-	command := args[1]
-	if command == "up" {
-		err := migrateUp(config)
-		if err != nil {
-			logger.Error(err)
-		}
-	} else if command == "down" {
-		err := migrateDown(config)
-		if err != nil {
-			logger.Error(err)
-		}
-	} else {
-		logger.Errorf("Invalid migration command %s", command)
+	err := runMigration(config, args[1])
+	if err != nil {
+		logger.Error(err)
 	}
 }

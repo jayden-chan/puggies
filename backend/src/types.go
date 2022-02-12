@@ -19,6 +19,8 @@
 
 package main
 
+import "github.com/golang/geo/r2"
+
 type StringIntMap map[string]int
 type StringF64Map map[string]float64
 type PlayerIntMap map[uint64]int
@@ -41,8 +43,9 @@ type MetaData struct {
 }
 
 type Output struct {
-	Meta      MetaData  `json:"meta"`
-	MatchData MatchData `json:"matchData"`
+	Meta      MetaData              `json:"meta"`
+	MatchData MatchData             `json:"matchData"`
+	HeatMaps  map[string][]r2.Point `json:"heatmaps"`
 }
 
 type MatchData struct {

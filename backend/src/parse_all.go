@@ -58,11 +58,6 @@ func parseAll(inDir, outDir string, incremental bool, config Config, logger *Log
 		return err
 	}
 
-	err = os.MkdirAll(join(outDir, "/matches"), os.ModePerm)
-	if err != nil {
-		return err
-	}
-
 	err = os.MkdirAll(join(outDir, "/heatmaps"), os.ModePerm)
 	if err != nil {
 		return err
@@ -81,7 +76,7 @@ func parseAll(inDir, outDir string, incremental bool, config Config, logger *Log
 				return err
 			}
 		} else {
-			outputFiles := getOutputFilesList(path, heatmapsDir)
+			outputFiles := make(map[string]string)
 			outputFiles["mainJson"] = mainJsonOutputPath(outDir, getDemoFileName(path))
 
 			hasAllFiles := true
