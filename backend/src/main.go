@@ -39,7 +39,13 @@ func main() {
 		return
 	}
 
-	config := getConfig()
+	config, err := getConfig()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error: Failed to initialize configuration")
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+
 	logger := newLogger(config.debug)
 	logger.Debugf("using config: %s", config)
 
@@ -50,6 +56,8 @@ func main() {
 		commandParseAll(args, config, logger)
 	case "serve":
 		commandServe(config, logger)
+	case "migrate":
+		commandMigrate(args, config, logger)
 	}
 }
 
@@ -113,4 +121,21 @@ func commandServe(config Config, logger *Logger) {
 
 	logger.Infof("starting Puggies HTTP server on port %s", config.port)
 	runServer(config, logger)
+}
+
+func commandMigrate(args []string, config Config, logger *Logger) {
+	command := args[1]
+	if command == "up" {
+		err := migrateUp(config)
+		if err != nil {
+			logger.Error(err)
+		}
+	} else if command == "down" {
+		err := migrateDown(config)
+		if err != nil {
+			logger.Error(err)
+		}
+	} else {
+		logger.Errorf("Invalid migration command %s", command)
+	}
 }

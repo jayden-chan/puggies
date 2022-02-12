@@ -40,7 +40,7 @@ func doRescan(trigger string, config Config, logger *Logger) {
 
 func registerJobs(s *gocron.Scheduler, config Config, logger *Logger) {
 	logger.Info("registering scheduler jobs")
-	s.Every(config.incrementalRescanIntervalMinutes).Minutes().Do(func() {
+	s.Every(config.rescanInterval).Minutes().Do(func() {
 		doRescan("cron", config, logger)
 	})
 }

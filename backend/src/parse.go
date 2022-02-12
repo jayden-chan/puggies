@@ -367,7 +367,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 	teamAScore, _ := getScore(prd.rounds, "CT", 999999999)
 	teamBScore, _ := getScore(prd.rounds, "T", 999999999)
 
-	output := Output{
+	matchData := MatchData{
 		TotalRounds: totalRounds,
 		Teams:       teams,
 		StartTeams:  computeStartSides(teams, prd.rounds),
@@ -413,7 +413,9 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		KillFeed:     prd.headToHead,
 		RoundByRound: computeRoundByRound(prd.rounds, prd.headToHead),
 		OpeningKills: totals.openingKills,
+	}
 
+	output := Output{
 		Meta: MetaData{
 			Map:           header.MapName,
 			Id:            demoFileName,
@@ -426,6 +428,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 			TeamATitle:    getTeamName(ctClanTag, teams, playerNames, hltv, "CT"),
 			TeamBTitle:    getTeamName(tClanTag, teams, playerNames, hltv, "T"),
 		},
+		MatchData: matchData,
 	}
 
 	if err != nil {

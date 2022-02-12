@@ -20,6 +20,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -27,46 +28,82 @@ import (
 )
 
 type Config struct {
-	assetsPath                       string
-	dataPath                         string
-	debug                            bool
-	demosPath                        string
-	frontendPath                     string
-	incrementalRescanIntervalMinutes int
-	port                             string
-	staticPath                       string
-	trustedProxies                   []string
+	assetsPath     string
+	dataPath       string
+	dbConnString   string
+	dbType         string
+	debug          bool
+	demosPath      string
+	frontendPath   string
+	rescanInterval int
+	migrationsPath string
+	port           string
+	staticPath     string
+	trustedProxies []string
 }
 
-func getConfig() Config {
-	// FOR DEVELOPERS: Make sure you update the configuration documentation when adding
-	// a new variable here. Also update the String() method to print the variable
-	return Config{
-		assetsPath:                       envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
-		dataPath:                         envOrString("PUGGIES_DATA_PATH", "/data"),
-		debug:                            envOrBool("PUGGIES_DEBUG", false),
-		demosPath:                        envOrString("PUGGIES_DEMOS_PATH", "/demos"),
-		frontendPath:                     envOrString("PUGGIES_FRONTEND_PATH", "/app"),
-		incrementalRescanIntervalMinutes: envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 180),
-		port:                             envOrString("PUGGIES_HTTP_PORT", "9115"),
-		staticPath:                       envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
-		trustedProxies:                   envStringList("PUGGIES_TRUSTED_PROXIES"),
+// FOR DEVELOPERS: Make sure you update the configuration documentation when adding
+// a new variable here. Also update the String() method to print the variable
+func getConfig() (Config, error) {
+	dbType, err := envStringRequired("PUGGIES_DB_TYPE")
+	if err != nil {
+		return Config{}, err
 	}
+
+	if dbType != "postgres" {
+		return Config{}, errors.New("Database type must be \"postgres\".")
+	}
+
+	dbConnString, err := envStringRequired("PUGGIES_DB_CONNECTION_STRING")
+	if err != nil {
+		return Config{}, err
+	}
+
+	rescanInterval, err := envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 180)
+	if err != nil {
+		return Config{}, err
+	}
+
+	return Config{
+		assetsPath:     envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
+		dataPath:       envOrString("PUGGIES_DATA_PATH", "/data"),
+		dbConnString:   dbConnString,
+		dbType:         dbType,
+		debug:          envOrBool("PUGGIES_DEBUG", false),
+		demosPath:      envOrString("PUGGIES_DEMOS_PATH", "/demos"),
+		frontendPath:   envOrString("PUGGIES_FRONTEND_PATH", "/app"),
+		rescanInterval: rescanInterval,
+		migrationsPath: envOrString("PUGGIES_MIGRATIONS_PATH", "/backend/migrations"),
+		port:           envOrString("PUGGIES_HTTP_PORT", "9115"),
+		staticPath:     envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
+		trustedProxies: envStringList("PUGGIES_TRUSTED_PROXIES"),
+	}, nil
 }
 
 func (config Config) String() string {
 	ret := "\n{\n"
 	ret += "\t" + "assetsPath: " + config.assetsPath + "\n"
 	ret += "\t" + "dataPath: " + config.dataPath + "\n"
+	ret += "\t" + "dbConnString: [redacted]\n"
+	ret += "\t" + "dbType: " + config.dbType + "\n"
 	ret += "\t" + "debug: " + strconv.FormatBool(config.debug) + "\n"
 	ret += "\t" + "demosPath: " + config.demosPath + "\n"
 	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
-	ret += "\t" + "incrementalRescanIntervalMinutes: " + strconv.Itoa(config.incrementalRescanIntervalMinutes) + "\n"
+	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
+	ret += "\t" + "migrationsPath: " + config.migrationsPath + "\n"
 	ret += "\t" + "port: " + config.port + "\n"
 	ret += "\t" + "staticPath: " + config.staticPath + "\n"
 	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"
 	ret += "}"
 	return ret
+}
+
+func envStringRequired(key string) (string, error) {
+	val := os.Getenv(key)
+	if val == "" {
+		return "", errors.New("missing required environment variable " + key)
+	}
+	return val, nil
 }
 
 func envOrString(key, defaultV string) string {
@@ -88,17 +125,18 @@ func envOrBool(key string, defaultV bool) bool {
 	return defaultV
 }
 
-func envOrNumber(key string, defaultV int) int {
+func envOrNumber(key string, defaultV int) (int, error) {
 	val := os.Getenv(key)
 	if val == "" {
-		return defaultV
+		return defaultV, nil
 	}
 	i, err := strconv.Atoi(val)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "[warn] invalid number \"%s\" provided for variable %s. Using default value of %d", val, key, defaultV)
-		return defaultV
+		return defaultV, errors.New(
+			fmt.Sprintf("[warn] invalid number \"%s\" provided for variable %s. Using default value of %d", val, key, defaultV),
+		)
 	}
-	return i
+	return i, nil
 }
 
 func envStringList(envKey string) []string {

@@ -45,6 +45,20 @@ The full path to the location where Puggies will search for CS:GO demo files.
 If you are running in Docker it is recommended to leave this at the default. Bind-mount
 your demos folder to `/demos` when setting up your Docker installation.
 
+### `PUGGIES_DB_TYPE`
+**Type**: String
+
+**Default**: `postgres`
+
+Database type. Currently only `postgres` is supported.
+
+### `PUGGIES_DB_CONNECTION_STRING`
+**Type**: String
+
+**Default**: no default value
+
+Database connection string. For example: `postgres://user:password@hostname/puggies`
+
 ### `PUGGIES_HTTP_PORT`
 **Type**: String
 
@@ -89,6 +103,18 @@ If you are running in Docker you must leave this at the default setting.
 
 If you are running on bare metal you should set this to `/<path to puggies git
 root>/backend/assets`
+
+### `PUGGIES_MIGRATIONS_PATH`
+**Type**: String
+
+**Default**: `/backend/migrations`
+
+The full path to the location where the SQL migrations are located.
+
+If you are running in Docker you must leave this at the default setting.
+
+If you are running on bare metal you should set this to `/<path to puggies git
+root>/backend/migrations`
 
 ### `PUGGIES_STATIC_PATH`
 **Type**: String

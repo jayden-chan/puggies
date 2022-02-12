@@ -40,6 +40,23 @@ type MetaData struct {
 	TeamBTitle    string   `json:"teamBTitle"`
 }
 
+type Output struct {
+	Meta      MetaData  `json:"meta"`
+	MatchData MatchData `json:"matchData"`
+}
+
+type MatchData struct {
+	TotalRounds  int                     `json:"totalRounds"`
+	Teams        TeamsMap                `json:"teams"`
+	StartTeams   TeamsMap                `json:"startTeams"`
+	Rounds       []Round                 `json:"rounds"`
+	OpeningKills []OpeningKill           `json:"openingKills"`
+	HeadToHead   map[uint64]PlayerIntMap `json:"headToHead"`
+	KillFeed     KillFeed                `json:"killFeed"`
+	RoundByRound []RoundOverview         `json:"roundByRound"`
+	Stats        Stats                   `json:"stats"`
+}
+
 type Stats struct {
 	Adr                PlayerF64Map `json:"adr"`
 	Assists            PlayerIntMap `json:"assists"`
@@ -77,21 +94,6 @@ type Stats struct {
 	K3 PlayerIntMap `json:"3k"`
 	K4 PlayerIntMap `json:"4k"`
 	K5 PlayerIntMap `json:"5k"`
-}
-
-type Output struct {
-	TotalRounds  int           `json:"totalRounds"`
-	Teams        TeamsMap      `json:"teams"`
-	StartTeams   TeamsMap      `json:"startTeams"`
-	Rounds       []Round       `json:"rounds"`
-	OpeningKills []OpeningKill `json:"openingKills"`
-
-	Meta  MetaData `json:"meta"`
-	Stats Stats    `json:"stats"`
-
-	HeadToHead   map[uint64]PlayerIntMap `json:"headToHead"`
-	KillFeed     KillFeed                `json:"killFeed"`
-	RoundByRound []RoundOverview         `json:"roundByRound"`
 }
 
 type Round struct {

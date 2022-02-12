@@ -1,14 +1,10 @@
 services:
-  puggies:
-    image: registry.jayden.codes/puggies
-    container_name: puggies
-    user: 1000:1000
-    volumes:
-      - ./backend/data:/data
-    ports:
-      - "127.0.0.1:9115:9115"
-    dns:
-      - 192.168.1.119
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
+  postgres:
+    image: postgres:14-alpine
+    restart: "no"
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: puggies
+      POSTGRES_DB: puggies
