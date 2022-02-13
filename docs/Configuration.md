@@ -59,6 +59,14 @@ Database type. Currently only `postgres` is supported.
 
 Database connection string. For example: `postgres://user:password@hostname/puggies`
 
+### `PUGGIES_TZ`
+**Type**: String
+
+**Default**: `Etc/UTC`
+
+Timezone to use when parsing demo dates. The name should be a location name corresponding
+to a file in the IANA Time Zone database, such as "America/New_York"
+
 ### `PUGGIES_HTTP_PORT`
 **Type**: String
 

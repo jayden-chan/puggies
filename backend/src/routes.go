@@ -60,11 +60,6 @@ func match(c Context) func(*gin.Context) {
 
 func history(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
-		id := ginc.Param("id")
-		if strings.Contains("..", id) {
-			ginc.String(400, "bruh\n")
-		}
-
 		matches, err := c.db.GetMatches()
 		if err != nil {
 			errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
@@ -72,8 +67,10 @@ func history(c Context) func(*gin.Context) {
 			ginc.JSON(500, gin.H{
 				"message": errString,
 			})
+			return
 		} else {
 			ginc.JSON(200, matches)
+			return
 		}
 	}
 }

@@ -40,6 +40,7 @@ type Config struct {
 	port           string
 	staticPath     string
 	trustedProxies []string
+	timezone       string
 }
 
 // FOR DEVELOPERS: Make sure you update the configuration documentation when adding
@@ -77,6 +78,7 @@ func getConfig() (Config, error) {
 		port:           envOrString("PUGGIES_HTTP_PORT", "9115"),
 		staticPath:     envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		trustedProxies: envStringList("PUGGIES_TRUSTED_PROXIES"),
+		timezone:       envOrString("PUGGIES_TZ", "Etc/UTC"),
 	}, nil
 }
 
@@ -94,6 +96,7 @@ func (config Config) String() string {
 	ret += "\t" + "port: " + config.port + "\n"
 	ret += "\t" + "staticPath: " + config.staticPath + "\n"
 	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"
+	ret += "\t" + "timezone: " + config.timezone + "\n"
 	ret += "}"
 	return ret
 }

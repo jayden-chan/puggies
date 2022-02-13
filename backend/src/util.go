@@ -196,7 +196,7 @@ var (
 	DateRegex3 = regexp.MustCompile(`(\d\d\d\d)/(\d\d)/(\d\d)`)
 )
 
-func getDemoTime(demoFileName string) time.Time {
+func getDemoTime(config Config, demoFileName string) time.Time {
 	matches := DateRegex1.FindStringSubmatch(demoFileName)
 	if matches == nil {
 		matches = DateRegex2.FindStringSubmatch(demoFileName)
@@ -211,12 +211,17 @@ func getDemoTime(demoFileName string) time.Time {
 		// TODO: should probably come back to this and be a
 		// little smarter about which matched field is the day
 		// and which is the month
-		time, err := time.Parse("2006-01-02", matches[1]+"-"+matches[2]+"-"+matches[3])
+		loc, err := time.LoadLocation(config.timezone)
 		if err != nil {
 			return defaultTime
-		} else {
-			return time
 		}
+
+		time, err := time.ParseInLocation("2006-01-02", matches[1]+"-"+matches[2]+"-"+matches[3], loc)
+		if err != nil {
+			return defaultTime
+		}
+
+		return time
 	}
 
 	return defaultTime
