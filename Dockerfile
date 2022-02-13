@@ -1,10 +1,15 @@
-FROM golang:1.17.5 as backendBuilder
+FROM golang:1.17.6-alpine as backendBuilder
+
+# we will grab the SSL certs and timezone data so people
+# don't have to mount this from their host machine
+RUN apk update && apk add ca-certificates && apk add tzdata
+
 WORKDIR /workspace
 
 COPY ./backend/go.mod ./backend/go.sum ./
 COPY ./backend/src .
 ENV CGO_ENABLED=0
-RUN go get && go build -o puggies .
+RUN go get && go build -ldflags "-s -w" -o puggies .
 
 FROM node:lts-alpine as frontendBuilder
 WORKDIR /workspace
@@ -14,7 +19,6 @@ COPY ./frontend/package.json ./frontend/tsconfig.json ./frontend/yarn.lock ./
 RUN yarn install
 
 ENV NODE_ENV=production
-ENV REACT_APP_PUGGIES_API_ENDPOINT=/api/v1
 ENV PUBLIC_URL=/app
 
 COPY ./frontend/public ./public
@@ -39,6 +43,9 @@ ENV GIN_MODE=release
 # ENV PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES=180
 # ENV PUGGIES_TRUSTED_PROXIES=""
 # ENV PUGGIES_DEBUG="0"
+
+COPY --from=backendBuilder /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=backendBuilder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY ./LICENSE /frontend/build/LICENSE.txt
 COPY ./backend/assets /backend/assets

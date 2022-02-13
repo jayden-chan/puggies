@@ -49,7 +49,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 	mapMetadata := metadata.MapNameToMap[header.MapName]
 	id := getDemoFileName(path)
 	demoType := getDemoType(id)
-	demoTime := getDemoTime(config, id)
+	demoTime := getDemoTime(config, logger, id)
 
 	prd := PerRoundData{}
 
