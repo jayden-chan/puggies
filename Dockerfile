@@ -33,6 +33,7 @@ ENV GIN_MODE=release
 # ENV PUGGIES_DEMOS_PATH=/demos
 # ENV PUGGIES_STATIC_PATH=/frontend/build
 # ENV PUGGIES_ASSETS_PATH=/backend/assets
+# ENV PUGGIES_MIGRATIONS_PATH=/backend/migrations
 # ENV PUGGIES_FRONTEND_PATH=/app
 # ENV PUGGIES_HTTP_PORT=9115
 # ENV PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES=180
@@ -41,6 +42,7 @@ ENV GIN_MODE=release
 
 COPY ./LICENSE /frontend/build/LICENSE.txt
 COPY ./backend/assets /backend/assets
+COPY ./backend/migrations /backend/migrations
 
 COPY --from=backendBuilder \
      /workspace/puggies \

@@ -9,7 +9,7 @@ Puggies is a self-hosted CS:GO demo analyzer and statistics platform.
 * Individual performance stats
 * Opening duels, trade kills, opening success rate, etc
 * Round-by-round breakdowns with killfeed, kill locations, bomb plants & defuses
-* Tiny docker image (~35MB)
+* Small docker image (~40MB)
 
 ## Documentation
 * [Installation](./docs/Installation.md)

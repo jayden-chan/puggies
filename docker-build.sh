@@ -18,6 +18,8 @@
 # along with Puggies. If not, see <https://www.gnu.org/licenses/>.
 
 [[ -n $(git status -s) ]] && echo "Error: Git working tree isn't clean" && exit 1
+
+set -e
 git archive --format=tar HEAD > "puggies-src.tar.gz"
 
 maj=${PUGGIES_MAJOR_VERSION:-$1}
