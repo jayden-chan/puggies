@@ -20,39 +20,35 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"os"
 	"path/filepath"
 )
 
-func mainJsonOutputPath(outDir, id string) string {
-	return join(outDir, "matches", id+".json")
+func parseIdempotent(path, heatmapsDir string, c Context) error {
+	alreadyParsed, _, err := c.db.HasMatch(getDemoFileName(path))
+	if err != nil {
+		return err
+	}
+
+	// TODO: check version info here in future
+	if alreadyParsed {
+		return nil
+	}
+
+	output, err := parseDemo(path, heatmapsDir, c.config, c.logger)
+	if err != nil {
+		return err
+	} else {
+		err := c.db.InsertMatches(output)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
-func parseAndWrite(path, heatmapsDir, outDir string, config Config, logger *Logger) (Output, error) {
-	output, err := parseDemo(path, heatmapsDir, config, logger)
-	if err != nil {
-		return Output{}, err
-	}
-
-	json, err := json.Marshal(&output)
-	if err != nil {
-		return Output{}, err
-	}
-
-	json = append(json, '\n')
-	err = os.WriteFile(mainJsonOutputPath(outDir, output.Meta.Id), json, 0644)
-	if err != nil {
-		return Output{}, err
-	}
-	return output, nil
-}
-
-func parseAll(inDir, outDir string, incremental bool, config Config, logger *Logger) error {
-	inDir = normalizeFolderPath(inDir)
-	outDir = normalizeFolderPath(outDir)
-
+func parseAllIdempotent(inDir, outDir string, c Context) error {
 	files, err := filepath.Glob(inDir + "/*.dem")
 	if err != nil {
 		return err
@@ -63,63 +59,13 @@ func parseAll(inDir, outDir string, incremental bool, config Config, logger *Log
 		return err
 	}
 
-	var metas []MetaData
-	for _, f := range files {
-		logger.Debugf("scanning file %s", f)
-		path := f
-		heatmapsDir := join(outDir, "heatmaps")
-		var output Output
+	heatmapsDir := join(outDir, "heatmaps")
 
-		if !incremental {
-			output, err = parseAndWrite(path, heatmapsDir, outDir, config, logger)
-			if err != nil {
-				return err
-			}
-		} else {
-			outputFiles := make(map[string]string)
-			outputFiles["mainJson"] = mainJsonOutputPath(outDir, getDemoFileName(path))
-
-			hasAllFiles := true
-			for _, outFile := range outputFiles {
-				if _, err := os.Stat(outFile); errors.Is(err, os.ErrNotExist) {
-					// if one of the output files is missing re-analyze the entire demo
-					logger.Infof("demo %s is missing files. parsing now", f)
-					output, err = parseAndWrite(path, heatmapsDir, outDir, config, logger)
-					if err != nil {
-						return err
-					}
-					hasAllFiles = false
-					break
-				}
-			}
-
-			// if all output files are present then just read the output file
-			if hasAllFiles {
-				logger.Debugf("demo %s has all files present", f)
-				fileContents, err := os.ReadFile(outputFiles["mainJson"])
-				if err != nil {
-					return err
-				}
-
-				err = json.Unmarshal(fileContents, &output)
-				if err != nil {
-					return err
-				}
-			}
+	for _, file := range files {
+		err = parseIdempotent(file, heatmapsDir, c)
+		if err != nil {
+			return err
 		}
-
-		metas = append(metas, output.Meta)
-	}
-
-	json, err := json.MarshalIndent(&metas, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	json = append(json, '\n')
-	err = os.WriteFile(join(outDir, "history.json"), json, 0644)
-	if err != nil {
-		return err
 	}
 
 	return nil

@@ -29,15 +29,20 @@ import (
 )
 
 const (
-	GitHubLink = "https://github.com/jayden-chan/puggies"
+	// hopefully no one drops more than 100 demos into their
+	// demo folder at once
+	FileChangedBufferSize = 100
+	GitHubLink            = "https://github.com/jayden-chan/puggies"
 )
 
 func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println("Commands: parse, parseAll, serve")
+		fmt.Println("Commands: parse, serve, migrate")
 		return
 	}
+
+	command := args[0]
 
 	config, err := getConfig()
 	if err != nil {
@@ -49,15 +54,63 @@ func main() {
 	logger := newLogger(config.debug)
 	logger.Debugf("using config: %s", config)
 
-	switch args[0] {
-	case "parse":
+	// we don't need to initialize the database for the parse command
+	if command == "parse" {
 		commandParse(args, config, logger)
-	case "parseAll":
-		commandParseAll(args, config, logger)
+		return
+	}
+
+	context, err := getContext(config, logger)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error: Failed to initialize application context")
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+
+	defer context.db.Close()
+
+	switch command {
+	case "test":
+		// output, err := parseDemo(args[1], ".", config, logger)
+		// metaData, matchData, err := context.db.GetMatch("pug_de_mirage_2022-01-15_06")
+
+		matches, err := context.db.GetMatches()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+
+		matchesJson, err := json.MarshalIndent(matches, "", "  ")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		} else {
+			fmt.Println(string(matchesJson))
+		}
+
+		// metaJson, err := json.MarshalIndent(metaData, "", "  ")
+		// if err != nil {
+		// 	fmt.Fprintln(os.Stderr, err)
+		// } else {
+		// 	fmt.Println(string(metaJson))
+		// }
+
+		// matchJson, err := json.MarshalIndent(matchData, "", "  ")
+		// if err != nil {
+		// 	fmt.Fprintln(os.Stderr, err)
+		// } else {
+		// 	fmt.Println(string(matchJson))
+		// }
+
+		// err = context.db.InsertMatches(output)
+		// if err != nil {
+		// 	fmt.Fprintln(os.Stderr, err)
+		// } else {
+		// 	fmt.Println("OK!!!")
+		// }
 	case "serve":
-		commandServe(config, logger)
+		commandServe(context)
 	case "migrate":
-		commandMigrate(args, config, logger)
+		commandMigrate(args, context)
 	}
 }
 
@@ -80,52 +133,20 @@ func commandParse(args []string, config Config, logger *Logger) {
 	}
 }
 
-func commandParseAll(args []string, config Config, logger *Logger) {
-	if len(args) >= 3 {
-		incremental := false
-		for _, arg := range args {
-			if arg == "--incremental" {
-				incremental = true
-			}
-		}
-
-		err := parseAll(args[1], args[2], incremental, config, logger)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-		}
-	} else {
-		fmt.Fprintln(os.Stderr, "Usage: parseAll /path/to/demos /output/path")
-	}
-}
-
-func commandServe(config Config, logger *Logger) {
+func commandServe(c Context) {
 	scheduler := gocron.NewScheduler(time.UTC)
-	registerJobs(scheduler, config, logger)
-	logger.Info("starting job scheduler")
+	registerJobs(scheduler, c)
+	c.logger.Info("starting job scheduler")
 	scheduler.StartAsync()
 
-	go func() {
-		fileChanged := make(chan string)
-		go watchDemoDir(config.demosPath, fileChanged, logger)
-		for f := range fileChanged {
-			logger.Infof("file change detected: %s", f)
-
-			// we will trigger a partial re-scan of the entire demos folder
-			// when a file changes. the already-parsed demos will be skipped
-			// and the new demo will be parsed. this also has the benefit of
-			// ensuring the entire folder is up to date in case the server
-			// somehow missed some of the file changed events or something.
-			doRescan("filechange", config, logger)
-		}
-	}()
-
-	logger.Infof("starting Puggies HTTP server on port %s", config.port)
-	runServer(config, logger)
+	go watchFileChanges(c)
+	c.logger.Infof("starting Puggies HTTP server on port %s", c.config.port)
+	runServer(c)
 }
 
-func commandMigrate(args []string, config Config, logger *Logger) {
-	err := runMigration(config, args[1])
+func commandMigrate(args []string, c Context) {
+	err := c.db.RunMigration(c.config, args[1])
 	if err != nil {
-		logger.Error(err)
+		c.logger.Error(err)
 	}
 }

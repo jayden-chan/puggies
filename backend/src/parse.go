@@ -30,10 +30,10 @@ import (
 	metadata "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/metadata"
 )
 
-func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output, error) {
+func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return Output{}, err
+		return Match{}, err
 	}
 
 	defer f.Close()
@@ -43,13 +43,13 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 
 	header, err := p.ParseHeader()
 	if err != nil {
-		return Output{}, err
+		return Match{}, err
 	}
 
 	mapMetadata := metadata.MapNameToMap[header.MapName]
-	demoFileName := getDemoFileName(path)
-	demoType := getDemoType(demoFileName)
-	demoTime := getDemoTime(demoFileName)
+	id := getDemoFileName(path)
+	demoType := getDemoType(id)
+	demoTime := getDemoTime(id)
 
 	prd := PerRoundData{}
 
@@ -315,13 +315,13 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		prd.winners[len(prd.winners)-1] = roundWinners
 	})
 
-	logger.Infof("demo=%s parsing demo", demoFileName)
+	logger.Infof("demo=%s parsing demo", id)
 	err = p.ParseToEnd()
 	if err != nil {
-		return Output{}, err
+		return Match{}, err
 	}
 
-	logger.Infof("demo=%s computing stats", demoFileName)
+	logger.Infof("demo=%s computing stats", id)
 
 	if eseaMode {
 		stripPlayerPrefixes(teams, &playerNames, "CT")
@@ -406,11 +406,10 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		OpeningKills: totals.openingKills,
 	}
 
-	output := Output{
+	output := Match{
 		Meta: MetaData{
 			Map:           header.MapName,
-			Id:            demoFileName,
-			Date:          demoTime.Format("Mon Jan 2 2006"),
+			Id:            id,
 			DateTimestamp: demoTime.UnixMilli(),
 			DemoType:      demoType,
 			PlayerNames:   playerNames,
@@ -423,5 +422,6 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Output,
 		HeatMaps:  heatmaps,
 	}
 
+	logger.Infof("demo=%s completed parsing", id)
 	return output, nil
 }

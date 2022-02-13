@@ -28,20 +28,44 @@ import (
 	"github.com/go-co-op/gocron"
 )
 
-func doRescan(trigger string, config Config, logger *Logger) {
-	logger.Infof("trigger=%s starting incremental demo folder rescan", trigger)
-	err := parseAll(config.demosPath, config.dataPath, true, config, logger)
+func doRescan(trigger string, c Context) {
+	c.logger.Infof("trigger=%s starting incremental demo folder rescan", trigger)
+	err := parseAllIdempotent(c.config.demosPath, c.config.dataPath, c)
 	if err != nil {
-		logger.Errorf("trigger=%s failed to re-scan demos folder: %s", trigger, err.Error())
+		c.logger.Errorf("trigger=%s failed to re-scan demos folder: %s", trigger, err.Error())
 	} else {
-		logger.Infof("trigger=%s incremental demo folder rescan finished", trigger)
+		c.logger.Infof("trigger=%s incremental demo folder rescan finished", trigger)
 	}
 }
 
-func registerJobs(s *gocron.Scheduler, config Config, logger *Logger) {
-	logger.Info("registering scheduler jobs")
-	s.Every(config.rescanInterval).Minutes().Do(func() {
-		doRescan("cron", config, logger)
+func watchFileChanges(c Context) {
+	heatmapsDir := join(c.config.dataPath, "heatmaps")
+	fileChanged := make(chan string, FileChangedBufferSize)
+
+	// register our fsnotify watcher to send events to our
+	// fileChanged channel
+	go watchDemoDir(c.config.demosPath, fileChanged, c.logger)
+
+	for f := range fileChanged {
+		c.logger.Infof("file change detected: %s", f)
+		demoId := getDemoFileName(f)
+		err := parseIdempotent(f, heatmapsDir, c)
+		if err != nil {
+			c.logger.Errorf(
+				"demo=%s Failed to parse demo: %s",
+				demoId,
+				err.Error(),
+			)
+		} else {
+			c.logger.Infof("demo=%s added demo to database", demoId)
+		}
+	}
+}
+
+func registerJobs(s *gocron.Scheduler, c Context) {
+	c.logger.Info("registering scheduler jobs")
+	s.Every(c.config.rescanInterval).Minutes().Do(func() {
+		doRescan("cron", c)
 	})
 }
 
@@ -64,19 +88,19 @@ func genFileRoute(router *gin.Engine, maxAge int, basepath ...string) func(strin
 	}
 }
 
-func runServer(config Config, logger *Logger) {
+func runServer(c Context) {
 	r := gin.Default()
 
-	if len(config.trustedProxies) != 0 {
-		r.SetTrustedProxies(config.trustedProxies)
+	if len(c.config.trustedProxies) != 0 {
+		r.SetTrustedProxies(c.config.trustedProxies)
 	} else {
 		r.SetTrustedProxies(nil)
 	}
 
 	// static files are good for a day
-	staticFileRoute := genFileRoute(r, 86400, config.staticPath)
+	staticFileRoute := genFileRoute(r, 86400, c.config.staticPath)
 	// assets are good for 3 days
-	assetRoute := genFileRoute(r, 259200, config.assetsPath, "..")
+	assetRoute := genFileRoute(r, 259200, c.config.assetsPath, "..")
 
 	// Middlewares
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
@@ -163,18 +187,18 @@ func runServer(config Config, logger *Logger) {
 	{
 		v1.GET("/ping", ping())
 		v1.GET("/health", health())
-		v1.GET("/matches/:id", matches(config.dataPath))
-		v1.GET("/history", file(config.dataPath, "history.json"))
-		v1.GET("/usermeta", file(config.dataPath, "usermeta.json"))
+		v1.GET("/matches/:id", match(c))
+		v1.GET("/history", history(c))
+		v1.GET("/usermeta", file(c.config.dataPath, "usermeta.json"))
 
-		v1.PATCH("/rescan", rescan(config, logger))
+		v1.PATCH("/rescan", rescan(c))
 	}
 
 	// React frontend routes
-	r.Static(config.frontendPath, config.staticPath)
-	r.GET("/", redirToApp(config.frontendPath))
+	r.Static(c.config.frontendPath, c.config.staticPath)
+	r.GET("/", redirToApp(c.config.frontendPath))
 
 	// 404 handler
-	r.NoRoute(noRoute(config.staticPath, config.frontendPath))
-	r.Run(":" + config.port)
+	r.NoRoute(noRoute(c.config.staticPath, c.config.frontendPath))
+	r.Run(":" + c.config.port)
 }

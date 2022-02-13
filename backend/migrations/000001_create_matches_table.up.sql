@@ -1,7 +1,7 @@
 CREATE TABLE matches (
   id TEXT,
   map TEXT NOT NULL,
-  date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  date BIGINT NOT NULL,
   demo_type TEXT NOT NULL,
   player_names JSON NOT NULL,
   team_a_score INTEGER NOT NULL,
@@ -16,7 +16,8 @@ CREATE TABLE matches (
   match_data JSON NOT NULL,
 
   PRIMARY KEY (id),
-  CONSTRAINT sane_date CHECK (date >= '2012-01-01'),
+  -- after Jan 1 2012
+  CONSTRAINT sane_date CHECK (date >= 1325376000000),
   CONSTRAINT sane_team_a_score CHECK (team_a_score >= 0),
   CONSTRAINT sane_team_b_score CHECK (team_b_score >= 0)
 );

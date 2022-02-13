@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -24,24 +25,56 @@ func health() func(*gin.Context) {
 	}
 }
 
-func rescan(config Config, logger *Logger) func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
+func rescan(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		ginc.JSON(200, gin.H{
 			"message": "Incremental re-scan of demos folder started",
 		})
 
-		go doRescan("api", config, logger)
+		go doRescan("api", c)
 	}
 }
 
-func matches(dataPath string) func(*gin.Context) {
-	return func(c *gin.Context) {
-		id := c.Param("id")
+func match(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
 		if strings.Contains("..", id) {
-			c.String(400, "bruh\n")
+			ginc.String(400, "bruh\n")
 		}
 
-		c.File(join(dataPath, "matches", id+".json"))
+		meta, match, err := c.db.GetMatch(id)
+		if err != nil {
+			errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(500, gin.H{
+				"message": errString,
+			})
+		} else {
+			ginc.JSON(200, gin.H{
+				"meta":      meta,
+				"matchData": match,
+			})
+		}
+	}
+}
+
+func history(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		if strings.Contains("..", id) {
+			ginc.String(400, "bruh\n")
+		}
+
+		matches, err := c.db.GetMatches()
+		if err != nil {
+			errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(500, gin.H{
+				"message": errString,
+			})
+		} else {
+			ginc.JSON(200, matches)
+		}
 	}
 }
 

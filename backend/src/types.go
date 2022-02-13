@@ -32,7 +32,6 @@ type NamesMap map[uint64]string
 type MetaData struct {
 	Map           string   `json:"map"`
 	Id            string   `json:"id"`
-	Date          string   `json:"date"`
 	DateTimestamp int64    `json:"dateTimestamp"`
 	DemoType      string   `json:"demoType"`
 	PlayerNames   NamesMap `json:"playerNames"`
@@ -42,7 +41,7 @@ type MetaData struct {
 	TeamBTitle    string   `json:"teamBTitle"`
 }
 
-type Output struct {
+type Match struct {
 	Meta      MetaData              `json:"meta"`
 	MatchData MatchData             `json:"matchData"`
 	HeatMaps  map[string][]r2.Point `json:"heatmaps"`
