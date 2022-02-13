@@ -11,6 +11,16 @@ Here is an example of a docker-compose.yml file which you can use to install Pug
 ```yaml
 version: "2.1"
 services:
+  puggies_postgres:
+    image: postgres:14-alpine
+    container_name: puggies_postgres
+    volumes:
+      - ./puggies-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: change_this_password
+      POSTGRES_USER: puggies
+      POSTGRES_DB: puggies
+
   puggies:
     # You pin the image version to any of the following:
     # jayden-chan/puggies:1 -- updated whenever version 1.X.X is released
@@ -26,23 +36,30 @@ services:
     # this way data created by puggies will be owned by your user instead of root.
     user: 1000:1000
 
+    depends_on:
+      - puggies_postgres
+
     # See Configuration.md for a full list of environment variable options.
     environment:
+      PUGGIES_DB_TYPE: postgres
+      PUGGIES_DB_CONNECTION_STRING: "postgres://puggies:change_this_password@puggies_postgres/puggies?sslmode=disable"
+      PUGGIES_TZ: "America/Chicago"
+
       # DO NOT set this if you expose the container directly
-      # to the internet (which itself is highly discouraged)
+      # to the internet (which itself is highly discouraged!)
       #
       # If you are running Puggies locally or it is behind a trusted
       # reverse proxy then you should leave this set to 172.16.0.0/12.
       #
-      # See the PUGGIES_TRUSTED_PROXIES option in the Configuration docs
+      # See the PUGGIES_TRUSTED_PROXIES option in the Configuration docs.
       PUGGIES_TRUSTED_PROXIES: 172.16.0.0/12
     ports:
       - 9115:9115
     volumes:
-        # Data created by puggies (extracted match info & heatmaps)
-      - ./data:/data:rw
+        # Data created by puggies (mainly heatmap images)
+      - ./puggies-data:/data
         # Path to the folder containing your demos
-      - /media/seagate/Demos:/demos:ro
+      - /path/to/demos:/demos
 ```
 
 ## Building Docker container from source

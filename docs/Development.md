@@ -9,6 +9,7 @@ will need the following tools installed on your computer:
 * [Yarn](https://classic.yarnpkg.com/lang/en/)
 * [Docker](https://www.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
+* [golang-migrate CLI](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate)
 
 Once you have set up your dependencies you can fork the repository and begin developing:
 ```bash
@@ -37,8 +38,9 @@ these useful:
 * [Chakra](https://chakra-ui.com/docs/getting-started)
 * [date-fns](https://date-fns.org/)
 
-**Chakra components should be used exclusively on the frontend** (use `<Box>` / `<Flex>`
-/ `<Text>` as opposed to plain React components like `<div>` or `<p>`).
+**Chakra components should be used exclusively in frontend code** (use `<Box>` / `<Flex>`
+/ `<Text>` as opposed to plain React components like `<div>` or `<p>`). The [Chakra
+Documentation](https://chakra-ui.com/docs/getting-started) is your best friend!
 
 The Puggies backend also has a few dependencies. You might find the documentation for
 these useful:
@@ -47,3 +49,16 @@ these useful:
 * [Gin](https://github.com/gin-gonic/gin)
 * [gocron](https://github.com/go-co-op/gocron)
 * [fsnotify](https://github.com/fsnotify/fsnotify)
+* [golang-migrate](https://github.com/golang-migrate/migrate)
+
+### Performing database schema upgrades
+Database migrations are managed through
+[golang-migrate](https://github.com/golang-migrate/migrate). If you need to make an
+update to the database schema you must do so by generating a new migration. Use the
+following command inside the `backend` directory:
+```bash
+migrate create -ext sql -dir migrations -seq descriptive_migration_name_here
+```
+
+Use a descriptive yet concise name for the migration so developers know what it does. See the
+[migration best practices](https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md) documentation for more info.

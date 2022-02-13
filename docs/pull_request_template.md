@@ -25,6 +25,10 @@
 - [ ] New dependencies have been audited and are justified
 - [ ] Development documentation has been updated
 
+##### (if database schema was updated):
+- [ ] New database migrations have been generated with `migrate` tool
+- [ ] Migrations have been tested in both directions (cleanly migrates up and down)
+
 ### Paperwork
 
 - [ ] This pull request has a descriptive title and information useful to a reviewer
