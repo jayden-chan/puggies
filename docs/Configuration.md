@@ -24,27 +24,6 @@ If you leave this variable un-set, a default value of `nil` will be passed to Gi
 **Exposing the container to the public internet without a reverse proxy is not
 recommended.**
 
-### `PUGGIES_DATA_PATH`
-**Type**: String
-
-**Default**: `/data`
-
-The full path to the location where Puggies should store its generated data.
-
-If you are running in Docker it is recommended to leave this at the default. Create a
-docker volume or use a bind-mount and mount it to `/data` when setting up your Docker
-installation.
-
-### `PUGGIES_DEMOS_PATH`
-**Type**: String
-
-**Default**: `/demos`
-
-The full path to the location where Puggies will search for CS:GO demo files.
-
-If you are running in Docker it is recommended to leave this at the default. Bind-mount
-your demos folder to `/demos` when setting up your Docker installation.
-
 ### `PUGGIES_DB_TYPE`
 **Type**: String
 
@@ -66,6 +45,27 @@ Database connection string. For example: `postgres://user:password@hostname/pugg
 
 Timezone to use when parsing demo dates. The name should be a location name corresponding
 to a file in the IANA Time Zone database, such as "America/New_York"
+
+### `PUGGIES_DATA_PATH`
+**Type**: String
+
+**Default**: `/data`
+
+The full path to the location where Puggies should store its generated data.
+
+If you are running in Docker it is recommended to leave this at the default. Create a
+docker volume or use a bind-mount and mount it to `/data` when setting up your Docker
+installation.
+
+### `PUGGIES_DEMOS_PATH`
+**Type**: String
+
+**Default**: `/demos`
+
+The full path to the location where Puggies will search for CS:GO demo files.
+
+If you are running in Docker it is recommended to leave this at the default. Bind-mount
+your demos folder to `/demos` when setting up your Docker installation.
 
 ### `PUGGIES_HTTP_PORT`
 **Type**: String
