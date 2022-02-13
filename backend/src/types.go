@@ -29,6 +29,10 @@ type KillFeed []map[uint64]map[uint64]Kill
 type TeamsMap map[uint64]string
 type NamesMap map[uint64]string
 
+type UserMeta struct {
+	DemoLink string `json:"demoLink"`
+}
+
 type MetaData struct {
 	Map           string   `json:"map"`
 	Id            string   `json:"id"`

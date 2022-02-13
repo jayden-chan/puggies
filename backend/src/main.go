@@ -134,6 +134,15 @@ func commandParse(args []string, config Config, logger *Logger) {
 }
 
 func commandServe(c Context) {
+	c.logger.Info("performing database migrations")
+	err := c.db.RunMigration(c.config, "up")
+	if err != nil {
+		c.logger.Errorf("failed to run database migrations: %s", err.Error())
+		return
+	}
+
+	c.logger.Info("completed database migrations")
+
 	scheduler := gocron.NewScheduler(time.UTC)
 	registerJobs(scheduler, c)
 	c.logger.Info("starting job scheduler")

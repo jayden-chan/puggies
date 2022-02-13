@@ -1,5 +1,5 @@
 CREATE TABLE matches (
-  id TEXT,
+  id TEXT NOT NULL,
   map TEXT NOT NULL,
   date BIGINT NOT NULL,
   demo_type TEXT NOT NULL,

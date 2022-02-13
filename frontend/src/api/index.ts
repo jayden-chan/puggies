@@ -22,12 +22,27 @@ import { Match, MatchInfo, UserMeta } from "../types";
 export class DataAPI {
   private endpoint = "/api/v1";
 
-  public async fetchMatch(id: string): Promise<Match> {
-    return (await fetch(`${this.endpoint}/matches/${id}`)).json();
+  public async fetchMatch(id: string): Promise<Match | undefined> {
+    const res = await fetch(`${this.endpoint}/matches/${id}`);
+    if (res.status === 404) {
+      return undefined;
+    }
+    return await res.json();
   }
 
-  public async fetchUserMeta(): Promise<UserMeta> {
-    return (await fetch(`${this.endpoint}/usermeta`)).json();
+  public async fetchUserMeta(id: string): Promise<UserMeta | undefined> {
+    const res = await fetch(`${this.endpoint}/usermeta/${id}`);
+    if (res.status === 404) {
+      return undefined;
+    }
+
+    const json = res.json();
+    // this is our "404" state for the user meta since we
+    // want to avoid flooding the console with 404 errors
+    if (json === null) {
+      return undefined;
+    }
+    return json;
   }
 
   public async fetchMatches(): Promise<MatchInfo[]> {

@@ -44,7 +44,7 @@ import { Loading } from "./components/Loading";
 import { Home } from "./pages/Home";
 import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
-import { MatchInfo, UserMeta } from "./types";
+import { MatchInfo } from "./types";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -125,11 +125,9 @@ const Header = () => {
 
 export const App = () => {
   const [matches, setMatches] = useState<MatchInfo[] | undefined>();
-  const [userMeta, setUserMeta] = useState<UserMeta | undefined>();
   useEffect(() => {
     const api = new DataAPI();
     api.fetchMatches().then((m) => setMatches(m));
-    api.fetchUserMeta().then((m) => setUserMeta(m));
   }, []);
 
   return (
@@ -139,14 +137,8 @@ export const App = () => {
         <Loading minH="calc(100vh - 5.5rem)">Loading matches...</Loading>
       ) : (
         <Routes>
-          <Route
-            path="/"
-            element={<Home matches={matches} userMeta={userMeta} />}
-          />
-          <Route
-            path="/match/:id"
-            element={<MatchPage matches={matches} userMeta={userMeta} />}
-          />
+          <Route path="/" element={<Home matches={matches} />} />
+          <Route path="/match/:id" element={<MatchPage matches={matches} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}

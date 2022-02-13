@@ -115,7 +115,7 @@ func runServer(c Context) {
 	staticFileRoute("/manifest.json")
 	staticFileRoute("/robots.txt")
 
-	// Images (at /assets/)
+	// Images
 	assetRoute("/assets/logos/esea.png")
 	assetRoute("/assets/logos/faceit.png")
 	assetRoute("/assets/logos/steam.png")
@@ -189,7 +189,7 @@ func runServer(c Context) {
 		v1.GET("/health", health())
 		v1.GET("/matches/:id", match(c))
 		v1.GET("/history", history(c))
-		v1.GET("/usermeta", file(c.config.dataPath, "usermeta.json"))
+		v1.GET("/usermeta/:id", usermeta(c))
 
 		v1.PATCH("/rescan", rescan(c))
 	}

@@ -32,6 +32,7 @@ type Db interface {
 
 	GetMatch(id string) (MetaData, MatchData, error)
 	GetMatches() ([]MetaData, error)
+	GetUserMeta(id string) (UserMeta, error)
 
 	RunMigration(config Config, dir string) error
 

@@ -73,29 +73,31 @@ export const getRoundIcon = (round: Round) => {
   }
 };
 
-export const MatchPage = (props: {
-  matches: MatchInfo[];
-  userMeta: UserMeta | undefined;
-}) => {
+export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
 
   const [match, setMatch] = useState<Match | undefined>();
+  const [meta, setMeta] = useState<UserMeta | undefined>();
   const [sortCol, setSortCol] = useState<keyof Stats>("hltv");
   const [reversed, setReversed] = useState(false);
 
   useEffect(() => {
     const api = new DataAPI();
-    const thisMatch = props.matches.find((f) => f.id === id);
-    if (thisMatch === undefined) {
-      navigate("/404");
-      return;
-    }
+    // if (thisMatch === undefined) {
+    //   navigate("/404");
+    //   return;
+    // }
 
-    api
-      .fetchMatch(thisMatch.id)
-      .then((m) => setMatch(m))
-      .catch((err) => console.error(err));
+    api.fetchMatch(id).then((m) => {
+      if (m === undefined) {
+        navigate("/404");
+      } else {
+        setMatch(m);
+      }
+    });
+
+    api.fetchUserMeta(id).then((m) => setMeta(m));
   }, [id, props.matches, navigate]);
 
   if (match === undefined) {
@@ -112,9 +114,7 @@ export const MatchPage = (props: {
     teamBTitle,
   } = match.meta;
 
-  const demoLink =
-    props.userMeta !== undefined ? props.userMeta[id]?.demoLink : undefined;
-
+  const demoLink = meta !== undefined ? meta?.demoLink : undefined;
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
   const date = formatDate(dateTimestamp);
 

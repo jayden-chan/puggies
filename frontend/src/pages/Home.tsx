@@ -33,7 +33,7 @@ import {
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../data";
-import { MatchInfo, UserMeta } from "../types";
+import { MatchInfo } from "../types";
 
 const MatchCard = (props: { match: MatchInfo }) => {
   const {
@@ -105,10 +105,7 @@ const MatchCard = (props: { match: MatchInfo }) => {
   );
 };
 
-export const Home = (props: {
-  matches: MatchInfo[];
-  userMeta: UserMeta | undefined;
-}) => {
+export const Home = (props: { matches: MatchInfo[] }) => {
   return (
     <Container maxW="container.xl" mt={8}>
       <Flex alignItems="center" justifyContent="space-between">

@@ -96,7 +96,7 @@ func (p *pgdb) RunMigration(config Config, dir string) error {
 		err = errors.New("Invalid migration direction \"" + dir + "\"")
 	}
 
-	if err != nil {
+	if err != nil && err.Error() != "no change" {
 		return err
 	}
 
@@ -209,6 +209,29 @@ func (p *pgdb) GetMatch(id string) (MetaData, MatchData, error) {
 		TeamATitle:    teamATitle,
 		TeamBTitle:    teamBTitle,
 	}, matchData, nil
+}
+
+func (p *pgdb) GetUserMeta(id string) (UserMeta, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return UserMeta{}, err
+	}
+
+	defer conn.Release()
+
+	var demoLink string
+
+	err = conn.
+		QueryRow(context.Background(), `SELECT demo_link FROM usermeta WHERE mapid = $1`, id).
+		Scan(&demoLink)
+
+	if err != nil {
+		return UserMeta{}, err
+	}
+
+	return UserMeta{
+		DemoLink: demoLink,
+	}, nil
 }
 
 func (p *pgdb) createMigrationClient(config Config) (*migrate.Migrate, error) {
