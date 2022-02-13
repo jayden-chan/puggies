@@ -40,7 +40,7 @@ func doRescan(trigger string, c Context) {
 
 func watchFileChanges(c Context) {
 	heatmapsDir := join(c.config.dataPath, "heatmaps")
-	fileChanged := make(chan string, FileChangedBufferSize)
+	fileChanged := make(chan string, FileChangedChannelBuffer)
 
 	// register our fsnotify watcher to send events to our
 	// fileChanged channel

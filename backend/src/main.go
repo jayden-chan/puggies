@@ -31,8 +31,8 @@ import (
 const (
 	// hopefully no one drops more than 100 demos into their
 	// demo folder at once
-	FileChangedBufferSize = 100
-	GitHubLink            = "https://github.com/jayden-chan/puggies"
+	FileChangedChannelBuffer = 100
+	GitHubLink               = "https://github.com/jayden-chan/puggies"
 )
 
 func main() {
@@ -52,7 +52,6 @@ func main() {
 	}
 
 	logger := newLogger(config.debug)
-	logger.Debugf("using config: %s", config)
 
 	// we don't need to initialize the database for the parse command
 	if command == "parse" {
@@ -70,43 +69,6 @@ func main() {
 	defer context.db.Close()
 
 	switch command {
-	case "test":
-		// output, err := parseDemo(args[1], ".", config, logger)
-		// metaData, matchData, err := context.db.GetMatch("pug_de_mirage_2022-01-15_06")
-
-		matches, err := context.db.GetMatches()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
-
-		matchesJson, err := json.MarshalIndent(matches, "", "  ")
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-		} else {
-			fmt.Println(string(matchesJson))
-		}
-
-		// metaJson, err := json.MarshalIndent(metaData, "", "  ")
-		// if err != nil {
-		// 	fmt.Fprintln(os.Stderr, err)
-		// } else {
-		// 	fmt.Println(string(metaJson))
-		// }
-
-		// matchJson, err := json.MarshalIndent(matchData, "", "  ")
-		// if err != nil {
-		// 	fmt.Fprintln(os.Stderr, err)
-		// } else {
-		// 	fmt.Println(string(matchJson))
-		// }
-
-		// err = context.db.InsertMatches(output)
-		// if err != nil {
-		// 	fmt.Fprintln(os.Stderr, err)
-		// } else {
-		// 	fmt.Println("OK!!!")
-		// }
 	case "serve":
 		commandServe(context)
 	case "migrate":
@@ -134,6 +96,7 @@ func commandParse(args []string, config Config, logger *Logger) {
 }
 
 func commandServe(c Context) {
+	c.logger.Infof("using config: %s", c.config)
 	c.logger.Info("performing database migrations")
 	err := c.db.RunMigration(c.config, "up")
 	if err != nil {
