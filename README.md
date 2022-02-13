@@ -1,3 +1,4 @@
+![Puggies](./screenshots/banner.png)
 # Puggies
 
 Puggies is a self-hosted CS:GO demo analyzer and statistics platform.
