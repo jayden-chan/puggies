@@ -101,7 +101,7 @@ const FlexCol = (props: FlexProps) => (
 );
 
 export const RoundsVisualization = (props: { data: Match }) => {
-  const { data } = props;
+  const { matchData: data } = props.data;
   const ScoreNumber = (props: { rounds: number[]; side: Team }) => (
     <Heading textColor={TEAM_COLORS_MAP[props.side]} fontSize="3xl">
       {

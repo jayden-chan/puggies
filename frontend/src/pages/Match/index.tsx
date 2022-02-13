@@ -41,7 +41,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DataAPI } from "../../api";
 import { Loading } from "../../components/Loading";
-import { getDemoTypePretty, getESEAId, getPlayers } from "../../data";
+import {
+  formatDate,
+  getDemoTypePretty,
+  getESEAId,
+  getPlayers,
+} from "../../data";
 import { Match, MatchInfo, Round, Stats, UserMeta } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
@@ -99,8 +104,8 @@ export const MatchPage = (props: {
 
   const {
     map,
+    dateTimestamp,
     demoType,
-    date,
     teamAScore,
     teamBScore,
     teamATitle,
@@ -111,9 +116,10 @@ export const MatchPage = (props: {
     props.userMeta !== undefined ? props.userMeta[id]?.demoLink : undefined;
 
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
+  const date = formatDate(dateTimestamp);
 
-  const teamAPlayers = getPlayers(match, "CT", sortCol, reversed);
-  const teamBPlayers = getPlayers(match, "T", sortCol, reversed);
+  const teamAPlayers = getPlayers(match.matchData, "CT", sortCol, reversed);
+  const teamBPlayers = getPlayers(match.matchData, "T", sortCol, reversed);
 
   const colHeaderClicked = (key: string) => {
     if (key === sortCol) {
@@ -237,7 +243,7 @@ export const MatchPage = (props: {
               <HeadToHeadTable
                 teams={[teamAPlayers, teamBPlayers]}
                 playerNames={match.meta.playerNames}
-                headToHead={match.headToHead}
+                headToHead={match.matchData.headToHead}
               />
             </Flex>
           </TabPanel>
@@ -272,7 +278,7 @@ export const MatchPage = (props: {
               styles={{ mb: 12 }}
             />
             <OpeningDuels
-              data={match.openingKills}
+              data={match.matchData.openingKills}
               playerNames={match.meta.playerNames}
             />
           </TabPanel>
@@ -280,10 +286,10 @@ export const MatchPage = (props: {
           {/* Rounds page */}
           <TabPanel>
             <RoundByRoundList
-              roundByRound={match.roundByRound}
-              startTeams={match.startTeams}
+              roundByRound={match.matchData.roundByRound}
+              startTeams={match.matchData.startTeams}
               playerNames={match.meta.playerNames}
-              rounds={match.rounds}
+              rounds={match.matchData.rounds}
             />
           </TabPanel>
         </TabPanels>

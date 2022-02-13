@@ -17,10 +17,11 @@
  * along with Puggies. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { DemoType, Match, Stats, Team } from "./types";
+import { DemoType, MatchData, Stats, Team } from "./types";
+import { format } from "date-fns";
 
 export const getPlayers = (
-  data: Match,
+  data: MatchData,
   side: Team,
   sortCol: keyof Stats,
   reverse: boolean
@@ -52,6 +53,10 @@ export const getDemoTypePretty = (demoType: DemoType): string => {
     case "steam":
       return "Match";
   }
+};
+
+export const formatDate = (ts: number): string => {
+  return format(ts, "EEE LLL d yyyy");
 };
 
 export const getESEAId = (matchId: string): string | undefined => {

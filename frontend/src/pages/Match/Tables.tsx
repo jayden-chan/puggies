@@ -152,7 +152,7 @@ export const StatTable = (props: {
               {props.schema.map((col) => {
                 return (
                   <Td key={`${player}${col.key}`}>
-                    {props.data.stats[col.key][player] ?? 0}
+                    {props.data.matchData.stats[col.key][player] ?? 0}
                     {col.pct === true ? "%" : ""}
                   </Td>
                 );

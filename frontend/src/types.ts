@@ -125,7 +125,6 @@ export type UserMeta = {
 export type MatchInfo = {
   id: string;
   map: string;
-  date: string;
   dateTimestamp: number;
   demoType: DemoType;
   playerNames: { [key: string]: string };
@@ -135,20 +134,23 @@ export type MatchInfo = {
   teamBTitle: string;
 };
 
-export type Match = {
+export type MatchData = {
   totalRounds: number;
   teams: TeamsMap;
   startTeams: TeamsMap;
   rounds: Round[];
   openingKills: OpeningKill[];
 
-  meta: MatchInfo;
-
   stats: Stats;
 
   headToHead: HeadToHead;
   killFeed: KillFeed;
   roundByRound: RoundByRound;
+};
+
+export type Match = {
+  meta: MatchInfo;
+  matchData: MatchData;
 };
 
 export type Stats = {

@@ -221,9 +221,9 @@ export const PlayerInfo = (props: {
             Kills
           </Heading>
           <KillsVisualization
-            killFeed={props.match.killFeed}
+            killFeed={props.match.matchData.killFeed}
             player={selectedPlayer}
-            startSide={props.match.startTeams[selectedPlayer]}
+            startSide={props.match.matchData.startTeams[selectedPlayer]}
           />
         </>
       )}

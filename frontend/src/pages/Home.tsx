@@ -32,22 +32,26 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { formatDate } from "../data";
 import { MatchInfo, UserMeta } from "../types";
 
 const MatchCard = (props: { match: MatchInfo }) => {
   const {
     id,
     map,
-    date,
+    dateTimestamp,
     demoType,
     teamAScore,
     teamBScore,
     teamATitle,
     teamBTitle,
   } = props.match;
+
   const [mapLoaded, setMapLoaded] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
   const showImages = useBreakpointValue([false, false, true]);
+
+  const date = formatDate(dateTimestamp);
 
   return (
     <LinkBox>
