@@ -274,15 +274,22 @@ func (p *pgdb) getUser(username string, password *string) (User, error) {
 	defer conn.Release()
 
 	var displayName, email, passwordArgon string
+	var roles []string
 	var steamIdScanned *string
 
 	err = conn.
 		QueryRow(
 			context.Background(),
-			`SELECT display_name, email, password_argon, steam_id FROM users WHERE username = $1`,
+			`SELECT
+				display_name,
+				email,
+				password_argon,
+				roles,
+				steam_id
+			FROM users WHERE username = $1`,
 			username,
 		).
-		Scan(&displayName, &email, &passwordArgon, &steamIdScanned)
+		Scan(&displayName, &email, &passwordArgon, &roles, &steamIdScanned)
 
 	if err != nil {
 		return User{}, err
@@ -309,6 +316,7 @@ func (p *pgdb) getUser(username string, password *string) (User, error) {
 		Username:    username,
 		DisplayName: displayName,
 		Email:       email,
+		Roles:       roles,
 		SteamId:     steamId,
 	}, nil
 }
@@ -357,7 +365,8 @@ func (p *pgdb) genMatchInsert(match Match, base int, params *[]interface{}) (str
 		match.Meta.TeamBScore,
 		match.Meta.TeamATitle,
 		match.Meta.TeamBTitle,
-		string(match_data))
+		string(match_data),
+	)
 
 	return sql, nil
 }

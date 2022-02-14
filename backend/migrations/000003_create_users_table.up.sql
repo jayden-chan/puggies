@@ -3,6 +3,7 @@ CREATE TABLE users (
   display_name TEXT NOT NULL,
   email TEXT NOT NULL,
   password_argon TEXT NOT NULL,
+  roles TEXT[] NOT NULL DEFAULT '{}',
 
   steam_id TEXT,
 

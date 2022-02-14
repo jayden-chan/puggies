@@ -22,10 +22,11 @@ package main
 import "github.com/golang/geo/r2"
 
 type User struct {
-	Username    string `json:"username"`
-	DisplayName string `json:"displayName"`
-	Email       string `json:"email"`
-	SteamId     string `json:"steamId"`
+	Username    string   `json:"username"`
+	DisplayName string   `json:"displayName"`
+	Email       string   `json:"email"`
+	Roles       []string `json:"roles"`
+	SteamId     string   `json:"steamId"`
 }
 
 type StringIntMap map[string]int
