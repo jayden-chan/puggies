@@ -1,0 +1,180 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"strings"
+
+	"github.com/gin-gonic/gin"
+)
+
+func route_ping() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	}
+}
+
+// may update this later with actual route_health information
+func route_health() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "healthy",
+		})
+	}
+}
+
+func route_match(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		if strings.Contains("..", id) {
+			ginc.String(400, "bruh\n")
+			return
+		}
+
+		meta, match, err := c.db.GetMatch(id)
+		if err != nil {
+			if err.Error() == "no rows in result set" {
+				ginc.JSON(404, gin.H{
+					"message": "match not found",
+				})
+			} else {
+				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
+				c.logger.Errorf(errString)
+				ginc.JSON(500, gin.H{
+					"message": errString,
+				})
+			}
+		} else {
+			ginc.JSON(200, gin.H{
+				"meta":      meta,
+				"matchData": match,
+			})
+		}
+	}
+}
+
+func route_history(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		matches, err := c.db.GetMatches()
+		if err != nil {
+			if err.Error() == "no rows in result set" {
+				ginc.JSON(404, gin.H{
+					"message": "no matches",
+				})
+			} else {
+				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
+				c.logger.Errorf(errString)
+				ginc.JSON(500, gin.H{
+					"message": errString,
+				})
+			}
+		} else {
+			ginc.JSON(200, matches)
+		}
+	}
+}
+
+func route_usermeta(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		if strings.Contains("..", id) {
+			ginc.String(400, "bruh\n")
+			return
+		}
+
+		meta, err := c.db.GetUserMeta(id)
+		if err != nil {
+			if err.Error() == "no rows in result set" {
+				// technically we should return a 404 here but the usermeta
+				// is often going to be empty and we don't want to flood the
+				// browser console with 404 errors (you can't turn them off)
+				ginc.JSON(200, nil)
+			} else {
+				errString := fmt.Sprintf(
+					"demo=%s Failed to fetch user meta for demo: %s",
+					id,
+					err.Error(),
+				)
+
+				c.logger.Errorf(errString)
+				ginc.JSON(500, gin.H{
+					"message": errString,
+				})
+			}
+		} else {
+			ginc.JSON(200, meta)
+		}
+	}
+}
+
+func route_rescan(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		ginc.JSON(200, gin.H{
+			"message": "Incremental re-scan of demos folder started",
+		})
+
+		go doRescan("api", c)
+	}
+}
+
+type LoginPostData struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func route_login(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		var json LoginPostData
+		if err := ginc.ShouldBindJSON(&json); err != nil {
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		username := json.Username
+		password := json.Password
+		user, err := c.db.Login(username, password)
+
+		if err != nil {
+			errString := err.Error()
+			if errString == "wrong password" {
+				c.logger.Warnf(
+					"username=%s password=%s failed login attempt",
+					username,
+					password,
+				)
+				ginc.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized"})
+			} else if errString == "no rows in result set" {
+				c.logger.Warnf(
+					"username=%s password=%s login attempt for non-existent user",
+					username,
+					password,
+				)
+				ginc.JSON(http.StatusNotFound, gin.H{"message": "user doesn't exist"})
+			} else {
+				c.logger.Errorf(
+					"username=%s failed to perform user login test: %s",
+					username,
+					errString,
+				)
+				ginc.JSON(http.StatusInternalServerError, gin.H{"message": errString})
+			}
+			return
+		}
+
+		token, err := createJwt(c, user)
+		if err != nil {
+			errString := err.Error()
+			c.logger.Errorf(
+				"username=%s failed to create JWT: %s",
+				username,
+				errString,
+			)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"message": errString})
+			return
+		}
+
+		ginc.JSON(http.StatusOK, gin.H{"message": token})
+	}
+}

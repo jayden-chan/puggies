@@ -38,7 +38,6 @@ func (p *pgdb) InsertMatches(matches ...Match) error {
 	if err != nil {
 		return err
 	}
-
 	defer conn.Release()
 
 	tx, err := conn.Begin(context.Background())
@@ -108,7 +107,6 @@ func (p *pgdb) HasMatch(id string) (bool, string, error) {
 	if err != nil {
 		return false, "", err
 	}
-
 	defer conn.Release()
 
 	// TODO: this will be updated later to check version information
@@ -126,13 +124,41 @@ func (p *pgdb) HasMatch(id string) (bool, string, error) {
 	return returnedId == id, version, nil
 }
 
+func (p *pgdb) HasUser(username string) (bool, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return false, err
+	}
+	defer conn.Release()
+
+	var scannedUsername string
+	err = conn.
+		QueryRow(
+			context.Background(),
+			"SELECT username FROM users WHERE username = $1",
+			username,
+		).
+		Scan(&scannedUsername)
+
+	if err != nil {
+		errText := err.Error()
+		if errText == "no rows in result set" {
+			return false, nil
+		} else {
+			return false, err
+		}
+	}
+
+	return scannedUsername == username, nil
+}
+
 func (p *pgdb) GetMatches() ([]MetaData, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
 		return nil, err
 	}
-
 	defer conn.Release()
+
 	rows, err := conn.
 		Query(context.Background(), `SELECT
 			id, map, date, demo_type, player_names, team_a_score, team_b_score,
@@ -178,7 +204,6 @@ func (p *pgdb) GetMatch(id string) (MetaData, MatchData, error) {
 	if err != nil {
 		return MetaData{}, MatchData{}, err
 	}
-
 	defer conn.Release()
 
 	var mapName, demoType, teamATitle, teamBTitle string
@@ -216,7 +241,6 @@ func (p *pgdb) GetUserMeta(id string) (UserMeta, error) {
 	if err != nil {
 		return UserMeta{}, err
 	}
-
 	defer conn.Release()
 
 	var demoLink string
@@ -231,6 +255,61 @@ func (p *pgdb) GetUserMeta(id string) (UserMeta, error) {
 
 	return UserMeta{
 		DemoLink: demoLink,
+	}, nil
+}
+
+func (p *pgdb) Login(username, password string) (User, error) {
+	return p.getUser(username, &password)
+}
+
+func (p *pgdb) GetUser(username string) (User, error) {
+	return p.getUser(username, nil)
+}
+
+func (p *pgdb) getUser(username string, password *string) (User, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return User{}, err
+	}
+	defer conn.Release()
+
+	var displayName, email, passwordArgon string
+	var steamIdScanned *string
+
+	err = conn.
+		QueryRow(
+			context.Background(),
+			`SELECT display_name, email, password_argon, steam_id FROM users WHERE username = $1`,
+			username,
+		).
+		Scan(&displayName, &email, &passwordArgon, &steamIdScanned)
+
+	if err != nil {
+		return User{}, err
+	}
+
+	if password != nil {
+		argon2ID := NewArgon2ID()
+		passwordOk, err := argon2ID.Verify(*password, passwordArgon)
+		if err != nil {
+			return User{}, err
+		}
+
+		if !passwordOk {
+			return User{}, errors.New("wrong password")
+		}
+	}
+
+	steamId := ""
+	if steamIdScanned != nil {
+		steamId = *steamIdScanned
+	}
+
+	return User{
+		Username:    username,
+		DisplayName: displayName,
+		Email:       email,
+		SteamId:     steamId,
 	}, nil
 }
 

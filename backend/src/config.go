@@ -28,19 +28,22 @@ import (
 )
 
 type Config struct {
-	assetsPath     string
-	dataPath       string
-	dbConnString   string
-	dbType         string
-	debug          bool
-	demosPath      string
-	frontendPath   string
-	rescanInterval int
-	migrationsPath string
-	port           string
-	staticPath     string
-	trustedProxies []string
-	timezone       string
+	allowRegistration bool
+	assetsPath        string
+	dataPath          string
+	dbConnString      string
+	dbType            string
+	debug             bool
+	demosPath         string
+	frontendPath      string
+	jwtSecret         []byte
+	jwtSessionMinutes int
+	migrationsPath    string
+	port              string
+	rescanInterval    int
+	staticPath        string
+	timezone          string
+	trustedProxies    []string
 }
 
 // FOR DEVELOPERS: Make sure you update the configuration documentation when adding
@@ -60,30 +63,44 @@ func getConfig() (Config, error) {
 		return Config{}, err
 	}
 
+	jwtSecret, err := envStringRequired("PUGGIES_JWT_SECRET")
+	if err != nil {
+		return Config{}, err
+	}
+
 	rescanInterval, err := envOrNumber("PUGGIES_DEMOS_RESCAN_INTERVAL_MINUTES", 180)
 	if err != nil {
 		return Config{}, err
 	}
 
+	jwtSessionMinutes, err := envOrNumber("PUGGIES_JWT_SESSION_LENGTH_MINUTES", 4320)
+	if err != nil {
+		return Config{}, err
+	}
+
 	return Config{
-		assetsPath:     envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
-		dataPath:       envOrString("PUGGIES_DATA_PATH", "/data"),
-		dbConnString:   dbConnString,
-		dbType:         dbType,
-		debug:          envOrBool("PUGGIES_DEBUG", false),
-		demosPath:      envOrString("PUGGIES_DEMOS_PATH", "/demos"),
-		frontendPath:   envOrString("PUGGIES_FRONTEND_PATH", "/app"),
-		rescanInterval: rescanInterval,
-		migrationsPath: envOrString("PUGGIES_MIGRATIONS_PATH", "/backend/migrations"),
-		port:           envOrString("PUGGIES_HTTP_PORT", "9115"),
-		staticPath:     envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
-		trustedProxies: envStringList("PUGGIES_TRUSTED_PROXIES"),
-		timezone:       envOrString("PUGGIES_TZ", "Etc/UTC"),
+		allowRegistration: envOrBool("PUGGIES_ALLOW_REGISTRATION", false),
+		assetsPath:        envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
+		dataPath:          envOrString("PUGGIES_DATA_PATH", "/data"),
+		dbConnString:      dbConnString,
+		dbType:            dbType,
+		debug:             envOrBool("PUGGIES_DEBUG", false),
+		demosPath:         envOrString("PUGGIES_DEMOS_PATH", "/demos"),
+		frontendPath:      envOrString("PUGGIES_FRONTEND_PATH", "/app"),
+		jwtSecret:         []byte(jwtSecret),
+		jwtSessionMinutes: jwtSessionMinutes,
+		migrationsPath:    envOrString("PUGGIES_MIGRATIONS_PATH", "/backend/migrations"),
+		port:              envOrString("PUGGIES_HTTP_PORT", "9115"),
+		rescanInterval:    rescanInterval,
+		staticPath:        envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
+		timezone:          envOrString("PUGGIES_TZ", "Etc/UTC"),
+		trustedProxies:    envStringList("PUGGIES_TRUSTED_PROXIES"),
 	}, nil
 }
 
 func (config Config) String() string {
 	ret := "\n{\n"
+	ret += "\t" + "allowRegistration: " + strconv.FormatBool(config.allowRegistration) + "\n"
 	ret += "\t" + "assetsPath: " + config.assetsPath + "\n"
 	ret += "\t" + "dataPath: " + config.dataPath + "\n"
 	ret += "\t" + "dbConnString: [redacted]\n"
@@ -91,12 +108,14 @@ func (config Config) String() string {
 	ret += "\t" + "debug: " + strconv.FormatBool(config.debug) + "\n"
 	ret += "\t" + "demosPath: " + config.demosPath + "\n"
 	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
-	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
+	ret += "\t" + "jwtSecret: [redacted]\n"
+	ret += "\t" + "jwtSessionMinutes: " + strconv.Itoa(config.jwtSessionMinutes) + "\n"
 	ret += "\t" + "migrationsPath: " + config.migrationsPath + "\n"
 	ret += "\t" + "port: " + config.port + "\n"
+	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
 	ret += "\t" + "staticPath: " + config.staticPath + "\n"
-	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"
 	ret += "\t" + "timezone: " + config.timezone + "\n"
+	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"
 	ret += "}"
 	return ret
 }

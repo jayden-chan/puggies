@@ -38,6 +38,22 @@ Database type. Currently only `postgres` is supported.
 
 Database connection string. For example: `postgres://user:password@hostname/puggies`
 
+### `PUGGIES_JWT_SECRET`
+**Type**: String
+
+**Default**: no default value
+
+Secret key which will be used to sign JWTs for user login/session management. Set this to
+a long, random string.
+
+### `PUGGIES_JWT_SESSION_LENGTH_SECONDS`
+**Type**: Int
+
+**Default**: 259200
+
+Secret key which will be used to sign JWTs for user login/session management. Set this to
+a long, random string.
+
 ### `PUGGIES_TZ`
 **Type**: String
 
@@ -45,6 +61,16 @@ Database connection string. For example: `postgres://user:password@hostname/pugg
 
 Timezone to use when parsing demo dates. The name should be a location name corresponding
 to a file in the IANA Time Zone database, such as "America/New_York"
+
+### `PUGGIES_ALLOW_REGISTRATION`
+**Type**: Boolean
+
+**Default**: `false`
+
+Whether or not users should be allowed to sign up for an account on their own. Defaults
+to false -- the only account will be the admin account which you must set up when first
+installing Puggies. Accounts can be created manually by the admin user if this is set to
+false.
 
 ### `PUGGIES_DATA_PATH`
 **Type**: String
@@ -95,7 +121,7 @@ the demo parser unless necessary.
 ### `PUGGIES_DEBUG`
 **Type**: Boolean
 
-**Default**: 0
+**Default**: `false`
 
 Whether to print verbose debug information in the logs. If you are having an issue with
 the software and need to debug, it's a good idea to enable this.

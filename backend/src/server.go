@@ -115,7 +115,9 @@ func runServer(c Context) {
 	staticFileRoute("/manifest.json")
 	staticFileRoute("/robots.txt")
 
-	// Images
+	// We are manually putting in all the routes for all images
+	// because Gin doesn't allow setting the Cache-Control header
+	// in their r.Static method.
 	assetRoute("/assets/logos/esea.png")
 	assetRoute("/assets/logos/faceit.png")
 	assetRoute("/assets/logos/steam.png")
@@ -185,20 +187,28 @@ func runServer(c Context) {
 	// API routes
 	v1 := r.Group("/api/v1")
 	{
-		v1.GET("/ping", ping())
-		v1.GET("/health", health())
-		v1.GET("/matches/:id", match(c))
-		v1.GET("/history", history(c))
-		v1.GET("/usermeta/:id", usermeta(c))
+		v1.GET("/ping", route_ping())
+		v1.GET("/health", route_health())
+		v1.GET("/matches/:id", route_match(c))
+		v1.GET("/history", route_history(c))
+		v1.GET("/usermeta/:id", route_usermeta(c))
 
-		v1.PATCH("/rescan", rescan(c))
+		v1.PATCH("/rescan", route_rescan(c))
+
+		v1.POST("/login", route_login(c))
+
+		v1Auth := v1.Group("/")
+		v1Auth.Use(AuthRequired(c))
+		{
+			v1Auth.GET("/userinfo", route_userinfo(c))
+		}
 	}
 
 	// React frontend routes
 	r.Static(c.config.frontendPath, c.config.staticPath)
-	r.GET("/", redirToApp(c.config.frontendPath))
+	r.GET("/", route_redirToApp(c.config.frontendPath))
 
 	// 404 handler
-	r.NoRoute(noRoute(c.config.staticPath, c.config.frontendPath))
+	r.NoRoute(route_noRoute(c.config.staticPath, c.config.frontendPath))
 	r.Run(":" + c.config.port)
 }

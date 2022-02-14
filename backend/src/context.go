@@ -28,11 +28,16 @@ type Context struct {
 
 type Db interface {
 	InsertMatches(match ...Match) error
+
 	HasMatch(id string) (bool, string, error)
+	HasUser(username string) (bool, error)
 
 	GetMatch(id string) (MetaData, MatchData, error)
 	GetMatches() ([]MetaData, error)
 	GetUserMeta(id string) (UserMeta, error)
+	GetUser(username string) (User, error)
+
+	Login(username, password string) (User, error)
 
 	RunMigration(config Config, dir string) error
 
