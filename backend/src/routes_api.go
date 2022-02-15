@@ -44,6 +44,14 @@ func route_health() func(*gin.Context) {
 	}
 }
 
+func route_canSelfSignup(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		ginc.JSON(200, gin.H{
+			"message": c.config.selfSignupEnabled,
+		})
+	}
+}
+
 func route_match(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
@@ -138,6 +146,56 @@ func route_rescan(c Context) func(*gin.Context) {
 	}
 }
 
+type RegisterPostData struct {
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	DisplayName string `json:"displayName"`
+	Email       string `json:"email"`
+	SteamId     string `json:"steamId"`
+}
+
+func route_register(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		var json RegisterPostData
+		if err := ginc.ShouldBindJSON(&json); err != nil {
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		displayName := json.DisplayName
+		if displayName == "" {
+			displayName = json.DisplayName
+		}
+
+		user := User{
+			Username:    json.Username,
+			DisplayName: displayName,
+			Email:       json.Email,
+			SteamId:     json.SteamId,
+		}
+
+		err := c.db.RegisterUser(user, json.Password)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+
+		token, err := createJwt(c, user)
+		if err != nil {
+			errString := err.Error()
+			c.logger.Errorf(
+				"username=%s failed to create JWT: %s",
+				user.Username,
+				errString,
+			)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"message": errString})
+			return
+		}
+
+		ginc.JSON(http.StatusOK, gin.H{"message": token})
+	}
+}
+
 type LoginPostData struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -163,7 +221,7 @@ func route_login(c Context) func(*gin.Context) {
 					username,
 					password,
 				)
-				ginc.JSON(http.StatusUnauthorized, gin.H{"message": "unauthorized"})
+				ginc.JSON(http.StatusUnauthorized, gin.H{"message": "password incorrect"})
 			} else if errString == "no rows in result set" {
 				c.logger.Warnf(
 					"username=%s password=%s login attempt for non-existent user",

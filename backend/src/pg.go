@@ -53,6 +53,63 @@ func (p *pgdb) Close() {
 	p.dbpool.Close()
 }
 
+func (p *pgdb) RegisterUser(user User, password string) error {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	tx, err := conn.Begin(context.Background())
+	if err != nil {
+		return err
+	}
+
+	defer tx.Rollback(context.Background())
+
+	var email *string = nil
+	if user.Email != "" {
+		email = &user.Email
+	}
+
+	var steamId *string = nil
+	if user.SteamId != "" {
+		steamId = &user.SteamId
+	}
+
+	argon2ID := NewArgon2ID()
+	passwordArgon, err := argon2ID.Hash(password)
+
+	query := `INSERT INTO users
+					(username, display_name, email, password_argon, steam_id)
+		VALUES ($1, $2, $3, $4, $5)`
+
+	commandTag, err := tx.Exec(
+		context.Background(),
+		query,
+		user.Username,
+		user.DisplayName,
+		email,
+		passwordArgon,
+		steamId,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	if commandTag.RowsAffected() != 1 {
+		return errors.New("Wrong number of rows changed (somehow?)")
+	}
+
+	err = tx.Commit(context.Background())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (p *pgdb) InsertMatches(matches ...Match) error {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {

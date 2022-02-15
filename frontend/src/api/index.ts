@@ -27,6 +27,14 @@ export type User = {
   steamId: string | undefined;
 };
 
+export type RegisterInput = {
+  username: string;
+  password: string;
+  email?: string;
+  displayName?: string;
+  steamId?: string;
+};
+
 export class DataAPI {
   private endpoint = "/api/v1";
   private jwtKeyName = "puggies-login-token";
@@ -47,8 +55,28 @@ export class DataAPI {
       localStorage.setItem(this.jwtKeyName, token);
       return token;
     } else {
+      throw new Error(`Failed to login (HTTP ${res.status}): ${json.message}`);
+    }
+  }
+
+  public async register(input: RegisterInput): Promise<string> {
+    const res = await fetch(`${this.endpoint}/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    const json = await res.json();
+
+    if (res.status === 200) {
+      const token = json.message;
+      localStorage.setItem(this.jwtKeyName, token);
+      return token;
+    } else {
       throw new Error(
-        `Failed to login (HTTP ${res.status}): HTTP ${json.message}`
+        `Failed to register (HTTP ${res.status}): ${json.message}`
       );
     }
   }
@@ -93,6 +121,15 @@ export class DataAPI {
       return await res.json();
     }
     return undefined;
+  }
+
+  public async selfSignupEnabled(): Promise<boolean> {
+    const res = await fetch(`${this.endpoint}/canselfsignup`);
+    if (res.status !== 200) {
+      return false;
+    }
+    const json = await res.json();
+    return json.message;
   }
 
   public async fetchMatch(id: string): Promise<Match | undefined> {

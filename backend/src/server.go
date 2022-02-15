@@ -203,6 +203,7 @@ func runServer(c Context) {
 	{
 		v1.GET("/ping", route_ping())
 		v1.GET("/health", route_health())
+		v1.GET("/canselfsignup", route_canSelfSignup(c))
 		v1.GET("/matches/:id", route_match(c))
 		v1.GET("/history", route_history(c))
 		v1.GET("/usermeta/:id", route_usermeta(c))
@@ -211,11 +212,16 @@ func runServer(c Context) {
 
 		v1.POST("/login", route_login(c))
 
+		if c.config.selfSignupEnabled {
+			v1.POST("/register", route_register(c))
+		}
+
 		v1Auth := v1.Group("/")
 		v1Auth.Use(AuthRequired(c))
 		{
 			v1Auth.GET("/userinfo", route_userinfo(c))
 			v1Auth.POST("/logout", route_logout(c))
+			v1Auth.POST("/adminregister", route_register(c))
 		}
 	}
 

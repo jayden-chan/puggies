@@ -62,15 +62,14 @@ a long, random string.
 Timezone to use when parsing demo dates. The name should be a location name corresponding
 to a file in the IANA Time Zone database, such as "America/New_York"
 
-### `PUGGIES_ALLOW_REGISTRATION`
+### `PUGGIES_ALLOW_SELF_SIGNUP`
 **Type**: Boolean
 
 **Default**: `false`
 
 Whether or not users should be allowed to sign up for an account on their own. Defaults
 to false -- the only account will be the admin account which you must set up when first
-installing Puggies. Accounts can be created manually by the admin user if this is set to
-false.
+installing Puggies. Accounts can still be created manually by the admin user.
 
 ### `PUGGIES_DATA_PATH`
 **Type**: String

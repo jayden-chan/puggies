@@ -26,47 +26,46 @@ import {
   FormLabel,
   Heading,
   Input,
-  Link,
-  Text,
+  useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
-import { DataAPI } from "../api";
 import { useLoginStore } from "../login";
 
-export const Login = () => {
+export const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [steamId, setSteamId] = useState("");
+  const [email, setEmail] = useState("");
+  const [displayName, setDisplayName] = useState("");
+
   const [loading, setLoading] = useState(false);
-  const [selfSignup, setSelfSignup] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
   const navigate = useNavigate();
+  const toast = useToast();
 
-  const [loggedIn, login] = useLoginStore(
-    (state) => [state.loggedIn, state.login],
-    shallow
-  );
-
-  useEffect(() => {
-    const api = new DataAPI();
-    api
-      .selfSignupEnabled()
-      .then((s) => setSelfSignup(s))
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
-      navigate("/");
-    }
-  }, [loggedIn, navigate]);
+  const [register] = useLoginStore((state) => [state.register], shallow);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
-    login(username, password)
-      .then(() => navigate("/"))
+    register({
+      username,
+      password,
+      email: email === "" ? undefined : email,
+      displayName: displayName === "" ? undefined : displayName,
+      steamId: steamId === "" ? undefined : steamId,
+    })
+      .then(() => {
+        toast({
+          title: "Successfully registered!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        navigate("/");
+      })
       .catch((err) => {
         setError(err.toString());
         setLoading(false);
@@ -85,7 +84,7 @@ export const Login = () => {
       flexDirection="column"
     >
       <Container mb={32}>
-        <Heading mb={6}>Sign in to Puggies</Heading>
+        <Heading mb={6}>Register for Puggies</Heading>
         <Flex
           bg="#212938"
           p={10}
@@ -94,6 +93,16 @@ export const Login = () => {
           style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
         >
           <form onSubmit={onSubmit}>
+            <FormControl>
+              <FormLabel htmlFor="displayName">Name</FormLabel>
+              <Input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                mb={5}
+              />
+            </FormControl>
             <FormControl isRequired>
               <FormLabel htmlFor="username">Username</FormLabel>
               <Input
@@ -111,6 +120,24 @@ export const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 mb={5}
               />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="email">Email (optional)</FormLabel>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                mb={5}
+              />
+              <FormLabel htmlFor="steamId">Steam ID (optional)</FormLabel>
+              <Input
+                id="steamId"
+                type="text"
+                value={steamId}
+                onChange={(e) => setSteamId(e.target.value)}
+                mb={5}
+              />
               <Button
                 isLoading={loading}
                 type="submit"
@@ -118,7 +145,7 @@ export const Login = () => {
                 variant="solid"
                 w="100%"
               >
-                Sign in
+                Register
               </Button>
             </FormControl>
             <FormControl isInvalid={error !== undefined}>
@@ -128,22 +155,6 @@ export const Login = () => {
             </FormControl>
           </form>
         </Flex>
-        {selfSignup && (
-          <Flex
-            p={5}
-            borderRadius={10}
-            borderWidth={1}
-            borderColor="gray"
-            alignItems="center"
-            justifyContent="center"
-            mt={8}
-          >
-            <Text mr="0.5em">New to Puggies?</Text>
-            <Link as={ReactRouterLink} to="/register" color="lightblue">
-              Register for an account.
-            </Link>
-          </Flex>
-        )}
       </Container>
     </Flex>
   );

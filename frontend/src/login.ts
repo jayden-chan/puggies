@@ -18,7 +18,7 @@
  */
 
 import create from "zustand";
-import { DataAPI, User } from "./api";
+import { DataAPI, RegisterInput, User } from "./api";
 
 const api = new DataAPI();
 
@@ -28,6 +28,7 @@ type LoginStore = {
   updateLoggedIn: () => Promise<void>;
   updateUser: () => Promise<void>;
   login: (username: string, password: string) => Promise<void>;
+  register: (input: RegisterInput) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -44,6 +45,11 @@ export const useLoginStore = create<LoginStore>((set) => ({
   },
   login: async (username, password) => {
     await api.login(username, password);
+    const user = await api.getUserInfo();
+    set({ loggedIn: true, user });
+  },
+  register: async (input: RegisterInput) => {
+    await api.register(input);
     const user = await api.getUserInfo();
     set({ loggedIn: true, user });
   },

@@ -28,7 +28,6 @@ import (
 )
 
 type Config struct {
-	allowRegistration bool
 	assetsPath        string
 	dataPath          string
 	dbConnString      string
@@ -41,6 +40,7 @@ type Config struct {
 	migrationsPath    string
 	port              string
 	rescanInterval    int
+	selfSignupEnabled bool
 	staticPath        string
 	timezone          string
 	trustedProxies    []string
@@ -79,7 +79,6 @@ func getConfig() (Config, error) {
 	}
 
 	return Config{
-		allowRegistration: envOrBool("PUGGIES_ALLOW_REGISTRATION", false),
 		assetsPath:        envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
 		dataPath:          envOrString("PUGGIES_DATA_PATH", "/data"),
 		dbConnString:      dbConnString,
@@ -92,6 +91,7 @@ func getConfig() (Config, error) {
 		migrationsPath:    envOrString("PUGGIES_MIGRATIONS_PATH", "/backend/migrations"),
 		port:              envOrString("PUGGIES_HTTP_PORT", "9115"),
 		rescanInterval:    rescanInterval,
+		selfSignupEnabled: envOrBool("PUGGIES_ALLOW_SELF_SIGNUP", false),
 		staticPath:        envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		timezone:          envOrString("PUGGIES_TZ", "Etc/UTC"),
 		trustedProxies:    envStringList("PUGGIES_TRUSTED_PROXIES"),
@@ -100,7 +100,6 @@ func getConfig() (Config, error) {
 
 func (config Config) String() string {
 	ret := "\n{\n"
-	ret += "\t" + "allowRegistration: " + strconv.FormatBool(config.allowRegistration) + "\n"
 	ret += "\t" + "assetsPath: " + config.assetsPath + "\n"
 	ret += "\t" + "dataPath: " + config.dataPath + "\n"
 	ret += "\t" + "dbConnString: [redacted]\n"
@@ -113,6 +112,7 @@ func (config Config) String() string {
 	ret += "\t" + "migrationsPath: " + config.migrationsPath + "\n"
 	ret += "\t" + "port: " + config.port + "\n"
 	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
+	ret += "\t" + "selfSignupEnabled: " + strconv.FormatBool(config.selfSignupEnabled) + "\n"
 	ret += "\t" + "staticPath: " + config.staticPath + "\n"
 	ret += "\t" + "timezone: " + config.timezone + "\n"
 	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"

@@ -25,6 +25,10 @@ import {
   Flex,
   Image,
   Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -36,21 +40,20 @@ import {
   ThemeConfig,
   useBreakpointValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import React from "react";
-import { useToast } from "@chakra-ui/react";
-import shallow from "zustand/shallow";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
+import shallow from "zustand/shallow";
 import { DataAPI } from "./api";
 import { Loading } from "./components/Loading";
+import { useLoginStore } from "./login";
 import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
 import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
-import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 import { MatchInfo } from "./types";
-import { useLoginStore } from "./login";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -190,6 +193,7 @@ export const App = () => {
           <Route path="/" element={<Home matches={matches} />} />
           <Route path="/match/:id" element={<MatchPage matches={matches} />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}

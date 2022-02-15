@@ -31,6 +31,8 @@ type Context struct {
 type Db interface {
 	// Add matches to the database
 	InsertMatches(match ...Match) error
+	// Add user to the database
+	RegisterUser(user User, password string) error
 
 	// Check if a match with the given id exists
 	HasMatch(id string) (bool, string, error)
