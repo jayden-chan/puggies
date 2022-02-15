@@ -19,11 +19,19 @@
 
 import { Match, MatchInfo, UserMeta } from "../types";
 
+export type User = {
+  username: string;
+  displayName: string;
+  email: string;
+  roles: string[];
+  steamId: string | undefined;
+};
+
 export class DataAPI {
   private endpoint = "/api/v1";
   private jwtKeyName = "puggies-login-token";
 
-  public async login(username: string, password: string): Promise<void> {
+  public async login(username: string, password: string): Promise<string> {
     const res = await fetch(`${this.endpoint}/login`, {
       method: "POST",
       headers: {
@@ -35,13 +43,37 @@ export class DataAPI {
     const json = await res.json();
 
     if (res.status === 200) {
-      localStorage.setItem(this.jwtKeyName, json.message);
-      return;
+      const token = json.message;
+      localStorage.setItem(this.jwtKeyName, token);
+      return token;
     } else {
       throw new Error(
         `Failed to login (HTTP ${res.status}): HTTP ${json.message}`
       );
     }
+  }
+
+  // TODO: need to submit the token to the backend for
+  // the token blacklist thing
+  public logout() {
+    localStorage.removeItem(this.jwtKeyName);
+  }
+
+  public getLoginToken(): string | null {
+    return localStorage.getItem(this.jwtKeyName);
+  }
+
+  public async getUserInfo(token: string): Promise<User | undefined> {
+    const res = await fetch(`${this.endpoint}/userinfo`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status !== 404) {
+      return await res.json();
+    }
+    return undefined;
   }
 
   public async fetchMatch(id: string): Promise<Match | undefined> {

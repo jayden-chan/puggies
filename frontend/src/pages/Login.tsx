@@ -7,9 +7,10 @@ import {
   Heading,
   Input,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DataAPI } from "../api";
+import shallow from "zustand/shallow";
+import { useLoginStore } from "../login";
 
 export const Login = () => {
   const [username, setUsername] = useState("");
@@ -17,12 +18,21 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
-  const api = new DataAPI();
+
+  const [loggedIn, login] = useLoginStore(
+    (state) => [state.loggedIn, state.login],
+    shallow
+  );
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn, navigate]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
-    api
-      .login(username, password)
+    login(username, password)
       .then(() => navigate("/"))
       .catch((err) => {
         setError(err.toString());

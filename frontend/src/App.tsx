@@ -18,6 +18,7 @@
  */
 
 import {
+  Box,
   Button,
   ChakraProvider,
   extendTheme,
@@ -36,7 +37,10 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import * as React from "react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import React from "react";
+import { useToast } from "@chakra-ui/react";
+import shallow from "zustand/shallow";
 import { useEffect, useState } from "react";
 import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
 import { DataAPI } from "./api";
@@ -46,6 +50,7 @@ import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
 import { Login } from "./pages/Login";
 import { MatchInfo } from "./types";
+import { useLoginStore } from "./login";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -106,6 +111,24 @@ const Footer = () => {
 };
 
 const Header = () => {
+  const [loggedIn, user, updateLoggedIn, updateUser, logout] = useLoginStore(
+    (state) => [
+      state.loggedIn,
+      state.user,
+      state.updateLoggedIn,
+      state.updateUser,
+      state.logout,
+    ],
+    shallow
+  );
+
+  const toast = useToast();
+
+  useEffect(() => {
+    updateLoggedIn();
+    updateUser();
+  }, [updateLoggedIn, updateUser]);
+
   return (
     <Flex
       bg="linear-gradient(180deg, rgba(20,24,33,1) 0%, rgba(20,24,33,0.0) 100%);"
@@ -120,9 +143,32 @@ const Header = () => {
       <Link as={ReactRouterLink} to="/">
         Home
       </Link>
-      <Link as={ReactRouterLink} to="/login" ml="auto">
-        Login
-      </Link>
+      {loggedIn && user ? (
+        <Box ml="auto">
+          <Menu>
+            <MenuButton as={Link}>Hello, {user.displayName}!</MenuButton>
+            <MenuList>
+              <MenuItem
+                onClick={() => {
+                  logout();
+                  toast({
+                    title: "Successfully logged out",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  });
+                }}
+              >
+                Sign out
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+      ) : (
+        <Link as={ReactRouterLink} to="/login" ml="auto">
+          Login
+        </Link>
+      )}
     </Flex>
   );
 };
