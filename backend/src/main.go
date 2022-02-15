@@ -53,10 +53,13 @@ func main() {
 
 	logger := newLogger(config.debug)
 
-	// we don't need to initialize the database for the parse command
-	if command == "parse" {
+	// we don't need to initialize the database for these commands
+	switch command {
+	case "parse":
 		commandParse(args, config, logger)
 		return
+	case "argon":
+		commandArgon(args, logger)
 	}
 
 	context, err := getContext(config, logger)
@@ -120,5 +123,19 @@ func commandMigrate(args []string, c Context) {
 	err := c.db.RunMigration(c.config, args[1])
 	if err != nil {
 		c.logger.Error(err)
+	}
+}
+
+func commandArgon(args []string, logger *Logger) {
+	argon2ID := NewArgon2ID()
+	if len(args) < 2 {
+		logger.Error("Provide the password to hash")
+	}
+
+	hash, err := argon2ID.Hash(args[1])
+	if err != nil {
+		logger.Error(err)
+	} else {
+		fmt.Println(hash)
 	}
 }

@@ -21,6 +21,28 @@ import { Match, MatchInfo, UserMeta } from "../types";
 
 export class DataAPI {
   private endpoint = "/api/v1";
+  private jwtKeyName = "puggies-login-token";
+
+  public async login(username: string, password: string): Promise<void> {
+    const res = await fetch(`${this.endpoint}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const json = await res.json();
+
+    if (res.status === 200) {
+      localStorage.setItem(this.jwtKeyName, json.message);
+      return;
+    } else {
+      throw new Error(
+        `Failed to login (HTTP ${res.status}): HTTP ${json.message}`
+      );
+    }
+  }
 
   public async fetchMatch(id: string): Promise<Match | undefined> {
     const res = await fetch(`${this.endpoint}/matches/${id}`);

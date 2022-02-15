@@ -7,7 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AuthRequired(c Context, allowedRoles []string) gin.HandlerFunc {
+func AuthRequired(c Context) gin.HandlerFunc {
+	return AllowedRoles(c, nil)
+}
+
+func AllowedRoles(c Context, allowedRoles []string) gin.HandlerFunc {
 	return func(ginc *gin.Context) {
 		auth := ginc.GetHeader("Authorization")
 		authWords := strings.Fields(auth)
@@ -31,17 +35,23 @@ func AuthRequired(c Context, allowedRoles []string) gin.HandlerFunc {
 			return
 		}
 
-		for _, ar := range allowedRoles {
-			for _, ur := range user.Roles {
-				if ar == ur {
-					ginc.Set("user", user)
-					ginc.Next()
-					return
+		if allowedRoles == nil {
+			ginc.Set("user", user)
+			ginc.Next()
+		} else {
+			for _, ar := range allowedRoles {
+				for _, ur := range user.Roles {
+					if ar == ur {
+						ginc.Set("user", user)
+						ginc.Next()
+						return
+					}
 				}
 			}
+
+			c.logger.Warnf("username=%s user doesn't have required roles for this route", username)
+			ginc.AbortWithStatus(http.StatusUnauthorized)
 		}
 
-		c.logger.Warnf("username=%s user doesn't have required roles for this route", username)
-		ginc.AbortWithStatus(http.StatusUnauthorized)
 	}
 }

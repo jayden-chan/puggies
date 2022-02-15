@@ -198,7 +198,7 @@ func runServer(c Context) {
 		v1.POST("/login", route_login(c))
 
 		v1Auth := v1.Group("/")
-		v1Auth.Use(AuthRequired(c, []string{"asd"}))
+		v1Auth.Use(AuthRequired(c))
 		{
 			v1Auth.GET("/userinfo", route_userinfo(c))
 		}

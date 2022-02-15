@@ -44,6 +44,7 @@ import { Loading } from "./components/Loading";
 import { Home } from "./pages/Home";
 import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
+import { Login } from "./pages/Login";
 import { MatchInfo } from "./types";
 
 const config: ThemeConfig = {
@@ -119,6 +120,9 @@ const Header = () => {
       <Link as={ReactRouterLink} to="/">
         Home
       </Link>
+      <Link as={ReactRouterLink} to="/login" ml="auto">
+        Login
+      </Link>
     </Flex>
   );
 };
@@ -139,6 +143,7 @@ export const App = () => {
         <Routes>
           <Route path="/" element={<Home matches={matches} />} />
           <Route path="/match/:id" element={<MatchPage matches={matches} />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}
