@@ -64,8 +64,22 @@ func watchFileChanges(c Context) {
 
 func registerJobs(s *gocron.Scheduler, c Context) {
 	c.logger.Info("registering scheduler jobs")
+
 	s.Every(c.config.rescanInterval).Minutes().Do(func() {
 		doRescan("cron", c)
+	})
+
+	s.Every(5).Minutes().Do(func() {
+		c.logger.Infof("trigger=cron clearing stale invalid tokens")
+		err := c.db.CleanInvalidTokens()
+		if err != nil {
+			c.logger.Errorf(
+				"trigger=cron failed to clean invalid tokens from database: %s",
+				err.Error(),
+			)
+		} else {
+			c.logger.Infof("trigger=cron finished clearing stale invalid tokens")
+		}
 	})
 }
 
@@ -201,6 +215,7 @@ func runServer(c Context) {
 		v1Auth.Use(AuthRequired(c))
 		{
 			v1Auth.GET("/userinfo", route_userinfo(c))
+			v1Auth.POST("/logout", route_logout(c))
 		}
 	}
 

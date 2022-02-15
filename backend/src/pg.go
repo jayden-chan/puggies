@@ -6,6 +6,7 @@ import (
 	"errors"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/pgx"
@@ -111,7 +112,7 @@ func (p *pgdb) HasMatch(id string) (bool, string, error) {
 
 	// TODO: this will be updated later to check version information
 	var version string = ""
-	var returnedId string
+	var returnedId string = ""
 
 	err = conn.
 		QueryRow(context.Background(), "SELECT id FROM matches WHERE id = $1", id).
@@ -131,25 +132,20 @@ func (p *pgdb) HasUser(username string) (bool, error) {
 	}
 	defer conn.Release()
 
-	var scannedUsername string
+	var count int
 	err = conn.
 		QueryRow(
 			context.Background(),
-			"SELECT username FROM users WHERE username = $1",
+			"SELECT COUNT(username) FROM users WHERE username = $1",
 			username,
 		).
-		Scan(&scannedUsername)
+		Scan(&count)
 
 	if err != nil {
-		errText := err.Error()
-		if errText == "no rows in result set" {
-			return false, nil
-		} else {
-			return false, err
-		}
+		return false, err
 	}
 
-	return scannedUsername == username, nil
+	return count != 0, nil
 }
 
 func (p *pgdb) GetMatches() ([]MetaData, error) {
@@ -260,6 +256,92 @@ func (p *pgdb) GetUserMeta(id string) (UserMeta, error) {
 
 func (p *pgdb) Login(username, password string) (User, error) {
 	return p.getUser(username, &password)
+}
+
+func (p *pgdb) InvalidateToken(token string, expiry time.Time) error {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	tx, err := conn.Begin(context.Background())
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(context.Background())
+
+	query := `INSERT INTO invalid_tokens (expiry, token) VALUES ($1, $2)`
+	commandTag, err := tx.Exec(context.Background(), query, expiry.Unix(), token)
+	if err != nil {
+		return err
+	}
+
+	if commandTag.RowsAffected() != 1 {
+		return errors.New("Wrong number of rows changed (somehow?)")
+	}
+
+	err = tx.Commit(context.Background())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *pgdb) IsTokenValid(token string) (bool, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return false, err
+	}
+	defer conn.Release()
+
+	var expiry int64
+
+	err = conn.
+		QueryRow(
+			context.Background(),
+			`SELECT expiry FROM invalid_tokens WHERE token = $1`,
+			token,
+		).
+		Scan(&expiry)
+
+	if err != nil {
+		if err.Error() == "no rows in result set" {
+			return true, nil
+		}
+		return false, err
+	}
+
+	return time.Unix(expiry, 0).Before(time.Now()), nil
+}
+
+func (p *pgdb) CleanInvalidTokens() error {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return err
+	}
+	defer conn.Release()
+
+	tx, err := conn.Begin(context.Background())
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback(context.Background())
+
+	now := time.Now().Unix()
+	query := `DELETE FROM invalid_tokens WHERE expiry < $1`
+	_, err = tx.Exec(context.Background(), query, now)
+	if err != nil {
+		return err
+	}
+
+	err = tx.Commit(context.Background())
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (p *pgdb) GetUser(username string) (User, error) {

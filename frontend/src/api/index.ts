@@ -53,9 +53,23 @@ export class DataAPI {
     }
   }
 
-  // TODO: need to submit the token to the backend for
-  // the token blacklist thing
-  public logout() {
+  public async logout() {
+    const token = this.getLoginToken();
+    if (token === null) {
+      return;
+    }
+
+    const res = await fetch(`${this.endpoint}/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status !== 200) {
+      throw new Error(`Failed to logout: HTTP ${res.status}`);
+    }
+
     localStorage.removeItem(this.jwtKeyName);
   }
 
@@ -63,7 +77,12 @@ export class DataAPI {
     return localStorage.getItem(this.jwtKeyName);
   }
 
-  public async getUserInfo(token: string): Promise<User | undefined> {
+  public async getUserInfo(): Promise<User | undefined> {
+    const token = this.getLoginToken();
+    if (token === null) {
+      return undefined;
+    }
+
     const res = await fetch(`${this.endpoint}/userinfo`, {
       headers: {
         Authorization: `Bearer ${token}`,

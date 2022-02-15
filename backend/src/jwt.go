@@ -27,7 +27,7 @@ func createJwt(c Context, user User) (string, error) {
 	return tokenString, err
 }
 
-func validateJwt(c Context, jwtString string) (string, error) {
+func validateJwt(c Context, jwtString string) (string, int64, error) {
 	token, err := jwt.Parse(jwtString, func(token *jwt.Token) (interface{}, error) {
 		// validate that the alg is what we expect
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -38,20 +38,25 @@ func validateJwt(c Context, jwtString string) (string, error) {
 	})
 
 	if err != nil {
-		return "", err
+		return "", 0, err
 	}
 
 	if token == nil {
-		return "", errors.New("nil token")
+		return "", 0, errors.New("nil token")
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		username, claimOK := claims["username"].(string)
 		if !claimOK {
-			return "", errors.New("Failed to parse userid from jwt")
+			return "", 0, errors.New("Failed to parse userid from jwt")
 		}
-		return username, nil
+		exp, claimOK := claims["exp"].(float64)
+		if !claimOK {
+			return "", 0, errors.New("Failed to parse exp from jwt")
+		}
+
+		return username, int64(exp), nil
 	} else {
-		return "", err
+		return "", 0, err
 	}
 }

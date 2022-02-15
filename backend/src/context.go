@@ -19,6 +19,8 @@
 
 package main
 
+import "time"
+
 // Everthing in here needs to be concurrency-safe
 type Context struct {
 	config Config
@@ -38,6 +40,9 @@ type Db interface {
 	GetUser(username string) (User, error)
 
 	Login(username, password string) (User, error)
+	InvalidateToken(token string, expiry time.Time) error
+	IsTokenValid(token string) (bool, error)
+	CleanInvalidTokens() error
 
 	RunMigration(config Config, dir string) error
 

@@ -9,7 +9,7 @@ type LoginStore = {
   updateLoggedIn: () => Promise<void>;
   updateUser: () => Promise<void>;
   login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 export const useLoginStore = create<LoginStore>((set) => ({
@@ -20,20 +20,16 @@ export const useLoginStore = create<LoginStore>((set) => ({
     set({ loggedIn: token !== null });
   },
   updateUser: async () => {
-    const token = api.getLoginToken();
-    if (token === null) {
-      return;
-    }
-    const user = await api.getUserInfo(token);
+    const user = await api.getUserInfo();
     set({ user });
   },
   login: async (username, password) => {
-    const token = await api.login(username, password);
-    const user = await api.getUserInfo(token);
+    await api.login(username, password);
+    const user = await api.getUserInfo();
     set({ loggedIn: true, user });
   },
-  logout: () => {
-    api.logout();
+  logout: async () => {
+    await api.logout();
     set({ loggedIn: false, user: undefined });
   },
 }));

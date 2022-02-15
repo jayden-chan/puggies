@@ -21,9 +21,25 @@ func AllowedRoles(c Context, allowedRoles []string) gin.HandlerFunc {
 			return
 		}
 
-		username, err := validateJwt(c, authWords[1])
+		token := authWords[1]
+		username, _, err := validateJwt(c, token)
 		if err != nil {
 			c.logger.Warn("invalid JWT provided")
+			c.logger.Warn(err.Error())
+			ginc.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		valid, err := c.db.IsTokenValid(token)
+		if err != nil {
+			c.logger.Errorf("username=%s failed to fetch token validity from db", username)
+			c.logger.Errorf(err.Error())
+			ginc.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		if !valid {
+			c.logger.Errorf("username=%s attempted to use previously invalided token", username)
 			ginc.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
@@ -31,18 +47,21 @@ func AllowedRoles(c Context, allowedRoles []string) gin.HandlerFunc {
 		user, err := c.db.GetUser(username)
 		if err != nil {
 			c.logger.Warnf("username=%s failed to get user", username)
+			c.logger.Warnf(err.Error())
 			ginc.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
 		if allowedRoles == nil {
 			ginc.Set("user", user)
+			ginc.Set("token", token)
 			ginc.Next()
 		} else {
 			for _, ar := range allowedRoles {
 				for _, ur := range user.Roles {
 					if ar == ur {
 						ginc.Set("user", user)
+						ginc.Set("token", token)
 						ginc.Next()
 						return
 					}
