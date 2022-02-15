@@ -37,6 +37,7 @@ these useful:
 * [React](https://reactjs.org/)
 * [Chakra](https://chakra-ui.com/docs/getting-started)
 * [date-fns](https://date-fns.org/)
+* [zustand](https://github.com/pmndrs/zustand)
 
 **Chakra components should be used exclusively in frontend code** (use `<Box>` / `<Flex>`
 / `<Text>` as opposed to plain React components like `<div>` or `<p>`). The [Chakra
