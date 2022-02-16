@@ -47,6 +47,7 @@ import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
 import shallow from "zustand/shallow";
 import { DataAPI } from "./api";
 import { Loading } from "./components/Loading";
+import Fonts from "./Fonts";
 import { useLoginStore } from "./login";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
@@ -60,7 +61,13 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  fonts: {
+    heading: "Nimbus Sans",
+    body: "Nimbus Sans",
+  },
+});
 
 const Footer = () => {
   const showLove = useBreakpointValue([false, false, true]);
@@ -185,6 +192,7 @@ export const App = () => {
 
   return (
     <ChakraProvider theme={theme}>
+      <Fonts />
       <Header />
       {matches === undefined ? (
         <Loading minH="calc(100vh - 5.5rem)">Loading matches...</Loading>

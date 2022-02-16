@@ -129,9 +129,11 @@ func runServer(c Context) {
 	staticFileRoute("/manifest.json")
 	staticFileRoute("/robots.txt")
 
-	// We are manually putting in all the routes for all images
+	// We are manually putting in all the routes for all assets
 	// because Gin doesn't allow setting the Cache-Control header
 	// in their r.Static method.
+	assetRoute("/assets/fonts/NimbusSanL-Reg.woff")
+	assetRoute("/assets/fonts/NimbusSanL-Bol.woff")
 	assetRoute("/assets/logos/esea.png")
 	assetRoute("/assets/logos/faceit.png")
 	assetRoute("/assets/logos/steam.png")
