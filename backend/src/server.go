@@ -69,7 +69,7 @@ func registerJobs(s *gocron.Scheduler, c Context) {
 		doRescan("cron", c)
 	})
 
-	s.Every(5).Minutes().Do(func() {
+	s.Every(1).Hour().Do(func() {
 		c.logger.Infof("trigger=cron clearing stale invalid tokens")
 		err := c.db.CleanInvalidTokens()
 		if err != nil {
