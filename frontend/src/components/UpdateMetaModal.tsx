@@ -52,8 +52,11 @@ export const UpdateMetaModal = (props: {
 
   useEffect(() => {
     if (isOpen === true) {
-      setLoading(false);
+      setDemoLink("");
       setLoadingMeta(true);
+      setError(undefined);
+      setLoading(false);
+
       api.fetchUserMeta(matchId).then((m) => {
         setDemoLink(m?.demoLink ?? "");
         setLoadingMeta(false);
@@ -104,7 +107,7 @@ export const UpdateMetaModal = (props: {
             </FormControl>
             <FormControl isInvalid={error !== undefined}>
               {error !== undefined && (
-                <FormErrorMessage mt={5}>{error}</FormErrorMessage>
+                <FormErrorMessage>{error}</FormErrorMessage>
               )}
             </FormControl>
           </ModalBody>

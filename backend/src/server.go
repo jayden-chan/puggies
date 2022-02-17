@@ -224,10 +224,16 @@ func runServer(c Context) {
 		{
 			v1Auth.GET("/userinfo", route_userinfo(c))
 			v1Auth.POST("/logout", route_logout(c))
-			v1Auth.POST("/adminregister", route_register(c))
-			v1Auth.PUT("/usermeta/:id", route_editUserMeta(c))
-			v1Auth.DELETE("/matches/:id", route_deleteMatch(c))
 		}
+
+		v1Admin := v1.Group("/")
+		v1Admin.Use(AllowedRoles(c, []string{"admin"}))
+		{
+			v1Admin.POST("/adminregister", route_register(c))
+			v1Admin.PUT("/usermeta/:id", route_editUserMeta(c))
+			v1Admin.DELETE("/matches/:id", route_deleteMatch(c))
+		}
+
 	}
 
 	// React frontend routes
