@@ -73,14 +73,16 @@ const TableRow = (props: { match: MatchInfo; isAdmin: boolean }) => {
             <Image
               src={`/assets/maps/${match.map}.jpg`}
               onLoad={() => setMapLoaded(true)}
-              h="3rem"
-              minH="3rem"
+              w="5.333rem"
+              minW="5.333rem"
             />
           </Skeleton>
           {match.map}
         </Flex>
       </RowLink>
-      <RowLink to={url}>{date}</RowLink>
+      <RowLink to={url} textAlign="left" whiteSpace="nowrap">
+        {date}
+      </RowLink>
       <RowLink to={url} textAlign="right">
         {match.teamATitle}
       </RowLink>
@@ -153,7 +155,7 @@ export const Home = (props: { matches: MatchInfo[] }) => {
         </Heading>
       </Flex>
       <Divider my={5} />
-      <Box my={5}>
+      <Box my={5} overflowX="auto">
         <Table variant="simple" colorScheme="gray" size="sm">
           <Thead>
             <Tr>

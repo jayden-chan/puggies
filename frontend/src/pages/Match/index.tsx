@@ -180,12 +180,12 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
           overflowX={["auto", "auto", "unset"]}
           overflowY={["hidden", null, "unset"]}
         >
-          <Tab>Scoreboard</Tab>
-          <Tab>Utility</Tab>
-          <Tab>Head to Head</Tab>
-          <Tab>Performances</Tab>
-          <Tab>Opening Duels</Tab>
-          <Tab>Rounds</Tab>
+          <Tab whiteSpace="nowrap">Scoreboard</Tab>
+          <Tab whiteSpace="nowrap">Utility</Tab>
+          <Tab whiteSpace="nowrap">Head to Head</Tab>
+          <Tab whiteSpace="nowrap">Performances</Tab>
+          <Tab whiteSpace="nowrap">Opening Duels</Tab>
+          <Tab whiteSpace="nowrap">Rounds</Tab>
         </TabList>
 
         <TabPanels overflowX="auto">

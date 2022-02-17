@@ -38,6 +38,7 @@ import {
   ModalOverlay,
   Text,
   ThemeConfig,
+  ResponsiveValue,
   useBreakpointValue,
   useDisclosure,
   useToast,
@@ -72,9 +73,16 @@ const theme = extendTheme({
 const Footer = () => {
   const showLove = useBreakpointValue([false, false, true]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
-      <Flex h="2.5rem" alignItems="center" px={2.5} color="#777">
+      <Flex
+        h="2.5rem"
+        alignItems={["unset", "unset", "center"]}
+        px={2.5}
+        color="#777"
+        flexDirection={["column", "column", "row"]}
+      >
         <Text mr={4} fontWeight="bold">
           Puggies 1.0.0
         </Text>
