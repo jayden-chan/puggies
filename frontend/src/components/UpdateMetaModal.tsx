@@ -34,7 +34,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { DataAPI } from "../api";
-import { UserMeta } from "../types";
 
 export const UpdateMetaModal = (props: {
   matchId: string;

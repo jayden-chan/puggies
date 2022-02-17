@@ -17,9 +17,6 @@
  * along with Puggies. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import React from "react";
-
-import { DataAPI } from "../api";
 import {
   Button,
   Modal,
@@ -31,6 +28,8 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
+import React from "react";
+import { DataAPI } from "../api";
 
 export const DeleteMatchModal = (props: {
   matchId: string;
