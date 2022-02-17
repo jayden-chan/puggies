@@ -24,6 +24,7 @@ import {
   Flex,
   Heading,
   IconButton,
+  Text,
   Image,
   Menu,
   MenuButton,
@@ -195,34 +196,63 @@ export const Home = (props: { matches: MatchInfo[] }) => {
         </Heading>
       </Flex>
       <Divider my={5} />
-      <Box my={5} overflowX="auto">
-        <Table variant="simple" colorScheme="gray" size="sm">
-          <Thead>
-            <Tr>
-              <Th>Map</Th>
-              <Th>Date</Th>
-              <Th textAlign="right">Home</Th>
-              <Th textAlign="center">Score</Th>
-              <Th>Away</Th>
-              <Th>Source</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {props.matches.map((match) => (
-              <TableRow
-                key={match.id}
-                match={match}
-                isAdmin={isAdmin}
-                openDelModal={openDeleteModal}
-                openUpdModal={openUpdateModal}
-                setDelMatch={setDeleteMatchId}
-                setUpdMatch={setUpdateMatchId}
-              />
-            ))}
-          </Tbody>
-        </Table>
-      </Box>
+      {props.matches.length === 0 ? (
+        /* TODO: should probably make this a better user experience */
+        <Flex
+          alignItems="center"
+          minH="50vh"
+          justifyContent="center"
+          flexDirection="column"
+        >
+          <Text
+            fontSize="7rem"
+            lineHeight="7rem"
+            fontWeight="bold"
+            color="#212938"
+            mb={7}
+          >
+            No matches!
+          </Text>
+          <Text
+            fontSize="1.8rem"
+            lineHeight="1.8rem"
+            fontWeight="bold"
+            color="gray"
+            m={0}
+          >
+            Add matches by placing CS:GO demos into the configured demos folder.
+          </Text>
+        </Flex>
+      ) : (
+        <Box my={5} overflowX="auto">
+          <Table variant="simple" colorScheme="gray" size="sm">
+            <Thead>
+              <Tr>
+                <Th>Map</Th>
+                <Th>Date</Th>
+                <Th textAlign="right">Home</Th>
+                <Th textAlign="center">Score</Th>
+                <Th>Away</Th>
+                <Th>Source</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {props.matches.map((match) => (
+                <TableRow
+                  key={match.id}
+                  match={match}
+                  isAdmin={isAdmin}
+                  openDelModal={openDeleteModal}
+                  openUpdModal={openUpdateModal}
+                  setDelMatch={setDeleteMatchId}
+                  setUpdMatch={setUpdateMatchId}
+                />
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
+      )}
       <DeleteMatchModal
         matchId={deleteMatchId}
         isOpen={deleteModalOpen}
