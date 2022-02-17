@@ -33,7 +33,7 @@ import React, { useEffect, useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
 import { DataAPI } from "../api";
-import { useLoginStore } from "../login";
+import { useLoginStore } from "../stores/login";
 
 export const Login = () => {
   const [username, setUsername] = useState("");

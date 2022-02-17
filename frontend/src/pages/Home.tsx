@@ -51,7 +51,7 @@ import shallow from "zustand/shallow";
 import { DeleteMatchModal } from "../components/DeleteMatchModal";
 import { UpdateMetaModal } from "../components/UpdateMetaModal";
 import { formatDate, getDemoTypePretty } from "../data";
-import { useLoginStore } from "../login";
+import { useLoginStore } from "../stores/login";
 import { MatchInfo } from "../types";
 
 const RowLink = (props: TableCellProps & { to: string }) => (

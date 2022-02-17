@@ -29,7 +29,9 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
+import shallow from "zustand/shallow";
 import { DataAPI } from "../api";
+import { useMatchesStore } from "../stores/matches";
 
 export const DeleteMatchModal = (props: {
   matchId: string;
@@ -37,6 +39,10 @@ export const DeleteMatchModal = (props: {
   onClose: () => void;
 }) => {
   const { isOpen, onClose, matchId } = props;
+  const [fetchMatches] = useMatchesStore(
+    (state) => [state.fetchMatches],
+    shallow
+  );
   const toast = useToast();
   return (
     <Modal isCentered size="2xl" isOpen={isOpen} onClose={onClose}>
@@ -64,7 +70,8 @@ export const DeleteMatchModal = (props: {
                     duration: 3000,
                     isClosable: true,
                   });
-                  window.location.reload();
+                  onClose();
+                  fetchMatches();
                 })
                 .catch((err) => {
                   toast({

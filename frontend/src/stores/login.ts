@@ -18,7 +18,7 @@
  */
 
 import create from "zustand";
-import { DataAPI, RegisterInput, User } from "./api";
+import { DataAPI, RegisterInput, User } from "../api";
 
 const api = new DataAPI();
 

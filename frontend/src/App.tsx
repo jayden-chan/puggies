@@ -48,13 +48,13 @@ import shallow from "zustand/shallow";
 import { DataAPI } from "./api";
 import Fonts from "./components/Fonts";
 import { Loading } from "./components/Loading";
-import { useLoginStore } from "./login";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
-import { MatchInfo } from "./types";
+import { useLoginStore } from "./stores/login";
+import { useMatchesStore } from "./stores/matches";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -193,12 +193,16 @@ const Header = (props: { showLoginButton: boolean }) => {
 };
 
 export const App = () => {
-  const [matches, setMatches] = useState<MatchInfo[] | undefined>();
   const [showLoginButton, setShowLoginButton] = useState(false);
+  const [matches, fetchMatches] = useMatchesStore(
+    (state) => [state.matches, state.fetchMatches],
+    shallow
+  );
 
   useEffect(() => {
+    fetchMatches();
+
     const api = new DataAPI();
-    api.fetchMatches().then((m) => setMatches(m));
     api
       .loginButtonEnabled()
       .then((l) => setShowLoginButton(l))

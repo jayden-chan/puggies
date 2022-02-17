@@ -31,7 +31,7 @@ import {
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
-import { useLoginStore } from "../login";
+import { useLoginStore } from "../stores/login";
 
 export const Register = () => {
   const [username, setUsername] = useState("");
