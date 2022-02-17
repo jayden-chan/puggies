@@ -56,7 +56,7 @@ func route_match(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
 		if strings.Contains("..", id) {
-			ginc.String(400, "bruh\n")
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": "bruh"})
 			return
 		}
 
@@ -106,8 +106,9 @@ func route_history(c Context) func(*gin.Context) {
 func route_usermeta(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
+		// I'm not even sure if this is necessary but I guess better safe than sorry
 		if strings.Contains("..", id) {
-			ginc.String(400, "bruh\n")
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": "bruh"})
 			return
 		}
 

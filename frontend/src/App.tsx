@@ -38,7 +38,6 @@ import {
   ModalOverlay,
   Text,
   ThemeConfig,
-  ResponsiveValue,
   useBreakpointValue,
   useDisclosure,
   useToast,
@@ -47,8 +46,8 @@ import React, { useEffect, useState } from "react";
 import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
 import shallow from "zustand/shallow";
 import { DataAPI } from "./api";
+import Fonts from "./components/Fonts";
 import { Loading } from "./components/Loading";
-import Fonts from "./Fonts";
 import { useLoginStore } from "./login";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";

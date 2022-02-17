@@ -63,6 +63,12 @@ type Db interface {
 	// Run database schema migrations in the up or down direction
 	RunMigration(config Config, dir string) error
 
+	// Update the user metadata for the given match
+	EditMatchMeta(id string, meta UserMeta) error
+
+	// Delete the given match based on its id (will not delete the demo itself)
+	DeleteMatch(id string) error
+
 	// Close the database pool connection
 	Close()
 }

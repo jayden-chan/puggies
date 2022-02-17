@@ -49,24 +49,37 @@ func newPgDb(config Config, logger *Logger) (*pgdb, error) {
 	}, nil
 }
 
-func (p *pgdb) Close() {
-	p.dbpool.Close()
-}
-
-func (p *pgdb) RegisterUser(user User, password string) error {
+func (p *pgdb) transactionExec(query string, arguments ...interface{}) (int64, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
-		return err
+		return 0, err
 	}
 	defer conn.Release()
 
 	tx, err := conn.Begin(context.Background())
 	if err != nil {
-		return err
+		return 0, err
 	}
-
 	defer tx.Rollback(context.Background())
 
+	commandTag, err := tx.Exec(context.Background(), query, arguments...)
+	if err != nil {
+		return 0, err
+	}
+
+	err = tx.Commit(context.Background())
+	if err != nil {
+		return 0, err
+	}
+
+	return commandTag.RowsAffected(), nil
+}
+
+func (p *pgdb) Close() {
+	p.dbpool.Close()
+}
+
+func (p *pgdb) RegisterUser(user User, password string) error {
 	var steamId *string = nil
 	if user.SteamId != "" {
 		steamId = &user.SteamId
@@ -74,14 +87,15 @@ func (p *pgdb) RegisterUser(user User, password string) error {
 
 	argon2ID := NewArgon2ID()
 	passwordArgon, err := argon2ID.Hash(password)
+	if err != nil {
+		return err
+	}
 
 	query := `INSERT INTO users
 					(username, display_name, email, password_argon, steam_id)
 		VALUES ($1, $2, $3, $4, $5)`
 
-	commandTag, err := tx.Exec(
-		context.Background(),
-		query,
+	_, err = p.transactionExec(query,
 		user.Username,
 		user.DisplayName,
 		user.Email,
@@ -89,36 +103,10 @@ func (p *pgdb) RegisterUser(user User, password string) error {
 		steamId,
 	)
 
-	if err != nil {
-		return err
-	}
-
-	if commandTag.RowsAffected() != 1 {
-		return errors.New("Wrong number of rows changed (somehow?)")
-	}
-
-	err = tx.Commit(context.Background())
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (p *pgdb) InsertMatches(matches ...Match) error {
-	conn, err := p.dbpool.Acquire(context.Background())
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-
-	tx, err := conn.Begin(context.Background())
-	if err != nil {
-		return err
-	}
-
-	defer tx.Rollback(context.Background())
-
 	params := make([]interface{}, 0, len(matches)*10)
 	rows := make([]string, 0, len(matches))
 
@@ -136,21 +124,8 @@ func (p *pgdb) InsertMatches(matches ...Match) error {
 					team_b_score, team_a_title, team_b_title, match_data)
 		VALUES ` + strings.Join(rows, ", ")
 
-	commandTag, err := tx.Exec(context.Background(), query, params...)
-	if err != nil {
-		return err
-	}
-
-	if commandTag.RowsAffected() != int64(len(matches)) {
-		return errors.New("Wrong number of rows changed (somehow?)")
-	}
-
-	err = tx.Commit(context.Background())
-	if err != nil {
-		return err
-	}
-
-	return nil
+	_, err := p.transactionExec(query, params...)
+	return err
 }
 
 func (p *pgdb) RunMigration(config Config, dir string) error {
@@ -330,34 +305,9 @@ func (p *pgdb) Login(username, password string) (User, error) {
 }
 
 func (p *pgdb) InvalidateToken(token string, expiry time.Time) error {
-	conn, err := p.dbpool.Acquire(context.Background())
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-
-	tx, err := conn.Begin(context.Background())
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback(context.Background())
-
 	query := `INSERT INTO invalid_tokens (expiry, token) VALUES ($1, $2)`
-	commandTag, err := tx.Exec(context.Background(), query, expiry.Unix(), token)
-	if err != nil {
-		return err
-	}
-
-	if commandTag.RowsAffected() != 1 {
-		return errors.New("Wrong number of rows changed (somehow?)")
-	}
-
-	err = tx.Commit(context.Background())
-	if err != nil {
-		return err
-	}
-
-	return nil
+	_, err := p.transactionExec(query, expiry.Unix(), token)
+	return err
 }
 
 func (p *pgdb) IsTokenValid(token string) (bool, error) {
@@ -388,35 +338,30 @@ func (p *pgdb) IsTokenValid(token string) (bool, error) {
 }
 
 func (p *pgdb) CleanInvalidTokens() error {
-	conn, err := p.dbpool.Acquire(context.Background())
-	if err != nil {
-		return err
-	}
-	defer conn.Release()
-
-	tx, err := conn.Begin(context.Background())
-	if err != nil {
-		return err
-	}
-	defer tx.Rollback(context.Background())
-
 	now := time.Now().Unix()
-	query := `DELETE FROM invalid_tokens WHERE expiry < $1`
-	_, err = tx.Exec(context.Background(), query, now)
-	if err != nil {
-		return err
-	}
+	_, err := p.transactionExec(`DELETE FROM invalid_tokens WHERE expiry < $1`, now)
+	return err
+}
 
-	err = tx.Commit(context.Background())
-	if err != nil {
-		return err
-	}
-
-	return nil
+func (p *pgdb) DeleteMatch(id string) error {
+	_, err := p.transactionExec(`DELETE FROM matches WHERE id = $1`, id)
+	return err
 }
 
 func (p *pgdb) GetUser(username string) (User, error) {
 	return p.getUser(username, nil)
+}
+
+func (p *pgdb) EditMatchMeta(id string, meta UserMeta) error {
+	_, err := p.transactionExec(
+		`INSERT INTO usermeta (mapid, demo_link)
+		VALUES ($1, $2)
+		ON CONFLICT (mapid)
+		DO UPDATE SET demo_link = $2`,
+		id,
+		meta.DemoLink,
+	)
+	return err
 }
 
 func (p *pgdb) getUser(username string, password *string) (User, error) {

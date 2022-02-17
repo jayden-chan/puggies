@@ -21,10 +21,53 @@ package main
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
+
+func route_deleteMatch(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		// I'm not even sure if this is necessary but I guess better safe than sorry
+		if strings.Contains("..", id) {
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": "bruh"})
+			return
+		}
+
+		err := c.db.DeleteMatch(id)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+		ginc.JSON(http.StatusOK, gin.H{"message": "match deleted"})
+	}
+}
+
+func route_editUserMeta(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		// I'm not even sure if this is necessary but I guess better safe than sorry
+		if strings.Contains("..", id) {
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": "bruh"})
+			return
+		}
+
+		var json UserMeta
+		if err := ginc.ShouldBindJSON(&json); err != nil {
+			ginc.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		err := c.db.EditMatchMeta(id, json)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+		ginc.JSON(http.StatusOK, gin.H{"message": "match metadata updated"})
+	}
+}
 
 func route_userinfo(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {

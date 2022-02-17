@@ -123,6 +123,52 @@ export class DataAPI {
     return undefined;
   }
 
+  public async deleteMatch(id: string): Promise<void> {
+    const token = this.getLoginToken();
+    if (token === null) {
+      return;
+    }
+
+    const res = await fetch(`${this.endpoint}/matches/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const json = await res.json();
+    if (res.status !== 200) {
+      throw new Error(
+        `Failed to delete match (HTTP ${res.status}): ${json.message}`
+      );
+    }
+  }
+
+  public async updateMatchMeta(
+    id: string,
+    meta: Required<UserMeta>
+  ): Promise<void> {
+    const token = this.getLoginToken();
+    if (token === null) {
+      return;
+    }
+
+    const res = await fetch(`${this.endpoint}/usermeta/${id}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(meta),
+    });
+
+    const json = await res.json();
+    if (res.status !== 200) {
+      throw new Error(
+        `Failed to update usermeta (HTTP ${res.status}): ${json.message}`
+      );
+    }
+  }
+
   public async selfSignupEnabled(): Promise<boolean> {
     const res = await fetch(`${this.endpoint}/canselfsignup`);
     if (res.status !== 200) {

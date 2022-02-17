@@ -84,10 +84,6 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
 
   useEffect(() => {
     const api = new DataAPI();
-    // if (thisMatch === undefined) {
-    //   navigate("/404");
-    //   return;
-    // }
 
     api.fetchMatch(id).then((m) => {
       if (m === undefined) {

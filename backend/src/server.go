@@ -92,9 +92,9 @@ func genFileRoute(router *gin.Engine, maxAge int, basepath ...string) func(strin
 			panic("URL parameters can not be used when serving a static file")
 		}
 
-		handler := func(c *gin.Context) {
-			c.Header("Cache-Control", "max-age="+strconv.Itoa(maxAge))
-			c.File(filepath)
+		handler := func(ginc *gin.Context) {
+			ginc.Header("Cache-Control", "max-age="+strconv.Itoa(maxAge))
+			ginc.File(filepath)
 		}
 
 		router.GET(relativePath, handler)
@@ -225,6 +225,8 @@ func runServer(c Context) {
 			v1Auth.GET("/userinfo", route_userinfo(c))
 			v1Auth.POST("/logout", route_logout(c))
 			v1Auth.POST("/adminregister", route_register(c))
+			v1Auth.PUT("/usermeta/:id", route_editUserMeta(c))
+			v1Auth.DELETE("/matches/:id", route_deleteMatch(c))
 		}
 	}
 

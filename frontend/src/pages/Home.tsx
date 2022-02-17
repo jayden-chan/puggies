@@ -41,12 +41,15 @@ import {
   Tooltip,
   Tr,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import shallow from "zustand/shallow";
+import { DeleteMatchModal } from "../components/DeleteMatchModal";
+import { UpdateMetaModal } from "../components/UpdateMetaModal";
 import { formatDate, getDemoTypePretty } from "../data";
 import { useLoginStore } from "../login";
 import { MatchInfo } from "../types";
@@ -57,7 +60,14 @@ const RowLink = (props: TableCellProps & { to: string }) => (
   </Td>
 );
 
-const TableRow = (props: { match: MatchInfo; isAdmin: boolean }) => {
+const TableRow = (props: {
+  match: MatchInfo;
+  isAdmin: boolean;
+  openDelModal: () => void;
+  openUpdModal: () => void;
+  setDelMatch: (id: string) => void;
+  setUpdMatch: (id: string) => void;
+}) => {
   const { match } = props;
   const date = formatDate(match.dateTimestamp);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -133,8 +143,24 @@ const TableRow = (props: { match: MatchInfo; isAdmin: boolean }) => {
             </MenuItem>
             <MenuDivider />
             <MenuGroup title="Admin options">
-              <MenuItem isDisabled={!props.isAdmin}>Delete</MenuItem>
-              <MenuItem isDisabled={!props.isAdmin}>Edit metadata</MenuItem>
+              <MenuItem
+                isDisabled={!props.isAdmin}
+                onClick={() => {
+                  props.setDelMatch(match.id);
+                  props.openDelModal();
+                }}
+              >
+                Delete
+              </MenuItem>
+              <MenuItem
+                isDisabled={!props.isAdmin}
+                onClick={() => {
+                  props.setUpdMatch(match.id);
+                  props.openUpdModal();
+                }}
+              >
+                Edit metadata
+              </MenuItem>
             </MenuGroup>
           </MenuList>
         </Menu>
@@ -145,6 +171,20 @@ const TableRow = (props: { match: MatchInfo; isAdmin: boolean }) => {
 
 export const Home = (props: { matches: MatchInfo[] }) => {
   const [user] = useLoginStore((state) => [state.user], shallow);
+  const [deleteMatchId, setDeleteMatchId] = useState("");
+  const [updateMatchId, setUpdateMatchId] = useState("");
+  const {
+    isOpen: deleteModalOpen,
+    onOpen: openDeleteModal,
+    onClose: closeDeleteModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: updateModalOpen,
+    onOpen: openUpdateModal,
+    onClose: closeUpdateModal,
+  } = useDisclosure();
+
   const isAdmin = user?.roles.includes("admin") ?? false;
 
   return (
@@ -170,11 +210,29 @@ export const Home = (props: { matches: MatchInfo[] }) => {
           </Thead>
           <Tbody>
             {props.matches.map((match) => (
-              <TableRow key={match.id} match={match} isAdmin={isAdmin} />
+              <TableRow
+                key={match.id}
+                match={match}
+                isAdmin={isAdmin}
+                openDelModal={openDeleteModal}
+                openUpdModal={openUpdateModal}
+                setDelMatch={setDeleteMatchId}
+                setUpdMatch={setUpdateMatchId}
+              />
             ))}
           </Tbody>
         </Table>
       </Box>
+      <DeleteMatchModal
+        matchId={deleteMatchId}
+        isOpen={deleteModalOpen}
+        onClose={closeDeleteModal}
+      />
+      <UpdateMetaModal
+        matchId={updateMatchId}
+        isOpen={updateModalOpen}
+        onClose={closeUpdateModal}
+      />
     </Container>
   );
 };
