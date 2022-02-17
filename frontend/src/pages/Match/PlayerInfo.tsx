@@ -29,6 +29,7 @@ import {
   Heading,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuGroup,
   MenuItem,
   MenuList,
@@ -200,7 +201,7 @@ export const PlayerInfo = (props: {
               </MenuItem>
             ))}
           </MenuGroup>
-
+          <MenuDivider />
           <MenuGroup title={props.teams[1].title}>
             {props.teams[1].players.map((player) => (
               <MenuItem

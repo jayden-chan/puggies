@@ -45,13 +45,13 @@ export const msToRoundTime = (ms: number): string => {
 export const getDemoTypePretty = (demoType: DemoType): string => {
   switch (demoType) {
     case "esea":
-      return "ESEA match";
+      return "ESEA";
     case "pugsetup":
-      return "PUG";
+      return "PugSetup";
     case "faceit":
-      return "FACEIT match";
+      return "FACEIT";
     case "steam":
-      return "Match";
+      return "Valve MM";
   }
 };
 

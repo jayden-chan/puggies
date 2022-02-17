@@ -18,108 +18,161 @@
  */
 
 import {
+  Box,
   Container,
   Divider,
   Flex,
   Heading,
+  IconButton,
   Image,
-  LinkBox,
-  LinkOverlay,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuList,
   Skeleton,
-  Text,
-  useBreakpointValue,
-  VStack,
+  Table,
+  TableCellProps,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tooltip,
+  Tr,
+  useToast,
 } from "@chakra-ui/react";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { formatDate } from "../data";
+import shallow from "zustand/shallow";
+import { formatDate, getDemoTypePretty } from "../data";
+import { useLoginStore } from "../login";
 import { MatchInfo } from "../types";
 
-const MatchCard = (props: { match: MatchInfo }) => {
-  const {
-    id,
-    map,
-    dateTimestamp,
-    demoType,
-    teamAScore,
-    teamBScore,
-    teamATitle,
-    teamBTitle,
-  } = props.match;
+const RowLink = (props: TableCellProps & { to: string }) => (
+  <Td {...props}>
+    <Link to={props.to}>{props.children}</Link>
+  </Td>
+);
 
+const TableRow = (props: { match: MatchInfo; isAdmin: boolean }) => {
+  const { match } = props;
+  const date = formatDate(match.dateTimestamp);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
-  const showImages = useBreakpointValue([false, false, true]);
-
-  const date = formatDate(dateTimestamp);
+  const url = `/match/${match.id}`;
+  const toast = useToast();
 
   return (
-    <LinkBox>
-      <Flex
-        p={5}
-        my={5}
-        borderRadius={10}
-        flexDir={["column", null, "row"]}
-        style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
-        alignItems="start"
-      >
-        {showImages && (
-          <Skeleton isLoaded={mapLoaded} mr={5} mb={[3, null, 0]}>
+    <Tr _hover={{ backgroundColor: "#202736" }}>
+      <RowLink to={url}>
+        <Flex alignItems="center">
+          <Skeleton isLoaded={mapLoaded} mr={3}>
             <Image
-              src={`/assets/maps/${map}.jpg`}
+              src={`/assets/maps/${match.map}.jpg`}
               onLoad={() => setMapLoaded(true)}
-              h="6.5rem"
-              minH="6.5rem"
+              h="3rem"
+              minH="3rem"
             />
           </Skeleton>
-        )}
-        <VStack align="start">
-          <Heading as="h3" fontSize="2xl">
-            <LinkOverlay as={Link} to={`/match/${id}`}>
-              {date}
-            </LinkOverlay>
-          </Heading>
-          <Heading as="h4" fontSize="xl">
-            {map}
-          </Heading>
-          <Heading as="h5" fontSize="xl" fontWeight="normal" mr={2}>
-            {teamATitle}{" "}
-            <Text as="span" fontWeight="bold">
-              {teamAScore}:{teamBScore}
-            </Text>{" "}
-            {teamBTitle}
-          </Heading>
-        </VStack>
-        {demoType !== "pugsetup" && showImages && (
-          <Skeleton isLoaded={logoLoaded} ml="auto" mb={[3, null, 0]}>
+          {match.map}
+        </Flex>
+      </RowLink>
+      <RowLink to={url}>{date}</RowLink>
+      <RowLink to={url} textAlign="right">
+        {match.teamATitle}
+      </RowLink>
+      <RowLink to={url} textAlign="center">
+        {match.teamAScore}:{match.teamBScore}
+      </RowLink>
+      <RowLink to={url}>{match.teamBTitle}</RowLink>
+      <Td>
+        <Tooltip label={getDemoTypePretty(match.demoType)}>
+          <Skeleton isLoaded={logoLoaded}>
             <Image
-              src={`/assets/logos/${demoType}.png`}
+              src={`/assets/logos/${match.demoType}.png`}
               onLoad={() => setLogoLoaded(true)}
-              h="6.5rem"
-              minH="6.5rem"
+              h="3rem"
+              minH="3rem"
             />
           </Skeleton>
-        )}
-      </Flex>
-    </LinkBox>
+        </Tooltip>
+      </Td>
+      <Td>
+        <Menu isLazy placement="bottom-end">
+          <MenuButton
+            as={IconButton}
+            aria-label="Options"
+            icon={<FontAwesomeIcon icon={faBars} color="gray" />}
+            variant="ghost"
+          />
+          <MenuList>
+            <MenuItem onClick={() => window.open(`/app${url}`)}>
+              Open in new tab
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                const final = (window.location.href + url).replaceAll(
+                  "//",
+                  "/"
+                );
+                navigator.clipboard?.writeText(final);
+                toast({
+                  title: "Copied URL to clipboard",
+                  status: "info",
+                  duration: 3000,
+                  isClosable: true,
+                });
+              }}
+            >
+              Share
+            </MenuItem>
+            <MenuDivider />
+            <MenuGroup title="Admin options">
+              <MenuItem isDisabled={!props.isAdmin}>Delete</MenuItem>
+              <MenuItem isDisabled={!props.isAdmin}>Edit metadata</MenuItem>
+            </MenuGroup>
+          </MenuList>
+        </Menu>
+      </Td>
+    </Tr>
   );
 };
 
 export const Home = (props: { matches: MatchInfo[] }) => {
+  const [user] = useLoginStore((state) => [state.user], shallow);
+  const isAdmin = user?.roles.includes("admin") ?? false;
+
   return (
-    <Container maxW="container.xl" mt={8}>
+    <Container maxW="container.xl" pt={8} minH="calc(100vh - 5.5rem)">
       <Flex alignItems="center" justifyContent="space-between">
         <Heading lineHeight="unset" mb={0}>
-          Home
+          Matches
         </Heading>
       </Flex>
       <Divider my={5} />
-      <Heading as="h2" fontSize="3xl">
-        Matches
-      </Heading>
-      {props.matches.map((m) => (
-        <MatchCard key={m.id} match={m} />
-      ))}
+      <Box my={5}>
+        <Table variant="simple" colorScheme="gray" size="sm">
+          <Thead>
+            <Tr>
+              <Th>Map</Th>
+              <Th>Date</Th>
+              <Th textAlign="right">Home</Th>
+              <Th textAlign="center">Score</Th>
+              <Th>Away</Th>
+              <Th>Source</Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {props.matches.map((match) => (
+              <TableRow key={match.id} match={match} isAdmin={isAdmin} />
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
     </Container>
   );
 };

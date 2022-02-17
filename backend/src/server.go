@@ -137,6 +137,7 @@ func runServer(c Context) {
 	assetRoute("/assets/logos/esea.png")
 	assetRoute("/assets/logos/faceit.png")
 	assetRoute("/assets/logos/steam.png")
+	assetRoute("/assets/logos/pugsetup.png")
 	assetRoute("/assets/killfeed/blind.png")
 	assetRoute("/assets/killfeed/flashassist.png")
 	assetRoute("/assets/killfeed/headshot.png")
