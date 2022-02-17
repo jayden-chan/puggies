@@ -52,6 +52,14 @@ func route_canSelfSignup(c Context) func(*gin.Context) {
 	}
 }
 
+func route_loginButtonShown(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		ginc.JSON(200, gin.H{
+			"message": c.config.showLoginButton,
+		})
+	}
+}
+
 func route_match(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")

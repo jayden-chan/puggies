@@ -125,6 +125,18 @@ the demo parser unless necessary.
 Whether to print verbose debug information in the logs. If you are having an issue with
 the software and need to debug, it's a good idea to enable this.
 
+### `PUGGIES_SHOW_LOGIN_BUTTON`
+**Type**: Boolean
+
+**Default**: `true`
+
+Whether or not to show the Login button on the frontend. This option will not prevent
+users from logging in if set to false. Users will still be able to log in by navigating
+to the `/login` URL.
+
+This is just a small tweak to help reduce the visibility of the login feature and limit
+the number of failed login attempts for publicly hosted instances.
+
 ### `PUGGIES_ASSETS_PATH`
 **Type**: String
 

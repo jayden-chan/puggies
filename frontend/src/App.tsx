@@ -127,7 +127,7 @@ const Footer = () => {
   );
 };
 
-const Header = () => {
+const Header = (props: { showLoginButton: boolean }) => {
   const [loggedIn, user, updateLoggedIn, updateUser, logout] = useLoginStore(
     (state) => [
       state.loggedIn,
@@ -181,10 +181,12 @@ const Header = () => {
             </MenuList>
           </Menu>
         </Box>
-      ) : (
+      ) : props.showLoginButton ? (
         <Link as={ReactRouterLink} to="/login" ml="auto">
           Login
         </Link>
+      ) : (
+        <></>
       )}
     </Flex>
   );
@@ -192,15 +194,23 @@ const Header = () => {
 
 export const App = () => {
   const [matches, setMatches] = useState<MatchInfo[] | undefined>();
+  const [showLoginButton, setShowLoginButton] = useState(false);
+
   useEffect(() => {
     const api = new DataAPI();
     api.fetchMatches().then((m) => setMatches(m));
+    api
+      .loginButtonEnabled()
+      .then((l) => setShowLoginButton(l))
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   return (
     <ChakraProvider theme={theme}>
       <Fonts />
-      <Header />
+      <Header showLoginButton={showLoginButton} />
       {matches === undefined ? (
         <Loading minH="calc(100vh - 5.5rem)">Loading matches...</Loading>
       ) : (

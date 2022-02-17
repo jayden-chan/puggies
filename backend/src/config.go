@@ -41,6 +41,7 @@ type Config struct {
 	port              string
 	rescanInterval    int
 	selfSignupEnabled bool
+	showLoginButton   bool
 	staticPath        string
 	timezone          string
 	trustedProxies    []string
@@ -92,6 +93,7 @@ func getConfig() (Config, error) {
 		port:              envOrString("PUGGIES_HTTP_PORT", "9115"),
 		rescanInterval:    rescanInterval,
 		selfSignupEnabled: envOrBool("PUGGIES_ALLOW_SELF_SIGNUP", false),
+		showLoginButton:   envOrBool("PUGGIES_SHOW_LOGIN_BUTTON", true),
 		staticPath:        envOrString("PUGGIES_STATIC_PATH", "/frontend/build"),
 		timezone:          envOrString("PUGGIES_TZ", "Etc/UTC"),
 		trustedProxies:    envStringList("PUGGIES_TRUSTED_PROXIES"),
@@ -113,6 +115,7 @@ func (config Config) String() string {
 	ret += "\t" + "port: " + config.port + "\n"
 	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
 	ret += "\t" + "selfSignupEnabled: " + strconv.FormatBool(config.selfSignupEnabled) + "\n"
+	ret += "\t" + "showLoginButton: " + strconv.FormatBool(config.showLoginButton) + "\n"
 	ret += "\t" + "staticPath: " + config.staticPath + "\n"
 	ret += "\t" + "timezone: " + config.timezone + "\n"
 	ret += "\t" + "trustedProxies: " + strings.Join(config.trustedProxies, ", ") + "\n"

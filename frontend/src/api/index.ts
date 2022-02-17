@@ -178,6 +178,15 @@ export class DataAPI {
     return json.message;
   }
 
+  public async loginButtonEnabled(): Promise<boolean> {
+    const res = await fetch(`${this.endpoint}/showloginbutton`);
+    if (res.status !== 200) {
+      return false;
+    }
+    const json = await res.json();
+    return json.message;
+  }
+
   public async fetchMatch(id: string): Promise<Match | undefined> {
     const res = await fetch(`${this.endpoint}/matches/${id}`);
     if (res.status === 404) {
