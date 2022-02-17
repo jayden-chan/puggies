@@ -30,7 +30,7 @@ import (
 
 func createJwt(c Context, user User) (string, error) {
 	now := time.Now()
-	exprDuration, err := time.ParseDuration(strconv.Itoa(c.config.jwtSessionMinutes) + "m")
+	exprDuration, err := time.ParseDuration(strconv.Itoa(c.config.jwtSessionHours) + "h")
 	if err != nil {
 		return "", err
 	}

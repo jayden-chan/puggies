@@ -67,11 +67,6 @@ func (p *pgdb) RegisterUser(user User, password string) error {
 
 	defer tx.Rollback(context.Background())
 
-	var email *string = nil
-	if user.Email != "" {
-		email = &user.Email
-	}
-
 	var steamId *string = nil
 	if user.SteamId != "" {
 		steamId = &user.SteamId
@@ -89,7 +84,7 @@ func (p *pgdb) RegisterUser(user User, password string) error {
 		query,
 		user.Username,
 		user.DisplayName,
-		email,
+		user.Email,
 		passwordArgon,
 		steamId,
 	)

@@ -120,9 +120,7 @@ export const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 mb={5}
               />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="email">Email (optional)</FormLabel>
+              <FormLabel htmlFor="email">Email</FormLabel>
               <Input
                 id="email"
                 type="email"
@@ -130,6 +128,8 @@ export const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 mb={5}
               />
+            </FormControl>
+            <FormControl>
               <FormLabel htmlFor="steamId">Steam ID (optional)</FormLabel>
               <Input
                 id="steamId"

@@ -46,13 +46,13 @@ Database connection string. For example: `postgres://user:password@hostname/pugg
 Secret key which will be used to sign JWTs for user login/session management. Set this to
 a long, random string.
 
-### `PUGGIES_JWT_SESSION_LENGTH_SECONDS`
+### `PUGGIES_JWT_SESSION_LENGTH_HOURS`
 **Type**: Int
 
-**Default**: 259200
+**Default**: `336` (14 days)
 
-Secret key which will be used to sign JWTs for user login/session management. Set this to
-a long, random string.
+The length of time a user's session token will be valid for. After this period they will
+need to log in again.
 
 ### `PUGGIES_TZ`
 **Type**: String

@@ -36,7 +36,7 @@ type Config struct {
 	demosPath         string
 	frontendPath      string
 	jwtSecret         []byte
-	jwtSessionMinutes int
+	jwtSessionHours   int
 	migrationsPath    string
 	port              string
 	rescanInterval    int
@@ -73,7 +73,7 @@ func getConfig() (Config, error) {
 		return Config{}, err
 	}
 
-	jwtSessionMinutes, err := envOrNumber("PUGGIES_JWT_SESSION_LENGTH_MINUTES", 4320)
+	jwtSessionHours, err := envOrNumber("PUGGIES_JWT_SESSION_LENGTH_HOURS", 336)
 	if err != nil {
 		return Config{}, err
 	}
@@ -87,7 +87,7 @@ func getConfig() (Config, error) {
 		demosPath:         envOrString("PUGGIES_DEMOS_PATH", "/demos"),
 		frontendPath:      envOrString("PUGGIES_FRONTEND_PATH", "/app"),
 		jwtSecret:         []byte(jwtSecret),
-		jwtSessionMinutes: jwtSessionMinutes,
+		jwtSessionHours:   jwtSessionHours,
 		migrationsPath:    envOrString("PUGGIES_MIGRATIONS_PATH", "/backend/migrations"),
 		port:              envOrString("PUGGIES_HTTP_PORT", "9115"),
 		rescanInterval:    rescanInterval,
@@ -108,7 +108,7 @@ func (config Config) String() string {
 	ret += "\t" + "demosPath: " + config.demosPath + "\n"
 	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
 	ret += "\t" + "jwtSecret: [redacted]\n"
-	ret += "\t" + "jwtSessionMinutes: " + strconv.Itoa(config.jwtSessionMinutes) + "\n"
+	ret += "\t" + "jwtSessionHours: " + strconv.Itoa(config.jwtSessionHours) + "\n"
 	ret += "\t" + "migrationsPath: " + config.migrationsPath + "\n"
 	ret += "\t" + "port: " + config.port + "\n"
 	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
