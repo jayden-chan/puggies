@@ -29,20 +29,20 @@ import (
 
 func route_ping() func(*gin.Context) {
 	return func(ginc *gin.Context) {
-		ginc.JSON(200, gin.H{"message": "pong"})
+		ginc.JSON(http.StatusOK, gin.H{"message": "pong"})
 	}
 }
 
 // may update this later with actual route_health information
 func route_health() func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "healthy"})
+		c.JSON(http.StatusOK, gin.H{"message": "healthy"})
 	}
 }
 
 func route_canSelfSignup(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
-		ginc.JSON(200, gin.H{
+		ginc.JSON(http.StatusOK, gin.H{
 			"message": c.config.selfSignupEnabled,
 		})
 	}
@@ -50,7 +50,7 @@ func route_canSelfSignup(c Context) func(*gin.Context) {
 
 func route_loginButtonShown(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
-		ginc.JSON(200, gin.H{
+		ginc.JSON(http.StatusOK, gin.H{
 			"message": c.config.showLoginButton,
 		})
 	}
@@ -60,21 +60,21 @@ func route_match(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
 		if strings.Contains("..", id) {
-			ginc.JSON(http.StatusBadRequest, gin.H{"message": "bruh"})
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": "bruh"})
 			return
 		}
 
 		meta, match, err := c.db.GetMatch(id)
 		if err != nil {
 			if err.Error() == "no rows in result set" {
-				ginc.JSON(404, gin.H{"message": "match not found"})
+				ginc.JSON(http.StatusNotFound, gin.H{"error": "match not found"})
 			} else {
 				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
 				c.logger.Errorf(errString)
-				ginc.JSON(500, gin.H{"message": errString})
+				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			}
 		} else {
-			ginc.JSON(200, gin.H{
+			ginc.JSON(http.StatusOK, gin.H{
 				"message": gin.H{
 					"meta":      meta,
 					"matchData": match,
@@ -89,14 +89,14 @@ func route_history(c Context) func(*gin.Context) {
 		matches, err := c.db.GetMatches()
 		if err != nil {
 			if err.Error() == "no rows in result set" {
-				ginc.JSON(404, gin.H{"message": "no matches"})
+				ginc.JSON(http.StatusNotFound, gin.H{"error": "no matches"})
 			} else {
 				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
 				c.logger.Errorf(errString)
-				ginc.JSON(500, gin.H{"message": errString})
+				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			}
 		} else {
-			ginc.JSON(200, gin.H{"message": matches})
+			ginc.JSON(http.StatusOK, gin.H{"message": matches})
 		}
 	}
 }
@@ -106,7 +106,7 @@ func route_usermeta(c Context) func(*gin.Context) {
 		id := ginc.Param("id")
 		// I'm not even sure if this is necessary but I guess better safe than sorry
 		if strings.Contains("..", id) {
-			ginc.JSON(http.StatusBadRequest, gin.H{"message": "bruh"})
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": "bruh"})
 			return
 		}
 
@@ -116,7 +116,7 @@ func route_usermeta(c Context) func(*gin.Context) {
 				// technically we should return a 404 here but the usermeta
 				// is often going to be empty and we don't want to flood the
 				// browser console with 404 errors (you can't turn them off)
-				ginc.JSON(200, gin.H{"message": nil})
+				ginc.JSON(http.StatusOK, gin.H{"message": nil})
 			} else {
 				errString := fmt.Sprintf(
 					"demo=%s Failed to fetch user meta for demo: %s",
@@ -125,17 +125,17 @@ func route_usermeta(c Context) func(*gin.Context) {
 				)
 
 				c.logger.Errorf(errString)
-				ginc.JSON(500, gin.H{"message": errString})
+				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			}
 		} else {
-			ginc.JSON(200, gin.H{"message": meta})
+			ginc.JSON(http.StatusOK, gin.H{"message": meta})
 		}
 	}
 }
 
 func route_rescan(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
-		ginc.JSON(200, gin.H{
+		ginc.JSON(http.StatusOK, gin.H{
 			"message": "Incremental re-scan of demos folder started",
 		})
 
@@ -155,7 +155,7 @@ func route_register(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		var json RegisterPostData
 		if err := ginc.ShouldBindJSON(&json); err != nil {
-			ginc.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -173,7 +173,7 @@ func route_register(c Context) func(*gin.Context) {
 
 		err := c.db.RegisterUser(user, json.Password)
 		if err != nil {
-			ginc.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -185,7 +185,7 @@ func route_register(c Context) func(*gin.Context) {
 				user.Username,
 				errString,
 			)
-			ginc.JSON(http.StatusInternalServerError, gin.H{"message": errString})
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			return
 		}
 
@@ -202,7 +202,7 @@ func route_login(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		var json LoginPostData
 		if err := ginc.ShouldBindJSON(&json); err != nil {
-			ginc.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -218,21 +218,21 @@ func route_login(c Context) func(*gin.Context) {
 					username,
 					password,
 				)
-				ginc.JSON(http.StatusUnauthorized, gin.H{"message": "password incorrect"})
+				ginc.JSON(http.StatusUnauthorized, gin.H{"error": "password incorrect"})
 			} else if errString == "no rows in result set" {
 				c.logger.Warnf(
 					"username=%s password=%s login attempt for non-existent user",
 					username,
 					password,
 				)
-				ginc.JSON(http.StatusNotFound, gin.H{"message": "user doesn't exist"})
+				ginc.JSON(http.StatusNotFound, gin.H{"error": "user doesn't exist"})
 			} else {
 				c.logger.Errorf(
 					"username=%s failed to perform user login test: %s",
 					username,
 					errString,
 				)
-				ginc.JSON(http.StatusInternalServerError, gin.H{"message": errString})
+				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			}
 			return
 		}
@@ -245,7 +245,7 @@ func route_login(c Context) func(*gin.Context) {
 				username,
 				errString,
 			)
-			ginc.JSON(http.StatusInternalServerError, gin.H{"message": errString})
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			return
 		}
 

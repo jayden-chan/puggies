@@ -53,7 +53,7 @@ func route_noRoute(staticPath, frontendPath string) func(*gin.Context) {
 		if strings.HasPrefix(path, frontendPath) && !isLikelyFile(path) {
 			ginc.File(join(staticPath, "index.html"))
 		} else {
-			ginc.JSON(http.StatusNotFound, gin.H{"message": "route not found"})
+			ginc.JSON(http.StatusNotFound, gin.H{"error": "route not found"})
 		}
 	}
 }
