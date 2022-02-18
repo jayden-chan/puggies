@@ -19,7 +19,7 @@
 
 ##### (if new config variable was added):
 - [ ] Configuration documentation was updated 
-- [ ] Docker Compose example file was updated
+- [ ] Docker Compose example file was updated (for required variables with no default)
 
 ##### (if new dependency was added):
 - [ ] New dependencies have been audited and are justified
