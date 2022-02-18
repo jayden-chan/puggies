@@ -44,6 +44,7 @@ services:
       PUGGIES_DB_TYPE: postgres
       PUGGIES_DB_CONNECTION_STRING: "postgres://puggies:change_this_password@puggies_postgres/puggies?sslmode=disable"
       PUGGIES_TZ: "America/Chicago"
+      PUGGIES_JWT_SECRET: set_this_to_a_long_random_string
 
       # Do not set this if you expose the container directly
       # to the internet (which itself is not reccommended)

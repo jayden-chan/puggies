@@ -112,7 +112,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     teamBTitle,
   } = match.meta;
 
-  const demoLink = meta?.demoLink ?? `/api/v1/demos/${id}`;
+  const demoLink = meta?.demoLink ?? `/api/v1/demos/${id}.dem`;
   const demoExternal = !demoLink.startsWith("/api/v1/demos");
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
   const date = formatDate(dateTimestamp);

@@ -2,7 +2,7 @@ FROM golang:1.17.6-alpine as backendBuilder
 
 # we will grab the SSL certs and timezone data so people
 # don't have to mount this from their host machine
-RUN apk update && apk add ca-certificates && apk add tzdata
+RUN apk update --no-cache && apk add --no-cache ca-certificates && apk --no-cache add tzdata
 
 WORKDIR /workspace
 
