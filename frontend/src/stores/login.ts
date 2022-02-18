@@ -25,7 +25,6 @@ const api = new DataAPI();
 type LoginStore = {
   loggedIn: boolean;
   user: User | undefined;
-  updateLoggedIn: () => Promise<void>;
   updateUser: () => Promise<void>;
   login: (username: string, password: string) => Promise<void>;
   register: (input: RegisterInput) => Promise<void>;
@@ -35,13 +34,9 @@ type LoginStore = {
 export const useLoginStore = create<LoginStore>((set) => ({
   loggedIn: false,
   user: undefined,
-  updateLoggedIn: async () => {
-    const token = api.getLoginToken();
-    set({ loggedIn: token !== null });
-  },
   updateUser: async () => {
     const user = await api.getUserInfo();
-    set({ user });
+    set({ user, loggedIn: user !== undefined });
   },
   login: async (username, password) => {
     await api.login(username, password);

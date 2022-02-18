@@ -128,23 +128,16 @@ const Footer = () => {
 };
 
 const Header = (props: { showLoginButton: boolean }) => {
-  const [loggedIn, user, updateLoggedIn, updateUser, logout] = useLoginStore(
-    (state) => [
-      state.loggedIn,
-      state.user,
-      state.updateLoggedIn,
-      state.updateUser,
-      state.logout,
-    ],
+  const [loggedIn, user, updateUser, logout] = useLoginStore(
+    (state) => [state.loggedIn, state.user, state.updateUser, state.logout],
     shallow
   );
 
   const toast = useToast();
 
   useEffect(() => {
-    updateLoggedIn();
     updateUser();
-  }, [updateLoggedIn, updateUser]);
+  }, [updateUser]);
 
   return (
     <Flex
@@ -160,7 +153,8 @@ const Header = (props: { showLoginButton: boolean }) => {
       <Link as={ReactRouterLink} to="/">
         Home
       </Link>
-      {loggedIn && user ? (
+
+      {loggedIn && user !== undefined ? (
         <Box ml="auto">
           <Menu>
             <MenuButton as={Link}>Hello, {user.displayName}!</MenuButton>
@@ -209,7 +203,7 @@ export const App = () => {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [fetchMatches]);
 
   return (
     <ChakraProvider theme={theme}>

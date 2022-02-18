@@ -28,19 +28,15 @@ import (
 )
 
 func route_ping() func(*gin.Context) {
-	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+	return func(ginc *gin.Context) {
+		ginc.JSON(200, gin.H{"message": "pong"})
 	}
 }
 
 // may update this later with actual route_health information
 func route_health() func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "healthy",
-		})
+		c.JSON(200, gin.H{"message": "healthy"})
 	}
 }
 
@@ -71,20 +67,18 @@ func route_match(c Context) func(*gin.Context) {
 		meta, match, err := c.db.GetMatch(id)
 		if err != nil {
 			if err.Error() == "no rows in result set" {
-				ginc.JSON(404, gin.H{
-					"message": "match not found",
-				})
+				ginc.JSON(404, gin.H{"message": "match not found"})
 			} else {
 				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
 				c.logger.Errorf(errString)
-				ginc.JSON(500, gin.H{
-					"message": errString,
-				})
+				ginc.JSON(500, gin.H{"message": errString})
 			}
 		} else {
 			ginc.JSON(200, gin.H{
-				"meta":      meta,
-				"matchData": match,
+				"message": gin.H{
+					"meta":      meta,
+					"matchData": match,
+				},
 			})
 		}
 	}
@@ -95,18 +89,14 @@ func route_history(c Context) func(*gin.Context) {
 		matches, err := c.db.GetMatches()
 		if err != nil {
 			if err.Error() == "no rows in result set" {
-				ginc.JSON(404, gin.H{
-					"message": "no matches",
-				})
+				ginc.JSON(404, gin.H{"message": "no matches"})
 			} else {
 				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
 				c.logger.Errorf(errString)
-				ginc.JSON(500, gin.H{
-					"message": errString,
-				})
+				ginc.JSON(500, gin.H{"message": errString})
 			}
 		} else {
-			ginc.JSON(200, matches)
+			ginc.JSON(200, gin.H{"message": matches})
 		}
 	}
 }
@@ -126,7 +116,7 @@ func route_usermeta(c Context) func(*gin.Context) {
 				// technically we should return a 404 here but the usermeta
 				// is often going to be empty and we don't want to flood the
 				// browser console with 404 errors (you can't turn them off)
-				ginc.JSON(200, nil)
+				ginc.JSON(200, gin.H{"message": nil})
 			} else {
 				errString := fmt.Sprintf(
 					"demo=%s Failed to fetch user meta for demo: %s",
@@ -135,12 +125,10 @@ func route_usermeta(c Context) func(*gin.Context) {
 				)
 
 				c.logger.Errorf(errString)
-				ginc.JSON(500, gin.H{
-					"message": errString,
-				})
+				ginc.JSON(500, gin.H{"message": errString})
 			}
 		} else {
-			ginc.JSON(200, meta)
+			ginc.JSON(200, gin.H{"message": meta})
 		}
 	}
 }

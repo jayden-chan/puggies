@@ -83,7 +83,7 @@ func route_userinfo(c Context) func(*gin.Context) {
 			return
 		}
 
-		ginc.JSON(200, user)
+		ginc.JSON(200, gin.H{"message": user})
 	}
 }
 
