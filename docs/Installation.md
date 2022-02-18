@@ -1,8 +1,7 @@
 # Installing Puggies
 
-The following document explains different methods for getting Puggies up and running.
-Once you are finished with this you can move on to [configuration](./Configuration.md)
-and [deployment](./Deployment.md).
+The following document explains different methods for getting Puggies up and running. See
+also: [configuration](./Configuration.md).
 
 ## Docker Compose (Recommended)
 The officially supported and recommended way to install Puggies is with
