@@ -32,30 +32,25 @@ import {
 import React, { useEffect, useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
-import { DataAPI } from "../api";
 import { useLoginStore } from "../stores/login";
+import { useOptionsStore } from "../stores/options";
 
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selfSignup, setSelfSignup] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const navigate = useNavigate();
-
+  const [selfSignupEnabled] = useOptionsStore(
+    (state) => [state.selfSignupEnabled],
+    shallow
+  );
   const [loggedIn, login] = useLoginStore(
     (state) => [state.loggedIn, state.login],
     shallow
   );
 
-  useEffect(() => {
-    const api = new DataAPI();
-    api
-      .selfSignupEnabled()
-      .then((s) => setSelfSignup(s))
-      .catch(() => {});
-  }, []);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loggedIn) {
@@ -128,7 +123,7 @@ export const Login = () => {
             </FormControl>
           </form>
         </Flex>
-        {selfSignup && (
+        {selfSignupEnabled && (
           <Flex
             p={5}
             borderRadius={10}

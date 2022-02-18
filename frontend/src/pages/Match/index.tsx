@@ -20,6 +20,7 @@
 import {
   Alert,
   AlertIcon,
+  Divider,
   Box,
   Flex,
   Heading,
@@ -29,6 +30,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tag,
   Text,
 } from "@chakra-ui/react";
 import {
@@ -110,7 +112,8 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     teamBTitle,
   } = match.meta;
 
-  const demoLink = meta !== undefined ? meta?.demoLink : undefined;
+  const demoLink = meta?.demoLink ?? `/api/v1/demos/${id}`;
+  const demoExternal = !demoLink.startsWith("/api/v1/demos");
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
   const date = formatDate(dateTimestamp);
 
@@ -130,46 +133,64 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     <Flex
       w="100%"
       minH="calc(100vh - 5.5rem)"
-      pt={30}
+      pt={3}
       alignItems="center"
       flexDirection="column"
     >
-      <Box w={["95%", null, null, "80%"]} mb={3}>
-        <Heading>
-          {getDemoTypePretty(demoType)} on {map}
-        </Heading>
-        <Heading fontSize="lg" as="h2">
-          {date}{" "}
-          {demoLink && (
-            <Link isExternal href={demoLink}>
-              (demo link)
-            </Link>
-          )}
-          {eseaId && (
-            <Link isExternal href={`https://play.esea.net/match/${eseaId}`}>
-              (ESEA match page)
-            </Link>
-          )}
-        </Heading>
-      </Box>
-
       <Flex
         w={["95%", null, null, "80%"]}
-        mb={3}
-        mt={[3, null, null, 0]}
-        alignItems="center"
-        justifyContent="center"
+        p={5}
+        alignItems="flex-end"
+        justifyContent="space-between"
       >
-        <Text mx={5} as="h2" fontSize="xl">
-          {teamATitle}
-        </Text>
-        <Heading mx={2}>{teamAScore}</Heading>
-        <Heading mx={1}>:</Heading>
-        <Heading mx={2}>{teamBScore}</Heading>
-        <Text mx={5} as="h2" fontSize="xl">
-          {teamBTitle}
-        </Text>
+        <Box>
+          <Heading fontSize="3xl" mb={1}>
+            {getDemoTypePretty(demoType)} match on {map}
+          </Heading>
+          <Heading fontSize="lg" as="h2" mb={2}>
+            {date}
+          </Heading>
+          <Tag
+            as={Link}
+            size="md"
+            isExternal={demoExternal}
+            href={demoLink}
+            mr="0.5rem"
+            colorScheme="teal"
+          >
+            Demo link
+          </Tag>
+          {eseaId && (
+            <Tag
+              as={Link}
+              size="md"
+              isExternal
+              colorScheme="green"
+              href={`https://play.esea.net/match/${eseaId}`}
+            >
+              ESEA match page
+            </Tag>
+          )}
+        </Box>
+
+        <Flex
+          mt={[3, null, null, 0]}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text mr={2} as="h2" fontSize="xl">
+            {teamATitle}
+          </Text>
+          <Heading ml={2}>{teamAScore}</Heading>
+          <Heading mx={1}>:</Heading>
+          <Heading mr={2}>{teamBScore}</Heading>
+          <Text ml={2} as="h2" fontSize="xl">
+            {teamBTitle}
+          </Text>
+        </Flex>
       </Flex>
+
+      <Divider w={["95%", null, null, "80%"]} mb={2} />
 
       <Tabs w={["95%", null, null, "80%"]}>
         <TabList

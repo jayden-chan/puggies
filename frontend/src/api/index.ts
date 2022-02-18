@@ -35,6 +35,12 @@ export type RegisterInput = {
   steamId?: string;
 };
 
+export type FrontendOptions = {
+  selfSignupEnabled: boolean;
+  showLoginButton: boolean;
+  allowDemoDownload: boolean;
+};
+
 type ErrorCode = 400 | 401 | 403 | 404 | 405 | 418 | 429 | 500 | 501 | 502;
 
 export class DataAPI {
@@ -127,7 +133,6 @@ export class DataAPI {
   public async getUserInfo(): Promise<User | undefined> {
     const r = await this.fetchAuthed<User>("GET", "/userinfo");
     if (r.code === 401) {
-      console.error("CODE 401");
       return undefined;
     }
 
@@ -154,23 +159,13 @@ export class DataAPI {
     }
   }
 
-  public async selfSignupEnabled(): Promise<boolean> {
-    const r = await this.fetch<boolean>("GET", "/canselfsignup");
+  public async options(): Promise<FrontendOptions> {
+    const r = await this.fetch<FrontendOptions>("GET", "/options");
     if (r.code === 200) {
       return r.res;
     }
     throw new Error(
-      `Failed to determine self-signup ability (HTTP ${r.code}): ${r.error}`
-    );
-  }
-
-  public async loginButtonEnabled(): Promise<boolean> {
-    const r = await this.fetch<boolean>("GET", "/showloginbutton");
-    if (r.code === 200) {
-      return r.res;
-    }
-    throw new Error(
-      `Failed to determine login button visibility (HTTP ${r.code}): ${r.error}`
+      `Failed to fetch frontend options (HTTP ${r.code}): ${r.error}`
     );
   }
 

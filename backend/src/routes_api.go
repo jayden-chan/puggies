@@ -40,18 +40,14 @@ func route_health() func(*gin.Context) {
 	}
 }
 
-func route_canSelfSignup(c Context) func(*gin.Context) {
+func route_options(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		ginc.JSON(http.StatusOK, gin.H{
-			"message": c.config.selfSignupEnabled,
-		})
-	}
-}
-
-func route_loginButtonShown(c Context) func(*gin.Context) {
-	return func(ginc *gin.Context) {
-		ginc.JSON(http.StatusOK, gin.H{
-			"message": c.config.showLoginButton,
+			"message": gin.H{
+				"selfSignupEnabled": c.config.selfSignupEnabled,
+				"showLoginButton":   c.config.showLoginButton,
+				"allowDemoDownload": c.config.allowDemoDownload,
+			},
 		})
 	}
 }

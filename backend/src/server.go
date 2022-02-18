@@ -206,8 +206,7 @@ func runServer(c Context) {
 	{
 		v1.GET("/ping", route_ping())
 		v1.GET("/health", route_health())
-		v1.GET("/canselfsignup", route_canSelfSignup(c))
-		v1.GET("/showloginbutton", route_loginButtonShown(c))
+		v1.GET("/options", route_options(c))
 		v1.GET("/matches/:id", route_match(c))
 		v1.GET("/history", route_history(c))
 		v1.GET("/usermeta/:id", route_usermeta(c))
@@ -218,6 +217,10 @@ func runServer(c Context) {
 
 		if c.config.selfSignupEnabled {
 			v1.POST("/register", route_register(c))
+		}
+
+		if c.config.allowDemoDownload {
+			v1.Static("/demos", c.config.demosPath)
 		}
 
 		v1Auth := v1.Group("/")

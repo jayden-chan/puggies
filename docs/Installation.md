@@ -45,14 +45,11 @@ services:
       PUGGIES_DB_CONNECTION_STRING: "postgres://puggies:change_this_password@puggies_postgres/puggies?sslmode=disable"
       PUGGIES_TZ: "America/Chicago"
 
-      # DO NOT set this if you expose the container directly
-      # to the internet (which itself is highly discouraged!)
-      #
-      # If you are running Puggies locally or it is behind a trusted
-      # reverse proxy then you should leave this set to 172.16.0.0/12.
+      # Do not set this if you expose the container directly
+      # to the internet (which itself is not reccommended)
       #
       # See the PUGGIES_TRUSTED_PROXIES option in the Configuration docs.
-      PUGGIES_TRUSTED_PROXIES: 172.16.0.0/12
+      PUGGIES_TRUSTED_PROXIES: 172.16.0.0/12,192.168.0.0/16
     ports:
       - 9115:9115
     volumes:

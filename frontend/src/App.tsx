@@ -42,10 +42,9 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
 import shallow from "zustand/shallow";
-import { DataAPI } from "./api";
 import Fonts from "./components/Fonts";
 import { Loading } from "./components/Loading";
 import { Home } from "./pages/Home";
@@ -55,6 +54,7 @@ import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { useLoginStore } from "./stores/login";
 import { useMatchesStore } from "./stores/matches";
+import { useOptionsStore } from "./stores/options";
 
 const config: ThemeConfig = {
   initialColorMode: "dark",
@@ -132,12 +132,20 @@ const Header = (props: { showLoginButton: boolean }) => {
     (state) => [state.loggedIn, state.user, state.updateUser, state.logout],
     shallow
   );
+  const [updateOptions] = useOptionsStore(
+    (state) => [state.updateOptions],
+    shallow
+  );
 
   const toast = useToast();
 
   useEffect(() => {
     updateUser();
   }, [updateUser]);
+
+  useEffect(() => {
+    updateOptions();
+  }, [updateOptions]);
 
   return (
     <Flex
@@ -187,7 +195,10 @@ const Header = (props: { showLoginButton: boolean }) => {
 };
 
 export const App = () => {
-  const [showLoginButton, setShowLoginButton] = useState(false);
+  const [showLoginButton] = useOptionsStore(
+    (state) => [state.showLoginButton],
+    shallow
+  );
   const [matches, fetchMatches] = useMatchesStore(
     (state) => [state.matches, state.fetchMatches],
     shallow
@@ -195,14 +206,6 @@ export const App = () => {
 
   useEffect(() => {
     fetchMatches();
-
-    const api = new DataAPI();
-    api
-      .loginButtonEnabled()
-      .then((l) => setShowLoginButton(l))
-      .catch((err) => {
-        console.error(err);
-      });
   }, [fetchMatches]);
 
   return (

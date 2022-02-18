@@ -28,6 +28,7 @@ import (
 )
 
 type Config struct {
+	allowDemoDownload bool
 	assetsPath        string
 	dataPath          string
 	dbConnString      string
@@ -80,6 +81,7 @@ func getConfig() (Config, error) {
 	}
 
 	return Config{
+		allowDemoDownload: envOrBool("PUGGIES_ALLOW_DEMO_DOWNLOAD", true),
 		assetsPath:        envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
 		dataPath:          envOrString("PUGGIES_DATA_PATH", "/data"),
 		dbConnString:      dbConnString,
@@ -102,6 +104,7 @@ func getConfig() (Config, error) {
 
 func (config Config) String() string {
 	ret := "\n{\n"
+	ret += "\t" + "allowDemoDownload: " + strconv.FormatBool(config.allowDemoDownload) + "\n"
 	ret += "\t" + "assetsPath: " + config.assetsPath + "\n"
 	ret += "\t" + "dataPath: " + config.dataPath + "\n"
 	ret += "\t" + "dbConnString: [redacted]\n"
