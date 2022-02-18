@@ -234,7 +234,6 @@ func runServer(c Context) {
 			v1Admin.PUT("/usermeta/:id", route_editUserMeta(c))
 			v1Admin.DELETE("/matches/:id", route_deleteMatch(c))
 		}
-
 	}
 
 	// React frontend routes

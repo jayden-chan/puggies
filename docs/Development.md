@@ -31,26 +31,27 @@ To have your changes merged, please submit a pull request on GitHub. Describe yo
 changes in detail and ensure you have followed the pull request checklist.
 
 ## Tips
-The Puggies frontend has a few dependencies. You might find the documentation for
-these useful:
 
+### Frontend
+* Use only Chakra Components (`<Box>` / `<Flex>` / `<Text>` as opposed to plain React 
+    components like `<div>` or `<p>`). The
+    [Chakra Documentation](https://chakra-ui.com/docs/getting-started) is your best friend!
+* Use `setState` where possible for component-local state. Use `zustand` for global
+    state by updating one of the stores in `src/stores` or by creating a new one.
+* Maintain type safety as much as possible. Avoid the use of `any` or `object` types
+
+#### Documentation
 * [React](https://reactjs.org/)
 * [Chakra](https://chakra-ui.com/docs/getting-started)
+* [FontAwesome](https://fontawesome.com/search?s=solid%2Cregular%2Cbrands)
 * [date-fns](https://date-fns.org/)
 * [zustand](https://github.com/pmndrs/zustand)
 
-**Chakra components should be used exclusively in frontend code** (use `<Box>` / `<Flex>`
-/ `<Text>` as opposed to plain React components like `<div>` or `<p>`). The [Chakra
-Documentation](https://chakra-ui.com/docs/getting-started) is your best friend!
-
-The Puggies backend also has a few dependencies. You might find the documentation for
-these useful:
-
-* [demoinfocs-golang](https://pkg.go.dev/github.com/markus-wa/demoinfocs-golang/v2#section-readme)
-* [Gin](https://github.com/gin-gonic/gin)
-* [gocron](https://github.com/go-co-op/gocron)
-* [fsnotify](https://github.com/fsnotify/fsnotify)
-* [golang-migrate](https://github.com/golang-migrate/migrate)
+### Backend
+* Use the `http` package for status codes (`http.StatusOK` instead of `200`)
+* The response type for API routes should always be JSON. For a successful response,
+    place the data in the `message` field. For error responses, place the error string in
+    the `error` field.
 
 ### Performing database schema upgrades
 Database migrations are managed through
@@ -62,4 +63,15 @@ migrate create -ext sql -dir migrations -seq descriptive_migration_name_here
 ```
 
 Use a descriptive yet concise name for the migration so developers know what it does. See the
-[migration best practices](https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md) documentation for more info.
+[migration best practices](https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md)
+documentation for more info.
+
+#### Documentation
+* [demoinfocs-golang](https://pkg.go.dev/github.com/markus-wa/demoinfocs-golang/v2#section-readme)
+* [Gin](https://github.com/gin-gonic/gin)
+* [gocron](https://github.com/go-co-op/gocron)
+* [fsnotify](https://github.com/fsnotify/fsnotify)
+* [golang-jwt/jwt](https://github.com/golang-jwt/jwt)
+* [golang-migrate](https://github.com/golang-migrate/migrate)
+* [pgx](https://github.com/jackc/pgx)
+* [crypto](https://pkg.go.dev/crypto)
