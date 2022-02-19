@@ -29,8 +29,8 @@ import (
 )
 
 const (
-	// hopefully no one drops more than 100 demos into their
-	// demo folder at once
+	// hopefully no one drops more than 100 demos into
+	// their demo folder at once lmao
 	FileChangedChannelBuffer = 100
 	GitHubLink               = "https://github.com/jayden-chan/puggies"
 )
@@ -60,6 +60,7 @@ func main() {
 		return
 	case "argon":
 		commandArgon(args, logger)
+		return
 	}
 
 	context, err := getContext(config, logger)

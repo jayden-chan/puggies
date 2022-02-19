@@ -20,9 +20,21 @@
 package main
 
 import (
+	"io/fs"
 	"os"
 	"path/filepath"
 )
+
+func recursiveGlob(root string, fn func(string) bool) []string {
+	var matches []string
+	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if fn(path) {
+			matches = append(matches, path)
+		}
+		return nil
+	})
+	return matches
+}
 
 func parseIdempotent(path, heatmapsDir string, c Context) error {
 	alreadyParsed, _, err := c.db.HasMatch(getDemoFileName(path))
@@ -49,12 +61,11 @@ func parseIdempotent(path, heatmapsDir string, c Context) error {
 }
 
 func parseAllIdempotent(inDir, outDir string, c Context) error {
-	files, err := filepath.Glob(inDir + "/*.dem")
-	if err != nil {
-		return err
-	}
+	files := recursiveGlob(inDir, func(path string) bool {
+		return filepath.Ext(path) == ".dem"
+	})
 
-	err = os.MkdirAll(join(outDir, "/heatmaps"), os.ModePerm)
+	err := os.MkdirAll(join(outDir, "/heatmaps"), os.ModePerm)
 	if err != nil {
 		return err
 	}
