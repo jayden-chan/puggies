@@ -38,7 +38,7 @@ const (
 func main() {
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println("Commands: parse, serve, migrate")
+		fmt.Println("Commands: parse, serve, migrate, argon")
 		return
 	}
 
