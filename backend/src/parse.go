@@ -70,8 +70,8 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 	consecutiveMatchStarts := 0
 	eseaMode := demoType == "esea"
 	isLive := !eseaMode
-	deathTimes := make(map[uint64]Death)
 
+	deathTimes := make(map[uint64]Death)
 	heatmaps := make(map[string][]r2.Point)
 
 	p.RegisterEventHandler(func(e events.Kill) {
@@ -251,6 +251,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 	// Create a new 'round' map in each of the stats arrays
 	p.RegisterEventHandler(func(e events.RoundStart) {
 		logger.DebugBig("ROUND START")
+		logger.Debugf("CT %d - %d T", p.GameState().TeamCounterTerrorists().Score(), p.GameState().TeamTerrorists().Score())
 		prd.NewRound(isLive)
 
 		bombDefuser = 0
@@ -355,14 +356,27 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		adr,
 	)
 
-	teamAScore, _ := getScore(prd.rounds, "CT", 999999999)
-	teamBScore, _ := getScore(prd.rounds, "T", 999999999)
+	halfLength := 15
+	teamAScore, _ := getScore(prd.rounds, "CT", 999999999, halfLength)
+	teamBScore, _ := getScore(prd.rounds, "T", 999999999, halfLength)
+
+	teamAScore16round, _ := getScore(prd.rounds, "CT", 999999999, 8)
+	teamBScore16round, _ := getScore(prd.rounds, "T", 999999999, 8)
+
+	// If the sum of scores is 16 or less and neither team got 16-0'd
+	// then it must be a short match
+	if teamAScore+teamBScore <= 16 && teamAScore != 16 && teamBScore != 16 {
+		teamAScore = teamAScore16round
+		teamBScore = teamBScore16round
+		halfLength = 8
+	}
 
 	matchData := MatchData{
 		TotalRounds: totalRounds,
 		Teams:       teams,
-		StartTeams:  computeStartSides(teams, prd.rounds),
+		StartTeams:  computeStartSides(teams, prd.rounds, halfLength),
 		Rounds:      prd.rounds,
+		HalfLength:  halfLength,
 
 		Stats: Stats{
 			Adr:                adr,
@@ -402,7 +416,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 
 		HeadToHead:   headToHeadTotal(&prd.headToHead),
 		KillFeed:     prd.headToHead,
-		RoundByRound: computeRoundByRound(prd.rounds, prd.headToHead),
+		RoundByRound: computeRoundByRound(prd.rounds, prd.headToHead, halfLength),
 		OpeningKills: totals.openingKills,
 	}
 

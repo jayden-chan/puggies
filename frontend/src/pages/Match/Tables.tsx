@@ -137,28 +137,30 @@ export const StatTable = (props: {
         </Thead>
 
         <Tbody>
-          {props.playerIds.map((player) => (
-            <Tr key={player}>
-              <Td
-                w={["40vw", null, "200px"]}
-                maxW={["40vw", null, "200px"]}
-                key={`${player}name`}
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
-              >
-                {props.data.meta.playerNames[player]}
-              </Td>
-              {props.schema.map((col) => {
-                return (
-                  <Td key={`${player}${col.key}`}>
-                    {props.data.matchData.stats[col.key][player] ?? 0}
-                    {col.pct === true ? "%" : ""}
-                  </Td>
-                );
-              })}
-            </Tr>
-          ))}
+          {props.playerIds
+            .filter((p) => p !== "0")
+            .map((player) => (
+              <Tr key={player}>
+                <Td
+                  w={["40vw", null, "200px"]}
+                  maxW={["40vw", null, "200px"]}
+                  key={`${player}name`}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                >
+                  {props.data.meta.playerNames[player]}
+                </Td>
+                {props.schema.map((col) => {
+                  return (
+                    <Td key={`${player}${col.key}`}>
+                      {props.data.matchData.stats[col.key][player] ?? 0}
+                      {col.pct === true ? "%" : ""}
+                    </Td>
+                  );
+                })}
+              </Tr>
+            ))}
         </Tbody>
       </Table>
     </Box>

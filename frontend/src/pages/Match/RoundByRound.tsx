@@ -56,15 +56,19 @@ type KillFeedThing = {
   kill: Kill;
 };
 
-const playerColor = (startTeam: Team | undefined, round: number) => {
+const playerColor = (
+  startTeam: Team | undefined,
+  round: number,
+  halfLength: number
+) => {
   if (startTeam === undefined) return "white";
 
-  if (round <= 15) {
+  if (round <= halfLength) {
     return KILLFEED_COLORS_MAP[startTeam];
-  } else if (round <= 30) {
+  } else if (round <= halfLength * 2) {
     return KILLFEED_COLORS_MAP[INVERT_TEAM[startTeam]];
   } else {
-    const ot = Math.ceil((round - 30) / 6);
+    const ot = Math.ceil((round - halfLength * 2) / 6);
     const otRound = ((round - 1) % 6) + 1;
     let side;
     if (ot % 2 === 0) {
@@ -122,6 +126,7 @@ const KillFeedItem = (
     round: number;
     startTeams: TeamsMap;
     playerNames: PlayerNames;
+    halfLength: number;
   }
 ) => {
   const { kill, round, startTeams, playerNames } = props;
@@ -130,7 +135,11 @@ const KillFeedItem = (
       {kill.attackerBlind && <KillFeedIcon src="/killfeed/blind.png" />}
       <KillFeedPlayer
         player={playerNames[props.killer.toString()]}
-        color={playerColor(startTeams[props.killer.toString()], round)}
+        color={playerColor(
+          startTeams[props.killer.toString()],
+          round,
+          props.halfLength
+        )}
       />
 
       <KillLocation>{props.kill.attackerLocation}</KillLocation>
@@ -141,7 +150,11 @@ const KillFeedItem = (
           <KillFeedIcon src="/killfeed/flashassist.png" />
           <KillFeedPlayer
             player={playerNames[kill.assister.toString()]}
-            color={playerColor(startTeams[kill.assister.toString()], round)}
+            color={playerColor(
+              startTeams[kill.assister.toString()],
+              round,
+              props.halfLength
+            )}
           />
         </>
       )}
@@ -155,7 +168,11 @@ const KillFeedItem = (
       {kill.isHeadshot && <KillFeedIcon src="/killfeed/headshot.png" />}
       <KillFeedPlayer
         player={playerNames[props.victim.toString()]}
-        color={playerColor(startTeams[props.victim.toString()], round)}
+        color={playerColor(
+          startTeams[props.victim.toString()],
+          round,
+          props.halfLength
+        )}
       />
       <KillLocation>{props.kill.victimLocation}</KillLocation>
     </EventBox>
@@ -186,6 +203,7 @@ const EventsFeed = (props: {
   startTeams: TeamsMap;
   playerNames: PlayerNames;
   round: number;
+  halfLength: number;
 }) => (
   <Flex flexDirection="column" alignItems="start" mt={2} overflowX="auto">
     {props.events.map((event, j) => {
@@ -203,6 +221,7 @@ const EventsFeed = (props: {
               startTeams={props.startTeams}
               playerNames={props.playerNames}
               round={props.round}
+              halfLength={props.halfLength}
             />
           )}
 
@@ -232,6 +251,7 @@ export const RoundByRoundList = (props: {
   startTeams: TeamsMap;
   playerNames: PlayerNames;
   rounds: Round[];
+  halfLength: number;
 }) => {
   return (
     <Accordion allowMultiple>
@@ -294,6 +314,7 @@ export const RoundByRoundList = (props: {
                 startTeams={props.startTeams}
                 playerNames={props.playerNames}
                 round={i + 1}
+                halfLength={props.halfLength}
               />
             </AccordionPanel>
           </AccordionItem>

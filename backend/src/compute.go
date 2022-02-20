@@ -208,9 +208,9 @@ func computeEFPerFlash(flashesThrown PlayerIntMap, enemiesFlashed PlayerIntMap) 
 	return ret
 }
 
-func computeStartSides(teams map[uint64]string, rounds []Round) map[uint64]string {
-	_, teamAStartSide := getScore(rounds, "CT", 1)
-	_, teamBStartSide := getScore(rounds, "T", 1)
+func computeStartSides(teams map[uint64]string, rounds []Round, halfLength int) map[uint64]string {
+	_, teamAStartSide := getScore(rounds, "CT", 1, halfLength)
+	_, teamBStartSide := getScore(rounds, "T", 1, halfLength)
 	ret := make(map[uint64]string)
 	for player, team := range teams {
 		if team == "CT" {
@@ -255,12 +255,12 @@ func computeOpenings(openingKills []OpeningKill) (
 	return oKills, oDeaths, oAttempts, oAttemptsPct, oSuccess
 }
 
-func computeRoundByRound(rounds []Round, killFeed KillFeed) []RoundOverview {
+func computeRoundByRound(rounds []Round, killFeed KillFeed, halfLength int) []RoundOverview {
 	var ret []RoundOverview
 	for i, k := range killFeed {
 		roundInfo := rounds[i]
-		teamAScore, teamASide := getScore(rounds, "CT", i+1)
-		teamBScore, teamBSide := getScore(rounds, "T", i+1)
+		teamAScore, teamASide := getScore(rounds, "CT", i+1, halfLength)
+		teamBScore, teamBSide := getScore(rounds, "T", i+1, halfLength)
 		var events []RoundEvent
 
 		for killer, k2 := range k {

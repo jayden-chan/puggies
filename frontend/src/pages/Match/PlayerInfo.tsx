@@ -109,10 +109,14 @@ const KillsVisualization = (props: {
   killFeed: KillFeed;
   player: string;
   startSide: Team;
+  halfLength: number;
 }) => {
+  const halfLength = props.halfLength;
   const overtimes =
-    props.killFeed.length > 30
-      ? Array.from(Array(Math.ceil((props.killFeed.length - 30) / 6)).keys())
+    props.killFeed.length > halfLength * 2
+      ? Array.from(
+          Array(Math.ceil((props.killFeed.length - halfLength * 2) / 6)).keys()
+        )
       : [];
 
   return (
@@ -128,18 +132,18 @@ const KillsVisualization = (props: {
         killFeed={props.killFeed}
         player={props.player}
         side={props.startSide}
-        rounds={[0, 15]}
+        rounds={[0, halfLength]}
       />
       <Divider orientation="vertical" mx={5} />
       <KillGridHalf
         killFeed={props.killFeed}
         player={props.player}
         side={INVERT_TEAM[props.startSide]}
-        rounds={[15, 30]}
+        rounds={[halfLength, halfLength * 2]}
       />
       {overtimes
         .map((ot) => {
-          const i = 30 + ot * 6;
+          const i = halfLength * 2 + ot * 6;
           const side =
             ot % 2 === 0 ? INVERT_TEAM[props.startSide] : props.startSide;
 
@@ -225,6 +229,7 @@ export const PlayerInfo = (props: {
             killFeed={props.match.matchData.killFeed}
             player={selectedPlayer}
             startSide={props.match.matchData.startTeams[selectedPlayer]}
+            halfLength={props.match.matchData.halfLength}
           />
         </>
       )}

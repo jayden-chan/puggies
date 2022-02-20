@@ -27,7 +27,7 @@ export const getPlayers = (
   reverse: boolean
 ): string[] =>
   Object.keys(data.teams)
-    .filter((player) => data.teams[player] === side)
+    .filter((player) => player !== "0" && data.teams[player] === side)
     .sort((a, b) => {
       const aa = data.stats[sortCol][reverse ? a : b] ?? 0;
       const bb = data.stats[sortCol][reverse ? b : a] ?? 0;

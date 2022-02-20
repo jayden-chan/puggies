@@ -102,6 +102,7 @@ func processWeaponName(w common.Equipment) string {
 		{"w_", ""},
 		{"cz75a", "cz75"},
 		{"cz_75", "cz75"},
+		{"m249para", "m249"},
 		{"_dropped", ""},
 		{".mdl", ""},
 		{"eq_incendiarygrenade", "fire"},
@@ -140,7 +141,7 @@ func getPlayers(teams TeamsMap, playerNames NamesMap, hltv PlayerF64Map, side st
 	return ret
 }
 
-func getScore(rounds []Round, endSide string, toRound int) (int, string) {
+func getScore(rounds []Round, endSide string, toRound, halfLength int) (int, string) {
 	score := 0
 	currSide := endSide
 	roundSide := ""
@@ -151,7 +152,11 @@ func getScore(rounds []Round, endSide string, toRound int) (int, string) {
 		round := rounds[i-1]
 
 		// Switch sides at half time and during overtime
-		if i == 15 || (i > 30 && (i-3)%6 == 0) {
+		//
+		// We will assume that overtime for short matches is 3 rounds per half,
+		// I've never actually seen a short match with overtime so who knows if this
+		// condition will ever even be triggered
+		if i == halfLength || (i > halfLength*2 && (i-3)%6 == 0) {
 			if currSide == "T" {
 				currSide = "CT"
 			} else {
@@ -292,7 +297,11 @@ func updateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
 
 func updatePlayerNames(p *dem.Parser, playerNames *NamesMap) {
 	for _, player := range (*p).GameState().Participants().Playing() {
-		(*playerNames)[player.SteamID64] = player.Name
+		if player.IsBot {
+			(*playerNames)[player.SteamID64] = "BOT " + player.Name
+		} else {
+			(*playerNames)[player.SteamID64] = player.Name
+		}
 	}
 }
 

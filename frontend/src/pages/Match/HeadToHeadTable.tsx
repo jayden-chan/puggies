@@ -23,6 +23,7 @@ import {
   FlexProps,
   Grid,
   GridItem,
+  Text,
   useColorMode,
 } from "@chakra-ui/react";
 import React from "react";
@@ -76,7 +77,7 @@ export const HeadToHeadTable = (props: {
   return (
     <Grid
       templateRows="repeat(6, auto)"
-      templateColumns="repeat(6, min-content)"
+      templateColumns="repeat(6, 150px)"
       gap={1}
       overflowX="auto"
     >
@@ -85,7 +86,9 @@ export const HeadToHeadTable = (props: {
       </GridItem>
       {props.teams[0].map((p) => (
         <Flex alignItems="center" justifyContent="center" key={p} mb={3}>
-          {props.playerNames[p]}
+          <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+            {props.playerNames[p]}
+          </Text>
         </Flex>
       ))}
 
@@ -99,7 +102,13 @@ export const HeadToHeadTable = (props: {
               mr={3}
               key={rowPlayer}
             >
-              {props.playerNames[rowPlayer]}
+              <Text
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              >
+                {props.playerNames[rowPlayer]}
+              </Text>
             </Flex>,
             props.teams[0].map((columnPlayer) => {
               const colKills = props.headToHead[columnPlayer][rowPlayer] ?? 0;

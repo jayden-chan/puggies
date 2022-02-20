@@ -115,9 +115,12 @@ export const RoundsVisualization = (props: { data: Match }) => {
   const teamAStartSide = data.roundByRound[0].teamASide;
   const teamBStartSide = data.roundByRound[0].teamBSide;
 
+  const halfLength = data.halfLength;
   const overtimes =
-    data.rounds.length > 30
-      ? Array.from(Array(Math.ceil((data.rounds.length - 30) / 6)).keys())
+    data.rounds.length > halfLength * 2
+      ? Array.from(
+          Array(Math.ceil((data.rounds.length - halfLength * 2) / 6)).keys()
+        )
       : [];
 
   return (
@@ -131,19 +134,25 @@ export const RoundsVisualization = (props: { data: Match }) => {
     >
       <Flex mr={10}>
         <FlexCol mr={5}>
-          <ScoreNumber side={teamAStartSide} rounds={[0, 15]} />
+          <ScoreNumber side={teamAStartSide} rounds={[0, halfLength]} />
           <Text>1st</Text>
-          <ScoreNumber side={teamBStartSide} rounds={[0, 15]} />
+          <ScoreNumber side={teamBStartSide} rounds={[0, halfLength]} />
         </FlexCol>
 
         <FlexCol>
-          <ScoreNumber side={teamBStartSide} rounds={[15, 30]} />
+          <ScoreNumber
+            side={teamBStartSide}
+            rounds={[halfLength, halfLength * 2]}
+          />
           <Text>2nd</Text>
-          <ScoreNumber side={teamAStartSide} rounds={[15, 30]} />
+          <ScoreNumber
+            side={teamAStartSide}
+            rounds={[halfLength, halfLength * 2]}
+          />
         </FlexCol>
 
         {overtimes.map((ot) => {
-          const i = 30 + ot * 6;
+          const i = halfLength * 2 + ot * 6;
           const sideA = ot % 2 === 0 ? teamBStartSide : teamAStartSide;
           const sideB = ot % 2 === 0 ? teamAStartSide : teamBStartSide;
           return (
@@ -170,18 +179,18 @@ export const RoundsVisualization = (props: { data: Match }) => {
 
       <RoundResultGrid
         rounds={data.rounds}
-        range={[0, 15]}
+        range={[0, halfLength]}
         topTeam={teamAStartSide}
       />
       <Divider orientation="vertical" mx={5} />
       <RoundResultGrid
         rounds={data.rounds}
-        range={[15, 30]}
+        range={[halfLength, halfLength * 2]}
         topTeam={teamBStartSide}
       />
       {overtimes
         .map((ot) => {
-          const i = 30 + ot * 6;
+          const i = halfLength * 2 + ot * 6;
           const sideA = ot % 2 === 0 ? teamBStartSide : teamAStartSide;
           const sideB = ot % 2 === 0 ? teamAStartSide : teamBStartSide;
           return [

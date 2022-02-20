@@ -137,6 +137,7 @@ export type MatchData = {
   teams: TeamsMap;
   startTeams: TeamsMap;
   rounds: Round[];
+  halfLength: number;
   openingKills: OpeningKill[];
 
   stats: Stats;

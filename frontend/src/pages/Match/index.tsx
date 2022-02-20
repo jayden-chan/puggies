@@ -307,6 +307,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
               startTeams={match.matchData.startTeams}
               playerNames={match.meta.playerNames}
               rounds={match.matchData.rounds}
+              halfLength={match.matchData.halfLength}
             />
           </TabPanel>
         </TabPanels>

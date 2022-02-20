@@ -64,6 +64,7 @@ type MatchData struct {
 	Teams        TeamsMap                `json:"teams"`
 	StartTeams   TeamsMap                `json:"startTeams"`
 	Rounds       []Round                 `json:"rounds"`
+	HalfLength   int                     `json:"halfLength"`
 	OpeningKills []OpeningKill           `json:"openingKills"`
 	HeadToHead   map[uint64]PlayerIntMap `json:"headToHead"`
 	KillFeed     KillFeed                `json:"killFeed"`
