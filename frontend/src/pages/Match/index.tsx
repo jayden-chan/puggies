@@ -49,9 +49,11 @@ import {
   getESEAId,
   getPlayers,
 } from "../../data";
+import { useOptionsStore } from "../../stores/options";
 import { Match, MatchInfo, Round, Stats, UserMeta } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
+import shallow from "zustand/shallow";
 import { PlayerInfo } from "./PlayerInfo";
 import { RoundByRoundList } from "./RoundByRound";
 import { RoundsVisualization } from "./RoundsVisualization";
@@ -84,6 +86,11 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   const [sortCol, setSortCol] = useState<keyof Stats>("hltv");
   const [reversed, setReversed] = useState(false);
 
+  const [allowDemoDownload] = useOptionsStore(
+    (state) => [state.allowDemoDownload],
+    shallow
+  );
+
   useEffect(() => {
     const api = new DataAPI();
 
@@ -112,8 +119,10 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     teamBTitle,
   } = match.meta;
 
-  const demoLink = meta?.demoLink ?? `/api/v1/demos/${id}.dem`;
-  const demoExternal = !demoLink.startsWith("/api/v1/demos");
+  const demoLink =
+    meta?.demoLink ??
+    (allowDemoDownload ? `/api/v1/demos/${id}.dem` : undefined);
+  const demoExternal = demoLink ? !demoLink.startsWith("/api/v1/demos") : false;
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
   const date = formatDate(dateTimestamp);
 
@@ -150,16 +159,18 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
           <Heading fontSize="lg" as="h2" mb={2}>
             {date}
           </Heading>
-          <Tag
-            as={Link}
-            size="md"
-            isExternal={demoExternal}
-            href={demoLink}
-            mr="0.5rem"
-            colorScheme="teal"
-          >
-            Demo link
-          </Tag>
+          {demoLink && (
+            <Tag
+              as={Link}
+              size="md"
+              isExternal={demoExternal}
+              href={demoLink}
+              mr="0.5rem"
+              colorScheme="teal"
+            >
+              Download demo
+            </Tag>
+          )}
           {eseaId && (
             <Tag
               as={Link}

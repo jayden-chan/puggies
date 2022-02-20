@@ -20,10 +20,16 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/fsnotify/fsnotify"
 )
 
-func watchDemoDir(watchDir string, notifyChan chan<- string, logger *Logger) error {
+type FileRename struct {
+	old, new string
+}
+
+func watchDemoDir(watchDir string, newFile chan<- string, renamedFile chan<- FileRename, logger *Logger) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		logger.Error(err)
@@ -34,6 +40,7 @@ func watchDemoDir(watchDir string, notifyChan chan<- string, logger *Logger) err
 
 	done := make(chan bool)
 	go func() {
+		var prev *fsnotify.Event
 		for {
 			select {
 			case event, ok := <-watcher.Events:
@@ -42,10 +49,18 @@ func watchDemoDir(watchDir string, notifyChan chan<- string, logger *Logger) err
 					return
 				}
 
-				if event.Op&fsnotify.Write == fsnotify.Write ||
-					event.Op&fsnotify.Create == fsnotify.Create {
-					notifyChan <- event.Name
+				fmt.Println(event)
+				fmt.Println(prev)
+
+				if event.Op&fsnotify.Create == fsnotify.Create {
+					if prev != nil && prev.Op&fsnotify.Rename == fsnotify.Rename {
+						renamedFile <- FileRename{old: prev.Name, new: event.Name}
+					} else {
+						newFile <- event.Name
+					}
 				}
+
+				prev = &event
 			case err, ok := <-watcher.Errors:
 				if !ok {
 					done <- true

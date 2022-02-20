@@ -65,6 +65,8 @@ type Db interface {
 
 	// Update the user metadata for the given match
 	EditMatchMeta(id string, meta UserMeta) error
+	// Change the ID of a match (if the demo is renamed in the folder)
+	RenameMatch(oldId, newId string) error
 
 	// Delete the given match based on its id (will not delete the demo itself)
 	DeleteMatch(id string) error

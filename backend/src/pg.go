@@ -364,6 +364,15 @@ func (p *pgdb) EditMatchMeta(id string, meta UserMeta) error {
 	return err
 }
 
+func (p *pgdb) RenameMatch(oldId, newId string) error {
+	_, err := p.transactionExec(
+		`UPDATE matches SET id = $1 WHERE id = $2`,
+		newId,
+		oldId,
+	)
+	return err
+}
+
 func (p *pgdb) getUser(username string, password *string) (User, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {

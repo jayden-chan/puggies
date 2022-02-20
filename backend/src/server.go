@@ -40,24 +40,43 @@ func doRescan(trigger string, c Context) {
 
 func watchFileChanges(c Context) {
 	heatmapsDir := join(c.config.dataPath, "heatmaps")
-	fileChanged := make(chan string, FileChangedChannelBuffer)
+	fileCreated := make(chan string, FileChangedChannelBuffer)
+	fileRenamed := make(chan FileRename, FileChangedChannelBuffer)
 
 	// register our fsnotify watcher to send events to our
 	// fileChanged channel
-	go watchDemoDir(c.config.demosPath, fileChanged, c.logger)
+	go watchDemoDir(c.config.demosPath, fileCreated, fileRenamed, c.logger)
 
-	for f := range fileChanged {
-		c.logger.Infof("file change detected: %s", f)
-		demoId := getDemoFileName(f)
-		err := parseIdempotent(f, heatmapsDir, c)
-		if err != nil {
-			c.logger.Errorf(
-				"demo=%s Failed to parse demo: %s",
-				demoId,
-				err.Error(),
-			)
-		} else {
-			c.logger.Infof("demo=%s added demo to database", demoId)
+	for {
+		select {
+		case created := <-fileCreated:
+			c.logger.Infof("new file detected: %s", created)
+			demoId := getDemoFileName(created)
+			err := parseIdempotent(created, heatmapsDir, c)
+			if err != nil {
+				c.logger.Errorf(
+					"demo=%s Failed to parse demo: %s",
+					demoId,
+					err.Error(),
+				)
+			} else {
+				c.logger.Infof("demo=%s added demo to database", demoId)
+			}
+		case renamed := <-fileRenamed:
+			c.logger.Infof("rename detected: %s -> %s", renamed.old, renamed.new)
+			oldId := getDemoFileName(renamed.old)
+			newId := getDemoFileName(renamed.new)
+			err := c.db.RenameMatch(oldId, newId)
+			if err != nil {
+				c.logger.Errorf(
+					"demo=%s newName=%s failed to rename demo: %s",
+					oldId,
+					newId,
+					err.Error(),
+				)
+			} else {
+				c.logger.Infof("demo=%s newName=%s renamed demo", oldId, newId)
+			}
 		}
 	}
 }
