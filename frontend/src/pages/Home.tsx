@@ -24,7 +24,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  Text,
   Image,
   Menu,
   MenuButton,
@@ -37,12 +36,13 @@ import {
   TableCellProps,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tooltip,
   Tr,
-  useToast,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

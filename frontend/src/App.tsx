@@ -47,6 +47,7 @@ import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
 import shallow from "zustand/shallow";
 import Fonts from "./components/Fonts";
 import { Loading } from "./components/Loading";
+import { Admin } from "./pages/Admin";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { MatchPage } from "./pages/Match";
@@ -216,6 +217,7 @@ export const App = () => {
           <Route path="/match/:id" element={<MatchPage matches={matches} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       )}
