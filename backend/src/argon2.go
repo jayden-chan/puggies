@@ -45,7 +45,7 @@ func NewArgon2ID() Argon2ID {
 	return Argon2ID{
 		format:  "$argon2id$v=%d$m=%d,t=%d,p=%d$%s$%s",
 		version: argon2.Version,
-		time:    1,
+		time:    2,
 		memory:  64 * 1024,
 		keyLen:  32,
 		saltLen: 16,
