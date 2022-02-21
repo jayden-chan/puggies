@@ -348,6 +348,41 @@ func (p *pgdb) DeleteMatch(id string) error {
 	return err
 }
 
+func (p *pgdb) GetUsers() ([]User, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Release()
+
+	query := `SELECT username, display_name, email, roles, steam_id FROM users`
+	rows, err := conn.Query(context.Background(), query)
+
+	var users []User
+
+	for rows.Next() {
+		var username, displayName, email, steamId string
+		var roles []string
+
+		err = rows.Scan(&username, &displayName, &email, &roles, &steamId)
+
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users,
+			User{
+				Username:    username,
+				DisplayName: displayName,
+				Email:       email,
+				Roles:       roles,
+				SteamId:     steamId,
+			})
+	}
+
+	return users, nil
+}
+
 func (p *pgdb) GetUser(username string) (User, error) {
 	return p.getUser(username, nil)
 }
@@ -369,6 +404,55 @@ func (p *pgdb) RenameMatch(oldId, newId string) error {
 		`UPDATE matches SET id = $1 WHERE id = $2`,
 		newId,
 		oldId,
+	)
+	return err
+}
+
+func (p *pgdb) EditUser(uid string, newInfo User) error {
+	numUpdates := 0
+	args := make([]interface{}, 0)
+
+	var updates []string
+	if newInfo.DisplayName != "" {
+		numUpdates += 1
+		updates = append(updates, `display_name = $`+strconv.Itoa(numUpdates))
+		args = append(args, newInfo.DisplayName)
+	}
+
+	if newInfo.Email != "" {
+		numUpdates += 1
+		updates = append(updates, `email = $`+strconv.Itoa(numUpdates))
+		args = append(args, newInfo.Email)
+	}
+
+	if newInfo.SteamId != "" {
+		numUpdates += 1
+		updates = append(updates, `steam_id = $`+strconv.Itoa(numUpdates))
+		args = append(args, newInfo.SteamId)
+	}
+
+	if newInfo.Username != "" {
+		numUpdates += 1
+		updates = append(updates, `username = $`+strconv.Itoa(numUpdates))
+		args = append(args, newInfo.Username)
+	}
+
+	if newInfo.Roles != nil {
+		numUpdates += 1
+		updates = append(updates, `roles = $`+strconv.Itoa(numUpdates))
+		args = append(args, newInfo.Roles)
+	}
+
+	if numUpdates == 0 {
+		return errors.New("no fields were updated")
+	}
+
+	args = append(args, uid)
+	updatesString := strings.Join(updates, " ")
+
+	_, err := p.transactionExec(
+		`UPDATE users SET `+updatesString+` WHERE id = $`+strconv.Itoa(numUpdates+1),
+		args...,
 	)
 	return err
 }

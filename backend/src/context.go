@@ -19,64 +19,15 @@
 
 package main
 
-import "time"
-
 // Everthing in here needs to be concurrency-safe
 type Context struct {
 	config Config
-	db     Db
+	db     Storage
 	logger *Logger
 }
 
-type Db interface {
-	// Add matches to the database
-	InsertMatches(match ...Match) error
-	// Add user to the database
-	RegisterUser(user User, password string) error
-
-	// Check if a match with the given id exists
-	HasMatch(id string) (bool, string, error)
-	// Check if a user with the given username exists
-	HasUser(username string) (bool, error)
-
-	// Fetch a match from the database
-	GetMatch(id string) (MetaData, MatchData, error)
-	// Fetch match metadatas (match history) from the database
-	GetMatches() ([]MetaData, error)
-	// Fetch user-defined data for the given match
-	GetUserMeta(id string) (UserMeta, error)
-	// Fetch user
-	GetUser(username string) (User, error)
-
-	// Validate the username and password & return the user if valid
-	Login(username, password string) (User, error)
-	// Add the token to the invalidated tokens table
-	InvalidateToken(token string, expiry time.Time) error
-	// Check if there exists a token in the invalidated tokens table
-	// that matches this one. If it hasn't expired yet, the token
-	// is considered invalid
-	IsTokenValid(token string) (bool, error)
-	// Remove tokens from the invalided tokens table that have
-	// expired
-	CleanInvalidTokens() error
-
-	// Run database schema migrations in the up or down direction
-	RunMigration(config Config, dir string) error
-
-	// Update the user metadata for the given match
-	EditMatchMeta(id string, meta UserMeta) error
-	// Change the ID of a match (if the demo is renamed in the folder)
-	RenameMatch(oldId, newId string) error
-
-	// Delete the given match based on its id (will not delete the demo itself)
-	DeleteMatch(id string) error
-
-	// Close the database pool connection
-	Close()
-}
-
 func getContext(config Config, logger *Logger) (Context, error) {
-	var db Db
+	var db Storage
 	// dbType has been checked by this point -- no need for default case
 	switch config.dbType {
 	case "postgres":
