@@ -354,6 +354,11 @@ func (p *pgdb) DeleteMatch(id string) error {
 	return err
 }
 
+func (p *pgdb) DeleteUser(username string) error {
+	_, err := p.transactionExec(`DELETE FROM users WHERE username = $1`, username)
+	return err
+}
+
 func (p *pgdb) GetUsers() ([]User, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {

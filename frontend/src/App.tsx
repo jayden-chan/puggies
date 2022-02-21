@@ -173,6 +173,11 @@ const Header = (props: { showLoginButton: boolean }) => {
               >
                 Sign out
               </MenuItem>
+              {user.roles.includes("admin") && (
+                <ReactRouterLink to="/admin">
+                  <MenuItem>Administration</MenuItem>
+                </ReactRouterLink>
+              )}
             </MenuList>
           </Menu>
         </Box>

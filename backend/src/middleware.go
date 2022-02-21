@@ -84,17 +84,24 @@ func AllowedRoles(c Context, allowedRoles []string) gin.HandlerFunc {
 				gin.H{"message": "unauthorized"},
 			)
 			return
+		} else if user == nil {
+			c.logger.Warnf("username=%s valid token used for non-existent user", username)
+			ginc.AbortWithStatusJSON(
+				http.StatusUnauthorized,
+				gin.H{"message": "unauthorized"},
+			)
+			return
 		}
 
 		if allowedRoles == nil {
-			ginc.Set("user", user)
+			ginc.Set("user", *user)
 			ginc.Set("token", token)
 			ginc.Next()
 		} else {
 			for _, ar := range allowedRoles {
 				for _, ur := range user.Roles {
 					if ar == ur {
-						ginc.Set("user", user)
+						ginc.Set("user", *user)
 						ginc.Set("token", token)
 						ginc.Next()
 						return

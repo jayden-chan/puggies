@@ -31,7 +31,7 @@ type MatchesStore = {
 export const useMatchesStore = create<MatchesStore>((set) => ({
   matches: [],
   fetchMatches: async () => {
-    const matches = await api.fetchMatches();
+    const matches = await api.matches();
     set({ matches });
   },
 }));

@@ -56,7 +56,7 @@ export const UpdateMetaModal = (props: {
       setError(undefined);
       setLoading(false);
 
-      api.fetchUserMeta(matchId).then((m) => {
+      api.userMeta(matchId).then((m) => {
         setDemoLink(m?.demoLink ?? "");
         setLoadingMeta(false);
       });

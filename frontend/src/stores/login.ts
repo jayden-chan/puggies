@@ -35,17 +35,17 @@ export const useLoginStore = create<LoginStore>((set) => ({
   loggedIn: false,
   user: undefined,
   updateUser: async () => {
-    const user = await api.getUserInfo();
+    const user = await api.userInfo();
     set({ user, loggedIn: user !== undefined });
   },
   login: async (username, password) => {
     await api.login(username, password);
-    const user = await api.getUserInfo();
+    const user = await api.userInfo();
     set({ loggedIn: true, user });
   },
   register: async (input: RegisterInput) => {
     await api.register(input);
-    const user = await api.getUserInfo();
+    const user = await api.userInfo();
     set({ loggedIn: true, user });
   },
   logout: async () => {

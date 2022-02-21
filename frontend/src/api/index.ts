@@ -43,6 +43,20 @@ export type FrontendOptions = {
 
 type ErrorCode = 400 | 401 | 403 | 404 | 405 | 418 | 429 | 500 | 501 | 502;
 
+export class APIError extends Error {
+  public code: number;
+  constructor(code: number, ...params: any[]) {
+    super(...params);
+
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, APIError);
+    }
+
+    this.code = code;
+  }
+}
+
 export class DataAPI {
   private endpoint = "/api/v1";
   private jwtKeyName = "puggies-login-token";
@@ -109,7 +123,7 @@ export class DataAPI {
       localStorage.setItem(this.jwtKeyName, r.res);
       return r.res;
     }
-    throw new Error(`Failed to login (HTTP ${r.code}): ${r.error}`);
+    throw new APIError(r.code, `Failed to login (HTTP ${r.code}): ${r.error}`);
   }
 
   public async register(input: RegisterInput): Promise<string> {
@@ -118,19 +132,25 @@ export class DataAPI {
       localStorage.setItem(this.jwtKeyName, r.res);
       return r.res;
     }
-    throw new Error(`Failed to register (HTTP ${r.code}): ${r.error}`);
+    throw new APIError(
+      r.code,
+      `Failed to register (HTTP ${r.code}): ${r.error}`
+    );
   }
 
   public async logout() {
     const r = await this.fetchAuthed("POST", "/logout");
     if (r.code !== 200) {
-      throw new Error(`Failed to logout (HTTP ${r.code}): ${r.error}`);
+      throw new APIError(
+        r.code,
+        `Failed to logout (HTTP ${r.code}): ${r.error}`
+      );
     }
 
     localStorage.removeItem(this.jwtKeyName);
   }
 
-  public async getUserInfo(): Promise<User | undefined> {
+  public async userInfo(): Promise<User | undefined> {
     const r = await this.fetchAuthed<User>("GET", "/userinfo");
     if (r.code === 401) {
       return undefined;
@@ -139,13 +159,22 @@ export class DataAPI {
     if (r.code === 200) {
       return r.res;
     }
-    throw new Error(`Failed to fetch user info (HTTP ${r.code}): ${r.error}`);
+    throw new APIError(
+      r.code,
+      `Failed to fetch user info (HTTP ${r.code}): ${r.error}`
+    );
   }
 
   public async deleteMatch(id: string): Promise<void> {
-    const r = await this.fetchAuthed<string>("DELETE", `/matches/${id}`);
+    const r = await this.fetchAuthed<string>(
+      "DELETE",
+      `/matches/${encodeURIComponent(id)}`
+    );
     if (r.code !== 200) {
-      throw new Error(`Failed to delete match (HTTP ${r.code}): ${r.error}`);
+      throw new APIError(
+        r.code,
+        `Failed to delete match (HTTP ${r.code}): ${r.error}`
+      );
     }
   }
 
@@ -153,9 +182,16 @@ export class DataAPI {
     id: string,
     meta: Required<UserMeta>
   ): Promise<void> {
-    const r = await this.fetchAuthed<string>("PUT", `/usermeta/${id}`, meta);
+    const r = await this.fetchAuthed<string>(
+      "PUT",
+      `/usermeta/${encodeURIComponent(id)}`,
+      meta
+    );
     if (r.code !== 200) {
-      throw new Error(`Failed to update usermeta (HTTP ${r.code}): ${r.error}`);
+      throw new APIError(
+        r.code,
+        `Failed to update usermeta (HTTP ${r.code}): ${r.error}`
+      );
     }
   }
 
@@ -164,13 +200,17 @@ export class DataAPI {
     if (r.code === 200) {
       return r.res;
     }
-    throw new Error(
+    throw new APIError(
+      r.code,
       `Failed to fetch frontend options (HTTP ${r.code}): ${r.error}`
     );
   }
 
-  public async fetchUserMeta(id: string): Promise<UserMeta | undefined> {
-    const r = await this.fetch<UserMeta>("GET", `/usermeta/${id}`);
+  public async userMeta(id: string): Promise<UserMeta | undefined> {
+    const r = await this.fetch<UserMeta>(
+      "GET",
+      `/usermeta/${encodeURIComponent(id)}`
+    );
     if (r.code === 404) {
       return undefined;
     } else if (r.code === 200) {
@@ -183,26 +223,69 @@ export class DataAPI {
     return undefined;
   }
 
-  public async fetchMatch(id: string): Promise<Match | undefined> {
-    const r = await this.fetch<Match>("GET", `/matches/${id}`);
+  public async match(id: string): Promise<Match | undefined> {
+    const r = await this.fetch<Match>(
+      "GET",
+      `/matches/${encodeURIComponent(id)}`
+    );
     if (r.code === 404) {
       return undefined;
     } else if (r.code === 200) {
       return r.res ?? undefined;
     } else {
-      throw new Error(
+      throw new APIError(
+        r.code,
         `Failed to fetch user match (HTTP ${r.code}): ${r.error}`
       );
     }
   }
 
-  public async fetchMatches(): Promise<MatchInfo[]> {
+  public async matches(): Promise<MatchInfo[]> {
     const r = await this.fetch<MatchInfo[]>("GET", "/history");
     if (r.code !== 200) {
-      throw new Error(
+      throw new APIError(
+        r.code,
         `Failed to fetch match history (HTTP ${r.code}): ${r.error}`
       );
     }
     return r.res.sort((a, b) => b.dateTimestamp - a.dateTimestamp);
+  }
+
+  public async users(): Promise<User[]> {
+    const r = await this.fetchAuthed<User[]>("GET", `/users`);
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch users (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res;
+  }
+
+  public async user(username: string): Promise<User> {
+    const r = await this.fetchAuthed<User>(
+      "GET",
+      `/users/${encodeURIComponent(username)}`
+    );
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch user (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res;
+  }
+
+  public async deleteUser(username: string): Promise<void> {
+    const r = await this.fetchAuthed<void>(
+      "DELETE",
+      `/users/${encodeURIComponent(username)}`
+    );
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to delete user (HTTP ${r.code}): ${r.error}`
+      );
+    }
   }
 }

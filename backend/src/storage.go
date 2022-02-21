@@ -67,6 +67,8 @@ type Storage interface {
 
 	// Delete the given match based on its id (will not delete the demo itself)
 	DeleteMatch(id string) error
+	// Delete user with the given username
+	DeleteUser(username string) error
 
 	// Close the database pool connection
 	Close()

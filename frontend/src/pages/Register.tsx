@@ -42,6 +42,9 @@ export const Register = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
+  const [usernameError, setUsernameError] = useState<string | undefined>(
+    undefined
+  );
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -49,9 +52,18 @@ export const Register = () => {
   const [register] = useLoginStore((state) => [state.register], shallow);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const trimmedUsername = username.trim();
+
+    if (/\s+/.test(trimmedUsername)) {
+      setUsernameError("Username cannot contain spaces.");
+      return;
+    }
+
     setLoading(true);
     register({
-      username,
+      username: trimmedUsername,
       password,
       email: email === "" ? undefined : email,
       displayName: displayName === "" ? undefined : displayName,
@@ -70,8 +82,6 @@ export const Register = () => {
         setError(err.toString());
         setLoading(false);
       });
-
-    e.preventDefault();
   };
 
   return (
@@ -103,15 +113,23 @@ export const Register = () => {
                 mb={5}
               />
             </FormControl>
-            <FormControl isRequired>
+            <FormControl
+              isRequired
+              isInvalid={usernameError !== undefined}
+              mb={5}
+            >
               <FormLabel htmlFor="username">Username</FormLabel>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                mb={5}
               />
+              {usernameError !== undefined && (
+                <FormErrorMessage>{usernameError}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isRequired>
               <FormLabel htmlFor="password">Password</FormLabel>
               <Input
                 id="password"

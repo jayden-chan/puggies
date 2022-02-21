@@ -115,6 +115,19 @@ func route_users(c Context) func(*gin.Context) {
 	}
 }
 
+func route_deleteUser(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		username := ginc.Param("username")
+		err := c.db.DeleteUser(username)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ginc.JSON(http.StatusOK, gin.H{"message": "user deleted"})
+	}
+}
+
 func route_logout(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		token := ginc.GetString("token")

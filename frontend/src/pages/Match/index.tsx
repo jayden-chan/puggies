@@ -94,7 +94,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
   useEffect(() => {
     const api = new DataAPI();
 
-    api.fetchMatch(id).then((m) => {
+    api.match(id).then((m) => {
       if (m === undefined) {
         navigate("/404");
       } else {
@@ -102,7 +102,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
       }
     });
 
-    api.fetchUserMeta(id).then((m) => setMeta(m));
+    api.userMeta(id).then((m) => setMeta(m));
   }, [id, props.matches, navigate]);
 
   if (match === undefined) {
