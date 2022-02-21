@@ -62,13 +62,11 @@ func route_match(c Context) func(*gin.Context) {
 
 		meta, match, err := c.db.GetMatch(id)
 		if err != nil {
-			if err.Error() == "no rows in result set" {
-				ginc.JSON(http.StatusNotFound, gin.H{"error": "match not found"})
-			} else {
-				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
-				c.logger.Errorf(errString)
-				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
-			}
+			errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
+		} else if meta == nil || match == nil {
+			ginc.JSON(http.StatusNotFound, gin.H{"error": "match not found"})
 		} else {
 			ginc.JSON(http.StatusOK, gin.H{
 				"message": gin.H{
@@ -84,13 +82,9 @@ func route_history(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		matches, err := c.db.GetMatches()
 		if err != nil {
-			if err.Error() == "no rows in result set" {
-				ginc.JSON(http.StatusNotFound, gin.H{"error": "no matches"})
-			} else {
-				errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
-				c.logger.Errorf(errString)
-				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
-			}
+			errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 		} else {
 			ginc.JSON(http.StatusOK, gin.H{"message": matches})
 		}
@@ -108,21 +102,19 @@ func route_usermeta(c Context) func(*gin.Context) {
 
 		meta, err := c.db.GetUserMeta(id)
 		if err != nil {
-			if err.Error() == "no rows in result set" {
-				// technically we should return a 404 here but the usermeta
-				// is often going to be empty and we don't want to flood the
-				// browser console with 404 errors (you can't turn them off)
-				ginc.JSON(http.StatusOK, gin.H{"message": nil})
-			} else {
-				errString := fmt.Sprintf(
-					"demo=%s Failed to fetch user meta for demo: %s",
-					id,
-					err.Error(),
-				)
+			errString := fmt.Sprintf(
+				"demo=%s Failed to fetch user meta for demo: %s",
+				id,
+				err.Error(),
+			)
 
-				c.logger.Errorf(errString)
-				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
-			}
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
+		} else if meta == nil {
+			// technically we should return a 404 here but the usermeta
+			// is often going to be empty and we don't want to flood the
+			// browser console with 404 errors (you can't turn them off)
+			ginc.JSON(http.StatusOK, gin.H{"message": nil})
 		} else {
 			ginc.JSON(http.StatusOK, gin.H{"message": meta})
 		}
@@ -215,13 +207,6 @@ func route_login(c Context) func(*gin.Context) {
 					password,
 				)
 				ginc.JSON(http.StatusUnauthorized, gin.H{"error": "password incorrect"})
-			} else if errString == "no rows in result set" {
-				c.logger.Warnf(
-					"username=%s password=%s login attempt for non-existent user",
-					username,
-					password,
-				)
-				ginc.JSON(http.StatusNotFound, gin.H{"error": "user doesn't exist"})
 			} else {
 				c.logger.Errorf(
 					"username=%s failed to perform user login test: %s",
@@ -231,9 +216,17 @@ func route_login(c Context) func(*gin.Context) {
 				ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			}
 			return
+		} else if user == nil {
+			c.logger.Warnf(
+				"username=%s password=%s login attempt for non-existent user",
+				username,
+				password,
+			)
+			ginc.JSON(http.StatusNotFound, gin.H{"error": "user doesn't exist"})
+			return
 		}
 
-		token, err := createJwt(c, user)
+		token, err := createJwt(c, *user)
 		if err != nil {
 			errString := err.Error()
 			c.logger.Errorf(

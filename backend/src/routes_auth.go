@@ -87,6 +87,34 @@ func route_userinfo(c Context) func(*gin.Context) {
 	}
 }
 
+func route_user(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		username := ginc.Param("username")
+		user, err := c.db.GetUser(username)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		} else if user == nil {
+			ginc.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
+			return
+		}
+
+		ginc.JSON(http.StatusOK, gin.H{"message": user})
+	}
+}
+
+func route_users(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		users, err := c.db.GetUsers()
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ginc.JSON(http.StatusOK, gin.H{"message": users})
+	}
+}
+
 func route_logout(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		token := ginc.GetString("token")

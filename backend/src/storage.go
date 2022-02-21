@@ -33,18 +33,18 @@ type Storage interface {
 	HasUser(username string) (bool, error)
 
 	// Fetch a match from the database
-	GetMatch(id string) (MetaData, MatchData, error)
+	GetMatch(id string) (*MetaData, *MatchData, error)
 	// Fetch match metadatas (match history) from the database
 	GetMatches() ([]MetaData, error)
 	// Fetch user-defined data for the given match
-	GetUserMeta(id string) (UserMeta, error)
+	GetUserMeta(id string) (*UserMeta, error)
 	// Fetch user
-	GetUser(username string) (User, error)
+	GetUser(username string) (*User, error)
 	// Fetch all users
 	GetUsers() ([]User, error)
 
 	// Validate the username and password & return the user if valid
-	Login(username, password string) (User, error)
+	Login(username, password string) (*User, error)
 	// Add the token to the invalidated tokens table
 	InvalidateToken(token string, expiry time.Time) error
 	// Check if there exists a token in the invalidated tokens table

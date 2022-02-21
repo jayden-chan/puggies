@@ -245,6 +245,9 @@ func runServer(c Context) {
 		v1Auth := v1.Group("/")
 		v1Auth.Use(AuthRequired(c))
 		{
+			// userinfo provides the user fields for the logged in
+			// user. the route to get info for any user by their username
+			// is admin-protected
 			v1Auth.GET("/userinfo", route_userinfo(c))
 			v1Auth.POST("/logout", route_logout(c))
 		}
@@ -252,6 +255,9 @@ func runServer(c Context) {
 		v1Admin := v1.Group("/")
 		v1Admin.Use(AllowedRoles(c, []string{"admin"}))
 		{
+			v1Admin.GET("/users", route_users(c))
+			v1Admin.GET("/users/:username", route_user(c))
+
 			v1Admin.POST("/adminregister", route_register(c))
 			v1Admin.PUT("/usermeta/:id", route_editUserMeta(c))
 			v1Admin.DELETE("/matches/:id", route_deleteMatch(c))
