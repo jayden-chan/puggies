@@ -208,7 +208,6 @@ const EventsFeed = (props: {
   <Flex flexDirection="column" alignItems="start" mt={2} overflowX="auto">
     {props.events.map((event, j) => {
       const timeString = msToRoundTime(event.time);
-
       return (
         <Flex key={j}>
           <Flex h="2.4rem" px={2} py={1} mt={1} mr={1} alignItems="center">

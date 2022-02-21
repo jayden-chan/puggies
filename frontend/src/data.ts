@@ -20,6 +20,8 @@
 import { DemoType, MatchData, Stats, Team } from "./types";
 import { format } from "date-fns";
 
+export const BOT_ID = "72057598465171267";
+
 export const getPlayers = (
   data: MatchData,
   side: Team,
@@ -27,7 +29,10 @@ export const getPlayers = (
   reverse: boolean
 ): string[] =>
   Object.keys(data.teams)
-    .filter((player) => player !== "0" && data.teams[player] === side)
+    .filter(
+      (player) =>
+        player !== "0" && player !== BOT_ID && data.teams[player] === side
+    )
     .sort((a, b) => {
       const aa = data.stats[sortCol][reverse ? a : b] ?? 0;
       const bb = data.stats[sortCol][reverse ? b : a] ?? 0;

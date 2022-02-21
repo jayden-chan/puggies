@@ -69,9 +69,11 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 
 	consecutiveMatchStarts := 0
 	eseaMode := demoType == "esea"
-	isLive := !eseaMode
+	valveMode := demoType == "steam"
+	isLive := !eseaMode && !valveMode
 
 	deathTimes := make(map[uint64]Death)
+	leavers := make(map[uint64]uint64)
 	heatmaps := make(map[string][]r2.Point)
 
 	p.RegisterEventHandler(func(e events.Kill) {
@@ -83,36 +85,36 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		}
 
 		if e.Victim != nil {
-			prd.deaths[len(prd.deaths)-1][e.Victim.SteamID64] += 1
+			prd.deaths[len(prd.deaths)-1][unBotify(e.Victim.SteamID64)] += 1
 		}
 
 		if e.Assister != nil && e.Victim != nil && e.Assister.Team != e.Victim.Team {
 			if e.AssistedFlash {
-				prd.flashAssists[len(prd.flashAssists)-1][e.Assister.SteamID64] += 1
+				prd.flashAssists[len(prd.flashAssists)-1][unBotify(e.Assister.SteamID64)] += 1
 			} else {
-				prd.assists[len(prd.assists)-1][e.Assister.SteamID64] += 1
+				prd.assists[len(prd.assists)-1][unBotify(e.Assister.SteamID64)] += 1
 			}
 		}
 
 		if e.Killer != nil && e.Victim != nil && e.Killer.Team != e.Victim.Team {
-			prd.kills[len(prd.kills)-1][e.Killer.SteamID64] += 1
+			prd.kills[len(prd.kills)-1][unBotify(e.Killer.SteamID64)] += 1
 
 			if e.IsHeadshot {
-				prd.headshots[len(prd.headshots)-1][e.Killer.SteamID64] += 1
+				prd.headshots[len(prd.headshots)-1][unBotify(e.Killer.SteamID64)] += 1
 			}
 
-			deathTimes[e.Victim.SteamID64] = Death{
-				KilledBy:    e.Killer.SteamID64,
+			deathTimes[unBotify(e.Victim.SteamID64)] = Death{
+				KilledBy:    unBotify(e.Killer.SteamID64),
 				TimeOfDeath: p.CurrentTime().Seconds(),
 			}
 
-			if prd.headToHead[len(prd.headToHead)-1][e.Killer.SteamID64] == nil {
-				prd.headToHead[len(prd.headToHead)-1][e.Killer.SteamID64] = make(map[uint64]Kill)
+			if prd.headToHead[len(prd.headToHead)-1][unBotify(e.Killer.SteamID64)] == nil {
+				prd.headToHead[len(prd.headToHead)-1][unBotify(e.Killer.SteamID64)] = make(map[uint64]Kill)
 			}
 
 			var assister uint64 = 0
 			if e.Assister != nil {
-				assister = e.Assister.SteamID64
+				assister = unBotify(e.Assister.SteamID64)
 			}
 
 			killInfo := Kill{
@@ -132,20 +134,20 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 			if prd.openings[len(prd.openings)-1] == nil {
 				prd.openings[len(prd.openings)-1] = &OpeningKill{
 					Kill:     killInfo,
-					Attacker: e.Killer.SteamID64,
-					Victim:   e.Victim.SteamID64,
+					Attacker: unBotify(e.Killer.SteamID64),
+					Victim:   unBotify(e.Victim.SteamID64),
 				}
 			}
 
-			prd.headToHead[len(prd.headToHead)-1][e.Killer.SteamID64][e.Victim.SteamID64] = killInfo
+			prd.headToHead[len(prd.headToHead)-1][unBotify(e.Killer.SteamID64)][unBotify(e.Victim.SteamID64)] = killInfo
 
 			// check for trade kills
 			for deadPlayer := range prd.deaths[len(prd.deaths)-1] {
-				if deathTimes[deadPlayer].KilledBy == e.Victim.SteamID64 {
+				if deathTimes[deadPlayer].KilledBy == unBotify(e.Victim.SteamID64) {
 					// Using 5 seconds as the trade window for now
 					if p.CurrentTime().Seconds()-deathTimes[deadPlayer].TimeOfDeath <= 5 {
 						prd.deathsTraded[len(prd.deathsTraded)-1][deadPlayer] += 1
-						prd.tradeKills[len(prd.tradeKills)-1][e.Killer.SteamID64] += 1
+						prd.tradeKills[len(prd.tradeKills)-1][unBotify(e.Killer.SteamID64)] += 1
 					}
 
 				}
@@ -159,20 +161,20 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		// https://counterstrike.fandom.com/wiki/Flashbang
 		if blindMs > 1950 {
 			if e.Attacker.Team == e.Player.Team {
-				prd.teammatesFlashed[len(prd.teammatesFlashed)-1][e.Attacker.SteamID64] += 1
+				prd.teammatesFlashed[len(prd.teammatesFlashed)-1][unBotify(e.Attacker.SteamID64)] += 1
 			} else {
-				prd.enemiesFlashed[len(prd.enemiesFlashed)-1][e.Attacker.SteamID64] += 1
+				prd.enemiesFlashed[len(prd.enemiesFlashed)-1][unBotify(e.Attacker.SteamID64)] += 1
 			}
 		}
 	})
 
 	p.RegisterEventHandler(func(e events.BombDefused) {
-		bombDefuser = e.Player.SteamID64
+		bombDefuser = unBotify(e.Player.SteamID64)
 		bombDefuserTime = p.CurrentTime().Milliseconds() - roundStartTime
 	})
 
 	p.RegisterEventHandler(func(e events.BombPlanted) {
-		bombPlanter = e.Player.SteamID64
+		bombPlanter = unBotify(e.Player.SteamID64)
 		bombPlanterTime = p.CurrentTime().Milliseconds() - roundStartTime
 	})
 
@@ -186,19 +188,19 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		}
 
 		if e.Weapon.Type == common.EqFlash {
-			prd.flashesThrown[len(prd.flashesThrown)-1][e.Shooter.SteamID64] += 1
+			prd.flashesThrown[len(prd.flashesThrown)-1][unBotify(e.Shooter.SteamID64)] += 1
 		}
 
 		if e.Weapon.Type == common.EqHE {
-			prd.HEsThrown[len(prd.HEsThrown)-1][e.Shooter.SteamID64] += 1
+			prd.HEsThrown[len(prd.HEsThrown)-1][unBotify(e.Shooter.SteamID64)] += 1
 		}
 
 		if e.Weapon.Type == common.EqMolotov || e.Weapon.Type == common.EqIncendiary {
-			prd.molliesThrown[len(prd.molliesThrown)-1][e.Shooter.SteamID64] += 1
+			prd.molliesThrown[len(prd.molliesThrown)-1][unBotify(e.Shooter.SteamID64)] += 1
 		}
 
 		if e.Weapon.Type == common.EqSmoke {
-			prd.smokesThrown[len(prd.smokesThrown)-1][e.Shooter.SteamID64] += 1
+			prd.smokesThrown[len(prd.smokesThrown)-1][unBotify(e.Shooter.SteamID64)] += 1
 		}
 
 		x, y := mapMetadata.TranslateScale(e.Shooter.Position().X, e.Shooter.Position().Y)
@@ -214,14 +216,14 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		}
 
 		if e.Attacker != nil && e.Player != nil && e.Attacker.Team != e.Player.Team {
-			prd.damage[len(prd.damage)-1][e.Attacker.SteamID64] += e.HealthDamageTaken
+			prd.damage[len(prd.damage)-1][unBotify(e.Attacker.SteamID64)] += e.HealthDamageTaken
 
 			// logger.Debugf("%s <%s> -> %s (%d HP)\n", e.Attacker.Name, e.Weapon, e.Player.Name, e.HealthDamageTaken)
 
 			if e.Weapon.Type == common.EqHE ||
 				e.Weapon.Type == common.EqMolotov ||
 				e.Weapon.Type == common.EqIncendiary {
-				prd.utilDamage[len(prd.utilDamage)-1][e.Attacker.SteamID64] += e.HealthDamageTaken
+				prd.utilDamage[len(prd.utilDamage)-1][unBotify(e.Attacker.SteamID64)] += e.HealthDamageTaken
 			}
 		}
 	})
@@ -231,9 +233,17 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 			return
 		}
 
+		logger.DebugBig("MATCH START EVENT")
+
+		if valveMode {
+			// The MatchStart event comes after the RoundStart event so we need to
+			// set the current round's live status in addition to updating the isLive variable.
+			// Same thing goes for the ESEA demo code below
+			prd.isLive[len(prd.isLive)-1] = true
+			isLive = true
+		}
+
 		if eseaMode {
-			// The MatchStart event comes after the RoundStart in ESEA demos so we need to
-			// set the current round's live status in addition to updating the isLive variable
 			if consecutiveMatchStarts < 3 {
 				prd.isLive[len(prd.isLive)-1] = false
 				isLive = false
@@ -270,13 +280,26 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		}
 
 		updatePlayerNames(&p, &playerNames)
-		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag, leavers)
 	})
 
 	// Update the teams when the side switches
 	p.RegisterEventHandler(func(e events.TeamSideSwitch) {
 		logger.DebugBig("SIDE SWITCH")
-		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag, leavers)
+	})
+
+	p.RegisterEventHandler(func(e events.PlayerDisconnected) {
+		if !e.Player.IsBot && isLive {
+			leaverTeam := teams[e.Player.SteamID64]
+			var teammate uint64
+			for p, team := range teams {
+				if team == leaverTeam && p != e.Player.SteamID64 {
+					teammate = p
+				}
+			}
+			leavers[e.Player.SteamID64] = teammate
+		}
 	})
 
 	p.RegisterEventHandler(func(e events.RoundEnd) {
@@ -294,7 +317,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 			return
 		}
 
-		updateTeams(&p, &teams, &ctClanTag, &tClanTag)
+		updateTeams(&p, &teams, &ctClanTag, &tClanTag, leavers)
 
 		prd.rounds[len(prd.rounds)-1] = Round{
 			Winner:          winner,
@@ -329,7 +352,7 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 		stripPlayerPrefixes(teams, &playerNames, "T")
 	}
 
-	prd.CropToRealRounds(eseaMode)
+	prd.CropToRealRounds(eseaMode || valveMode)
 	totals := prd.ComputeTotals()
 	totalRounds := len(prd.kills)
 

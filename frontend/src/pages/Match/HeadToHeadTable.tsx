@@ -111,8 +111,10 @@ export const HeadToHeadTable = (props: {
               </Text>
             </Flex>,
             props.teams[0].map((columnPlayer) => {
-              const colKills = props.headToHead[columnPlayer][rowPlayer] ?? 0;
-              const rowKills = props.headToHead[rowPlayer][columnPlayer] ?? 0;
+              const colKills =
+                (props.headToHead[columnPlayer] ?? { "": "" })[rowPlayer] ?? 0;
+              const rowKills =
+                (props.headToHead[rowPlayer] ?? { "": "" })[columnPlayer] ?? 0;
               const diff = colKills - rowKills;
               return (
                 <Flex

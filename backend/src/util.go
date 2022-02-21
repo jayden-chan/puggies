@@ -244,7 +244,19 @@ func getTeamName(
 	if clanTag != "" {
 		return clanTag
 	}
-	return "team_" + getPlayers(teams, playerNames, hltv, side)[0]
+	return "team_" + strings.ReplaceAll(getPlayers(teams, playerNames, hltv, side)[0], " ", "_")
+}
+
+func unBotify(steamId uint64) uint64 {
+	// We will use an invalid steam id to represent bot accounts. This is a pretty
+	// egregious hack but honestly I am just too lazy to implement a proper type-safe
+	// fix for this
+	if steamId == 0 {
+		// https://developer.valvesoftware.com/wiki/SteamID
+		// 0000000100000000000000000000000100000111111000100101111101000011
+		return 72057598465171267
+	}
+	return steamId
 }
 
 // better hope that everyone doesn't have the same first letter of their name!
@@ -276,7 +288,12 @@ Outer:
 	}
 }
 
-func updateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
+func updateTeams(
+	p *dem.Parser,
+	teams *TeamsMap,
+	ctClanTag, tClanTag *string,
+	leavers map[uint64]uint64,
+) {
 	tTeam := (*p).GameState().TeamTerrorists()
 	tTag := tTeam.ClanName()
 	ctTeam := (*p).GameState().TeamCounterTerrorists()
@@ -288,19 +305,22 @@ func updateTeams(p *dem.Parser, teams *TeamsMap, ctClanTag, tClanTag *string) {
 	}
 
 	for _, tPlayer := range tTeam.Members() {
-		(*teams)[tPlayer.SteamID64] = "T"
+		(*teams)[unBotify(tPlayer.SteamID64)] = "T"
 	}
 	for _, ctPlayer := range ctTeam.Members() {
-		(*teams)[ctPlayer.SteamID64] = "CT"
+		(*teams)[unBotify(ctPlayer.SteamID64)] = "CT"
+	}
+	for leaver, teammate := range leavers {
+		(*teams)[unBotify(leaver)] = (*teams)[unBotify(teammate)]
 	}
 }
 
 func updatePlayerNames(p *dem.Parser, playerNames *NamesMap) {
 	for _, player := range (*p).GameState().Participants().Playing() {
 		if player.IsBot {
-			(*playerNames)[player.SteamID64] = "BOT " + player.Name
+			(*playerNames)[unBotify(player.SteamID64)] = "BOT " + player.Name
 		} else {
-			(*playerNames)[player.SteamID64] = player.Name
+			(*playerNames)[unBotify(player.SteamID64)] = player.Name
 		}
 	}
 }

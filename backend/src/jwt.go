@@ -36,10 +36,9 @@ func createJwt(c Context, user User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username":    user.Username,
-		"displayname": user.DisplayName,
-		"exp":         now.Add(exprDuration).Unix(),
-		"iat":         now.Unix(),
+		"username": user.Username,
+		"exp":      now.Add(exprDuration).Unix(),
+		"iat":      now.Unix(),
 	})
 
 	tokenString, err := token.SignedString(c.config.jwtSecret)
