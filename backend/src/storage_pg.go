@@ -207,8 +207,7 @@ func (p *pgdb) getMatches(deleted bool) ([]MetaData, error) {
 			team_a_title, team_b_title
 		FROM matches WHERE deleted = $1`, deleted)
 
-	var matches []MetaData
-
+	matches := make([]MetaData, 0, 10)
 	for rows.Next() {
 		var id, mapName, demoType, teamATitle, teamBTitle string
 		var dateTimestamp int64
@@ -406,7 +405,7 @@ func (p *pgdb) GetUsers() ([]User, error) {
 	query := `SELECT username, display_name, email, roles, steam_id FROM users`
 	rows, err := conn.Query(context.Background(), query)
 
-	var users []User
+	users := make([]User, 0, 10)
 
 	for rows.Next() {
 		var username, displayName, email string

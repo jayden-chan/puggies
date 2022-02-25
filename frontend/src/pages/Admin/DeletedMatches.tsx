@@ -11,32 +11,22 @@ import {
   Td,
   Th,
   Thead,
-  useToast,
   Tr,
-  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APIError, DataAPI } from "../../api";
-import { DeleteUserModal } from "../../components/DeleteUserModal";
 import { formatDate } from "../../data";
 import { MatchInfo } from "../../types";
 
 export const DeletedMatches = () => {
   const [matches, setMatches] = useState<MatchInfo[]>([]);
-  const [deleteUsername, setDeleteUsername] = useState("");
-  const [deleteUserDisplay, setDeleteUserDisplay] = useState("");
 
   const navigate = useNavigate();
   const toast = useToast();
-
-  const {
-    isOpen: deleteModalOpen,
-    onOpen: openDeleteModal,
-    onClose: closeDeleteModal,
-  } = useDisclosure();
 
   const fetchMatches = () => {
     const api = new DataAPI();
@@ -91,31 +81,28 @@ export const DeletedMatches = () => {
                   <MenuList>
                     <MenuGroup title="Admin options">
                       <MenuItem
-                        onClick={() => {
+                        onClick={async () => {
                           const api = new DataAPI();
-                          api
-                            .fullDeleteMatch(match.id)
-                            .then(() => {
-                              api.triggerRescan().then(() => {
-                                toast({
-                                  title:
-                                    "Match restored. Demo parsing in progress - check back soon",
-                                  status: "success",
-                                  duration: 3000,
-                                  isClosable: true,
-                                });
-                                fetchMatches();
-                              });
-                            })
-                            .catch((err) => {
-                              if (err instanceof APIError) {
-                                toast({
-                                  title: `Failed to restore match: ${err.message}`,
-                                  status: "error",
-                                  isClosable: true,
-                                });
-                              }
+                          try {
+                            await api.fullDeleteMatch(match.id);
+                            await api.triggerRescan();
+                            toast({
+                              title:
+                                "Match restored. Demo parsing in progress - check back soon",
+                              status: "success",
+                              duration: 3000,
+                              isClosable: true,
                             });
+                            fetchMatches();
+                          } catch (e) {
+                            if (e instanceof APIError) {
+                              toast({
+                                title: `Failed to restore match: ${e.message}`,
+                                status: "error",
+                                isClosable: true,
+                              });
+                            }
+                          }
                         }}
                       >
                         Restore
@@ -128,16 +115,6 @@ export const DeletedMatches = () => {
           ))}
         </Tbody>
       </Table>
-
-      <DeleteUserModal
-        displayName={deleteUserDisplay}
-        username={deleteUsername}
-        isOpen={deleteModalOpen}
-        onClose={() => {
-          closeDeleteModal();
-          fetchMatches();
-        }}
-      />
     </Box>
   );
 };
