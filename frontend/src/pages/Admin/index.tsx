@@ -32,7 +32,7 @@ import React from "react";
 import { DeletedMatches } from "./DeletedMatches";
 import { Users } from "./Users";
 
-export const Admin = (props: {}) => {
+export const Admin = () => {
   return (
     <Container maxW="container.xl" pt={8} minH="calc(100vh - 5.5rem)">
       <Flex alignItems="center" justifyContent="space-between">

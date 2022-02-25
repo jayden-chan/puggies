@@ -1,3 +1,22 @@
+/*
+ * Copyright 2022 Puggies Authors (see AUTHORS.txt)
+ *
+ * This file is part of Puggies.
+ *
+ * Puggies is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * Puggies is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Puggies. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import {
   Box,
   IconButton,
@@ -16,7 +35,7 @@ import {
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APIError, DataAPI, User } from "../../api";
 import { DeleteUserModal } from "../../components/DeleteUserModal";
@@ -34,7 +53,7 @@ export const Users = () => {
     onClose: closeDeleteModal,
   } = useDisclosure();
 
-  const fetchUsers = () => {
+  const fetchUsers = useCallback(() => {
     const api = new DataAPI();
     api
       .users()
@@ -44,11 +63,9 @@ export const Users = () => {
           navigate("/");
         }
       });
-  };
+  }, [navigate]);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  useEffect(() => fetchUsers(), [fetchUsers]);
 
   return (
     <Box my={5} overflowX="auto">
