@@ -66,7 +66,7 @@ export class DataAPI {
   }
 
   private async fetch<T>(
-    method: "GET" | "POST" | "PUT" | "DELETE",
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     url: string,
     body?: any
   ): Promise<{ code: 200; res: T } | { code: ErrorCode; error: string }> {
@@ -85,7 +85,7 @@ export class DataAPI {
   }
 
   private async fetchAuthed<T>(
-    method: "GET" | "POST" | "PUT" | "DELETE",
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     url: string,
     body?: any
   ): Promise<{ code: 200; res: T } | { code: ErrorCode; error: string }> {
@@ -178,6 +178,29 @@ export class DataAPI {
     }
   }
 
+  public async fullDeleteMatch(id: string): Promise<void> {
+    const r = await this.fetchAuthed<string>(
+      "DELETE",
+      `/fulldelete/matches/${encodeURIComponent(id)}`
+    );
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to restore match (HTTP ${r.code}): ${r.error}`
+      );
+    }
+  }
+
+  public async triggerRescan(): Promise<void> {
+    const r = await this.fetchAuthed<string>("PATCH", `/rescan`);
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to trigger demo rescan (HTTP ${r.code}): ${r.error}`
+      );
+    }
+  }
+
   public async updateMatchMeta(
     id: string,
     meta: Required<UserMeta>
@@ -246,6 +269,17 @@ export class DataAPI {
       throw new APIError(
         r.code,
         `Failed to fetch match history (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res.sort((a, b) => b.dateTimestamp - a.dateTimestamp);
+  }
+
+  public async deletedMatches(): Promise<MatchInfo[]> {
+    const r = await this.fetchAuthed<MatchInfo[]>("GET", "/deletedMatches");
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch deleted matches (HTTP ${r.code}): ${r.error}`
       );
     }
     return r.res.sort((a, b) => b.dateTimestamp - a.dateTimestamp);

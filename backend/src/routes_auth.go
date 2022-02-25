@@ -20,8 +20,8 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -30,13 +30,19 @@ import (
 func route_deleteMatch(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
-		// I'm not even sure if this is necessary but I guess better safe than sorry
-		if strings.Contains("..", id) {
-			ginc.JSON(http.StatusBadRequest, gin.H{"error": "bruh"})
+		err := c.db.DeleteMatch(id)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+		ginc.JSON(http.StatusOK, gin.H{"message": "match deleted"})
+	}
+}
 
-		err := c.db.DeleteMatch(id)
+func route_fullDeleteMatch(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		err := c.db.FullDeleteMatch(id)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -48,12 +54,6 @@ func route_deleteMatch(c Context) func(*gin.Context) {
 func route_editUserMeta(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
-		// I'm not even sure if this is necessary but I guess better safe than sorry
-		if strings.Contains("..", id) {
-			ginc.JSON(http.StatusBadRequest, gin.H{"error": "bruh"})
-			return
-		}
-
 		var json UserMeta
 		if err := ginc.ShouldBindJSON(&json); err != nil {
 			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -112,6 +112,19 @@ func route_users(c Context) func(*gin.Context) {
 		}
 
 		ginc.JSON(http.StatusOK, gin.H{"message": users})
+	}
+}
+
+func route_deletedMatches(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		matches, err := c.db.GetDeletedMatches()
+		if err != nil {
+			errString := fmt.Sprintf("Failed to fetch deleted matches: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
+		} else {
+			ginc.JSON(http.StatusOK, gin.H{"message": matches})
+		}
 	}
 }
 

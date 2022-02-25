@@ -194,7 +194,7 @@ func (p *pgdb) HasUser(username string) (bool, error) {
 	return count != 0, nil
 }
 
-func (p *pgdb) GetMatches() ([]MetaData, error) {
+func (p *pgdb) getMatches(deleted bool) ([]MetaData, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
 		return nil, err
@@ -205,7 +205,7 @@ func (p *pgdb) GetMatches() ([]MetaData, error) {
 		Query(context.Background(), `SELECT
 			id, map, date, demo_type, player_names, team_a_score, team_b_score,
 			team_a_title, team_b_title
-		FROM matches WHERE deleted = FALSE`)
+		FROM matches WHERE deleted = $1`, deleted)
 
 	var matches []MetaData
 
@@ -241,6 +241,14 @@ func (p *pgdb) GetMatches() ([]MetaData, error) {
 	return matches, nil
 }
 
+func (p *pgdb) GetMatches() ([]MetaData, error) {
+	return p.getMatches(false)
+}
+
+func (p *pgdb) GetDeletedMatches() ([]MetaData, error) {
+	return p.getMatches(true)
+}
+
 func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
@@ -255,11 +263,30 @@ func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
 	var matchData MatchData
 
 	err = conn.
-		QueryRow(context.Background(), `SELECT
-			map, date, demo_type, player_names, team_a_score,
-			team_b_score, team_a_title, team_b_title, match_data
-		FROM matches WHERE id = $1 AND deleted = FALSE`, id).
-		Scan(&mapName, &dateTimestamp, &demoType, &playerNames, &teamAScore, &teamBScore, &teamATitle, &teamBTitle, &matchData)
+		QueryRow(
+			context.Background(),
+			`SELECT
+			   map,
+			   date,
+			   demo_type,
+			   player_names,
+			   team_a_score,
+			   team_b_score,
+			   team_a_title,
+			   team_b_title,
+			   match_data
+		     FROM matches WHERE id = $1 AND deleted = FALSE`, id).
+		Scan(
+			&mapName,
+			&dateTimestamp,
+			&demoType,
+			&playerNames,
+			&teamAScore,
+			&teamBScore,
+			&teamATitle,
+			&teamBTitle,
+			&matchData,
+		)
 
 	if err != nil {
 		if err.Error() == "no rows in result set" {
@@ -356,6 +383,11 @@ func (p *pgdb) DeleteMatch(id string) error {
 		     match_data = '{}',
 		     player_names = '{}'
 	     WHERE id = $1`, id)
+	return err
+}
+
+func (p *pgdb) FullDeleteMatch(id string) error {
+	_, err := p.transactionExec(`DELETE FROM matches WHERE id = $1`, id)
 	return err
 }
 

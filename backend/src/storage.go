@@ -36,6 +36,8 @@ type Storage interface {
 	GetMatch(id string) (*MetaData, *MatchData, error)
 	// Fetch match metadatas (match history) from the database
 	GetMatches() ([]MetaData, error)
+	// Fetch deleted matches from the db
+	GetDeletedMatches() ([]MetaData, error)
 	// Fetch user-defined data for the given match
 	GetUserMeta(id string) (*UserMeta, error)
 	// Fetch user
@@ -65,8 +67,10 @@ type Storage interface {
 	// Update the user information for the given user id
 	EditUser(uid string, newInfo User) error
 
-	// Delete the given match based on its id (will not delete the demo itself)
+	// Mark the given match as deleted (will not delete the demo itself)
 	DeleteMatch(id string) error
+	// Fully remove the match from the database (will not delete the demo itself)
+	FullDeleteMatch(id string) error
 	// Delete user with the given username
 	DeleteUser(username string) error
 
