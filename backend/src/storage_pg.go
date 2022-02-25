@@ -205,7 +205,7 @@ func (p *pgdb) GetMatches() ([]MetaData, error) {
 		Query(context.Background(), `SELECT
 			id, map, date, demo_type, player_names, team_a_score, team_b_score,
 			team_a_title, team_b_title
-		FROM matches`)
+		FROM matches WHERE deleted = FALSE`)
 
 	var matches []MetaData
 
@@ -258,7 +258,7 @@ func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
 		QueryRow(context.Background(), `SELECT
 			map, date, demo_type, player_names, team_a_score,
 			team_b_score, team_a_title, team_b_title, match_data
-		FROM matches WHERE id = $1`, id).
+		FROM matches WHERE id = $1 AND deleted = FALSE`, id).
 		Scan(&mapName, &dateTimestamp, &demoType, &playerNames, &teamAScore, &teamBScore, &teamATitle, &teamBTitle, &matchData)
 
 	if err != nil {
@@ -350,7 +350,12 @@ func (p *pgdb) CleanInvalidTokens() error {
 }
 
 func (p *pgdb) DeleteMatch(id string) error {
-	_, err := p.transactionExec(`DELETE FROM matches WHERE id = $1`, id)
+	_, err := p.transactionExec(
+		`UPDATE matches
+		 SET deleted = TRUE,
+		     match_data = '{}',
+		     player_names = '{}'
+	     WHERE id = $1`, id)
 	return err
 }
 
