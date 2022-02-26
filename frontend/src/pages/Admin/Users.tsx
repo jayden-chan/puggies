@@ -18,7 +18,9 @@
  */
 
 import {
+  Badge,
   Box,
+  Flex,
   IconButton,
   Menu,
   MenuButton,
@@ -39,18 +41,29 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APIError, DataAPI, User } from "../../api";
 import { DeleteUserModal } from "../../components/DeleteUserModal";
+import { EditUserModal } from "../../components/EditUserModal";
+import { roleColor } from "../../data";
 
 export const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [deleteUsername, setDeleteUsername] = useState("");
-  const [deleteUserDisplay, setDeleteUserDisplay] = useState("");
+  const [currUser, setCurrUser] = useState<User>({
+    username: "",
+    displayName: "",
+    email: "",
+    roles: [],
+    steamId: "",
+  });
 
   const navigate = useNavigate();
-
   const {
     isOpen: deleteModalOpen,
     onOpen: openDeleteModal,
     onClose: closeDeleteModal,
+  } = useDisclosure();
+  const {
+    isOpen: editModalOpen,
+    onOpen: openEditModal,
+    onClose: closeEditModal,
   } = useDisclosure();
 
   const fetchUsers = useCallback(() => {
@@ -86,7 +99,23 @@ export const Users = () => {
               <Td>{user.displayName}</Td>
               <Td>{user.username}</Td>
               <Td>{user.email}</Td>
-              <Td>[{user.roles.join(", ")}]</Td>
+              <Td>
+                {user.roles.length > 0 ? (
+                  <Flex>
+                    {user.roles.map((r) => (
+                      <Badge
+                        key={`${user.username}${r}`}
+                        mr={1}
+                        colorScheme={roleColor(r)}
+                      >
+                        {r}
+                      </Badge>
+                    ))}
+                  </Flex>
+                ) : (
+                  <Badge key={`${user.username}norole`}>None</Badge>
+                )}
+              </Td>
               <Td>{user.steamId !== "" ? user.steamId : "not linked"}</Td>
               <Td mx={0} px={0}>
                 <Menu isLazy placement="bottom-end">
@@ -100,14 +129,20 @@ export const Users = () => {
                     <MenuGroup title="Admin options">
                       <MenuItem
                         onClick={() => {
-                          setDeleteUserDisplay(user.displayName);
-                          setDeleteUsername(user.username);
+                          setCurrUser(user);
                           openDeleteModal();
                         }}
                       >
                         Delete
                       </MenuItem>
-                      <MenuItem>Edit</MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          setCurrUser(user);
+                          openEditModal();
+                        }}
+                      >
+                        Edit
+                      </MenuItem>
                     </MenuGroup>
                   </MenuList>
                 </Menu>
@@ -118,11 +153,20 @@ export const Users = () => {
       </Table>
 
       <DeleteUserModal
-        displayName={deleteUserDisplay}
-        username={deleteUsername}
+        displayName={currUser.displayName}
+        username={currUser.username}
         isOpen={deleteModalOpen}
         onClose={() => {
           closeDeleteModal();
+          fetchUsers();
+        }}
+      />
+
+      <EditUserModal
+        currUser={currUser}
+        isOpen={editModalOpen}
+        onClose={() => {
+          closeEditModal();
           fetchUsers();
         }}
       />

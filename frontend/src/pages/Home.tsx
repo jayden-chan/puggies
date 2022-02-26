@@ -205,13 +205,13 @@ export const Home = (props: { matches: MatchInfo[] }) => {
           flexDirection="column"
         >
           <Text
-            fontSize="7rem"
-            lineHeight="7rem"
+            fontSize="5rem"
+            lineHeight="5rem"
             fontWeight="bold"
-            color="#212938"
+            color="#262f40"
             mb={7}
           >
-            No matches!
+            No matches
           </Text>
           <Text
             fontSize="1.8rem"

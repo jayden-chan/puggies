@@ -461,7 +461,7 @@ func (p *pgdb) RenameMatch(oldId, newId string) error {
 	return err
 }
 
-func (p *pgdb) EditUser(uid string, newInfo User) error {
+func (p *pgdb) EditUser(username string, newInfo UserWithPassword) error {
 	numUpdates := 0
 	args := make([]interface{}, 0)
 
@@ -496,17 +496,26 @@ func (p *pgdb) EditUser(uid string, newInfo User) error {
 		args = append(args, newInfo.Roles)
 	}
 
+	if newInfo.Password != "" {
+		argon2ID := NewArgon2ID()
+		passwordArgon, err := argon2ID.Hash(newInfo.Password)
+		if err != nil {
+			return err
+		}
+
+		numUpdates += 1
+		updates = append(updates, `password_argon = $`+strconv.Itoa(numUpdates))
+		args = append(args, passwordArgon)
+	}
+
 	if numUpdates == 0 {
 		return errors.New("no fields were updated")
 	}
 
-	args = append(args, uid)
-	updatesString := strings.Join(updates, " ")
-
-	_, err := p.transactionExec(
-		`UPDATE users SET `+updatesString+` WHERE id = $`+strconv.Itoa(numUpdates+1),
-		args...,
-	)
+	args = append(args, username)
+	updatesString := strings.Join(updates, ", ")
+	query := `UPDATE users SET ` + updatesString + ` WHERE username = $` + strconv.Itoa(numUpdates+1)
+	_, err := p.transactionExec(query, args...)
 	return err
 }
 

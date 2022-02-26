@@ -29,6 +29,11 @@ type User struct {
 	SteamId     string   `json:"steamId"`
 }
 
+type UserWithPassword struct {
+	User
+	Password string `json:"password"`
+}
+
 type StringIntMap map[string]int
 type StringF64Map map[string]float64
 type PlayerIntMap map[uint64]int

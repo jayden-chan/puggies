@@ -65,7 +65,7 @@ type Storage interface {
 	// Change the ID of a match (if the demo is renamed in the folder)
 	RenameMatch(oldId, newId string) error
 	// Update the user information for the given user id
-	EditUser(uid string, newInfo User) error
+	EditUser(username string, newInfo UserWithPassword) error
 
 	// Mark the given match as deleted (will not delete the demo itself)
 	DeleteMatch(id string) error

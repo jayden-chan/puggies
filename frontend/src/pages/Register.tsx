@@ -17,57 +17,31 @@
  * along with Puggies. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  Button,
-  Container,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-  useToast,
-} from "@chakra-ui/react";
+import { Container, Flex, Heading, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
+import { User } from "../api";
+import { EditUserForm } from "../components/EditUserForm";
 import { useLoginStore } from "../stores/login";
 
 export const Register = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [steamId, setSteamId] = useState("");
-  const [email, setEmail] = useState("");
-  const [displayName, setDisplayName] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [usernameError, setUsernameError] = useState<string | undefined>(
-    undefined
-  );
 
   const navigate = useNavigate();
   const toast = useToast();
 
   const [register] = useLoginStore((state) => [state.register], shallow);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const trimmedUsername = username.trim();
-
-    if (/\s+/.test(trimmedUsername)) {
-      setUsernameError("Username cannot contain spaces.");
-      return;
-    }
-
+  const onSubmit = (user: User & { password: string }) => {
     setLoading(true);
     register({
-      username: trimmedUsername,
-      password,
-      email: email === "" ? undefined : email,
-      displayName: displayName === "" ? undefined : displayName,
-      steamId: steamId === "" ? undefined : steamId,
+      username: user.username,
+      password: user.password,
+      email: user.email === "" ? undefined : user.email,
+      displayName: user.displayName === "" ? undefined : user.displayName,
+      steamId: user.steamId === "" ? undefined : user.steamId,
     })
       .then(() => {
         toast({
@@ -102,76 +76,13 @@ export const Register = () => {
           flexDir="column"
           style={{ boxShadow: "0px 0px 30px rgba(0, 0, 0, 0.40)" }}
         >
-          <form onSubmit={onSubmit}>
-            <FormControl>
-              <FormLabel htmlFor="displayName">Name</FormLabel>
-              <Input
-                id="displayName"
-                type="text"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                mb={5}
-              />
-            </FormControl>
-            <FormControl
-              isRequired
-              isInvalid={usernameError !== undefined}
-              mb={5}
-            >
-              <FormLabel htmlFor="username">Username</FormLabel>
-              <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              {usernameError !== undefined && (
-                <FormErrorMessage>{usernameError}</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                mb={5}
-              />
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                mb={5}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="steamId">Steam ID (optional)</FormLabel>
-              <Input
-                id="steamId"
-                type="text"
-                value={steamId}
-                onChange={(e) => setSteamId(e.target.value)}
-                mb={5}
-              />
-              <Button
-                isLoading={loading}
-                type="submit"
-                colorScheme="green"
-                variant="solid"
-                w="100%"
-              >
-                Register
-              </Button>
-            </FormControl>
-            <FormControl isInvalid={error !== undefined}>
-              {error !== undefined && (
-                <FormErrorMessage mt={5}>{error}</FormErrorMessage>
-              )}
-            </FormControl>
-          </form>
+          <EditUserForm
+            submitButton
+            adminMode={false}
+            loading={loading}
+            error={error}
+            onSubmit={onSubmit}
+          />
         </Flex>
       </Container>
     </Flex>

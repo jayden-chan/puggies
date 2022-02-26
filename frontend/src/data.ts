@@ -21,6 +21,7 @@ import { DemoType, MatchData, Stats, Team } from "./types";
 import { format } from "date-fns";
 
 export const BOT_ID = "72057598465171267";
+export const ROLES = ["admin"];
 
 export const getPlayers = (
   data: MatchData,
@@ -47,6 +48,15 @@ export const msToRoundTime = (ms: number): string => {
     .padStart(2, "0")}`;
 };
 
+export const roleColor = (role: string) => {
+  switch (role) {
+    case "admin":
+      return "red";
+    default:
+      return "gray";
+  }
+};
+
 export const getDemoTypePretty = (demoType: DemoType): string => {
   switch (demoType) {
     case "esea":
@@ -59,6 +69,9 @@ export const getDemoTypePretty = (demoType: DemoType): string => {
       return "Valve MM";
   }
 };
+
+export const capitalize = (input: string): string =>
+  input.charAt(0).toUpperCase() + input.slice(1);
 
 export const formatDate = (ts: number): string => {
   return format(ts, "EEE LLL d yyyy");

@@ -43,7 +43,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { Link as ReactRouterLink, Route, Routes } from "react-router-dom";
+import {
+  Link as ReactRouterLink,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import shallow from "zustand/shallow";
 import Fonts from "./components/Fonts";
 import { Loading } from "./components/Loading";
@@ -135,6 +140,7 @@ const Header = (props: { showLoginButton: boolean }) => {
   );
 
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateUser();
@@ -169,6 +175,7 @@ const Header = (props: { showLoginButton: boolean }) => {
                     duration: 3000,
                     isClosable: true,
                   });
+                  navigate("/");
                 }}
               >
                 Sign out

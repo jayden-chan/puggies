@@ -69,6 +69,24 @@ func route_editUserMeta(c Context) func(*gin.Context) {
 	}
 }
 
+func route_editUser(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		username := ginc.Param("username")
+		var json UserWithPassword
+		if err := ginc.ShouldBindJSON(&json); err != nil {
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		err := c.db.EditUser(username, json)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		ginc.JSON(http.StatusOK, gin.H{"message": "user updated"})
+	}
+}
+
 func route_userinfo(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		userVal, exists := ginc.Get("user")

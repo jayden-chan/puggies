@@ -322,4 +322,22 @@ export class DataAPI {
       );
     }
   }
+
+  public async editUser(
+    username: string,
+    newInfo: User & { password: string }
+  ): Promise<void> {
+    const r = await this.fetchAuthed<void>(
+      "POST",
+      `/users/${encodeURIComponent(username)}`,
+      newInfo
+    );
+
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to edit user (HTTP ${r.code}): ${r.error}`
+      );
+    }
+  }
 }

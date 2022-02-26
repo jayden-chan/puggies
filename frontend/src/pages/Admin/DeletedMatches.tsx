@@ -19,6 +19,7 @@
 
 import {
   Box,
+  Flex,
   IconButton,
   Menu,
   MenuButton,
@@ -28,6 +29,7 @@ import {
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -63,75 +65,95 @@ export const DeletedMatches = () => {
 
   return (
     <Box my={5} overflowX="auto">
-      <Table variant="simple" size="sm" colorScheme="gray">
-        <Thead>
-          <Tr>
-            <Th>ID</Th>
-            <Th>Map</Th>
-            <Th>Date</Th>
-            <Th textAlign="right">Home</Th>
-            <Th textAlign="center">Score</Th>
-            <Th>Away</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {matches.map((match) => (
-            <Tr key={match.id}>
-              <Td>{match.id}</Td>
-              <Td>{match.map}</Td>
-              <Td>{formatDate(match.dateTimestamp)}</Td>
-              <Td textAlign="right">{match.teamATitle}</Td>
-              <Td textAlign="center">
-                {match.teamAScore}:{match.teamBScore}
-              </Td>
+      {matches.length === 0 && (
+        <Flex
+          alignItems="center"
+          minH="50vh"
+          justifyContent="center"
+          flexDirection="column"
+        >
+          <Text
+            fontSize="5rem"
+            lineHeight="5rem"
+            fontWeight="bold"
+            color="#262f40"
+            mb={7}
+          >
+            No deleted matches
+          </Text>
+        </Flex>
+      )}
+      {matches.length > 0 && (
+        <Table variant="simple" size="sm" colorScheme="gray">
+          <Thead>
+            <Tr>
+              <Th>ID</Th>
+              <Th>Map</Th>
+              <Th>Date</Th>
+              <Th textAlign="right">Home</Th>
+              <Th textAlign="center">Score</Th>
+              <Th>Away</Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {matches.map((match) => (
+              <Tr key={match.id}>
+                <Td>{match.id}</Td>
+                <Td>{match.map}</Td>
+                <Td>{formatDate(match.dateTimestamp)}</Td>
+                <Td textAlign="right">{match.teamATitle}</Td>
+                <Td textAlign="center">
+                  {match.teamAScore}:{match.teamBScore}
+                </Td>
 
-              <Td>{match.teamBTitle}</Td>
-              <Td mx={0} px={0}>
-                <Menu isLazy placement="bottom-end">
-                  <MenuButton
-                    as={IconButton}
-                    aria-label="Options"
-                    icon={<FontAwesomeIcon icon={faBars} color="gray" />}
-                    variant="ghost"
-                  />
-                  <MenuList>
-                    <MenuGroup title="Admin options">
-                      <MenuItem
-                        onClick={async () => {
-                          const api = new DataAPI();
-                          try {
-                            await api.fullDeleteMatch(match.id);
-                            await api.triggerRescan();
-                            toast({
-                              title:
-                                "Match restored. Demo parsing in progress - check back soon",
-                              status: "success",
-                              duration: 3000,
-                              isClosable: true,
-                            });
-                            fetchMatches();
-                          } catch (e) {
-                            if (e instanceof APIError) {
+                <Td>{match.teamBTitle}</Td>
+                <Td mx={0} px={0}>
+                  <Menu isLazy placement="bottom-end">
+                    <MenuButton
+                      as={IconButton}
+                      aria-label="Options"
+                      icon={<FontAwesomeIcon icon={faBars} color="gray" />}
+                      variant="ghost"
+                    />
+                    <MenuList>
+                      <MenuGroup title="Admin options">
+                        <MenuItem
+                          onClick={async () => {
+                            const api = new DataAPI();
+                            try {
+                              await api.fullDeleteMatch(match.id);
+                              await api.triggerRescan();
                               toast({
-                                title: `Failed to restore match: ${e.message}`,
-                                status: "error",
+                                title:
+                                  "Match restored. Demo parsing in progress - check back soon",
+                                status: "success",
+                                duration: 3000,
                                 isClosable: true,
                               });
+                              fetchMatches();
+                            } catch (e) {
+                              if (e instanceof APIError) {
+                                toast({
+                                  title: `Failed to restore match: ${e.message}`,
+                                  status: "error",
+                                  isClosable: true,
+                                });
+                              }
                             }
-                          }
-                        }}
-                      >
-                        Restore
-                      </MenuItem>
-                    </MenuGroup>
-                  </MenuList>
-                </Menu>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+                          }}
+                        >
+                          Restore
+                        </MenuItem>
+                      </MenuGroup>
+                    </MenuList>
+                  </Menu>
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
     </Box>
   );
 };
