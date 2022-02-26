@@ -214,14 +214,12 @@ func route_auditLog(c Context) func(*gin.Context) {
 		offsetQ := ginc.DefaultQuery("offset", "0")
 		limit, err := strconv.Atoi(limitQ)
 		if err != nil {
-			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			limit = 50
 		}
 
 		offset, err := strconv.Atoi(offsetQ)
 		if err != nil {
-			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			offset = 0
 		}
 
 		entries, err := c.db.GetAuditLog(limit, offset)
@@ -236,7 +234,19 @@ func route_auditLog(c Context) func(*gin.Context) {
 
 func route_deletedMatches(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
-		matches, err := c.db.GetDeletedMatches()
+		limitQ := ginc.DefaultQuery("limit", "50")
+		offsetQ := ginc.DefaultQuery("offset", "0")
+		limit, err := strconv.Atoi(limitQ)
+		if err != nil {
+			limit = 50
+		}
+
+		offset, err := strconv.Atoi(offsetQ)
+		if err != nil {
+			offset = 0
+		}
+
+		matches, err := c.db.GetDeletedMatches(limit, offset)
 		if err != nil {
 			errString := fmt.Sprintf("Failed to fetch deleted matches: %s", err.Error())
 			c.logger.Errorf(errString)

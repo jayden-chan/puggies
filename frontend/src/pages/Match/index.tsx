@@ -20,8 +20,8 @@
 import {
   Alert,
   AlertIcon,
-  Divider,
   Box,
+  Divider,
   Flex,
   Heading,
   Link,
@@ -41,6 +41,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import shallow from "zustand/shallow";
 import { DataAPI } from "../../api";
 import { Loading } from "../../components/Loading";
 import {
@@ -50,10 +51,9 @@ import {
   getPlayers,
 } from "../../data";
 import { useOptionsStore } from "../../stores/options";
-import { Match, MatchInfo, Round, Stats, UserMeta } from "../../types";
+import { Match, Round, Stats, UserMeta } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
-import shallow from "zustand/shallow";
 import { PlayerInfo } from "./PlayerInfo";
 import { RoundByRoundList } from "./RoundByRound";
 import { RoundsVisualization } from "./RoundsVisualization";
@@ -77,7 +77,7 @@ export const getRoundIcon = (round: Round) => {
   }
 };
 
-export const MatchPage = (props: { matches: MatchInfo[] }) => {
+export const MatchPage = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
 
@@ -103,7 +103,7 @@ export const MatchPage = (props: { matches: MatchInfo[] }) => {
     });
 
     api.userMeta(id).then((m) => setMeta(m));
-  }, [id, props.matches, navigate]);
+  }, [id, navigate]);
 
   if (match === undefined) {
     return <Loading minH="calc(100vh - 5.5rem)">Loading match...</Loading>;

@@ -37,9 +37,9 @@ type Storage interface {
 	// Fetch a match from the database
 	GetMatch(id string) (*MetaData, *MatchData, error)
 	// Fetch match metadatas (match history) from the database
-	GetMatches() ([]MetaData, error)
+	GetMatches(limit, offset int) ([]MetaData, error)
 	// Fetch deleted matches from the db
-	GetDeletedMatches() ([]MetaData, error)
+	GetDeletedMatches(limit, offset int) ([]MetaData, error)
 	// Fetch user-defined data for the given match
 	GetUserMeta(id string) (*UserMeta, error)
 	// Fetch user

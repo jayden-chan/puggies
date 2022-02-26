@@ -212,7 +212,7 @@ func (p *pgdb) HasUser(username string) (bool, error) {
 	return count != 0, nil
 }
 
-func (p *pgdb) getMatches(deleted bool) ([]MetaData, error) {
+func (p *pgdb) getMatches(limit, offset int, deleted bool) ([]MetaData, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
 		return nil, err
@@ -223,7 +223,7 @@ func (p *pgdb) getMatches(deleted bool) ([]MetaData, error) {
 		Query(context.Background(), `SELECT
 			id, map, date, demo_type, player_names, team_a_score, team_b_score,
 			team_a_title, team_b_title
-		FROM matches WHERE deleted = $1`, deleted)
+		FROM matches WHERE deleted = $1 LIMIT $2 OFFSET $3`, deleted, limit, offset)
 
 	matches := make([]MetaData, 0, 10)
 	for rows.Next() {
@@ -258,12 +258,12 @@ func (p *pgdb) getMatches(deleted bool) ([]MetaData, error) {
 	return matches, nil
 }
 
-func (p *pgdb) GetMatches() ([]MetaData, error) {
-	return p.getMatches(false)
+func (p *pgdb) GetMatches(limit, offset int) ([]MetaData, error) {
+	return p.getMatches(limit, offset, false)
 }
 
-func (p *pgdb) GetDeletedMatches() ([]MetaData, error) {
-	return p.getMatches(true)
+func (p *pgdb) GetDeletedMatches(limit, offset int) ([]MetaData, error) {
+	return p.getMatches(limit, offset, true)
 }
 
 func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {

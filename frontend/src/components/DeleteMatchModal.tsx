@@ -36,6 +36,8 @@ import { useMatchesStore } from "../stores/matches";
 export const DeleteMatchModal = (props: {
   matchId: string;
   isOpen: boolean;
+  limit: number;
+  offset: number;
   onClose: () => void;
 }) => {
   const { isOpen, onClose, matchId } = props;
@@ -71,7 +73,7 @@ export const DeleteMatchModal = (props: {
                     isClosable: true,
                   });
                   onClose();
-                  fetchMatches();
+                  fetchMatches(props.limit, props.offset);
                 })
                 .catch((err) => {
                   toast({

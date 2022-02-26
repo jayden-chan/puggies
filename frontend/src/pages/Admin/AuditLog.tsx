@@ -39,7 +39,7 @@ export const AuditLog = () => {
   const [page, setPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const limit = 25;
+  const limit = 30;
   const offset = (page - 1) * limit;
 
   const navigate = useNavigate();

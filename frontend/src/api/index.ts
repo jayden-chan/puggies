@@ -271,8 +271,11 @@ export class DataAPI {
     }
   }
 
-  public async matches(): Promise<MatchInfo[]> {
-    const r = await this.fetch<MatchInfo[]>("GET", "/history");
+  public async matches(limit: number, offset: number): Promise<MatchInfo[]> {
+    const r = await this.fetch<MatchInfo[]>(
+      "GET",
+      `/history?limit=${limit}&offset=${offset}`
+    );
     if (r.code !== 200) {
       throw new APIError(
         r.code,

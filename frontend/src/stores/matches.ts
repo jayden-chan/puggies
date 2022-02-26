@@ -25,13 +25,13 @@ const api = new DataAPI();
 
 type MatchesStore = {
   matches: MatchInfo[] | undefined;
-  fetchMatches: () => Promise<void>;
+  fetchMatches: (limit: number, offset: number) => Promise<void>;
 };
 
 export const useMatchesStore = create<MatchesStore>((set) => ({
   matches: [],
-  fetchMatches: async () => {
-    const matches = await api.matches();
+  fetchMatches: async (limit: number, offset: number) => {
+    const matches = await api.matches(limit, offset);
     set({ matches });
   },
 }));

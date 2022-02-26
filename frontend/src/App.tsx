@@ -204,14 +204,6 @@ export const App = () => {
     (state) => [state.showLoginButton, state.updateOptions],
     shallow
   );
-  const [matches, fetchMatches] = useMatchesStore(
-    (state) => [state.matches, state.fetchMatches],
-    shallow
-  );
-
-  useEffect(() => {
-    fetchMatches();
-  }, [fetchMatches]);
 
   useEffect(() => {
     updateOptions();
@@ -221,18 +213,14 @@ export const App = () => {
     <ChakraProvider theme={theme}>
       <Fonts />
       <Header showLoginButton={showLoginButton} />
-      {matches === undefined ? (
-        <Loading minH="calc(100vh - 5.5rem)">Loading matches...</Loading>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Home matches={matches} />} />
-          <Route path="/match/:id" element={<MatchPage matches={matches} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      )}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/match/:id" element={<MatchPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
       <Footer />
     </ChakraProvider>
   );

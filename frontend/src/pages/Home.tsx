@@ -46,13 +46,16 @@ import {
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import shallow from "zustand/shallow";
 import { DeleteMatchModal } from "../components/DeleteMatchModal";
+import { Loading } from "../components/Loading";
+import { PaginationBar } from "../components/PaginationBar";
 import { UpdateMetaModal } from "../components/UpdateMetaModal";
 import { formatDate, getDemoTypePretty } from "../data";
 import { useLoginStore } from "../stores/login";
+import { useMatchesStore } from "../stores/matches";
 import { MatchInfo } from "../types";
 
 const RowLink = (props: TableCellProps & { to: string }) => (
@@ -170,10 +173,27 @@ const TableRow = (props: {
   );
 };
 
-export const Home = (props: { matches: MatchInfo[] }) => {
-  const [user] = useLoginStore((state) => [state.user], shallow);
+export const Home = () => {
   const [deleteMatchId, setDeleteMatchId] = useState("");
   const [updateMatchId, setUpdateMatchId] = useState("");
+  const [page, setPage] = useState(1);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const limit = 30;
+  const offset = (page - 1) * limit;
+
+  const [user] = useLoginStore((state) => [state.user], shallow);
+  const [matches, fetchMatchesStore] = useMatchesStore(
+    (state) => [state.matches, state.fetchMatches],
+    shallow
+  );
+
+  const fetchMatches = useCallback(() => {
+    setIsRefreshing(true);
+    fetchMatchesStore(limit, offset).then(() => setIsRefreshing(false));
+  }, [fetchMatchesStore, limit, offset]);
+
+  useEffect(() => fetchMatches(), [fetchMatches]);
+
   const {
     isOpen: deleteModalOpen,
     onOpen: openDeleteModal,
@@ -188,6 +208,10 @@ export const Home = (props: { matches: MatchInfo[] }) => {
 
   const isAdmin = user?.roles.includes("admin") ?? false;
 
+  if (matches === undefined) {
+    return <Loading minH="calc(100vh - 5.5rem)">Loading matches...</Loading>;
+  }
+
   return (
     <Container maxW="container.xl" pt={8} minH="calc(100vh - 5.5rem)">
       <Flex alignItems="center" justifyContent="space-between">
@@ -196,7 +220,7 @@ export const Home = (props: { matches: MatchInfo[] }) => {
         </Heading>
       </Flex>
       <Divider my={5} />
-      {props.matches.length === 0 ? (
+      {matches.length === 0 ? (
         /* TODO: should probably make this a better user experience */
         <Flex
           alignItems="center"
@@ -224,8 +248,17 @@ export const Home = (props: { matches: MatchInfo[] }) => {
           </Text>
         </Flex>
       ) : (
-        <Box my={5} overflowX="auto">
-          <Table variant="simple" colorScheme="gray" size="sm">
+        <Box overflowX="auto">
+          <PaginationBar
+            page={page}
+            hasPrev={page > 1}
+            hasNext={matches.length === limit}
+            isRefreshing={isRefreshing}
+            onPrev={() => setPage((prev) => prev - 1)}
+            onNext={() => setPage((prev) => prev + 1)}
+            onRefresh={() => fetchMatches()}
+          />
+          <Table variant="simple" colorScheme="gray" size="sm" my={3}>
             <Thead>
               <Tr>
                 <Th>Map</Th>
@@ -238,7 +271,7 @@ export const Home = (props: { matches: MatchInfo[] }) => {
               </Tr>
             </Thead>
             <Tbody>
-              {props.matches.map((match) => (
+              {matches.map((match) => (
                 <TableRow
                   key={match.id}
                   match={match}
@@ -251,10 +284,21 @@ export const Home = (props: { matches: MatchInfo[] }) => {
               ))}
             </Tbody>
           </Table>
+          <PaginationBar
+            page={page}
+            hasPrev={page > 1}
+            hasNext={matches.length === limit}
+            isRefreshing={isRefreshing}
+            onPrev={() => setPage((prev) => prev - 1)}
+            onNext={() => setPage((prev) => prev + 1)}
+            onRefresh={() => fetchMatches()}
+          />
         </Box>
       )}
       <DeleteMatchModal
         matchId={deleteMatchId}
+        limit={limit}
+        offset={offset}
         isOpen={deleteModalOpen}
         onClose={closeDeleteModal}
       />
