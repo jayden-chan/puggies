@@ -29,7 +29,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { APIError, DataAPI, User } from "../api";
+import { DataAPI, User } from "../api";
 import { EditUserForm } from "./EditUserForm";
 
 export const EditUserModal = (props: {
@@ -73,10 +73,8 @@ export const EditUserModal = (props: {
                   onClose();
                 })
                 .catch((err) => {
-                  if (err instanceof APIError) {
-                    setError(err.message);
-                    setLoading(false);
-                  }
+                  setError(err.message);
+                  setLoading(false);
                 });
             }}
           />

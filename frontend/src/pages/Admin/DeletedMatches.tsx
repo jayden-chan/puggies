@@ -133,7 +133,7 @@ export const DeletedMatches = () => {
                               });
                               fetchMatches();
                             } catch (e) {
-                              if (e instanceof APIError) {
+                              if (e instanceof Error) {
                                 toast({
                                   title: `Failed to restore match: ${e.message}`,
                                   status: "error",
