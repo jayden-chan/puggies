@@ -29,6 +29,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import React from "react";
+import { AuditLog } from "./AuditLog";
 import { DeletedMatches } from "./DeletedMatches";
 import { Users } from "./Users";
 
@@ -54,7 +55,9 @@ export const Admin = () => {
           <TabPanel>
             <DeletedMatches />
           </TabPanel>
-          <TabPanel>Hello there testing from the audit log tab</TabPanel>
+          <TabPanel>
+            <AuditLog />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Container>

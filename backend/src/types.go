@@ -34,6 +34,14 @@ type UserWithPassword struct {
 	Password string `json:"password"`
 }
 
+type AuditEntry struct {
+	Timestamp   int64  `json:"timestamp"`
+	System      bool   `json:"system"`
+	Action      string `json:"action"`
+	Username    string `json:"username"`
+	Description string `json:"description"`
+}
+
 type StringIntMap map[string]int
 type StringF64Map map[string]float64
 type PlayerIntMap map[uint64]int

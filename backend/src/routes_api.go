@@ -94,12 +94,6 @@ func route_history(c Context) func(*gin.Context) {
 func route_usermeta(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
-		// I'm not even sure if this is necessary but I guess better safe than sorry
-		if strings.Contains("..", id) {
-			ginc.JSON(http.StatusBadRequest, gin.H{"error": "bruh"})
-			return
-		}
-
 		meta, err := c.db.GetUserMeta(id)
 		if err != nil {
 			errString := fmt.Sprintf(
@@ -118,16 +112,6 @@ func route_usermeta(c Context) func(*gin.Context) {
 		} else {
 			ginc.JSON(http.StatusOK, gin.H{"message": meta})
 		}
-	}
-}
-
-func route_rescan(c Context) func(*gin.Context) {
-	return func(ginc *gin.Context) {
-		ginc.JSON(http.StatusOK, gin.H{
-			"message": "Incremental re-scan of demos folder started",
-		})
-
-		go doRescan("api", c)
 	}
 }
 
@@ -176,6 +160,12 @@ func route_register(c Context) func(*gin.Context) {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
 			return
 		}
+
+		c.db.InsertAuditEntry(AuditEntry{
+			System:      true,
+			Action:      "USER_REGISTERED",
+			Description: fmt.Sprintf("User \"%s\" was registered", json.Username),
+		})
 
 		ginc.JSON(http.StatusOK, gin.H{"message": token})
 	}

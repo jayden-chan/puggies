@@ -79,6 +79,28 @@ func (p *pgdb) Close() {
 	p.dbpool.Close()
 }
 
+func (p *pgdb) InsertMatches(matches ...Match) error {
+	params := make([]interface{}, 0, len(matches)*10)
+	rows := make([]string, 0, len(matches))
+
+	for i, match := range matches {
+		value, err := p.genMatchInsert(match, i*10, &params)
+		if err != nil {
+			return err
+		}
+
+		rows = append(rows, value)
+	}
+
+	query := `INSERT INTO matches
+					(id, map, date, demo_type, player_names, team_a_score,
+					team_b_score, team_a_title, team_b_title, match_data)
+		VALUES ` + strings.Join(rows, ", ")
+
+	_, err := p.transactionExec(query, params...)
+	return err
+}
+
 func (p *pgdb) RegisterUser(user User, password string) error {
 	var steamId *string = nil
 	if user.SteamId != "" {
@@ -106,25 +128,21 @@ func (p *pgdb) RegisterUser(user User, password string) error {
 	return err
 }
 
-func (p *pgdb) InsertMatches(matches ...Match) error {
-	params := make([]interface{}, 0, len(matches)*10)
-	rows := make([]string, 0, len(matches))
-
-	for i, match := range matches {
-		value, err := p.genMatchInsert(match, i*10, &params)
-		if err != nil {
-			return err
-		}
-
-		rows = append(rows, value)
+func (p *pgdb) InsertAuditEntry(entry AuditEntry) error {
+	query := `INSERT INTO auditlog (timestamp, system, username, action, description) VALUES ($1, $2, $3, $4, $5)`
+	var user *string
+	if entry.Username != "" {
+		user = &entry.Username
 	}
 
-	query := `INSERT INTO matches
-					(id, map, date, demo_type, player_names, team_a_score,
-					team_b_score, team_a_title, team_b_title, match_data)
-		VALUES ` + strings.Join(rows, ", ")
-
-	_, err := p.transactionExec(query, params...)
+	_, err := p.transactionExec(
+		query,
+		time.Now().UnixMilli(),
+		entry.System,
+		user,
+		entry.Action,
+		entry.Description,
+	)
 	return err
 }
 
@@ -430,6 +448,48 @@ func (p *pgdb) GetUsers() ([]User, error) {
 				Email:       email,
 				Roles:       roles,
 				SteamId:     finalSteamId,
+			})
+	}
+
+	return users, nil
+}
+
+func (p *pgdb) GetAuditLog(limit, offset int) ([]AuditEntry, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Release()
+
+	query := `SELECT timestamp, system, username, action, description FROM auditlog LIMIT $1 OFFSET $2`
+	rows, err := conn.Query(context.Background(), query, limit, offset)
+
+	users := make([]AuditEntry, 0, limit)
+
+	for rows.Next() {
+		var action, description string
+		var user *string
+		var timestamp int64
+		var system bool
+
+		err = rows.Scan(&timestamp, &system, &user, &action, &description)
+
+		if err != nil {
+			return nil, err
+		}
+
+		finalUser := ""
+		if user != nil {
+			finalUser = *user
+		}
+
+		users = append(users,
+			AuditEntry{
+				Timestamp:   timestamp,
+				System:      system,
+				Username:    finalUser,
+				Action:      action,
+				Description: description,
 			})
 	}
 

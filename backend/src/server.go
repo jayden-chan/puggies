@@ -20,6 +20,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -30,6 +31,13 @@ import (
 
 func doRescan(trigger string, c Context) {
 	c.logger.Infof("trigger=%s starting incremental demo folder rescan", trigger)
+
+	c.db.InsertAuditEntry(AuditEntry{
+		System:      true,
+		Action:      "RESCAN_TRIGGERED",
+		Description: "Rescan of demos folder was triggered by interval job",
+	})
+
 	err := parseAllIdempotent(c.config.demosPath, c.config.dataPath, c)
 	if err != nil {
 		c.logger.Errorf("trigger=%s failed to re-scan demos folder: %s", trigger, err.Error())
@@ -51,6 +59,11 @@ func watchFileChanges(c Context) {
 		select {
 		case created := <-fileCreated:
 			c.logger.Infof("new file detected: %s", created)
+			c.db.InsertAuditEntry(AuditEntry{
+				System:      true,
+				Action:      "MATCH_ADDED",
+				Description: fmt.Sprintf("New match added from file %s", created),
+			})
 			demoId := getDemoFileName(created)
 			err := parseIdempotent(created, heatmapsDir, c)
 			if err != nil {
@@ -66,6 +79,13 @@ func watchFileChanges(c Context) {
 			c.logger.Infof("rename detected: %s -> %s", renamed.old, renamed.new)
 			oldId := getDemoFileName(renamed.old)
 			newId := getDemoFileName(renamed.new)
+
+			c.db.InsertAuditEntry(AuditEntry{
+				System:      true,
+				Action:      "MATCH_RENAMED",
+				Description: fmt.Sprintf("Match %s was renamed to %s", oldId, newId),
+			})
+
 			err := c.db.RenameMatch(oldId, newId)
 			if err != nil {
 				c.logger.Errorf(
@@ -230,8 +250,6 @@ func runServer(c Context) {
 		v1.GET("/history", route_history(c))
 		v1.GET("/usermeta/:id", route_usermeta(c))
 
-		v1.PATCH("/rescan", route_rescan(c))
-
 		v1.POST("/login", route_login(c))
 
 		if c.config.selfSignupEnabled {
@@ -250,6 +268,8 @@ func runServer(c Context) {
 			// is admin-protected
 			v1Auth.GET("/userinfo", route_userinfo(c))
 			v1Auth.POST("/logout", route_logout(c))
+
+			v1Auth.PATCH("/rescan", route_rescan(c))
 		}
 
 		v1Admin := v1.Group("/")
@@ -261,6 +281,7 @@ func runServer(c Context) {
 			v1Admin.DELETE("/users/:username", route_deleteUser(c))
 
 			v1Admin.GET("/deletedMatches", route_deletedMatches(c))
+			v1Admin.GET("/audit", route_auditLog(c))
 
 			v1Admin.POST("/adminregister", route_register(c))
 			v1Admin.PUT("/usermeta/:id", route_editUserMeta(c))

@@ -26,6 +26,8 @@ type Storage interface {
 	InsertMatches(match ...Match) error
 	// Add user to the database
 	RegisterUser(user User, password string) error
+	// Insert audit entry
+	InsertAuditEntry(entry AuditEntry) error
 
 	// Check if a match with the given id exists
 	HasMatch(id string) (bool, string, error)
@@ -44,6 +46,8 @@ type Storage interface {
 	GetUser(username string) (*User, error)
 	// Fetch all users
 	GetUsers() ([]User, error)
+	// Fetch all audit log entries
+	GetAuditLog(limit, offset int) ([]AuditEntry, error)
 
 	// Validate the username and password & return the user if valid
 	Login(username, password string) (*User, error)

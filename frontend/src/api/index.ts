@@ -27,6 +27,14 @@ export type User = {
   steamId: string | undefined;
 };
 
+export type AuditEntry = {
+  timestamp: number;
+  system: boolean;
+  action: string;
+  username: string;
+  description: string;
+};
+
 export type RegisterInput = {
   username: string;
   password: string;
@@ -339,5 +347,19 @@ export class DataAPI {
         `Failed to edit user (HTTP ${r.code}): ${r.error}`
       );
     }
+  }
+
+  public async auditLog(limit: number, offset: number): Promise<AuditEntry[]> {
+    const r = await this.fetchAuthed<AuditEntry[]>(
+      "GET",
+      `/audit?limit=${limit}&offset=${offset}`
+    );
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch audit log (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res;
   }
 }

@@ -20,12 +20,28 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
+
+func getUsername(ginc *gin.Context) string {
+	userVal, exists := ginc.Get("user")
+	if !exists {
+		return ""
+	}
+
+	user, ok := userVal.(User)
+	if !ok {
+		return ""
+	}
+
+	return user.Username
+}
 
 func route_deleteMatch(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
@@ -35,6 +51,13 @@ func route_deleteMatch(c Context) func(*gin.Context) {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+
+		c.db.InsertAuditEntry(AuditEntry{
+			Action:      "MATCH_DELETED",
+			Username:    getUsername(ginc),
+			Description: fmt.Sprintf("Match %s was marked as deleted", id),
+		})
+
 		ginc.JSON(http.StatusOK, gin.H{"message": "match deleted"})
 	}
 }
@@ -47,6 +70,13 @@ func route_fullDeleteMatch(c Context) func(*gin.Context) {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+
+		c.db.InsertAuditEntry(AuditEntry{
+			Action:      "MATCH_REMOVED",
+			Username:    getUsername(ginc),
+			Description: fmt.Sprintf("Match %s removed from the matches database", id),
+		})
+
 		ginc.JSON(http.StatusOK, gin.H{"message": "match deleted"})
 	}
 }
@@ -54,17 +84,27 @@ func route_fullDeleteMatch(c Context) func(*gin.Context) {
 func route_editUserMeta(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
-		var json UserMeta
-		if err := ginc.ShouldBindJSON(&json); err != nil {
+		var input UserMeta
+		if err := ginc.ShouldBindJSON(&input); err != nil {
 			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		err := c.db.EditMatchMeta(id, json)
+		err := c.db.EditMatchMeta(id, input)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+
+		marshalled, err := json.Marshal(input)
+		if err == nil {
+			c.db.InsertAuditEntry(AuditEntry{
+				Action:      "USERMETA_UPDATED",
+				Username:    getUsername(ginc),
+				Description: fmt.Sprintf("User metadata for match %s was updated: %s", id, string(marshalled)),
+			})
+		}
+
 		ginc.JSON(http.StatusOK, gin.H{"message": "match metadata updated"})
 	}
 }
@@ -72,18 +112,53 @@ func route_editUserMeta(c Context) func(*gin.Context) {
 func route_editUser(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		username := ginc.Param("username")
-		var json UserWithPassword
-		if err := ginc.ShouldBindJSON(&json); err != nil {
+
+		var input UserWithPassword
+		if err := ginc.ShouldBindJSON(&input); err != nil {
 			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		err := c.db.EditUser(username, json)
+		err := c.db.EditUser(username, input)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+
+		// Don't marshall the password
+		marshalled, err := json.Marshal(User{
+			Username:    input.Username,
+			DisplayName: input.DisplayName,
+			Email:       input.Email,
+			Roles:       input.Roles,
+			SteamId:     input.SteamId,
+		})
+
+		if err == nil {
+			c.db.InsertAuditEntry(AuditEntry{
+				Action:      "USER_UPDATED",
+				Username:    getUsername(ginc),
+				Description: fmt.Sprintf("User %s was updated: %s", username, string(marshalled)),
+			})
+		}
+
 		ginc.JSON(http.StatusOK, gin.H{"message": "user updated"})
+	}
+}
+
+func route_rescan(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		ginc.JSON(http.StatusOK, gin.H{
+			"message": "Incremental re-scan of demos folder started",
+		})
+
+		c.db.InsertAuditEntry(AuditEntry{
+			Action:      "RESCAN_TRIGGERED",
+			Username:    getUsername(ginc),
+			Description: "Rescan of demos folder was triggered by API call",
+		})
+
+		go doRescan("api", c)
 	}
 }
 
@@ -133,6 +208,32 @@ func route_users(c Context) func(*gin.Context) {
 	}
 }
 
+func route_auditLog(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		limitQ := ginc.DefaultQuery("limit", "50")
+		offsetQ := ginc.DefaultQuery("offset", "0")
+		limit, err := strconv.Atoi(limitQ)
+		if err != nil {
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		offset, err := strconv.Atoi(offsetQ)
+		if err != nil {
+			ginc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		entries, err := c.db.GetAuditLog(limit, offset)
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ginc.JSON(http.StatusOK, gin.H{"message": entries})
+	}
+}
+
 func route_deletedMatches(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		matches, err := c.db.GetDeletedMatches()
@@ -154,6 +255,12 @@ func route_deleteUser(c Context) func(*gin.Context) {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
+
+		c.db.InsertAuditEntry(AuditEntry{
+			Action:      "USER_DELETED",
+			Username:    getUsername(ginc),
+			Description: fmt.Sprintf("User %s was deleted", username),
+		})
 
 		ginc.JSON(http.StatusOK, gin.H{"message": "user deleted"})
 	}
