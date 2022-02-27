@@ -20,6 +20,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -39,6 +40,11 @@ func parseIdempotent(path, heatmapsDir string, c Context) error {
 	if err != nil {
 		return err
 	} else {
+		c.db.InsertAuditEntry(AuditEntry{
+			System:      true,
+			Action:      "MATCH_ADDED",
+			Description: fmt.Sprintf("New match added from file %s", path),
+		})
 		err := c.db.InsertMatches(output)
 		if err != nil {
 			return err

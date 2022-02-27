@@ -32,12 +32,6 @@ import (
 func doRescan(trigger string, c Context) {
 	c.logger.Infof("trigger=%s starting incremental demo folder rescan", trigger)
 
-	c.db.InsertAuditEntry(AuditEntry{
-		System:      true,
-		Action:      "RESCAN_TRIGGERED",
-		Description: "Rescan of demos folder was triggered by interval job",
-	})
-
 	err := parseAllIdempotent(c.config.demosPath, c.config.dataPath, c)
 	if err != nil {
 		c.logger.Errorf("trigger=%s failed to re-scan demos folder: %s", trigger, err.Error())
@@ -183,7 +177,7 @@ func runServer(c Context) {
 	assetRoute("/assets/killfeed/noscope.png")
 	assetRoute("/assets/killfeed/smoke.png")
 	assetRoute("/assets/killfeed/wallbang.png")
-	assetRoute("/assets/maps/de_ancient.jpeg")
+	assetRoute("/assets/maps/de_ancient.jpg")
 	assetRoute("/assets/maps/de_cache.jpg")
 	assetRoute("/assets/maps/de_dust2.jpg")
 	assetRoute("/assets/maps/de_inferno.jpg")
