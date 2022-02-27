@@ -77,6 +77,10 @@ export const formatDate = (ts: number): string => {
   return format(ts, "EEE LLL d yyyy");
 };
 
+export const formatAuditDate = (ts: number): string => {
+  return format(ts, "LLL d yyyy HH:mm:ss");
+};
+
 export const getESEAId = (matchId: string): string | undefined => {
   const [, id] = matchId.match(/esea_match_(\d+)/) ?? [];
   return id;

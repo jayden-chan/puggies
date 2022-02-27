@@ -32,7 +32,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { APIError, AuditEntry, DataAPI } from "../../api";
 import { PaginationBar } from "../../components/PaginationBar";
-import { formatDate } from "../../data";
+import { formatAuditDate } from "../../data";
 
 export const AuditLog = () => {
   const [entries, setEntries] = useState<AuditEntry[]>([]);
@@ -103,7 +103,7 @@ export const AuditLog = () => {
             <Tbody>
               {entries.map((entry) => (
                 <Tr key={entry.timestamp}>
-                  <Td>{formatDate(entry.timestamp)}</Td>
+                  <Td>{formatAuditDate(entry.timestamp)}</Td>
                   <Td>
                     {entry.username !== ""
                       ? entry.username
