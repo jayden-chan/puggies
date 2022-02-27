@@ -92,10 +92,18 @@ func (p *pgdb) InsertMatches(matches ...Match) error {
 		rows = append(rows, value)
 	}
 
-	query := `INSERT INTO matches
-					(id, map, date, demo_type, player_names, team_a_score,
-					team_b_score, team_a_title, team_b_title, match_data)
-		VALUES ` + strings.Join(rows, ", ")
+	query := `INSERT INTO matches (
+				id,
+				map,
+				date,
+				demo_type,
+				player_names,
+				team_a_score,
+				team_b_score,
+				team_a_title,
+				team_b_title,
+				match_data
+			) VALUES ` + strings.Join(rows, ", ")
 
 	_, err := p.transactionExec(query, params...)
 	return err
@@ -220,10 +228,20 @@ func (p *pgdb) getMatches(limit, offset int, deleted bool) ([]MetaData, error) {
 	defer conn.Release()
 
 	rows, err := conn.
-		Query(context.Background(), `SELECT
-			id, map, date, demo_type, player_names, team_a_score, team_b_score,
-			team_a_title, team_b_title
-		FROM matches WHERE deleted = $1 LIMIT $2 OFFSET $3`, deleted, limit, offset)
+		Query(context.Background(),
+			`SELECT
+			   id,
+			   map,
+			   date,
+			   demo_type,
+			   player_names,
+			   team_a_score,
+			   team_b_score,
+			   team_a_title,
+			   team_b_title
+			 FROM matches
+			 WHERE deleted = $1
+			 LIMIT $2 OFFSET $3`, deleted, limit, offset)
 
 	matches := make([]MetaData, 0, 10)
 	for rows.Next() {
@@ -292,7 +310,9 @@ func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
 			   team_a_title,
 			   team_b_title,
 			   match_data
-		     FROM matches WHERE id = $1 AND deleted = FALSE`, id).
+		     FROM matches
+			 WHERE id = $1 AND deleted = FALSE
+			 ORDER BY date DESC`, id).
 		Scan(
 			&mapName,
 			&dateTimestamp,
@@ -396,9 +416,10 @@ func (p *pgdb) CleanInvalidTokens() error {
 func (p *pgdb) DeleteMatch(id string) error {
 	_, err := p.transactionExec(
 		`UPDATE matches
-		 SET deleted = TRUE,
-		     match_data = '{}',
-		     player_names = '{}'
+		 SET
+		   deleted = TRUE,
+		   match_data = '{}',
+		   player_names = '{}'
 	     WHERE id = $1`, id)
 	return err
 }
@@ -461,7 +482,15 @@ func (p *pgdb) GetAuditLog(limit, offset int) ([]AuditEntry, error) {
 	}
 	defer conn.Release()
 
-	query := `SELECT timestamp, system, username, action, description FROM auditlog LIMIT $1 OFFSET $2`
+	query := `SELECT
+				timestamp,
+				system,
+				username,
+				action,
+				description
+			  FROM auditlog
+			  ORDER BY timestamp DESC
+			  LIMIT $1 OFFSET $2`
 	rows, err := conn.Query(context.Background(), query, limit, offset)
 
 	users := make([]AuditEntry, 0, limit)
