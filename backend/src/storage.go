@@ -21,6 +21,16 @@ package main
 
 import "time"
 
+type RetrievedMeta struct {
+	DemoLink string `json:"demoLink"`
+	MetaData
+}
+
+type RetrievedMatch struct {
+	Meta      RetrievedMeta `json:"meta"`
+	MatchData MatchData     `json:"matchData"`
+}
+
 type Storage interface {
 	// Add matches to the database
 	InsertMatches(match ...Match) error
@@ -35,7 +45,7 @@ type Storage interface {
 	HasUser(username string) (bool, error)
 
 	// Fetch a match from the database
-	GetMatch(id string) (*MetaData, *MatchData, error)
+	GetMatch(id string) (*RetrievedMatch, error)
 	// Fetch match metadatas (match history) from the database
 	GetMatches(limit, offset int) ([]MetaData, error)
 	// Fetch deleted matches from the db

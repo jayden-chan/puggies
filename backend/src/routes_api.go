@@ -61,18 +61,18 @@ func route_match(c Context) func(*gin.Context) {
 			return
 		}
 
-		meta, match, err := c.db.GetMatch(id)
+		retrievedMatch, err := c.db.GetMatch(id)
 		if err != nil {
 			errString := fmt.Sprintf("Failed to fetch matches: %s", err.Error())
 			c.logger.Errorf(errString)
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
-		} else if meta == nil || match == nil {
+		} else if retrievedMatch == nil {
 			ginc.JSON(http.StatusNotFound, gin.H{"error": "match not found"})
 		} else {
 			ginc.JSON(http.StatusOK, gin.H{
 				"message": gin.H{
-					"meta":      meta,
-					"matchData": match,
+					"meta":      retrievedMatch.Meta,
+					"matchData": retrievedMatch.MatchData,
 				},
 			})
 		}

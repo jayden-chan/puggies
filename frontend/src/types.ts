@@ -148,7 +148,7 @@ export type MatchData = {
 };
 
 export type Match = {
-  meta: MatchInfo;
+  meta: MatchInfo & { demoLink: string };
   matchData: MatchData;
 };
 

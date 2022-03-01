@@ -82,7 +82,6 @@ export const MatchPage = () => {
   const { id = "" } = useParams();
 
   const [match, setMatch] = useState<Match | undefined>();
-  const [meta, setMeta] = useState<UserMeta | undefined>();
   const [sortCol, setSortCol] = useState<keyof Stats>("hltv");
   const [reversed, setReversed] = useState(false);
 
@@ -101,8 +100,6 @@ export const MatchPage = () => {
         setMatch(m);
       }
     });
-
-    api.userMeta(id).then((m) => setMeta(m));
   }, [id, navigate]);
 
   if (match === undefined) {
@@ -113,16 +110,15 @@ export const MatchPage = () => {
     map,
     dateTimestamp,
     demoType,
+    demoLink,
     teamAScore,
     teamBScore,
     teamATitle,
     teamBTitle,
   } = match.meta;
 
-  const demoLink =
-    meta?.demoLink ??
-    (allowDemoDownload ? `/api/v1/demos/${id}.dem` : undefined);
   const demoExternal = demoLink ? !demoLink.startsWith("/api/v1/demos") : false;
+  const showDemoLink = !demoExternal && allowDemoDownload;
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
   const date = formatDate(dateTimestamp);
 
@@ -159,7 +155,7 @@ export const MatchPage = () => {
           <Heading fontSize="lg" as="h2" mb={2}>
             {date}
           </Heading>
-          {demoLink && (
+          {showDemoLink && (
             <Tag
               as={Link}
               size="md"

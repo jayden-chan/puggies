@@ -283,14 +283,14 @@ func (p *pgdb) GetDeletedMatches(limit, offset int) ([]MetaData, error) {
 	return p.getMatches(limit, offset, true)
 }
 
-func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
+func (p *pgdb) GetMatch(id string) (*RetrievedMatch, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 	defer conn.Release()
 
-	var mapName, demoType, teamATitle, teamBTitle string
+	var mapName, demoType, teamATitle, teamBTitle, demoLink string
 	var dateTimestamp int64
 	var teamAScore, teamBScore int
 	var playerNames NamesMap
@@ -308,8 +308,10 @@ func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
 			   team_b_score,
 			   team_a_title,
 			   team_b_title,
+			   COALESCE(demo_link, FORMAT('/api/v1/demos/%s.dem', id)) AS demo_link,
 			   match_data
 		     FROM matches
+			 LEFT OUTER JOIN usermeta ON mapid = id
 			 WHERE id = $1 AND deleted = FALSE
 			 ORDER BY date DESC`, id).
 		Scan(
@@ -321,27 +323,34 @@ func (p *pgdb) GetMatch(id string) (*MetaData, *MatchData, error) {
 			&teamBScore,
 			&teamATitle,
 			&teamBTitle,
+			&demoLink,
 			&matchData,
 		)
 
 	if err != nil {
 		if err.Error() == "no rows in result set" {
-			return nil, nil, nil
+			return nil, nil
 		}
-		return nil, nil, err
+		return nil, err
 	}
 
-	return &MetaData{
-		Map:           mapName,
-		Id:            id,
-		DateTimestamp: dateTimestamp,
-		DemoType:      demoType,
-		PlayerNames:   playerNames,
-		TeamAScore:    teamAScore,
-		TeamBScore:    teamBScore,
-		TeamATitle:    teamATitle,
-		TeamBTitle:    teamBTitle,
-	}, &matchData, nil
+	return &RetrievedMatch{
+		Meta: RetrievedMeta{
+			MetaData: MetaData{
+				Map:           mapName,
+				Id:            id,
+				DateTimestamp: dateTimestamp,
+				DemoType:      demoType,
+				PlayerNames:   playerNames,
+				TeamAScore:    teamAScore,
+				TeamBScore:    teamBScore,
+				TeamATitle:    teamATitle,
+				TeamBTitle:    teamBTitle,
+			},
+			DemoLink: demoLink,
+		},
+		MatchData: matchData,
+	}, nil
 }
 
 func (p *pgdb) GetUserMeta(id string) (*UserMeta, error) {
