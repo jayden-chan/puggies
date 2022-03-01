@@ -1,27 +1,27 @@
 FROM golang:1.17.6-alpine as backendBuilder
+WORKDIR /workspace
 
 # we will grab the SSL certs and timezone data so people
 # don't have to mount this from their host machine
 RUN apk update --no-cache && apk add --no-cache ca-certificates && apk --no-cache add tzdata
 
-WORKDIR /workspace
-
-COPY ./backend/go.mod ./backend/go.sum ./
-RUN go get
-
 ENV CGO_ENABLED=0
+COPY ./backend/go.mod ./backend/go.sum ./
+
+RUN go mod download -x
+
 COPY ./backend/src .
 RUN go build -ldflags "-s -w" -o puggies .
 
 FROM node:lts-alpine as frontendBuilder
 WORKDIR /workspace
 
+ENV NODE_ENV=production
+ENV PUBLIC_URL=/app
+
 COPY ./frontend/package.json ./frontend/tsconfig.json ./frontend/yarn.lock ./
 
 RUN yarn install
-
-ENV NODE_ENV=production
-ENV PUBLIC_URL=/app
 
 COPY ./frontend/public ./public
 COPY ./frontend/src ./src
