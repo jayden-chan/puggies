@@ -51,7 +51,8 @@ type TeamsMap map[uint64]string
 type NamesMap map[uint64]string
 
 type UserMeta struct {
-	DemoLink string `json:"demoLink"`
+	DemoLink     string `json:"demoLink"`
+	DateOverride int64  `json:"dateOverride"`
 }
 
 type MetaData struct {

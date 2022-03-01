@@ -43,6 +43,8 @@ export const UpdateMetaModal = (props: {
   const { isOpen, onClose, matchId } = props;
 
   const [demoLink, setDemoLink] = useState("");
+  const [dateOverride, setDateOverride] = useState("");
+
   const [loadingMeta, setLoadingMeta] = useState(true);
   const [error, setError] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
@@ -51,6 +53,7 @@ export const UpdateMetaModal = (props: {
   useEffect(() => {
     if (isOpen === true) {
       setDemoLink("");
+      setDateOverride("");
       setLoadingMeta(true);
       setError(undefined);
       setLoading(false);
@@ -59,15 +62,26 @@ export const UpdateMetaModal = (props: {
         .userMeta(matchId)
         .then((m) => {
           setDemoLink(m?.demoLink ?? "");
+          setDateOverride(m?.dateOverride?.toString() ?? "");
           setLoadingMeta(false);
         });
     }
   }, [isOpen, matchId]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     setLoading(true);
+    const dateNumber = Number(dateOverride);
+    if (dateNumber === null || Number.isNaN(dateNumber)) {
+      setError(
+        `Error: field "Date" must be a number (unix milliseconds timestamp).`
+      );
+      return;
+    }
+
     api()
-      .updateMatchMeta(matchId, { demoLink })
+      .updateMatchMeta(matchId, { demoLink, dateOverride: dateNumber })
       .then(() => {
         toast({
           title: "Updated match metadata",
@@ -82,8 +96,6 @@ export const UpdateMetaModal = (props: {
         setError(err.toString());
         setLoading(false);
       });
-
-    e.preventDefault();
   };
 
   return (
@@ -94,7 +106,7 @@ export const UpdateMetaModal = (props: {
         <ModalCloseButton />
         <form onSubmit={onSubmit}>
           <ModalBody>
-            <FormControl isRequired>
+            <FormControl>
               <FormLabel htmlFor="demoLink">Demo download link</FormLabel>
               <Input
                 id="demoLink"
@@ -102,6 +114,15 @@ export const UpdateMetaModal = (props: {
                 value={demoLink}
                 isDisabled={loadingMeta}
                 onChange={(e) => setDemoLink(e.target.value)}
+                mb={5}
+              />
+              <FormLabel htmlFor="dateOverride">Date</FormLabel>
+              <Input
+                id="dateOverride"
+                type="text"
+                value={dateOverride}
+                isDisabled={loadingMeta}
+                onChange={(e) => setDateOverride(e.target.value)}
                 mb={5}
               />
             </FormControl>

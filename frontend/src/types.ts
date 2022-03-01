@@ -118,6 +118,7 @@ export type DemoType = "esea" | "pugsetup" | "faceit" | "steam";
 
 export type UserMeta = {
   demoLink?: string;
+  dateOverride?: number;
 };
 
 export type MatchInfo = {

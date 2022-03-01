@@ -231,7 +231,7 @@ func (p *pgdb) getMatches(limit, offset int, deleted bool) ([]MetaData, error) {
 			`SELECT
 			   id,
 			   map,
-			   date,
+			   COALESCE(usermeta.date_override, matches.date) AS date,
 			   demo_type,
 			   player_names,
 			   team_a_score,
@@ -239,7 +239,9 @@ func (p *pgdb) getMatches(limit, offset int, deleted bool) ([]MetaData, error) {
 			   team_a_title,
 			   team_b_title
 			 FROM matches
+			 LEFT OUTER JOIN usermeta ON mapid = id
 			 WHERE deleted = $1
+			 ORDER BY date DESC
 			 LIMIT $2 OFFSET $3`, deleted, limit, offset)
 
 	matches := make([]MetaData, 0, 10)
@@ -301,19 +303,18 @@ func (p *pgdb) GetMatch(id string) (*RetrievedMatch, error) {
 			context.Background(),
 			`SELECT
 			   map,
-			   date,
+			   COALESCE(usermeta.date_override, matches.date) AS date,
 			   demo_type,
 			   player_names,
 			   team_a_score,
 			   team_b_score,
 			   team_a_title,
 			   team_b_title,
-			   COALESCE(demo_link, FORMAT('/api/v1/demos/%s.dem', id)) AS demo_link,
+			   COALESCE(usermeta.demo_link, FORMAT('/api/v1/demos/%s.dem', id)) AS demo_link,
 			   match_data
 		     FROM matches
 			 LEFT OUTER JOIN usermeta ON mapid = id
-			 WHERE id = $1 AND deleted = FALSE
-			 ORDER BY date DESC`, id).
+			 WHERE id = $1 AND deleted = FALSE`, id).
 		Scan(
 			&mapName,
 			&dateTimestamp,
@@ -361,10 +362,15 @@ func (p *pgdb) GetUserMeta(id string) (*UserMeta, error) {
 	defer conn.Release()
 
 	var demoLink string
+	var dateTimestamp *int64
 
 	err = conn.
-		QueryRow(context.Background(), `SELECT demo_link FROM usermeta WHERE mapid = $1`, id).
-		Scan(&demoLink)
+		QueryRow(
+			context.Background(),
+			`SELECT demo_link, date_override FROM usermeta WHERE mapid = $1`,
+			id,
+		).
+		Scan(&demoLink, &dateTimestamp)
 
 	if err != nil {
 		if err.Error() == "no rows in result set" {
@@ -373,8 +379,14 @@ func (p *pgdb) GetUserMeta(id string) (*UserMeta, error) {
 		return nil, err
 	}
 
+	var dateOverride int64 = 0
+	if dateTimestamp != nil {
+		dateOverride = *dateTimestamp
+	}
+
 	return &UserMeta{
-		DemoLink: demoLink,
+		DemoLink:     demoLink,
+		DateOverride: dateOverride,
 	}, nil
 }
 
@@ -538,13 +550,27 @@ func (p *pgdb) GetUser(username string) (*User, error) {
 }
 
 func (p *pgdb) EditMatchMeta(id string, meta UserMeta) error {
+	// If everything is null just delete the whole entry
+	if meta.DemoLink == "" && meta.DateOverride == 0 {
+		_, err := p.transactionExec(
+			`DELETE FROM usermeta WHERE mapid = $1`,
+			id,
+		)
+		return err
+	}
+
+	var dateOverride *int64
+	if meta.DateOverride != 0 {
+		dateOverride = &meta.DateOverride
+	}
 	_, err := p.transactionExec(
-		`INSERT INTO usermeta (mapid, demo_link)
-		VALUES ($1, $2)
+		`INSERT INTO usermeta (mapid, demo_link, date_override)
+		VALUES ($1, $2, $3)
 		ON CONFLICT (mapid)
-		DO UPDATE SET demo_link = $2`,
+		DO UPDATE SET demo_link = $2, date_override = $3`,
 		id,
 		meta.DemoLink,
+		dateOverride,
 	)
 	return err
 }
