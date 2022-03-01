@@ -175,26 +175,25 @@ func (p *pgdb) RunMigration(config Config, dir string) error {
 	return nil
 }
 
-func (p *pgdb) HasMatch(id string) (bool, string, error) {
+func (p *pgdb) HasMatch(id string) (bool, int, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
-		return false, "", err
+		return false, 0, err
 	}
 	defer conn.Release()
 
-	// TODO: this will be updated later to check version information
-	var version string = ""
-	var returnedId string = ""
+	returnedVersion := 0
+	returnedId := ""
 
 	err = conn.
-		QueryRow(context.Background(), "SELECT id FROM matches WHERE id = $1", id).
-		Scan(&returnedId)
+		QueryRow(context.Background(), "SELECT id, version FROM matches WHERE id = $1", id).
+		Scan(&returnedId, &returnedVersion)
 
 	if err != nil && err.Error() != "no rows in result set" {
-		return false, "", err
+		return false, 0, err
 	}
 
-	return returnedId == id, version, nil
+	return returnedId == id, returnedVersion, nil
 }
 
 func (p *pgdb) HasUser(username string) (bool, error) {

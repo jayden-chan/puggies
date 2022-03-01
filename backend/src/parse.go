@@ -30,6 +30,10 @@ import (
 	metadata "github.com/markus-wa/demoinfocs-golang/v2/pkg/demoinfocs/metadata"
 )
 
+const (
+	ParserVersion = 1
+)
+
 func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, error) {
 	f, err := os.Open(path)
 	if err != nil {

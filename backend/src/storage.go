@@ -30,7 +30,7 @@ type Storage interface {
 	InsertAuditEntry(entry AuditEntry) error
 
 	// Check if a match with the given id exists
-	HasMatch(id string) (bool, string, error)
+	HasMatch(id string) (bool, int, error)
 	// Check if a user with the given username exists
 	HasUser(username string) (bool, error)
 

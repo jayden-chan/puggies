@@ -26,14 +26,16 @@ import (
 )
 
 func parseIdempotent(path, heatmapsDir string, c Context) error {
-	alreadyParsed, _, err := c.db.HasMatch(getDemoFileName(path))
+	alreadyParsed, version, err := c.db.HasMatch(getDemoFileName(path))
 	if err != nil {
 		return err
 	}
 
-	// TODO: check version info here in future
-	if alreadyParsed {
+	format := "New match added from demo %s with parser version %d"
+	if alreadyParsed && version == ParserVersion {
 		return nil
+	} else if alreadyParsed && version != ParserVersion {
+		format = "Demo %s updated to new parser version %d"
 	}
 
 	output, err := parseDemo(path, heatmapsDir, c.config, c.logger)
@@ -43,7 +45,7 @@ func parseIdempotent(path, heatmapsDir string, c Context) error {
 		c.db.InsertAuditEntry(AuditEntry{
 			System:      true,
 			Action:      "MATCH_ADDED",
-			Description: fmt.Sprintf("New match added from file %s", path),
+			Description: fmt.Sprintf(format, path, ParserVersion),
 		})
 		err := c.db.InsertMatches(output)
 		if err != nil {
