@@ -130,10 +130,7 @@ const TableRow = (props: {
             </MenuItem>
             <MenuItem
               onClick={() => {
-                const final = (window.location.href + url).replaceAll(
-                  "//",
-                  "/"
-                );
+                const final = window.location.href + url.slice(1);
                 navigator.clipboard?.writeText(final);
                 toast({
                   title: "Copied URL to clipboard",
