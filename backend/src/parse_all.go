@@ -40,10 +40,6 @@ func parseIdempotent(path, heatmapsDir string, c Context) error {
 	} else if alreadyParsed && version != ParserVersion {
 		format = "Demo %s updated to new parser version %d"
 		action = "MATCH_UPDATED"
-		err := c.db.FullDeleteMatch(demoId)
-		if err != nil {
-			return err
-		}
 	}
 
 	output, err := parseDemo(path, heatmapsDir, c.config, c.logger)

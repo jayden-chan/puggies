@@ -104,7 +104,21 @@ func (p *pgdb) InsertMatches(matches ...Match) error {
 				team_a_title,
 				team_b_title,
 				match_data
-			) VALUES ` + strings.Join(rows, ", ")
+			  )
+			  VALUES ` + strings.Join(rows, ", ") + `
+			  ON CONFLICT (id) DO UPDATE
+			  SET
+				id = EXCLUDED.id,
+				version = EXCLUDED.version,
+				map = EXCLUDED.map,
+				date = EXCLUDED.date,
+				demo_type = EXCLUDED.demo_type,
+				player_names = EXCLUDED.player_names,
+				team_a_score = EXCLUDED.team_a_score,
+				team_b_score = EXCLUDED.team_b_score,
+				team_a_title = EXCLUDED.team_a_title,
+				team_b_title = EXCLUDED.team_b_title,
+				match_data = EXCLUDED.match_data`
 
 	_, err := p.transactionExec(query, params...)
 	return err
@@ -573,8 +587,10 @@ func (p *pgdb) EditMatchMeta(id string, meta UserMeta) error {
 	_, err := p.transactionExec(
 		`INSERT INTO usermeta (mapid, demo_link, date_override)
 		VALUES ($1, $2, $3)
-		ON CONFLICT (mapid)
-		DO UPDATE SET demo_link = $2, date_override = $3`,
+		ON CONFLICT (mapid) DO UPDATE
+		SET
+		  demo_link = EXCLUDED.demo_link,
+		  date_override = EXCLUDED.date_override`,
 		id,
 		demoLink,
 		dateOverride,
