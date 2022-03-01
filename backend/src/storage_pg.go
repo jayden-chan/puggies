@@ -563,13 +563,19 @@ func (p *pgdb) EditMatchMeta(id string, meta UserMeta) error {
 	if meta.DateOverride != 0 {
 		dateOverride = &meta.DateOverride
 	}
+
+	var demoLink *string
+	if meta.DemoLink != "" {
+		demoLink = &meta.DemoLink
+	}
+
 	_, err := p.transactionExec(
 		`INSERT INTO usermeta (mapid, demo_link, date_override)
 		VALUES ($1, $2, $3)
 		ON CONFLICT (mapid)
 		DO UPDATE SET demo_link = $2, date_override = $3`,
 		id,
-		meta.DemoLink,
+		demoLink,
 		dateOverride,
 	)
 	return err
