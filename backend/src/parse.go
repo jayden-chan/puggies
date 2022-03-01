@@ -31,7 +31,7 @@ import (
 )
 
 const (
-	ParserVersion = 1
+	ParserVersion = 2
 )
 
 func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, error) {

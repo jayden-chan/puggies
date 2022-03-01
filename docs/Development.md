@@ -67,15 +67,9 @@ Use a descriptive yet concise name for the migration so developers know what it 
 documentation for more info.
 
 ### Demo Parser Versioning
-When making updates to the demo parser it is important to increment the `ParserVersion`
-if necessary. Parsed matches are tagged in the database with the version of the demo
-parser used to parse them. Breaking changes to the parser will require incrementing the
-`ParserVersion` so that the demos in the database get re-analyzed with the new logic.
-
-Some examples of changes to the parser that would require changing the `ParserVersion`:
-* Changing the `Match`, `MatchData` or `MetaData` types
-* Changing the semantic meaning of any field in the `MatchData` type, whether as a bug
-    fix or feature change
+When making updates to the demo parser it is important to increment the `ParserVersion`.
+This will signal to the backend that existing matches in the database were parsed with an
+out-of-date parser and need to be re-analyzed.
 
 #### Documentation
 * [demoinfocs-golang](https://pkg.go.dev/github.com/markus-wa/demoinfocs-golang/v2#section-readme)

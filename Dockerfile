@@ -18,10 +18,6 @@
 FROM golang:1.17.6-alpine as backendBuilder
 WORKDIR /workspace
 
-# we will grab the SSL certs and timezone data so people
-# don't have to mount this from their host machine
-RUN apk update --no-cache && apk add --no-cache ca-certificates && apk --no-cache add tzdata
-
 ENV CGO_ENABLED=0
 COPY ./backend/go.mod ./backend/go.sum ./
 
@@ -29,6 +25,10 @@ RUN go mod download -x
 
 COPY ./backend/src .
 RUN go build -ldflags "-s -w" -o puggies .
+
+# we will grab the SSL certs and timezone data so people
+# don't have to mount this from their host machine
+RUN apk update --no-cache && apk add --no-cache ca-certificates && apk --no-cache add tzdata
 
 FROM node:lts-alpine as frontendBuilder
 WORKDIR /workspace

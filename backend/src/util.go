@@ -294,22 +294,34 @@ func updateTeams(
 	ctClanTag, tClanTag *string,
 	leavers map[uint64]uint64,
 ) {
-	tTeam := (*p).GameState().TeamTerrorists()
-	tTag := tTeam.ClanName()
-	ctTeam := (*p).GameState().TeamCounterTerrorists()
-	ctTag := ctTeam.ClanName()
+	// If the teams have custom names we will use those
+	tTag := (*p).GameState().TeamTerrorists().ClanName()
+	ctTag := (*p).GameState().TeamCounterTerrorists().ClanName()
 
 	if tTag != "" && ctTag != "" {
 		*tClanTag = tTag
 		*ctClanTag = ctTag
 	}
 
-	for _, tPlayer := range tTeam.Members() {
-		(*teams)[unBotify(tPlayer.SteamID64)] = "T"
+	for _, player := range (*p).GameState().Participants().All() {
+		if !player.IsConnected {
+			continue
+		}
+
+		playerId := unBotify(player.SteamID64)
+
+		switch player.Team {
+		case common.TeamSpectators:
+			delete(*teams, playerId)
+		case common.TeamUnassigned:
+			delete(*teams, playerId)
+		case common.TeamCounterTerrorists:
+			(*teams)[playerId] = "CT"
+		case common.TeamTerrorists:
+			(*teams)[playerId] = "T"
+		}
 	}
-	for _, ctPlayer := range ctTeam.Members() {
-		(*teams)[unBotify(ctPlayer.SteamID64)] = "CT"
-	}
+
 	for leaver, teammate := range leavers {
 		(*teams)[unBotify(leaver)] = (*teams)[unBotify(teammate)]
 	}

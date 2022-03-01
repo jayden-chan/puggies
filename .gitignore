@@ -6,4 +6,5 @@
 node_modules
 demos
 backend/data
+backend/tests_*
 .env
