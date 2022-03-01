@@ -80,11 +80,11 @@ func (p *pgdb) Close() {
 }
 
 func (p *pgdb) InsertMatches(matches ...Match) error {
-	params := make([]interface{}, 0, len(matches)*10)
+	params := make([]interface{}, 0, len(matches)*11)
 	rows := make([]string, 0, len(matches))
 
 	for i, match := range matches {
-		value, err := p.genMatchInsert(match, i*10, &params)
+		value, err := p.genMatchInsert(match, i*11, &params)
 		if err != nil {
 			return err
 		}
@@ -94,6 +94,7 @@ func (p *pgdb) InsertMatches(matches ...Match) error {
 
 	query := `INSERT INTO matches (
 				id,
+				version,
 				map,
 				date,
 				demo_type,
@@ -739,9 +740,10 @@ func (p *pgdb) genMatchInsert(match Match, base int, params *[]interface{}) (str
 		return "", err
 	}
 
-	sql := valuesRowSql(base, 10)
+	sql := valuesRowSql(base, 11)
 	*params = append(*params,
 		match.Meta.Id,
+		ParserVersion,
 		match.Meta.Map,
 		match.Meta.DateTimestamp,
 		match.Meta.DemoType,
