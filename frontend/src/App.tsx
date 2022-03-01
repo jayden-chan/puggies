@@ -51,7 +51,6 @@ import {
 } from "react-router-dom";
 import shallow from "zustand/shallow";
 import Fonts from "./components/Fonts";
-import { Loading } from "./components/Loading";
 import { Admin } from "./pages/Admin";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
@@ -59,7 +58,6 @@ import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { useLoginStore } from "./stores/login";
-import { useMatchesStore } from "./stores/matches";
 import { useOptionsStore } from "./stores/options";
 
 const config: ThemeConfig = {

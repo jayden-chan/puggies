@@ -47,7 +47,6 @@ export const UpdateMetaModal = (props: {
   const [error, setError] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const api = new DataAPI();
 
   useEffect(() => {
     if (isOpen === true) {
@@ -56,15 +55,17 @@ export const UpdateMetaModal = (props: {
       setError(undefined);
       setLoading(false);
 
+      const api = new DataAPI();
       api.userMeta(matchId).then((m) => {
         setDemoLink(m?.demoLink ?? "");
         setLoadingMeta(false);
       });
     }
-  }, [isOpen]);
+  }, [isOpen, matchId]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
+    const api = new DataAPI();
     api
       .updateMatchMeta(matchId, { demoLink })
       .then(() => {
