@@ -33,7 +33,7 @@ changes in detail and ensure you have followed the pull request checklist.
 ## Tips
 
 ### Frontend
-* Use only Chakra Components (`<Box>` / `<Flex>` / `<Text>` as opposed to plain React 
+* Use only Chakra Components (`<Box>` / `<Flex>` / `<Text>` as opposed to plain React
     components like `<div>` or `<p>`). The
     [Chakra Documentation](https://chakra-ui.com/docs/getting-started) is your best friend!
 * Use `setState` where possible for component-local state. Use `zustand` for global
@@ -65,6 +65,17 @@ migrate create -ext sql -dir migrations -seq descriptive_migration_name_here
 Use a descriptive yet concise name for the migration so developers know what it does. See the
 [migration best practices](https://github.com/golang-migrate/migrate/blob/master/MIGRATIONS.md)
 documentation for more info.
+
+### Demo Parser Versioning
+When making updates to the demo parser it is important to increment the `ParserVersion`
+if necessary. Parsed matches are tagged in the database with the version of the demo
+parser used to parse them. Breaking changes to the parser will require incrementing the
+`ParserVersion` so that the demos in the database get re-analyzed with the new logic.
+
+Some examples of changes to the parser that would require changing the `ParserVersion`:
+* Changing the `Match`, `MatchData` or `MetaData` types
+* Changing the semantic meaning of any field in the `MatchData` type, whether as a bug
+    fix or feature change
 
 #### Documentation
 * [demoinfocs-golang](https://pkg.go.dev/github.com/markus-wa/demoinfocs-golang/v2#section-readme)
