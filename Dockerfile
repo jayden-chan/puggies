@@ -1,3 +1,20 @@
+# Copyright 2022 Puggies Authors (see AUTHORS.txt)
+#
+# This file is part of Puggies.
+#
+# Puggies is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Affero General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or (at your
+# option) any later version.
+#
+# Puggies is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+# License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with Puggies. If not, see <https://www.gnu.org/licenses/>.
+
 FROM golang:1.17.6-alpine as backendBuilder
 WORKDIR /workspace
 
@@ -16,12 +33,13 @@ RUN go build -ldflags "-s -w" -o puggies .
 FROM node:lts-alpine as frontendBuilder
 WORKDIR /workspace
 
-ENV NODE_ENV=production
 ENV PUBLIC_URL=/app
 
 COPY ./frontend/package.json ./frontend/tsconfig.json ./frontend/yarn.lock ./
 
 RUN yarn install
+
+ENV NODE_ENV=production
 
 COPY ./frontend/public ./public
 COPY ./frontend/src ./src

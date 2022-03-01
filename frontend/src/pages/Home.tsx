@@ -140,16 +140,26 @@ const TableRow = (props: {
             )}
             <MenuItem
               onClick={() => {
-                const final =
+                const fullUrl =
                   window.location.href +
                   url.slice(window.location.href.endsWith("/") ? 1 : 0);
-                navigator.clipboard?.writeText(final);
-                toast({
-                  title: "Copied URL to clipboard",
-                  status: "info",
-                  duration: 3000,
-                  isClosable: true,
-                });
+
+                if (navigator.clipboard) {
+                  navigator.clipboard.writeText(fullUrl).then(() => {
+                    toast({
+                      title: "Copied URL to clipboard",
+                      status: "info",
+                      duration: 3000,
+                      isClosable: true,
+                    });
+                  });
+                } else {
+                  toast({
+                    title: "Error: application doesn't have clipboard access",
+                    status: "error",
+                    isClosable: true,
+                  });
+                }
               }}
             >
               Share
