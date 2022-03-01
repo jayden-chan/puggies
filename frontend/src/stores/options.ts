@@ -18,9 +18,7 @@
  */
 
 import create from "zustand";
-import { DataAPI } from "../api";
-
-const api = new DataAPI();
+import { api } from "../api";
 
 type OptionsStore = {
   selfSignupEnabled: boolean;
@@ -34,7 +32,7 @@ export const useOptionsStore = create<OptionsStore>((set) => ({
   showLoginButton: true,
   allowDemoDownload: true,
   updateOptions: async () => {
-    const options = await api.options();
+    const options = await api().options();
     set({ ...options });
   },
 }));

@@ -42,7 +42,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import shallow from "zustand/shallow";
-import { DataAPI } from "../../api";
+import { api } from "../../api";
 import { Loading } from "../../components/Loading";
 import {
   formatDate,
@@ -51,7 +51,7 @@ import {
   getPlayers,
 } from "../../data";
 import { useOptionsStore } from "../../stores/options";
-import { Match, Round, Stats, UserMeta } from "../../types";
+import { Match, Round, Stats } from "../../types";
 import { HeadToHeadTable } from "./HeadToHeadTable";
 import { OpeningDuels } from "./OpeningDuels";
 import { PlayerInfo } from "./PlayerInfo";
@@ -91,15 +91,15 @@ export const MatchPage = () => {
   );
 
   useEffect(() => {
-    const api = new DataAPI();
-
-    api.match(id).then((m) => {
-      if (m === undefined) {
-        navigate("/404");
-      } else {
-        setMatch(m);
-      }
-    });
+    api()
+      .match(id)
+      .then((m) => {
+        if (m === undefined) {
+          navigate("/404");
+        } else {
+          setMatch(m);
+        }
+      });
   }, [id, navigate]);
 
   if (match === undefined) {
@@ -118,7 +118,7 @@ export const MatchPage = () => {
   } = match.meta;
 
   const demoExternal = demoLink ? !demoLink.startsWith("/api/v1/demos") : false;
-  const showDemoLink = !demoExternal && allowDemoDownload;
+  const showDemoLink = demoExternal || allowDemoDownload;
   const eseaId = demoType === "esea" ? getESEAId(id) : undefined;
   const date = formatDate(dateTimestamp);
 

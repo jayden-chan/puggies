@@ -18,10 +18,8 @@
  */
 
 import create from "zustand";
-import { DataAPI } from "../api";
+import { api } from "../api";
 import { MatchInfo } from "../types";
-
-const api = new DataAPI();
 
 type MatchesStore = {
   matches: MatchInfo[] | undefined;
@@ -31,7 +29,7 @@ type MatchesStore = {
 export const useMatchesStore = create<MatchesStore>((set) => ({
   matches: [],
   fetchMatches: async (limit: number, offset: number) => {
-    const matches = await api.matches(limit, offset);
+    const matches = await api().matches(limit, offset);
     set({ matches });
   },
 }));

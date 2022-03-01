@@ -30,7 +30,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import shallow from "zustand/shallow";
-import { DataAPI } from "../api";
+import { api } from "../api";
 import { useMatchesStore } from "../stores/matches";
 
 export const DeleteMatchModal = (props: {
@@ -62,8 +62,7 @@ export const DeleteMatchModal = (props: {
             colorScheme="red"
             mr={3}
             onClick={() => {
-              const api = new DataAPI();
-              api
+              api()
                 .deleteMatch(matchId)
                 .then(() => {
                   toast({

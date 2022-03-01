@@ -39,7 +39,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { APIError, DataAPI, User } from "../../api";
+import { api, APIError, User } from "../../api";
 import { DeleteUserModal } from "../../components/DeleteUserModal";
 import { EditUserModal } from "../../components/EditUserModal";
 import { roleColor } from "../../data";
@@ -67,8 +67,7 @@ export const Users = () => {
   } = useDisclosure();
 
   const fetchUsers = useCallback(() => {
-    const api = new DataAPI();
-    api
+    api()
       .users()
       .then((users) => setUsers(users))
       .catch((err) => {

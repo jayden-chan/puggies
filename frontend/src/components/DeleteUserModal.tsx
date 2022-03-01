@@ -29,7 +29,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
-import { DataAPI } from "../api";
+import { api } from "../api";
 
 export const DeleteUserModal = (props: {
   displayName: string;
@@ -53,8 +53,7 @@ export const DeleteUserModal = (props: {
             colorScheme="red"
             mr={3}
             onClick={() => {
-              const api = new DataAPI();
-              api
+              api()
                 .deleteUser(username)
                 .then(() => {
                   toast({

@@ -29,7 +29,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { DataAPI, User } from "../api";
+import { api, User } from "../api";
 import { EditUserForm } from "./EditUserForm";
 
 export const EditUserModal = (props: {
@@ -59,8 +59,7 @@ export const EditUserModal = (props: {
             error={error}
             onSubmit={(u) => {
               setLoading(true);
-              const api = new DataAPI();
-              api
+              api()
                 .editUser(currUser.username, u)
                 .then(() => {
                   setLoading(false);

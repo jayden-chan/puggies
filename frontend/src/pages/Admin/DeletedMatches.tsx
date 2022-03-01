@@ -39,7 +39,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { APIError, DataAPI } from "../../api";
+import { api, APIError } from "../../api";
 import { formatDate } from "../../data";
 import { MatchInfo } from "../../types";
 
@@ -50,8 +50,7 @@ export const DeletedMatches = () => {
   const toast = useToast();
 
   const fetchMatches = useCallback(() => {
-    const api = new DataAPI();
-    api
+    api()
       .deletedMatches()
       .then((matches) => setMatches(matches))
       .catch((err) => {
@@ -120,10 +119,9 @@ export const DeletedMatches = () => {
                       <MenuGroup title="Admin options">
                         <MenuItem
                           onClick={async () => {
-                            const api = new DataAPI();
                             try {
-                              await api.fullDeleteMatch(match.id);
-                              await api.triggerRescan();
+                              await api().fullDeleteMatch(match.id);
+                              await api().triggerRescan();
                               toast({
                                 title:
                                   "Match restored. Demo parsing in progress - check back soon",

@@ -51,6 +51,14 @@ export type FrontendOptions = {
 
 type ErrorCode = 400 | 401 | 403 | 404 | 405 | 418 | 429 | 500 | 501 | 502;
 
+let _api: DataAPI;
+export const api = (): DataAPI => {
+  if (_api === undefined) {
+    _api = new DataAPI();
+  }
+  return _api;
+};
+
 export class APIError extends Error {
   public code: number;
   constructor(code: number, ...params: any[]) {
@@ -65,7 +73,7 @@ export class APIError extends Error {
   }
 }
 
-export class DataAPI {
+class DataAPI {
   private endpoint = "/api/v1";
   private jwtKeyName = "puggies-login-token";
 

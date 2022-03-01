@@ -30,7 +30,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { APIError, AuditEntry, DataAPI } from "../../api";
+import { api, APIError, AuditEntry } from "../../api";
 import { PaginationBar } from "../../components/PaginationBar";
 import { formatAuditDate } from "../../data";
 
@@ -45,9 +45,8 @@ export const AuditLog = () => {
   const navigate = useNavigate();
 
   const fetchEntries = useCallback(() => {
-    const api = new DataAPI();
     setIsRefreshing(true);
-    api
+    api()
       .auditLog(limit, offset)
       .then((entries) => setEntries(entries))
       .catch((err) => {

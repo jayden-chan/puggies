@@ -33,7 +33,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { DataAPI } from "../api";
+import { api } from "../api";
 
 export const UpdateMetaModal = (props: {
   matchId: string;
@@ -55,18 +55,18 @@ export const UpdateMetaModal = (props: {
       setError(undefined);
       setLoading(false);
 
-      const api = new DataAPI();
-      api.userMeta(matchId).then((m) => {
-        setDemoLink(m?.demoLink ?? "");
-        setLoadingMeta(false);
-      });
+      api()
+        .userMeta(matchId)
+        .then((m) => {
+          setDemoLink(m?.demoLink ?? "");
+          setLoadingMeta(false);
+        });
     }
   }, [isOpen, matchId]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
-    const api = new DataAPI();
-    api
+    api()
       .updateMatchMeta(matchId, { demoLink })
       .then(() => {
         toast({
