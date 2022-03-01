@@ -7,9 +7,11 @@ RUN apk update --no-cache && apk add --no-cache ca-certificates && apk --no-cach
 WORKDIR /workspace
 
 COPY ./backend/go.mod ./backend/go.sum ./
-COPY ./backend/src .
+RUN go get
+
 ENV CGO_ENABLED=0
-RUN go get && go build -ldflags "-s -w" -o puggies .
+COPY ./backend/src .
+RUN go build -ldflags "-s -w" -o puggies .
 
 FROM node:lts-alpine as frontendBuilder
 WORKDIR /workspace
