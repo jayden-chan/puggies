@@ -53,7 +53,7 @@ import { DeleteMatchModal } from "../components/DeleteMatchModal";
 import { Loading } from "../components/Loading";
 import { PaginationBar } from "../components/PaginationBar";
 import { UpdateMetaModal } from "../components/UpdateMetaModal";
-import { formatDate, getDemoTypePretty } from "../data";
+import { formatDate, getDemoTypePretty, getESEAId } from "../data";
 import { useLoginStore } from "../stores/login";
 import { useMatchesStore } from "../stores/matches";
 import { MatchInfo } from "../types";
@@ -77,6 +77,7 @@ const TableRow = (props: {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
   const url = `/match/${match.id}`;
+  const eseaId = getESEAId(match.id);
   const toast = useToast();
 
   return (
@@ -128,6 +129,15 @@ const TableRow = (props: {
             <MenuItem onClick={() => window.open(`/app${url}`)}>
               Open in new tab
             </MenuItem>
+            {eseaId && (
+              <MenuItem
+                onClick={() =>
+                  window.open(`https://play.esea.net/match/${eseaId}`)
+                }
+              >
+                Open ESEA match page
+              </MenuItem>
+            )}
             <MenuItem
               onClick={() => {
                 const final = window.location.href + url.slice(1);
