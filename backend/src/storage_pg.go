@@ -536,6 +536,27 @@ func (p *pgdb) NumMatches() (int, error) {
 	return numMatches, nil
 }
 
+func (p *pgdb) NumAuditLogEntries() (int, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return 0, err
+	}
+	defer conn.Release()
+
+	var numEntries int
+	err = conn.
+		QueryRow(context.Background(), `SELECT COUNT(timestamp) FROM auditlog`).
+		Scan(&numEntries)
+
+	if err != nil {
+		if err.Error() == "no rows in result set" {
+			return 0, nil
+		}
+		return 0, err
+	}
+	return numEntries, nil
+}
+
 func (p *pgdb) GetMatch(id string) (*RetrievedMatch, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {

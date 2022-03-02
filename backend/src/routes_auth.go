@@ -201,10 +201,22 @@ func route_users(c Context) func(*gin.Context) {
 		users, err := c.db.GetUsers()
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+		} else {
+			ginc.JSON(http.StatusOK, gin.H{"message": users})
 		}
+	}
+}
 
-		ginc.JSON(http.StatusOK, gin.H{"message": users})
+func route_numUsers(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		numUsers, err := c.db.NumUsers()
+		if err != nil {
+			errString := fmt.Sprintf("Failed to fetch number of users: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
+		} else {
+			ginc.JSON(http.StatusOK, gin.H{"message": numUsers})
+		}
 	}
 }
 
@@ -229,6 +241,19 @@ func route_auditLog(c Context) func(*gin.Context) {
 		}
 
 		ginc.JSON(http.StatusOK, gin.H{"message": entries})
+	}
+}
+
+func route_numAuditLogEntries(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		numEntries, err := c.db.NumAuditLogEntries()
+		if err != nil {
+			errString := fmt.Sprintf("Failed to fetch size of audit log: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
+		} else {
+			ginc.JSON(http.StatusOK, gin.H{"message": numEntries})
+		}
 	}
 }
 

@@ -104,6 +104,19 @@ func route_history(c Context) func(*gin.Context) {
 	}
 }
 
+func route_numMatches(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		numMatches, err := c.db.NumMatches()
+		if err != nil {
+			errString := fmt.Sprintf("Failed to fetch number of matches: %s", err.Error())
+			c.logger.Errorf(errString)
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": errString})
+		} else {
+			ginc.JSON(http.StatusOK, gin.H{"message": numMatches})
+		}
+	}
+}
+
 func route_usermeta(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")

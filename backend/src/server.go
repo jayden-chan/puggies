@@ -242,6 +242,7 @@ func runServer(c Context) {
 		v1.GET("/options", route_options(c))
 		v1.GET("/matches/:id", route_match(c))
 		v1.GET("/history", route_history(c))
+		v1.GET("/numMatches", route_numMatches(c))
 		v1.GET("/usermeta/:id", route_usermeta(c))
 
 		v1.POST("/login", route_login(c))
@@ -270,12 +271,14 @@ func runServer(c Context) {
 		v1Admin.Use(AllowedRoles(c, []string{"admin"}))
 		{
 			v1Admin.GET("/users", route_users(c))
+			v1Admin.GET("/numUsers", route_numUsers(c))
 			v1Admin.GET("/users/:username", route_user(c))
 			v1Admin.POST("/users/:username", route_editUser(c))
 			v1Admin.DELETE("/users/:username", route_deleteUser(c))
 
 			v1Admin.GET("/deletedMatches", route_deletedMatches(c))
 			v1Admin.GET("/audit", route_auditLog(c))
+			v1Admin.GET("/auditsize", route_numAuditLogEntries(c))
 
 			v1Admin.POST("/adminregister", route_register(c))
 			v1Admin.PUT("/usermeta/:id", route_editUserMeta(c))

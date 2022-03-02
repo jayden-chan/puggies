@@ -17,41 +17,67 @@
  * along with Puggies. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ArrowBackIcon, ArrowForwardIcon, RepeatIcon } from "@chakra-ui/icons";
+import {
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  RepeatIcon,
+} from "@chakra-ui/icons";
 import { Flex, IconButton, Text } from "@chakra-ui/react";
 import React from "react";
 
 export const PaginationBar = (props: {
   page: number;
-  hasNext: boolean;
-  hasPrev: boolean;
+  totalPages: number;
   isRefreshing: boolean;
-  onNext: () => void;
-  onPrev: () => void;
+  setPage: (page: number) => void;
   onRefresh: () => void;
 }) => {
+  const { page, totalPages, isRefreshing, setPage, onRefresh } = props;
+  const displayControls = page > 1 || page < totalPages ? undefined : "none";
   return (
     <Flex p={1} alignItems="center" justifyContent="space-between">
       <Flex alignItems="center">
         <IconButton
-          aria-label="refresh"
-          disabled={!props.hasPrev}
-          icon={<ArrowBackIcon />}
-          onClick={() => props.onPrev()}
+          aria-label="first page"
+          mr={1}
+          disabled={!(page > 1)}
+          icon={<ArrowLeftIcon />}
+          onClick={() => setPage(1)}
+          display={displayControls}
         />
-        <Text mx={2}>Page {props.page}</Text>
         <IconButton
-          aria-label="refresh"
-          disabled={!props.hasNext}
+          aria-label="previous page"
+          disabled={!(page > 1)}
+          icon={<ArrowBackIcon />}
+          onClick={() => setPage(page - 1)}
+          display={displayControls}
+        />
+        <Text mx={2}>
+          Page {page} of {totalPages}
+        </Text>
+        <IconButton
+          aria-label="next page"
+          mr={1}
+          disabled={!(page < totalPages)}
           icon={<ArrowForwardIcon />}
-          onClick={() => props.onNext()}
+          onClick={() => setPage(page + 1)}
+          display={displayControls}
+        />
+        <IconButton
+          aria-label="last page"
+          disabled={!(page < totalPages)}
+          icon={<ArrowRightIcon />}
+          onClick={() => setPage(totalPages)}
+          display={displayControls}
         />
       </Flex>
       <IconButton
         aria-label="refresh"
-        isLoading={props.isRefreshing}
+        isLoading={isRefreshing}
         icon={<RepeatIcon />}
-        onClick={() => props.onRefresh()}
+        onClick={() => onRefresh()}
       />
     </Flex>
   );

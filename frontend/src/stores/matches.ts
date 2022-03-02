@@ -23,13 +23,20 @@ import { MatchInfo } from "../types";
 
 type MatchesStore = {
   matches: MatchInfo[] | undefined;
+  numMatches: number;
   fetchMatches: (limit: number, offset: number) => Promise<void>;
+  fetchNumMatches: () => Promise<void>;
 };
 
 export const useMatchesStore = create<MatchesStore>((set) => ({
   matches: [],
+  numMatches: 0,
   fetchMatches: async (limit: number, offset: number) => {
     const matches = await api().matches(limit, offset);
     set({ matches });
+  },
+  fetchNumMatches: async () => {
+    const numMatches = await api().numMatches();
+    set({ numMatches });
   },
 }));

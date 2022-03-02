@@ -34,28 +34,35 @@ import { api, APIError, AuditEntry } from "../../api";
 import { PaginationBar } from "../../components/PaginationBar";
 import { formatAuditDate } from "../../data";
 
+const LIMIT = 30;
+
 export const AuditLog = () => {
   const [entries, setEntries] = useState<AuditEntry[]>([]);
   const [page, setPage] = useState(1);
+  const [auditSize, setAuditSize] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const limit = 30;
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * LIMIT;
+  const pages = Math.ceil(auditSize / LIMIT);
 
   const navigate = useNavigate();
 
   const fetchEntries = useCallback(() => {
     setIsRefreshing(true);
-    api()
-      .auditLog(limit, offset)
-      .then((entries) => setEntries(entries))
+    Promise.all([
+      api()
+        .auditLog(LIMIT, offset)
+        .then((entries) => setEntries(entries)),
+      api()
+        .auditLogSize()
+        .then((size) => setAuditSize(size)),
+    ])
       .catch((err) => {
         if (err instanceof APIError && err.code === 401) {
           navigate("/");
         }
       })
       .finally(() => setIsRefreshing(false));
-  }, [navigate, limit, offset]);
+  }, [navigate, offset]);
 
   useEffect(() => fetchEntries(), [fetchEntries]);
 
@@ -83,11 +90,9 @@ export const AuditLog = () => {
         <>
           <PaginationBar
             page={page}
-            hasPrev={page > 1}
-            hasNext={entries.length === limit}
+            totalPages={pages}
             isRefreshing={isRefreshing}
-            onPrev={() => setPage((prev) => prev - 1)}
-            onNext={() => setPage((prev) => prev + 1)}
+            setPage={(p) => setPage(p)}
             onRefresh={() => fetchEntries()}
           />
           <Table variant="simple" size="md" colorScheme="gray" my={3}>
@@ -118,11 +123,9 @@ export const AuditLog = () => {
           </Table>
           <PaginationBar
             page={page}
-            hasPrev={page > 1}
-            hasNext={entries.length === limit}
+            totalPages={pages}
             isRefreshing={isRefreshing}
-            onPrev={() => setPage((prev) => prev - 1)}
-            onNext={() => setPage((prev) => prev + 1)}
+            setPage={(p) => setPage(p)}
             onRefresh={() => fetchEntries()}
           />
         </>

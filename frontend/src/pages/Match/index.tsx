@@ -31,7 +31,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Tag,
   Text,
 } from "@chakra-ui/react";
 import {

@@ -47,6 +47,7 @@ type Storage interface {
 
 	NumUsers() (int, error)
 	NumMatches() (int, error)
+	NumAuditLogEntries() (int, error)
 
 	GetMatch(id string) (*RetrievedMatch, error)
 	// Fetch match metadatas (match history) from the database

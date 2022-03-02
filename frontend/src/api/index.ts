@@ -293,6 +293,17 @@ class DataAPI {
     return r.res.sort((a, b) => b.dateTimestamp - a.dateTimestamp);
   }
 
+  public async numMatches(): Promise<number> {
+    const r = await this.fetch<number>("GET", `/numMatches`);
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch match history length (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res;
+  }
+
   public async deletedMatches(): Promise<MatchInfo[]> {
     const r = await this.fetchAuthed<MatchInfo[]>("GET", "/deletedMatches");
     if (r.code !== 200) {
@@ -310,6 +321,17 @@ class DataAPI {
       throw new APIError(
         r.code,
         `Failed to fetch users (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res;
+  }
+
+  public async numUsers(): Promise<number> {
+    const r = await this.fetchAuthed<number>("GET", `/numUsers`);
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch number of users (HTTP ${r.code}): ${r.error}`
       );
     }
     return r.res;
@@ -369,6 +391,17 @@ class DataAPI {
       throw new APIError(
         r.code,
         `Failed to fetch audit log (HTTP ${r.code}): ${r.error}`
+      );
+    }
+    return r.res;
+  }
+
+  public async auditLogSize(): Promise<number> {
+    const r = await this.fetchAuthed<number>("GET", `/auditsize`);
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
+        `Failed to fetch audit log size (HTTP ${r.code}): ${r.error}`
       );
     }
     return r.res;

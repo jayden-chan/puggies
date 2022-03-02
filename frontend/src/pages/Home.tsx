@@ -192,26 +192,36 @@ const TableRow = (props: {
   );
 };
 
+const LIMIT = 30;
+
 export const Home = () => {
   const [deleteMatchId, setDeleteMatchId] = useState("");
   const [updateMatchId, setUpdateMatchId] = useState("");
   const [page, setPage] = useState(1);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const limit = 30;
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * LIMIT;
 
   const [user] = useLoginStore((state) => [state.user], shallow);
-  const [matches, fetchMatchesStore] = useMatchesStore(
-    (state) => [state.matches, state.fetchMatches],
-    shallow
-  );
+  const [matches, numMatches, fetchMatchesStore, fetchNumMatchesStore] =
+    useMatchesStore(
+      (state) => [
+        state.matches,
+        state.numMatches,
+        state.fetchMatches,
+        state.fetchNumMatches,
+      ],
+      shallow
+    );
 
-  const fetchMatches = useCallback(() => {
+  const fetch = useCallback(() => {
     setIsRefreshing(true);
-    fetchMatchesStore(limit, offset).then(() => setIsRefreshing(false));
-  }, [fetchMatchesStore, limit, offset]);
+    Promise.all([
+      fetchNumMatchesStore(),
+      fetchMatchesStore(LIMIT, offset),
+    ]).then(() => setIsRefreshing(false));
+  }, [fetchMatchesStore, fetchNumMatchesStore, offset]);
 
-  useEffect(() => fetchMatches(), [fetchMatches]);
+  useEffect(() => fetch(), [fetch]);
 
   const {
     isOpen: deleteModalOpen,
@@ -226,6 +236,7 @@ export const Home = () => {
   } = useDisclosure();
 
   const isAdmin = user?.roles.includes("admin") ?? false;
+  const pages = Math.ceil(numMatches / LIMIT);
 
   if (matches === undefined) {
     return <Loading minH="calc(100vh - 5.5rem)">Loading matches...</Loading>;
@@ -270,12 +281,10 @@ export const Home = () => {
         <Box overflowX="auto">
           <PaginationBar
             page={page}
-            hasPrev={page > 1}
-            hasNext={matches.length === limit}
+            totalPages={pages}
             isRefreshing={isRefreshing}
-            onPrev={() => setPage((prev) => prev - 1)}
-            onNext={() => setPage((prev) => prev + 1)}
-            onRefresh={() => fetchMatches()}
+            setPage={(p) => setPage(p)}
+            onRefresh={() => fetch()}
           />
           <Table variant="simple" colorScheme="gray" size="sm" my={3}>
             <Thead>
@@ -305,18 +314,16 @@ export const Home = () => {
           </Table>
           <PaginationBar
             page={page}
-            hasPrev={page > 1}
-            hasNext={matches.length === limit}
+            totalPages={pages}
             isRefreshing={isRefreshing}
-            onPrev={() => setPage((prev) => prev - 1)}
-            onNext={() => setPage((prev) => prev + 1)}
-            onRefresh={() => fetchMatches()}
+            setPage={(p) => setPage(p)}
+            onRefresh={() => fetch()}
           />
         </Box>
       )}
       <DeleteMatchModal
         matchId={deleteMatchId}
-        limit={limit}
+        limit={LIMIT}
         offset={offset}
         isOpen={deleteModalOpen}
         onClose={closeDeleteModal}
