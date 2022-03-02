@@ -46,7 +46,7 @@ func parseIdempotent(path, heatmapsDir string, c Context) error {
 	if err != nil {
 		return err
 	} else {
-		err := c.db.InsertMatches(output)
+		err := c.db.UpsertMatches(output)
 		if err != nil {
 			return err
 		}

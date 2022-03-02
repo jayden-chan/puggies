@@ -32,31 +32,28 @@ type RetrievedMatch struct {
 }
 
 type Storage interface {
-	// Add matches to the database
-	InsertMatches(match ...Match) error
-	// Add user to the database
-	RegisterUser(user User, password string) error
-	// Insert audit entry
+	InsertUser(user User, password string) error
 	InsertAuditEntry(entry AuditEntry) error
+	UpsertMatches(match ...Match) error
+	UpsertMatchMeta(id string, meta UserMeta) error
+	// Change the ID of a match (if the demo is renamed in the folder)
+	RenameMatch(oldId, newId string) error
+	UpdateUser(username string, newInfo UserWithPassword) error
 
-	// Check if a match with the given id exists
+	// Returns if the match exists, and if so which parser version was used
+	// to parse it
 	HasMatch(id string) (bool, int, error)
-	// Check if a user with the given username exists
 	HasUser(username string) (bool, error)
 
-	// Fetch a match from the database
 	GetMatch(id string) (*RetrievedMatch, error)
 	// Fetch match metadatas (match history) from the database
 	GetMatches(limit, offset int) ([]MetaData, error)
-	// Fetch deleted matches from the db
+	// Fetch matches which are marked as deleted
 	GetDeletedMatches(limit, offset int) ([]MetaData, error)
 	// Fetch user-defined data for the given match
 	GetUserMeta(id string) (*UserMeta, error)
-	// Fetch user
 	GetUser(username string) (*User, error)
-	// Fetch all users
 	GetUsers() ([]User, error)
-	// Fetch all audit log entries
 	GetAuditLog(limit, offset int) ([]AuditEntry, error)
 
 	// Validate the username and password & return the user if valid
@@ -67,24 +64,16 @@ type Storage interface {
 	// that matches this one. If it hasn't expired yet, the token
 	// is considered invalid
 	IsTokenValid(token string) (bool, error)
-	// Remove tokens from the invalided tokens table that have
-	// expired
+	// Remove tokens from the invalided tokens table that have expired
 	CleanInvalidTokens() error
 
 	// Run database schema migrations in the up or down direction
 	RunMigration(config Config, dir string) error
 
-	// Update the user metadata for the given match
-	EditMatchMeta(id string, meta UserMeta) error
-	// Change the ID of a match (if the demo is renamed in the folder)
-	RenameMatch(oldId, newId string) error
-	// Update the user information for the given user id
-	EditUser(username string, newInfo UserWithPassword) error
-
 	// Mark the given match as deleted (will not delete the demo itself)
-	DeleteMatch(id string) error
+	SoftDeleteMatch(id string) error
 	// Fully remove the match from the database (will not delete the demo itself)
-	FullDeleteMatch(id string) error
+	HardDeleteMatch(id string) error
 	// Delete user with the given username
 	DeleteUser(username string) error
 

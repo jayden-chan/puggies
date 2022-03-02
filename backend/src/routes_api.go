@@ -156,7 +156,7 @@ func route_register(c Context) func(*gin.Context) {
 			SteamId:     json.SteamId,
 		}
 
-		err := c.db.RegisterUser(user, json.Password)
+		err := c.db.InsertUser(user, json.Password)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

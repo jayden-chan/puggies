@@ -46,7 +46,7 @@ func getUsername(ginc *gin.Context) string {
 func route_deleteMatch(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
-		err := c.db.DeleteMatch(id)
+		err := c.db.SoftDeleteMatch(id)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -65,7 +65,7 @@ func route_deleteMatch(c Context) func(*gin.Context) {
 func route_fullDeleteMatch(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
-		err := c.db.FullDeleteMatch(id)
+		err := c.db.HardDeleteMatch(id)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -90,7 +90,7 @@ func route_editUserMeta(c Context) func(*gin.Context) {
 			return
 		}
 
-		err := c.db.EditMatchMeta(id, input)
+		err := c.db.UpsertMatchMeta(id, input)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -119,7 +119,7 @@ func route_editUser(c Context) func(*gin.Context) {
 			return
 		}
 
-		err := c.db.EditUser(username, input)
+		err := c.db.UpdateUser(username, input)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

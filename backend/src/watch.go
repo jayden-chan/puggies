@@ -20,7 +20,7 @@
 package main
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -49,10 +49,9 @@ func watchDemoDir(watchDir string, newFile chan<- string, renamedFile chan<- Fil
 					return
 				}
 
-				fmt.Println(event)
-				fmt.Println(prev)
+				if strings.HasSuffix(event.Name, ".dem") &&
+					event.Op&fsnotify.Create == fsnotify.Create {
 
-				if event.Op&fsnotify.Create == fsnotify.Create {
 					if prev != nil && prev.Op&fsnotify.Rename == fsnotify.Rename {
 						renamedFile <- FileRename{old: prev.Name, new: event.Name}
 					} else {
