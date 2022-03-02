@@ -149,14 +149,27 @@ func route_register(c Context) func(*gin.Context) {
 			displayName = json.DisplayName
 		}
 
+		numUsers, err := c.db.NumUsers()
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		var roles []string = make([]string, 0, 0)
+		// the first registered user will be made an admin
+		if numUsers == 0 {
+			roles = append(roles, "admin")
+		}
+
 		user := User{
 			Username:    json.Username,
 			DisplayName: displayName,
 			Email:       json.Email,
+			Roles:       roles,
 			SteamId:     json.SteamId,
 		}
 
-		err := c.db.InsertUser(user, json.Password)
+		err = c.db.InsertUser(user, json.Password)
 		if err != nil {
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

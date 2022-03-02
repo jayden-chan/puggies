@@ -53,6 +53,19 @@ func newPgDb(config Config, logger *Logger) (*pgdb, error) {
 	}, nil
 }
 
+func valuesRowSql(base, numCols int) string {
+	sql := "("
+	vars := make([]string, 0, numCols)
+	for i := 1; i <= numCols; i++ {
+		vars = append(vars, "$"+strconv.Itoa(base+i))
+	}
+
+	sql += strings.Join(vars, ", ")
+	sql += ")"
+
+	return sql
+}
+
 func (p *pgdb) transactionExec(query string, arguments ...interface{}) (int64, error) {
 	conn, err := p.dbpool.Acquire(context.Background())
 	if err != nil {
@@ -144,19 +157,6 @@ func (p *pgdb) createMigrationClient(config Config) (*migrate.Migrate, error) {
 		// connection strings. Don't want to confuse people with "pgx://" in the
 		// documentation so we will just accept postgres strings
 		strings.Replace(config.dbConnString, "postgres://", "pgx://", 1))
-}
-
-func valuesRowSql(base, numCols int) string {
-	sql := "("
-	vars := make([]string, 0, numCols)
-	for i := 1; i <= numCols; i++ {
-		vars = append(vars, "$"+strconv.Itoa(base+i))
-	}
-
-	sql += strings.Join(vars, ", ")
-	sql += ")"
-
-	return sql
 }
 
 func (p *pgdb) genMatchInsert(match Match, base int, params *[]interface{}) (string, error) {
@@ -262,15 +262,21 @@ func (p *pgdb) InsertUser(user User, password string) error {
 		return err
 	}
 
-	query := `INSERT INTO users
-					(username, display_name, email, password_argon, steam_id)
-		VALUES ($1, $2, $3, $4, $5)`
+	query := `INSERT INTO users (
+				username,
+				display_name,
+				email,
+				password_argon,
+				roles,
+				steam_id
+			) VALUES ($1, $2, $3, $4, $5, $6)`
 
 	_, err = p.transactionExec(query,
 		user.Username,
 		user.DisplayName,
 		user.Email,
 		passwordArgon,
+		user.Roles,
 		steamId,
 	)
 
@@ -486,6 +492,48 @@ func (p *pgdb) HasUser(username string) (bool, error) {
 	}
 
 	return count != 0, nil
+}
+
+func (p *pgdb) NumUsers() (int, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return 0, err
+	}
+	defer conn.Release()
+
+	var numUsers int
+	err = conn.
+		QueryRow(context.Background(), `SELECT COUNT(username) FROM users`).
+		Scan(&numUsers)
+
+	if err != nil {
+		if err.Error() == "no rows in result set" {
+			return 0, nil
+		}
+		return 0, err
+	}
+	return numUsers, nil
+}
+
+func (p *pgdb) NumMatches() (int, error) {
+	conn, err := p.dbpool.Acquire(context.Background())
+	if err != nil {
+		return 0, err
+	}
+	defer conn.Release()
+
+	var numMatches int
+	err = conn.
+		QueryRow(context.Background(), `SELECT COUNT(id) FROM matches`).
+		Scan(&numMatches)
+
+	if err != nil {
+		if err.Error() == "no rows in result set" {
+			return 0, nil
+		}
+		return 0, err
+	}
+	return numMatches, nil
 }
 
 func (p *pgdb) GetMatch(id string) (*RetrievedMatch, error) {

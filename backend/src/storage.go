@@ -45,6 +45,9 @@ type Storage interface {
 	HasMatch(id string) (bool, int, error)
 	HasUser(username string) (bool, error)
 
+	NumUsers() (int, error)
+	NumMatches() (int, error)
+
 	GetMatch(id string) (*RetrievedMatch, error)
 	// Fetch match metadatas (match history) from the database
 	GetMatches(limit, offset int) ([]MetaData, error)
