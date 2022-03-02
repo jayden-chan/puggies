@@ -620,7 +620,7 @@ func (p *pgdb) GetUserMeta(id string) (*UserMeta, error) {
 	}
 	defer conn.Release()
 
-	var demoLink string
+	var demoLink *string
 	var dateTimestamp *int64
 
 	err = conn.
@@ -643,8 +643,13 @@ func (p *pgdb) GetUserMeta(id string) (*UserMeta, error) {
 		dateOverride = *dateTimestamp
 	}
 
+	var demoLinkFinal string = ""
+	if demoLink != nil {
+		demoLinkFinal = *demoLink
+	}
+
 	return &UserMeta{
-		DemoLink:     demoLink,
+		DemoLink:     demoLinkFinal,
 		DateOverride: dateOverride,
 	}, nil
 }

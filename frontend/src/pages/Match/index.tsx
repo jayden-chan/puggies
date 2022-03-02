@@ -21,6 +21,7 @@ import {
   Alert,
   AlertIcon,
   Box,
+  Button,
   Divider,
   Flex,
   Heading,
@@ -156,27 +157,27 @@ export const MatchPage = () => {
             {date}
           </Heading>
           {showDemoLink && (
-            <Tag
+            <Button
               as={Link}
-              size="md"
-              isExternal={demoExternal}
-              href={demoLink}
-              mr="0.5rem"
               colorScheme="teal"
+              href={demoLink}
+              isExternal={demoExternal}
+              mr="0.5rem"
+              size="xs"
             >
               Download demo
-            </Tag>
+            </Button>
           )}
           {eseaId && (
-            <Tag
+            <Button
               as={Link}
-              size="md"
-              isExternal
               colorScheme="green"
               href={`https://play.esea.net/match/${eseaId}`}
+              isExternal
+              size="xs"
             >
               ESEA match page
-            </Tag>
+            </Button>
           )}
         </Box>
 
