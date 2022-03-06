@@ -94,7 +94,7 @@ const KillFeedPlayer = (
     player: string;
   }
 ) => (
-  <Text {...props} as="span" mt="2px" fontWeight="bold">
+  <Text {...props} as="span" fontWeight="bold">
     {props.player}
   </Text>
 );
@@ -259,63 +259,71 @@ export const RoundByRoundList = (props: {
 
         return (
           <AccordionItem key={i}>
-            <AccordionButton>
-              <Flex w="100%" alignItems="center">
-                <Heading
-                  as="h3"
-                  flex={1}
-                  fontSize="1.1rem"
-                  textAlign="left"
-                  lineHeight="1.1rem"
-                  height="1.1rem"
-                >
-                  Round {i + 1}
-                </Heading>
+            {({ isExpanded }) => (
+              <>
+                <AccordionButton>
+                  <Flex w="100%" alignItems="center">
+                    <Heading
+                      as="h3"
+                      flex={1}
+                      fontSize="1.1rem"
+                      textAlign="left"
+                      lineHeight="1.1rem"
+                      height="1.1rem"
+                    >
+                      Round {i + 1}
+                    </Heading>
 
-                <Flex flex={1} justifyContent="center" alignItems="center">
-                  <RoundResultIcon
-                    round={props.rounds[i]}
-                    visibility={props.rounds[i].winner === teamASide}
-                  />
-                  <Heading
-                    as="h3"
-                    fontSize="xl"
-                    ml={3}
-                    textColor={TEAM_COLORS_MAP[teamASide]}
-                  >
-                    {teamAScore}
-                  </Heading>
-                  <Heading as="h3" fontSize="xl" mx={2}>
-                    :
-                  </Heading>
-                  <Heading
-                    as="h3"
-                    fontSize="xl"
-                    mr={3}
-                    textColor={TEAM_COLORS_MAP[teamBSide]}
-                  >
-                    {teamBScore}
-                  </Heading>
-                  <RoundResultIcon
-                    round={props.rounds[i]}
-                    visibility={props.rounds[i].winner === teamBSide}
-                  />
-                </Flex>
-                <Flex flex={1} justifyContent="center">
-                  <AccordionIcon ml="auto" />
-                </Flex>
-              </Flex>
-            </AccordionButton>
+                    <Flex flex={1} justifyContent="center" alignItems="center">
+                      <RoundResultIcon
+                        round={props.rounds[i]}
+                        visibility={props.rounds[i].winner === teamASide}
+                      />
+                      <Heading
+                        as="h3"
+                        fontSize="xl"
+                        ml={3}
+                        textColor={TEAM_COLORS_MAP[teamASide]}
+                      >
+                        {teamAScore}
+                      </Heading>
+                      <Heading as="h3" fontSize="xl" mx={2}>
+                        :
+                      </Heading>
+                      <Heading
+                        as="h3"
+                        fontSize="xl"
+                        mr={3}
+                        textColor={TEAM_COLORS_MAP[teamBSide]}
+                      >
+                        {teamBScore}
+                      </Heading>
+                      <RoundResultIcon
+                        round={props.rounds[i]}
+                        visibility={props.rounds[i].winner === teamBSide}
+                      />
+                    </Flex>
+                    <Flex flex={1} justifyContent="center">
+                      <AccordionIcon ml="auto" />
+                    </Flex>
+                  </Flex>
+                </AccordionButton>
 
-            <AccordionPanel>
-              <EventsFeed
-                events={events}
-                startTeams={props.startTeams}
-                playerNames={props.playerNames}
-                round={i + 1}
-                halfLength={props.halfLength}
-              />
-            </AccordionPanel>
+                <AccordionPanel>
+                  {isExpanded ? (
+                    <EventsFeed
+                      events={events}
+                      startTeams={props.startTeams}
+                      playerNames={props.playerNames}
+                      round={i + 1}
+                      halfLength={props.halfLength}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </AccordionPanel>
+              </>
+            )}
           </AccordionItem>
         );
       })}

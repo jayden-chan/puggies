@@ -199,7 +199,7 @@ export const MatchPage = () => {
 
       <Divider w={["95%", null, null, "80%"]} mb={2} />
 
-      <Tabs w={["95%", null, null, "80%"]}>
+      <Tabs w={["95%", null, null, "80%"]} isLazy>
         <TabList
           overflowX={["auto", "auto", "unset"]}
           overflowY={["hidden", null, "unset"]}
