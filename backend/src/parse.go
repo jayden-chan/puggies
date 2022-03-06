@@ -81,9 +81,6 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 	heatmaps := make(map[string][]r2.Point)
 
 	p.RegisterEventHandler(func(e events.Kill) {
-		// In faceit these events can sometimes trigger before we
-		// even have a RoundStart event so the stats arrays will be
-		// empty
 		if len(prd.kills) == 0 {
 			return
 		}
@@ -160,6 +157,10 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerFlashed) {
+		if len(prd.kills) == 0 {
+			return
+		}
+
 		blindMs := e.FlashDuration().Milliseconds()
 
 		// https://counterstrike.fandom.com/wiki/Flashbang
@@ -212,9 +213,6 @@ func parseDemo(path, heatmapsDir string, config Config, logger *Logger) (Match, 
 	})
 
 	p.RegisterEventHandler(func(e events.PlayerHurt) {
-		// In faceit these events can sometimes trigger before we
-		// even have a RoundStart event so the damage array will be
-		// empty
 		if len(prd.damage) == 0 {
 			return
 		}
