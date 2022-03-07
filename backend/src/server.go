@@ -53,13 +53,8 @@ func watchFileChanges(c Context) {
 		select {
 		case created := <-fileCreated:
 			c.logger.Infof("new file detected: %s", created)
-			c.db.InsertAuditEntry(AuditEntry{
-				System:      true,
-				Action:      "MATCH_ADDED",
-				Description: fmt.Sprintf("New match added from file %s", created),
-			})
 			demoId := getDemoFileName(created)
-			err := parseIdempotent(created, heatmapsDir, c)
+			err := parseIdempotent(created, heatmapsDir, false, c)
 			if err != nil {
 				c.logger.Errorf(
 					"demo=%s Failed to parse demo: %s",

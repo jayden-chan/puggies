@@ -34,6 +34,7 @@ import {
   Thead,
   ToastId,
   Tr,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -41,15 +42,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, APIError } from "../../api";
+import { FullDeleteMatchModal } from "../../components/FullDeleteMatchModal";
 import { formatDate } from "../../data";
 import { MatchInfo } from "../../types";
 
 export const DeletedMatches = () => {
   const [matches, setMatches] = useState<MatchInfo[]>([]);
+  const [fullDelMatchId, setFullDelMatchId] = useState("");
   const restoreToastRef = useRef<ToastId | undefined>();
 
   const navigate = useNavigate();
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const fetchMatches = useCallback(() => {
     api()
@@ -154,6 +158,14 @@ export const DeletedMatches = () => {
                         >
                           Restore
                         </MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            setFullDelMatchId(match.id);
+                            onOpen();
+                          }}
+                        >
+                          Permanently Delete
+                        </MenuItem>
                       </MenuGroup>
                     </MenuList>
                   </Menu>
@@ -163,6 +175,15 @@ export const DeletedMatches = () => {
           </Tbody>
         </Table>
       )}
+
+      <FullDeleteMatchModal
+        matchId={fullDelMatchId}
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+          fetchMatches();
+        }}
+      />
     </Box>
   );
 };

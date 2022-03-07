@@ -23,6 +23,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -71,13 +72,19 @@ func route_fullDeleteMatch(c Context) func(*gin.Context) {
 			return
 		}
 
+		err = os.Remove(join(c.config.demosPath, id+".dem"))
+		if err != nil {
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
 		c.db.InsertAuditEntry(AuditEntry{
-			Action:      "MATCH_REMOVED",
+			Action:      "MATCH_PERMANENTLY_DELETED",
 			Username:    getUsername(ginc),
-			Description: fmt.Sprintf("Match %s removed from the matches database", id),
+			Description: fmt.Sprintf("Match %s was deleted along with demo file", id),
 		})
 
-		ginc.JSON(http.StatusOK, gin.H{"message": "match deleted"})
+		ginc.JSON(http.StatusOK, gin.H{"message": "match permanently deleted"})
 	}
 }
 
@@ -327,7 +334,7 @@ func route_restore(c Context) func(*gin.Context) {
 	return func(ginc *gin.Context) {
 		id := ginc.Param("id")
 		path := join(c.config.demosPath, id+".dem")
-		err := parseIdempotent(path, c.config.dataPath, c)
+		err := parseIdempotent(path, c.config.dataPath, true, c)
 		if err != nil {
 			c.logger.Errorf("failed to parse match during restore: %s", err.Error())
 			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

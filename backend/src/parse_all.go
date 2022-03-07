@@ -25,7 +25,7 @@ import (
 	"path/filepath"
 )
 
-func parseIdempotent(path, heatmapsDir string, c Context) error {
+func parseIdempotent(path, heatmapsDir string, shouldRestore bool, c Context) error {
 	demoId := getDemoFileName(path)
 	alreadyParsed, version, err := c.db.HasMatch(demoId)
 	if err != nil {
@@ -35,11 +35,18 @@ func parseIdempotent(path, heatmapsDir string, c Context) error {
 	format := "New match added from demo %s with parser version %d"
 	action := "MATCH_ADDED"
 
-	if alreadyParsed && version == ParserVersion {
+	deleted := alreadyParsed && version == 0
+	upToDate := alreadyParsed && version == ParserVersion
+	outOfDate := alreadyParsed && version != ParserVersion && !deleted
+
+	if upToDate || (deleted && !shouldRestore) {
 		return nil
-	} else if alreadyParsed && version != ParserVersion {
+	} else if outOfDate {
 		format = "Demo %s updated to new parser version %d"
 		action = "MATCH_UPDATED"
+	} else if deleted && shouldRestore {
+		format = "Demo %s restored with parser version %d"
+		action = "MATCH_RESTORED"
 	}
 
 	output, err := parseDemo(path, heatmapsDir, c.config, c.logger)
@@ -75,7 +82,7 @@ func parseAllIdempotent(inDir, outDir string, c Context) error {
 	heatmapsDir := join(outDir, "heatmaps")
 
 	for _, file := range files {
-		err = parseIdempotent(file, heatmapsDir, c)
+		err = parseIdempotent(file, heatmapsDir, false, c)
 		if err != nil {
 			return err
 		}
