@@ -202,6 +202,19 @@ class DataAPI {
     if (r.code !== 200) {
       throw new APIError(
         r.code,
+        `Failed to full delete match (HTTP ${r.code}): ${r.error}`
+      );
+    }
+  }
+
+  public async restoreMatch(id: string): Promise<void> {
+    const r = await this.fetchAuthed<string>(
+      "PUT",
+      `/restore/${encodeURIComponent(id)}`
+    );
+    if (r.code !== 200) {
+      throw new APIError(
+        r.code,
         `Failed to restore match (HTTP ${r.code}): ${r.error}`
       );
     }

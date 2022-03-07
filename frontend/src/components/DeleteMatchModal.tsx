@@ -26,6 +26,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import React from "react";
@@ -53,8 +54,16 @@ export const DeleteMatchModal = (props: {
         <ModalHeader>Delete {matchId}?</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          Extracted info and user-specified metadata will be deleted. The demo
-          file itself will not be deleted.
+          <Text>
+            Extracted statistics and user-generated metadata will be deleted.
+            The demo file itself will not be deleted.
+          </Text>
+          <Text>
+            <b>
+              You will be able to restore the match at a later date if you
+              choose.
+            </b>
+          </Text>
         </ModalBody>
 
         <ModalFooter>

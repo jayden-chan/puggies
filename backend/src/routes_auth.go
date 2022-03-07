@@ -322,3 +322,18 @@ func route_logout(c Context) func(*gin.Context) {
 		ginc.JSON(http.StatusOK, gin.H{"message": "logged out"})
 	}
 }
+
+func route_restore(c Context) func(*gin.Context) {
+	return func(ginc *gin.Context) {
+		id := ginc.Param("id")
+		path := join(c.config.demosPath, id+".dem")
+		err := parseIdempotent(path, c.config.dataPath, c)
+		if err != nil {
+			c.logger.Errorf("failed to parse match during restore: %s", err.Error())
+			ginc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		} else {
+			ginc.JSON(http.StatusOK, gin.H{"message": "match restored"})
+		}
+	}
+}

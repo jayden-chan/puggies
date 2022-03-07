@@ -32,12 +32,13 @@ import {
   Text,
   Th,
   Thead,
+  ToastId,
   Tr,
   useToast,
 } from "@chakra-ui/react";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api, APIError } from "../../api";
 import { formatDate } from "../../data";
@@ -45,6 +46,7 @@ import { MatchInfo } from "../../types";
 
 export const DeletedMatches = () => {
   const [matches, setMatches] = useState<MatchInfo[]>([]);
+  const restoreToastRef = useRef<ToastId | undefined>();
 
   const navigate = useNavigate();
   const toast = useToast();
@@ -120,15 +122,24 @@ export const DeletedMatches = () => {
                         <MenuItem
                           onClick={async () => {
                             try {
-                              await api().fullDeleteMatch(match.id);
-                              await api().triggerRescan();
-                              toast({
+                              restoreToastRef.current = toast({
                                 title:
-                                  "Match restored. Demo parsing in progress - check back soon",
-                                status: "success",
-                                duration: 3000,
+                                  "Restoring match. This might take a second...",
+                                status: "info",
                                 isClosable: true,
                               });
+                              await api()
+                                .restoreMatch(match.id)
+                                .then(() => {
+                                  if (restoreToastRef.current) {
+                                    toast.update(restoreToastRef.current, {
+                                      title: "Match restored.",
+                                      status: "success",
+                                      duration: 3000,
+                                      isClosable: true,
+                                    });
+                                  }
+                                });
                               fetchMatches();
                             } catch (e) {
                               if (e instanceof Error) {

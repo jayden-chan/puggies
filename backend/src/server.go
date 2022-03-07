@@ -282,6 +282,7 @@ func runServer(c Context) {
 
 			v1Admin.POST("/adminregister", route_register(c))
 			v1Admin.PUT("/usermeta/:id", route_editUserMeta(c))
+			v1Admin.PUT("/restore/:id", route_restore(c))
 			v1Admin.DELETE("/matches/:id", route_deleteMatch(c))
 			v1Admin.DELETE("/fulldelete/matches/:id", route_fullDeleteMatch(c))
 		}

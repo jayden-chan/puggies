@@ -170,10 +170,11 @@ func (p *pgdb) genMatchInsert(match Match, base int, params *[]interface{}) (str
 		return "", err
 	}
 
-	sql := valuesRowSql(base, 11)
+	sql := valuesRowSql(base, MatchInsertNumFields)
 	*params = append(*params,
 		match.Meta.Id,
 		ParserVersion,
+		false,
 		match.Meta.Map,
 		match.Meta.DateTimestamp,
 		match.Meta.DemoType,
@@ -304,12 +305,14 @@ func (p *pgdb) InsertAuditEntry(entry AuditEntry) error {
 	return err
 }
 
+const MatchInsertNumFields = 12
+
 func (p *pgdb) UpsertMatches(matches ...Match) error {
-	params := make([]interface{}, 0, len(matches)*11)
+	params := make([]interface{}, 0, len(matches)*MatchInsertNumFields)
 	rows := make([]string, 0, len(matches))
 
 	for i, match := range matches {
-		value, err := p.genMatchInsert(match, i*11, &params)
+		value, err := p.genMatchInsert(match, i*MatchInsertNumFields, &params)
 		if err != nil {
 			return err
 		}
@@ -320,6 +323,7 @@ func (p *pgdb) UpsertMatches(matches ...Match) error {
 	query := `INSERT INTO matches (
 				id,
 				version,
+				deleted,
 				map,
 				date,
 				demo_type,
@@ -335,6 +339,7 @@ func (p *pgdb) UpsertMatches(matches ...Match) error {
 			  SET
 				id = EXCLUDED.id,
 				version = EXCLUDED.version,
+				deleted = EXCLUDED.deleted,
 				map = EXCLUDED.map,
 				date = EXCLUDED.date,
 				demo_type = EXCLUDED.demo_type,
@@ -838,6 +843,7 @@ func (p *pgdb) SoftDeleteMatch(id string) error {
 	_, err := p.transactionExec(
 		`UPDATE matches
 		 SET
+		   version = 0,
 		   deleted = TRUE,
 		   match_data = '{}',
 		   player_names = '{}'
