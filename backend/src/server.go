@@ -254,8 +254,8 @@ func runServer(c Context) {
 		v1Auth.Use(AuthRequired(c))
 		{
 			// userinfo provides the user fields for the logged in
-			// user. the route to get info for any user by their username
-			// is admin-protected
+			// user. the route to get info for an arbitary user by
+			// their username is admin-protected
 			v1Auth.GET("/userinfo", route_userinfo(c))
 			v1Auth.POST("/logout", route_logout(c))
 
