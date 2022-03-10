@@ -24,6 +24,7 @@ import { MatchInfo } from "../types";
 type MatchesStore = {
   matches: MatchInfo[] | undefined;
   numMatches: number;
+  clearMatches: () => void;
   fetchMatches: (limit: number, offset: number) => Promise<void>;
   fetchNumMatches: () => Promise<void>;
 };
@@ -31,6 +32,7 @@ type MatchesStore = {
 export const useMatchesStore = create<MatchesStore>((set) => ({
   matches: [],
   numMatches: 0,
+  clearMatches: () => set({ matches: [] }),
   fetchMatches: async (limit: number, offset: number) => {
     const matches = await api().matches(limit, offset);
     set({ matches });

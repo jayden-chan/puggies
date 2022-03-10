@@ -18,12 +18,9 @@
  */
 
 import create from "zustand";
-import { api } from "../api";
+import { api, FrontendOptions } from "../api";
 
-type OptionsStore = {
-  selfSignupEnabled: boolean;
-  showLoginButton: boolean;
-  allowDemoDownload: boolean;
+type OptionsStore = FrontendOptions & {
   updateOptions: () => Promise<void>;
 };
 
@@ -31,6 +28,7 @@ export const useOptionsStore = create<OptionsStore>((set) => ({
   selfSignupEnabled: false,
   showLoginButton: true,
   allowDemoDownload: true,
+  matchVisibility: "public",
   updateOptions: async () => {
     const options = await api().options();
     set({ ...options });

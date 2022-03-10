@@ -47,6 +47,7 @@ export type FrontendOptions = {
   selfSignupEnabled: boolean;
   showLoginButton: boolean;
   allowDemoDownload: boolean;
+  matchVisibility: "public" | "private";
 };
 
 type ErrorCode = 400 | 401 | 403 | 404 | 405 | 418 | 429 | 500 | 501 | 502;
@@ -76,9 +77,13 @@ export class APIError extends Error {
 class DataAPI {
   private endpoint = "/api/v1";
   private jwtKeyName = "puggies-login-token";
+  private token: string | null = null;
 
   private getLoginToken(): string | null {
-    return localStorage.getItem(this.jwtKeyName);
+    if (this.token === null) {
+      this.token = localStorage.getItem(this.jwtKeyName);
+    }
+    return this.token;
   }
 
   private async fetch<T>(
@@ -88,9 +93,17 @@ class DataAPI {
   ): Promise<{ code: 200; res: T } | { code: ErrorCode; error: string }> {
     const res = await fetch(`${this.endpoint}${url}`, {
       method: method,
-      headers: {
-        "Content-Type": body !== undefined ? "application/json" : "text/plain",
-      },
+      headers:
+        this.token !== null
+          ? {
+              "Content-Type":
+                body !== undefined ? "application/json" : "text/plain",
+              Authorization: `Bearer ${this.token}`,
+            }
+          : {
+              "Content-Type":
+                body !== undefined ? "application/json" : "text/plain",
+            },
       body: JSON.stringify(body),
     });
 

@@ -37,6 +37,14 @@ a long, random string.
 The length of time a user's session token will be valid for. After this period they will
 need to log in again.
 
+#### `PUGGIES_MATCH_VISIBILITY`
+**Type**: `public` or `private` <br/>
+**Default**: `public`
+
+Configure the visibility of matches. If set to `public`, all matches will be visible
+without requiring an account. If set to `private`, visitors will not be able to view
+matches without logging in with an account.
+
 #### `PUGGIES_ALLOW_DEMO_DOWNLOAD`
 **Type**: Boolean <br/>
 **Default**: `true`

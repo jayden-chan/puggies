@@ -47,7 +47,7 @@ import {
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import shallow from "zustand/shallow";
 import { DeleteMatchModal } from "../components/DeleteMatchModal";
 import { Loading } from "../components/Loading";
@@ -56,6 +56,7 @@ import { UpdateMetaModal } from "../components/UpdateMetaModal";
 import { formatDate, getDemoTypePretty, getESEAId } from "../data";
 import { useLoginStore } from "../stores/login";
 import { useMatchesStore } from "../stores/matches";
+import { useOptionsStore } from "../stores/options";
 import { MatchInfo } from "../types";
 
 const RowLink = (props: TableCellProps & { to: string }) => (
@@ -76,6 +77,7 @@ const TableRow = (props: {
   const date = formatDate(match.dateTimestamp);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
+
   const url = `/match/${match.id}`;
   const eseaId = getESEAId(match.id);
   const toast = useToast();
@@ -201,7 +203,11 @@ export const Home = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const offset = (page - 1) * LIMIT;
 
-  const [user] = useLoginStore((state) => [state.user], shallow);
+  const [user, loggedIn] = useLoginStore(
+    (state) => [state.user, state.loggedIn],
+    shallow
+  );
+
   const [matches, numMatches, fetchMatchesStore, fetchNumMatchesStore] =
     useMatchesStore(
       (state) => [
@@ -212,6 +218,18 @@ export const Home = () => {
       ],
       shallow
     );
+
+  const [matchVisibility] = useOptionsStore(
+    (state) => [state.matchVisibility],
+    shallow
+  );
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (matchVisibility === "private" && !loggedIn) {
+      navigate("/login");
+    }
+  }, [matchVisibility, loggedIn, navigate]);
 
   const fetch = useCallback(() => {
     setIsRefreshing(true);

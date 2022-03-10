@@ -48,6 +48,7 @@ func route_options(c Context) func(*gin.Context) {
 				"selfSignupEnabled": c.config.selfSignupEnabled,
 				"showLoginButton":   c.config.showLoginButton,
 				"allowDemoDownload": c.config.allowDemoDownload,
+				"matchVisibility":   c.config.matchVisibility,
 			},
 		})
 	}

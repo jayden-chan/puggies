@@ -235,9 +235,13 @@ func runServer(c Context) {
 		v1.GET("/ping", route_ping())
 		v1.GET("/health", route_health())
 		v1.GET("/options", route_options(c))
-		v1.GET("/matches/:id", route_match(c))
-		v1.GET("/history", route_history(c))
-		v1.GET("/numMatches", route_numMatches(c))
+
+		if c.config.matchVisibility == "public" {
+			v1.GET("/matches/:id", route_match(c))
+			v1.GET("/history", route_history(c))
+			v1.GET("/numMatches", route_numMatches(c))
+		}
+
 		v1.GET("/usermeta/:id", route_usermeta(c))
 
 		v1.POST("/login", route_login(c))
@@ -260,6 +264,12 @@ func runServer(c Context) {
 			v1Auth.POST("/logout", route_logout(c))
 
 			v1Auth.PATCH("/rescan", route_rescan(c))
+
+			if c.config.matchVisibility == "private" {
+				v1Auth.GET("/matches/:id", route_match(c))
+				v1Auth.GET("/history", route_history(c))
+				v1Auth.GET("/numMatches", route_numMatches(c))
+			}
 		}
 
 		v1Admin := v1.Group("/")

@@ -35,7 +35,7 @@ func AllowedRoles(c Context, allowedRoles []string) gin.HandlerFunc {
 		auth := ginc.GetHeader("Authorization")
 		authWords := strings.Fields(auth)
 		if len(authWords) != 2 || authWords[0] != "Bearer" {
-			c.logger.Warn("invalid Authorization header encountered")
+			c.logger.Warnf("invalid Authorization header encountered: %s", auth)
 			ginc.AbortWithStatusJSON(
 				http.StatusUnauthorized,
 				gin.H{"message": "invalid Authorization headers"},

@@ -58,6 +58,7 @@ import { MatchPage } from "./pages/Match";
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { useLoginStore } from "./stores/login";
+import { useMatchesStore } from "./stores/matches";
 import { useOptionsStore } from "./stores/options";
 
 const config: ThemeConfig = {
@@ -137,6 +138,11 @@ const Header = (props: { showLoginButton: boolean }) => {
     shallow
   );
 
+  const [clearMatches] = useMatchesStore(
+    (state) => [state.clearMatches],
+    shallow
+  );
+
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -167,6 +173,7 @@ const Header = (props: { showLoginButton: boolean }) => {
               <MenuItem
                 onClick={() => {
                   logout();
+                  clearMatches();
                   toast({
                     title: "Successfully logged out",
                     status: "success",

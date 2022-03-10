@@ -38,6 +38,7 @@ type Config struct {
 	frontendPath      string
 	jwtSecret         []byte
 	jwtSessionHours   int
+	matchVisibility   string
 	migrationsPath    string
 	port              string
 	rescanInterval    int
@@ -80,6 +81,11 @@ func getConfig() (Config, error) {
 		return Config{}, err
 	}
 
+	matchVisibility, err := matchVisibility()
+	if err != nil {
+		return Config{}, err
+	}
+
 	return Config{
 		allowDemoDownload: envOrBool("PUGGIES_ALLOW_DEMO_DOWNLOAD", true),
 		assetsPath:        envOrString("PUGGIES_ASSETS_PATH", "/backend/assets"),
@@ -91,6 +97,7 @@ func getConfig() (Config, error) {
 		frontendPath:      envOrString("PUGGIES_FRONTEND_PATH", "/app"),
 		jwtSecret:         []byte(jwtSecret),
 		jwtSessionHours:   jwtSessionHours,
+		matchVisibility:   matchVisibility,
 		migrationsPath:    envOrString("PUGGIES_MIGRATIONS_PATH", "/backend/migrations"),
 		port:              envOrString("PUGGIES_HTTP_PORT", "9115"),
 		rescanInterval:    rescanInterval,
@@ -114,6 +121,7 @@ func (config Config) String() string {
 	ret += "\t" + "frontendPath: " + config.frontendPath + "\n"
 	ret += "\t" + "jwtSecret: [redacted]\n"
 	ret += "\t" + "jwtSessionHours: " + strconv.Itoa(config.jwtSessionHours) + "\n"
+	ret += "\t" + "matchVisibility: " + config.matchVisibility + "\n"
 	ret += "\t" + "migrationsPath: " + config.migrationsPath + "\n"
 	ret += "\t" + "port: " + config.port + "\n"
 	ret += "\t" + "rescanInterval: " + strconv.Itoa(config.rescanInterval) + "\n"
@@ -174,4 +182,21 @@ func envStringList(envKey string) []string {
 	}
 	proxies := strings.Split(val, ",")
 	return proxies
+}
+
+func matchVisibility() (string, error) {
+	val := envOrString("PUGGIES_MATCH_VISIBILITY", "public")
+	if val != "public" && val != "private" {
+		return "", errors.New(
+			fmt.Sprintf(
+				"[warn] invalid value \"%s\" provided for variable %s. Options are %s or %s",
+				val,
+				"PUGGIES_MATCH_VISIBILITY",
+				"public",
+				"private",
+			),
+		)
+	}
+
+	return val, nil
 }
