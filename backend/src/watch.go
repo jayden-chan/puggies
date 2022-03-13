@@ -20,7 +20,9 @@
 package main
 
 import (
+	"fmt"
 	"strings"
+	"time"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -41,6 +43,7 @@ func watchDemoDir(watchDir string, newFile chan<- string, renamedFile chan<- Fil
 	done := make(chan bool)
 	go func() {
 		var prev *fsnotify.Event
+		timers := make(map[string]*time.Timer, 10)
 		for {
 			select {
 			case event, ok := <-watcher.Events:
@@ -49,13 +52,29 @@ func watchDemoDir(watchDir string, newFile chan<- string, renamedFile chan<- Fil
 					return
 				}
 
-				if strings.HasSuffix(event.Name, ".dem") &&
-					event.Op&fsnotify.Create == fsnotify.Create {
+				path := event.Name
+				if !strings.HasSuffix(path, ".dem") {
+					continue
+				}
+
+				if event.Op&fsnotify.Create == fsnotify.Create ||
+					event.Op&fsnotify.Write == fsnotify.Write {
 
 					if prev != nil && prev.Op&fsnotify.Rename == fsnotify.Rename {
-						renamedFile <- FileRename{old: prev.Name, new: event.Name}
+						renamedFile <- FileRename{old: prev.Name, new: path}
 					} else {
-						newFile <- event.Name
+						// only send to the channel after we have stopped receiving
+						// write events for 3 seconds
+						if timers[path] == nil {
+							timers[path] = time.NewTimer(3 * time.Second)
+							go func() {
+								<-timers[path].C
+								newFile <- path
+								delete(timers, path)
+							}()
+						} else {
+							timers[path].Reset(3 * time.Second)
+						}
 					}
 				}
 
