@@ -74,17 +74,18 @@ export const HeadToHeadTable = (props: {
   teams: [string[], string[]];
 }) => {
   const { colorMode } = useColorMode();
+  const [teamA, teamB] = props.teams;
   return (
     <Grid
-      templateRows="repeat(6, auto)"
-      templateColumns="repeat(6, 150px)"
+      templateRows={`repeat(${teamB.length + 1}, auto)`}
+      templateColumns={`repeat(${teamA.length + 1}, 150px)`}
       gap={1}
       overflowX="auto"
     >
       <GridItem colSpan={1} key="asd">
         {" "}
       </GridItem>
-      {props.teams[0].map((p) => (
+      {teamA.map((p) => (
         <Flex alignItems="center" justifyContent="center" key={p} mb={3}>
           <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
             {props.playerNames[p]}
@@ -92,7 +93,7 @@ export const HeadToHeadTable = (props: {
         </Flex>
       ))}
 
-      {props.teams[1]
+      {teamB
         .map((rowPlayer) => {
           return [
             <Flex
@@ -110,7 +111,7 @@ export const HeadToHeadTable = (props: {
                 {props.playerNames[rowPlayer]}
               </Text>
             </Flex>,
-            props.teams[0].map((columnPlayer) => {
+            teamA.map((columnPlayer) => {
               const colKills =
                 (props.headToHead[columnPlayer] ?? { "": "" })[rowPlayer] ?? 0;
               const rowKills =
