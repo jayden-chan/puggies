@@ -23,3 +23,7 @@ Puggies is a self-hosted CS:GO demo analyzer and statistics platform.
 ![Match Page 1](./screenshots/match1.png "Match Page 1")
 ![Match Page 2](./screenshots/match2.png "Match Page 2")
 ![Match Page 3](./screenshots/match3.png "Match Page 3")
+![Match Page 4](./screenshots/match4.png "Match Page 4")
+![Admin Page](./screenshots/admin.png "Admin Page")
+![Login Page](./screenshots/login.png "Login Page")
+![Registration Page](./screenshots/register.png "Registration Page")
